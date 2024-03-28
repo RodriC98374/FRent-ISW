@@ -12,18 +12,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='client',
-            name='id',
-            field=models.AutoField(default=1, primary_key=True, serialize=False),
-            preserve_default=False,
-        ),
-        migrations.AddField(
-            model_name='friend',
-            name='id',
-            field=models.AutoField(default=1, primary_key=True, serialize=False),
-            preserve_default=False,
-        ),
+       
         migrations.AlterField(
             model_name='client',
             name='user_ptr',

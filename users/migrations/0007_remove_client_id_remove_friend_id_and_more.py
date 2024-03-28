@@ -12,14 +12,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='client',
-            name='id',
-        ),
-        migrations.RemoveField(
-            model_name='friend',
-            name='id',
-        ),
         migrations.AlterField(
             model_name='client',
             name='user_ptr',
