@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'users',
+    'rent',
 ]
 
 MIDDLEWARE = [
@@ -82,9 +83,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'frent',
         'USER': 'postgres',
-        'PASSWORD': 'pass',
+        'PASSWORD': '123',
         'HOST': 'localhost',
-        'PORT': '5432',
         'OPTIONS': {
             'client_encoding': 'UTF8',
         },

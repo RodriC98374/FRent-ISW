@@ -55,10 +55,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_short_name(self):
         return self.first_name
     
-    def get_image(self):
-        if self.image:
-            return '{}{}'.format(MEDIA_URL, self.image)
-        return '{}{}'.format(STATIC_URL, 'img/empty.png')
+  
     
 class Friend(models.Model):
     id_user = models.ForeignKey(User, on_delete=models.CASCADE)
