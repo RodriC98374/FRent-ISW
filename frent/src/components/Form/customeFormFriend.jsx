@@ -2,7 +2,7 @@ import {useForm} from "react-hook-form"
 import "./customerForm.css";
 import { createRegister, deleteRegister, getRegister, updateRegister } from "../../api/register.api";
 
-export function CustomerFormPage() {
+export function CustomerFormFriend() {
   const {register, handleSubmit,
       formState: {errors},
       watch, 
@@ -51,8 +51,21 @@ export function CustomerFormPage() {
             <div className="campos-form campos-mitad">
               <label htmlFor="apellido">Apellido(s)</label>
               <input type="text" placeholder="Ingrese su(s) apellidos(s)" 
-              {...register("apellido", {required: true})} />
-                {errors.apellido && <span>Apellido es requerido</span>}
+              {...register("apellido", {
+                required: {
+                    value: true,
+                    message: "Apellido es requerido"
+                },
+                minLength: {
+                    value: 2,
+                    message: "El apellido debe tener mas caracteres"
+                },
+                maxLength: {
+                    value: 35,
+                    message: "El apellido no puede superar los 20 carácteres"
+                }
+               })} />
+                {errors.apellido && <span>{errors.apellido.message}</span>}
             </div>
 
             <div className="campos-form campos-mitad-mitad">
@@ -189,7 +202,7 @@ export function CustomerFormPage() {
               {errors.intereses && <span>Debe seleccionar al menos dos</span>}
             </div>
             
-            {/* <div className="campos-form campos-mitad-mitad llevar-inicio">
+            <div className="campos-form campos-mitad-mitad llevar-inicio">
               <label htmlFor="precio">Precio</label>
               <select id="Precio" name="Precio"
               {...register("precio", {required: true})}
@@ -203,7 +216,7 @@ export function CustomerFormPage() {
                 <option value="50">50bs</option>
               </select>
             </div>
-            <div>
+            {/* <div>
               <label htmlFor="foto">Foto</label>
               <input type="file" onChange={(e) => {
                 console.log(e.target.files[0])

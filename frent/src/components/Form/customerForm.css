@@ -96,6 +96,10 @@ select {
     background-color: #FBA834;
   }
   
+  span{
+    color: tomato;
+    font-size: x-small;
+  }
 
 
   
