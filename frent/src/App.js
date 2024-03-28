@@ -1,10 +1,11 @@
 import './App.css';
-import { CustomerFormPage } from './components/Navbar/forms/customerFormPage';
+import { CustomerFormPage } from './components/Form/customerFormPage';
+
 
 function App() {
   return (
     <>
-    <CustomerFormPage></CustomerFormPage>
+      <CustomerFormPage></CustomerFormPage>
     </>
   );
 }
