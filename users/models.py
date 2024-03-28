@@ -27,7 +27,7 @@ class UserManager(BaseUserManager):
             raise ValueError('Superuser must have is_superuser=True.')
 
         return self.create_user(email, password, **extra_fields)
-    
+
 class User(AbstractBaseUser, PermissionsMixin):
     id_user = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=30)
@@ -39,7 +39,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
 
-    image = models.ImageField(upload_to='users/%d/%m/%Y', null=True, blank=True)
+    image = models.ImageField(upload_to='users/img/%d/%m/%Y/', null=True, blank=True)
 
     objects = UserManager()
 
