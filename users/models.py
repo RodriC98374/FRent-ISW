@@ -33,13 +33,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     email = models.EmailField(unique=True)
-    personal_description = models.CharField(max_length=250)
+    personal_description = models.CharField(max_length=150)
     gender = models.CharField(max_length=1)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
-
-    image = models.ImageField(upload_to='users/%d/%m/%Y', null=True, blank=True)
 
     objects = UserManager()
 
@@ -54,18 +52,24 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.first_name
+
     
-  
-    
-class Friend(models.Model):
-    id_user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class Client(User):
+    pass
+
+class Friend(User):
     price = models.DecimalField(max_digits=5, decimal_places=2)
 
-    def __str__(self):
-        return str(self.id_user)
-    
-class Client(models.Model):
-    id_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return str(self.id_user)
+class Taste(models.Model):
+    name = models.CharField(max_length=50)
+
+class Photo(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='users/%d/%m/%Y', null=True, blank=True)
+
+
+class User_Taste(models.Model):
+    taste_id = models.ForeignKey(Taste, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)

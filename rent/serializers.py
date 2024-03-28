@@ -18,8 +18,8 @@ class OutFitEventSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class AlquilerSerializer(serializers.ModelSerializer):
-    client = serializers.PrimaryKeyRelatedField(queryset=Client.objects.all())
-    friend = serializers.PrimaryKeyRelatedField(queryset=Friend.objects.all())
+    client_id = serializers.PrimaryKeyRelatedField(queryset=Client.objects.all())
+    friend_id = serializers.PrimaryKeyRelatedField(queryset=Friend.objects.all())
     evento = serializers.PrimaryKeyRelatedField(queryset=Event.objects.all())
 
     class Meta:

@@ -16,8 +16,8 @@ class OutFit_Event(models.Model):
     
 
 class Rent(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    friend = models.ForeignKey(Friend, on_delete=models.CASCADE)
+    client_id = models.ForeignKey(Client, on_delete=models.CASCADE)
+    friend_id = models.ForeignKey(Friend, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     fecha_cita = models.DateField()
     time = models.TimeField()
