@@ -1,5 +1,7 @@
 import {useForm} from "react-hook-form"
 import "./customerForm.css";
+import { ButtonPrimary } from "../Buttons/buttonPrimary";
+import { ButtonSecondary } from "../Buttons/buttonSecondary";
 
 export function CustomerFormPage() {
   const {register, handleSubmit,
@@ -219,8 +221,11 @@ export function CustomerFormPage() {
             </div>
 
             <div className="buttons-cancel-register">
-              <button className="CancelButton">Cancelar</button>
+              {/* <button className="CancelButton">Cancelar</button>
               <button className="RecordButton" type="submit">Registrarse</button>
+               */}
+              <ButtonSecondary label={"Cancelar"}/>
+              <ButtonPrimary type={"submit"} label={"Registrarse"}/>
             </div>
 
           </div>
