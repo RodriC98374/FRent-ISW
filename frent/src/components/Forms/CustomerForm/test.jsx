@@ -3,7 +3,9 @@ import { ButtonPrimary } from "../../Buttons/buttonPrimary";
 import { ButtonSecondary } from "../../Buttons/buttonSecondary";
 import { InputText } from "../Inputs/inputText";
 import { SelectOptions } from "../Selects/selectOptions";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+
 
 import "./test.css";
 
@@ -31,6 +33,17 @@ export function Test() {
     ];
     
     const [countries, setCountries] = useState([]);
+
+    useEffect(() => {
+        const fetchCountries = async () => {
+            const response = await axios.get("https://restcountries.com/v3.1/all");
+            setCountries(response.data); // Asignar la lista de países al estado
+        };
+
+        fetchCountries();
+    }, []);
+
+    console.log(countries);
 
     return(
         <div className="form-body-container">

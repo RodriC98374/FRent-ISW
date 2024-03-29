@@ -12,11 +12,11 @@ export function SelectOptions ({ label, id, name, errors, register, required, pl
                 id={id} 
                 name={name}               
                 {...register}
+                value={register.value || ''}
             >
                 <option 
                         value="" 
                         disabled 
-                        selected 
                         hidden>
                     {placeholder}
                 </option>
