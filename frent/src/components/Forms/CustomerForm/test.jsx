@@ -1,8 +1,11 @@
 import {useForm} from "react-hook-form"
-import "./test.css";
 import { ButtonPrimary } from "../../Buttons/buttonPrimary";
 import { ButtonSecondary } from "../../Buttons/buttonSecondary";
 import { InputText } from "../Inputs/inputText";
+import { SelectOptions } from "../Selects/selectOptions";
+import { useState } from "react";
+
+import "./test.css";
 
 export function Test() {
     const {register, handleSubmit,
@@ -19,7 +22,15 @@ export function Test() {
         reset()
         //  send data to server here
     
-    })
+    });
+
+    const options = [
+        { value: "masculino", label: "Masculino" },
+        { value: "femenino", label: "Femenino" },
+        { value: "noIndicado", label: "Prefiero no decirlo" }
+    ];
+    
+    const [countries, setCountries] = useState([]);
 
     return(
         <div className="form-body-container">
@@ -58,7 +69,7 @@ export function Test() {
                             type={"text"}
                             required={true}
                             placeholder={"Ingrese su(s) apellido(s)"}
-                            register={register("nombre", {
+                            register={register("apellido", {
                                 required: {
                                     value: true,
                                     message: "El apellido es requerido"
@@ -100,6 +111,38 @@ export function Test() {
                                     }
                                 }
                             })}
+                            errors={errors}
+                        />
+                    </div>
+                    <div className="input-1c">
+                        <SelectOptions
+                            id={"genero"}
+                            label={"Género"}
+                            name={"genero"}
+                            placeholder={"Elija su género"}
+                            required={true}
+                            options={options}
+                            register={register("genero", {
+                                required:{
+                                    value: true,
+                                    message:"Campo requerido"
+                                }})}
+                            errors={errors}
+                        />
+                    </div>
+                    <div className="input-1c">
+                        <SelectOptions
+                            id={"pais"}
+                            label={"País"}
+                            name={"pais"}
+                            placeholder={"Elija un país"}
+                            required={true}
+                            options={options}
+                            register={register("pais", {
+                                required:{
+                                    value: true,
+                                    message:"Campo requerido"
+                                }})}
                             errors={errors}
                         />
                     </div>
