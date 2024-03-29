@@ -1,7 +1,7 @@
 import {useForm} from "react-hook-form"
 import "./customerForm.css";
-import { ButtonPrimary } from "../Buttons/buttonPrimary";
-import { ButtonSecondary } from "../Buttons/buttonSecondary";
+import { ButtonPrimary } from "../../Buttons/buttonPrimary";
+import { ButtonSecondary } from "../../Buttons/buttonSecondary";
 
 export function CustomerFormPage() {
   const {register, handleSubmit,
@@ -24,7 +24,7 @@ export function CustomerFormPage() {
 
   return (
     <div className="FormularioRegistro">
-      <nav className="container-principal">
+      <div className="container-principal">
         <h2>Datos Personales</h2>
         <form action="" id="formulario-cliente" onSubmit={onSubmit}>
           <div className="container">
@@ -233,7 +233,7 @@ export function CustomerFormPage() {
             {JSON.stringify(watch(), null, 2)},
           </pre> */}
         </form>
-      </nav>
+      </div>
     </div>
   );
 }

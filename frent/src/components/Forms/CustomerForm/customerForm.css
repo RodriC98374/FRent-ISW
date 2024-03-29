@@ -1,15 +1,14 @@
-
 .FormularioRegistro{
   display: flex;
   justify-content: center;
   padding: 30px 0px;
-  background-color: #f0f0f0;
 }
+
 .container-principal{
   background: #fff;
-  width: 50%;
+  width: 55%;
   border-radius: 12px;
-  font-weight: 400;
+  font-weight: 400; /*quitar*/
   font-style: normal;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -75,23 +74,8 @@ select {
   .llevar-inicio {
     margin-right: 67%;
   }
-  
-  .buttons-cancel-register {
-    width: 86%;
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-  }
-  
-  .buttons-cancel-register > button {
-    font-size: 16px;
-    padding: 12px 18px;
-    border-radius: 8px;
-  }
 
-  .RecordButton{
-    background-color: #FBA834;
-  }
+  
   
 
 
