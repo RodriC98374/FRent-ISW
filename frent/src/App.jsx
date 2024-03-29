@@ -6,6 +6,7 @@ import NavBarN from './components/Navbar/NavBarN';
 import Home from './pages/home/Home';
 import ListFriend from './pages/listFriend/ListFriend';
 import SelectionRegister from './pages/registros/SelectionRegister';
+import Perfil from './pages/listFriend/Perfil';
 
 
 
@@ -20,14 +21,11 @@ function App() {
         <Route path="/form" element={<SelectionRegister></SelectionRegister>}/>
         <Route path="/cliente" element={<CustomerFormPage></CustomerFormPage>}/>
         <Route path="/friend" element={<CustomerFormFriend></CustomerFormFriend>}/>
-        <Route path='listFriend' element = {<ListFriend></ListFriend>}/>
+        <Route path='/listFriend' element = {<ListFriend></ListFriend>}/>
+        <Route path="listFriend/:id" element={<Perfil></Perfil>} />
         <Route path="/*" element={<h1 className='text-center'>404 Page Not Found</h1>}></Route>
       </Routes>
-
-    </BrowserRouter>
-  
-      
-      
+    </BrowserRouter>    
     </>
   );
 }

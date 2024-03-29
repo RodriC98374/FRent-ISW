@@ -13,12 +13,13 @@ export function CustomerFormFriend() {
     
   console.log(errors)
 
-  const onSubmit  = handleSubmit ( async (data) => {
-    console.log(data)
-    await createRegister(data);
-    alert("Datos enviados correctamente"); 
+  const onSubmit = handleSubmit(async (data) => {
+    const { confirmarContraseña, ...formData } = data;
+    await createRegister(formData);
+    alert("Datos enviados correctamente");
     reset();
   });
+  
   
   return (
     <div className="FormularioRegistro">
@@ -27,7 +28,7 @@ export function CustomerFormFriend() {
         <form action="" id="formulario-cliente" onSubmit={onSubmit}>
           <div className="container">
             <div className="campos-form campos-mitad">
-              <label htmlFor="Nombre"> Nombre(s) </label>
+              <label htmlFor="Nombre"> Nombre(s)<span>*</span> </label>
               <input type="text" placeholder="Ingrese su(s) nombres(s)" 
               {...register("nombre", {
                 required: {
@@ -49,7 +50,7 @@ export function CustomerFormFriend() {
             </div>
 
             <div className="campos-form campos-mitad">
-              <label htmlFor="apellido">Apellido(s)</label>
+              <label htmlFor="apellido">Apellido(s) <span>*</span></label>
               <input type="text" placeholder="Ingrese su(s) apellidos(s)" 
               {...register("apellido", {
                 required: {
@@ -131,7 +132,7 @@ export function CustomerFormFriend() {
             </div>
 
             <div className="campos-form campo-full">
-              <label htmlFor="email">Correo Electronico</label>
+              <label htmlFor="email">Correo Electrónico</label>
               <input type="email" placeholder="Ingrese su correo electronico"
               {...register("correo", {
                 required: {
@@ -203,7 +204,7 @@ export function CustomerFormFriend() {
             </div>
             
             <div className="campos-form campos-mitad-mitad llevar-inicio">
-              <label htmlFor="precio">Precio</label>
+              <label htmlFor="precio">Precio por hora</label>
               <select id="Precio" name="Precio"
               {...register("precio", {required: true})}
               >
