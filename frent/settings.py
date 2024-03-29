@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'users',
+    'rent',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'frent.urls'
 
@@ -82,9 +84,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'frent',
         'USER': 'postgres',
-        'PASSWORD': 'pass',
+        'PASSWORD': '123',
         'HOST': 'localhost',
-        'PORT': '5432',
         'OPTIONS': {
             'client_encoding': 'UTF8',
         },
@@ -133,6 +134,12 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS = []
+CORS_ORIGIN_ALLOW_ALL = False
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 AUTH_USER_MODEL = 'users.User'
