@@ -3,7 +3,6 @@ from django.db import models
 from django.utils import timezone
 
 
-# Create your models here.
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -32,9 +31,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     id_user = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
+    birth_date= models.DateField(null=True, blank=True)
+    gender = models.CharField(null=True, max_length=10)
+    country = models.CharField(null=True, max_length=30)
+    city = models.CharField(null=True, max_length=30)
     email = models.EmailField(unique=True)
     personal_description = models.CharField(max_length=150)
-    gender = models.CharField(max_length=1)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
@@ -42,7 +44,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'personal_description', 'gender']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'gender']
 
     def __str__(self):
         return self.email
@@ -52,9 +54,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.first_name
-
-    
-
+  
 class Client(User):
     pass
 

@@ -7,7 +7,7 @@ class OutFit(models.Model):
     
 
 class Event(models.Model):
-    id_event = models.IntegerField(primary_key=True)
+    id_event = models.AutoField(primary_key=True)
     type_event= models.CharField(max_length=30)
 
 class OutFit_Event(models.Model):

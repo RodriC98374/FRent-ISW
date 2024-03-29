@@ -10,5 +10,5 @@ router.register(r'outfit-events', OutFitEventViewSet)
 router.register(r'rent', AlquilerViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('api/v1/', include(router.urls)),
 ]
