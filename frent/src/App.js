@@ -5,10 +5,10 @@ import { Test } from './components/Forms/CustomerForm/test.jsx';
 
 function App() {
   return (
-    <>
+    <div className='body-app'>
       {/* <CustomerFormPage></CustomerFormPage> */}
       <Test/>
-    </>
+    </div>
   );
 }
 

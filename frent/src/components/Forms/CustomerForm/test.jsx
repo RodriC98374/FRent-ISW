@@ -3,11 +3,11 @@ import { ButtonPrimary } from "../../Buttons/buttonPrimary";
 import { ButtonSecondary } from "../../Buttons/buttonSecondary";
 import { InputText } from "../Inputs/inputText";
 import { SelectOptions } from "../Selects/selectOptions";
-import { useState, useEffect } from "react";
-import axios from "axios";
-
+import { useState } from "react";
+import { Country, State } from "country-state-city";
 
 import "./test.css";
+
 
 export function Test() {
     const {register, handleSubmit,
@@ -26,24 +26,36 @@ export function Test() {
     
     });
 
-    const options = [
+    const optionsGender = [
         { value: "masculino", label: "Masculino" },
         { value: "femenino", label: "Femenino" },
         { value: "noIndicado", label: "Prefiero no decirlo" }
     ];
-    
-    const [countries, setCountries] = useState([]);
 
-    useEffect(() => {
-        const fetchCountries = async () => {
-            const response = await axios.get("https://restcountries.com/v3.1/all");
-            setCountries(response.data); // Asignar la lista de países al estado
-        };
+    const [selectedCountry, setSelectedCountry] = useState("");
+    const [selectedState, setSelectedState] = useState("");
+    const [states, setStates] = useState([]);
 
-        fetchCountries();
-    }, []);
+    const [selectedGender, setSelectedGender] = useState("");
 
-    console.log(countries);
+    const handleCountryChange = (e) => {
+        const selectedCountryIsoCode = e.target.value;
+        setSelectedCountry(selectedCountryIsoCode);
+        const states = State.getStatesOfCountry(selectedCountryIsoCode);
+        setStates(states);
+        // Limpia el estado seleccionado cuando se cambia el país
+        setSelectedState("");
+        // Actualizar el valor en el formulario
+        setValue("pais", selectedCountryIsoCode);
+        console.log(states);
+    };
+
+    const handleStateChange = (e) => {
+        const selectedStateIsoCode = e.target.value;
+        setSelectedState(selectedStateIsoCode);
+        // Actualizar el valor en el formulario
+        setValue("estado", selectedStateIsoCode);
+    };
 
     return(
         <div className="form-body-container">
@@ -133,29 +145,150 @@ export function Test() {
                             label={"Género"}
                             name={"genero"}
                             placeholder={"Elija su género"}
+                            value={selectedGender}
                             required={true}
-                            options={options}
+                            options={optionsGender}
                             register={register("genero", {
                                 required:{
                                     value: true,
                                     message:"Campo requerido"
                                 }})}
                             errors={errors}
+                            onChange={(e) => setSelectedGender(e.target.value)} 
                         />
                     </div>
                     <div className="input-1c">
                         <SelectOptions
+                            className="pais-select"
                             id={"pais"}
                             label={"País"}
                             name={"pais"}
                             placeholder={"Elija un país"}
+                            value={selectedCountry}
                             required={true}
-                            options={options}
+                            onChange={handleCountryChange} // Manejador de cambio de selección
+                            options={Country.getAllCountries().map(country => ({
+                                value: country.isoCode,
+                                label: country.name
+                            }))}
                             register={register("pais", {
                                 required:{
                                     value: true,
                                     message:"Campo requerido"
-                                }})}
+                            }})}
+                            errors={errors}
+                        />
+                    </div>
+                    <div className="input-1c">
+                        <SelectOptions
+                            id={"ciudad"}
+                            label={"Ciudad"}
+                            name={"ciudad"}
+                            placeholder={"Elija una ciudad"}
+                            value={selectedState}
+                            required={true}
+                            onChange={handleStateChange}
+                            options={
+                                states.map(state => ({
+                                    value: state.isoCode,
+                                    label: state.name && state.name.replace(" Department", "")        
+                                }))
+                            }
+                            register={register("ciudad", {
+                                required: {
+                                    value: true,
+                                    message: "Campo requerido"
+                                }
+                            })}
+                            errors={errors}
+                        />
+                    </div>
+                    <div className="input-4c">
+                        <InputText
+                            id={"correo"}
+                            label={"Correo electrónico"}
+                            type={"email"}
+                            required={true}
+                            placeholder={"Ingrese su correo electrónico"}
+                            register={register("correo", {
+                                required: {
+                                    value: true,
+                                    message: "El Correo es requerido"
+                                },
+                                pattern: {
+                                    value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
+                                    message: "Formato de email invalido"
+                                }
+                            })}
+                            errors={errors}
+                        />
+                    </div>
+                    <div className="input-2c">
+                        <InputText
+                            id={"password"}
+                            label={"Contraseña"}
+                            type={"password"}
+                            required={true}
+                            placeholder={"Ingrese su contraseña"}
+                            register={register("password", {
+                                required: {
+                                    value: true,
+                                    message: "La contraseña es requerida",
+                                minLength:{
+                                    value: 8,
+                                    message: "Debe tener al menos 8 caracteres"
+                                    }
+                                }
+                            })}
+                            errors={errors}
+                        />
+                    </div>
+                    <div className="input-2c">
+                        <InputText
+                                id={"confirmarPassword"}
+                                label={"Confirmar contraseña"}
+                                type={"password"}
+                                required={true}
+                                placeholder={"Repita su contraseña"}
+                                register={register("confirmarPassword", { 
+                                    required: {
+                                        value: true,
+                                        message: "La confirmación de la contraseña es requerida"
+                                    },
+                                    validate: (value) => {
+                                        if(value === watch('password')){
+                                            return true;
+                                        }else{
+                                            return "Las contraseñas no coinciden";
+                                        }
+                                    }
+                                })}
+                                errors={errors}
+                            />
+                    </div>
+                    <div className="input-4c descripction">
+                        <label htmlFor="descripcion">Descripción</label>
+                        <textarea name="descripcion" className="textAreaDescription"
+                        {...register("descripcion",{ 
+                            required:{
+                                value:false
+                            }
+                            ,maxLength:{
+                            value: 500,
+                            message: "Numero de caracteres excedido"
+                        }})}
+                        
+                        ></textarea>
+                        {errors.descripcion && <span className="error-message">{errors.descripcion.message}</span>}
+                    </div>
+                    <div className="input-2c">
+                        <InputText
+                            id={"gustos"}
+                            label={"Gustos e Intereses"}
+                            type={"text"}
+                            placeholder={"Añada sus gustos e intereses"}
+                            register={register("gustos", 
+                                {required: true})}
                             errors={errors}
                         />
                     </div>
@@ -164,6 +297,9 @@ export function Test() {
                     <ButtonSecondary label={"Cancelar"}/>
                     <ButtonPrimary type={"submit"} label={"Registrarse"}/>
                 </div>
+                {/* <pre>
+                    {JSON.stringify(watch(), null, 2)},
+                </pre> */}
             </form>
         </div>
     )

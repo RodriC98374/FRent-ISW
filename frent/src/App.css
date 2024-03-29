@@ -25,6 +25,14 @@
 
 body{
   font-family: "Alata", sans-serif;
-  background-color: ·;
+  
+}
+
+.body-app{
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  background-color: #fcfcfc;
+  padding: 30px 0px;
 }
 
