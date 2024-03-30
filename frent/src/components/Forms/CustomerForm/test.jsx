@@ -5,6 +5,7 @@ import { InputText } from "../Inputs/inputText";
 import { SelectOptions } from "../Selects/selectOptions";
 import { useState } from "react";
 import { Country, State } from "country-state-city";
+import { createRegisterFriend, createLikes } from "../../../api/register.api";
 
 import "./test.css";
 import InterestModal from "../Interests/interestSection";
@@ -18,14 +19,36 @@ export function Test() {
         reset
     } = useForm();
 
-    const onSubmit  = handleSubmit ((data) => {
-        console.log(data)
-        alert("Envio correcto de datos")
-        setValue('correo', '')
-        reset()
-        //  send data to server here
+    const onSubmit = handleSubmit(async (data) => {
+
+        const client = {
+          city: data.City,
+          country: data.Country,
+          email: data.Email,
+          first_name: data.First_name,
+          gender: data.Gender,
+          last_name: data.Last_name,
+          password: data.Password,
+          personal_description: data.Personal_description,
+          birth_date: data.birth_date,
+          price: data.price
+        };
     
-    });
+        const likes = [1, 2, 3, 5]
+    
+        const res = await createRegisterFriend(client);
+    
+        const user_likes = {
+          likes: likes,
+          user_id: res.data.id_user
+        };
+
+        const res_likes = await createLikes(user_likes);
+    
+        alert("Datos enviados correctamente");
+        reset();
+    
+      });
 
     const optionsGender = [
         { value: "masculino", label: "Masculino" },
@@ -70,7 +93,7 @@ export function Test() {
                             type={"text"}
                             required={true}
                             placeholder={"Ingrese su(s) nombre(s)"}
-                            register={register("nombre", {
+                            register={register("First_name", {
                                 required: {
                                     value: true,
                                     message: "El nombre es requerido"
@@ -95,7 +118,7 @@ export function Test() {
                             type={"text"}
                             required={true}
                             placeholder={"Ingrese su(s) apellido(s)"}
-                            register={register("apellido", {
+                            register={register("Last_name", {
                                 required: {
                                     value: true,
                                     message: "El apellido es requerido"
@@ -120,7 +143,7 @@ export function Test() {
                             type={"date"}
                             required={true}
                             placeholder={"DD/MM/AA"}
-                            register={register("fechaNacimiento", {
+                            register={register("birth_date", {
                                 required: {
                                     value: true,
                                     message: "Fecha de nacimiento requerida",
@@ -149,7 +172,7 @@ export function Test() {
                             value={selectedGender}
                             required={true}
                             options={optionsGender}
-                            register={register("genero", {
+                            register={register("Gender", {
                                 required:{
                                     value: true,
                                     message:"Campo requerido"
@@ -172,7 +195,7 @@ export function Test() {
                                 value: country.isoCode,
                                 label: country.name
                             }))}
-                            register={register("pais", {
+                            register={register("Country", {
                                 required:{
                                     value: true,
                                     message:"Campo requerido"
@@ -195,7 +218,7 @@ export function Test() {
                                     label: state.name && state.name.replace(" Department", "")        
                                 }))
                             }
-                            register={register("ciudad", {
+                            register={register("City", {
                                 required: {
                                     value: true,
                                     message: "Campo requerido"
@@ -211,7 +234,7 @@ export function Test() {
                             type={"email"}
                             required={true}
                             placeholder={"Ingrese su correo electrónico"}
-                            register={register("correo", {
+                            register={register("Email", {
                                 required: {
                                     value: true,
                                     message: "El Correo es requerido"
@@ -231,7 +254,7 @@ export function Test() {
                             type={"password"}
                             required={true}
                             placeholder={"Ingrese su contraseña"}
-                            register={register("password", {
+                            register={register("Password", {
                                 required: {
                                     value: true,
                                     message: "La contraseña es requerida",
@@ -257,7 +280,7 @@ export function Test() {
                                         message: "La confirmación de la contraseña es requerida"
                                     },
                                     validate: (value) => {
-                                        if(value === watch('password')){
+                                        if(value === watch('Password')){
                                             return true;
                                         }else{
                                             return "Las contraseñas no coinciden";
@@ -270,7 +293,7 @@ export function Test() {
                     <div className="input-4c descripction">
                         <label htmlFor="descripcion">Descripción</label>
                         <textarea name="descripcion" className="textAreaDescription"
-                        {...register("descripcion",{ 
+                        {...register("Personal_description",{ 
                             required:{
                                 value:false
                             }
@@ -282,6 +305,20 @@ export function Test() {
                         ></textarea>
                         {errors.descripcion && <span className="error-message">{errors.descripcion.message}</span>}
                     </div>
+                    <div className="campos-form campos-mitad-mitad llevar-inicio">
+              <label htmlFor="precio">Precio por hora</label>
+              <select id="Precio" name="Precio"
+              {...register("price", {required: true})}
+              >
+              {
+                errors.precio && <span>Debe establecer un precio</span>
+              }
+                <option value="20">20bs</option>
+                <option value="30">30bs</option>
+                <option value="40">40bs</option>
+                <option value="50">50bs</option>
+              </select>
+            </div>
                     {/* <div className="input-2c">
                         <InputText
                             id={"gustos"}

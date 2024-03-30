@@ -51,10 +51,10 @@ export default function RentaForm() {
 
   return (
     <div className="container">
+      <div className="form-frame">
       <div className="title">
         <h1>Datos para el Alquiler</h1>
       </div>
-      <div className="form-frame">
         <form action='' id="formulario-alquiler" onSubmit={onSubmit}>
           <div className='colums_inputs'>
             <div className='input-2c'>

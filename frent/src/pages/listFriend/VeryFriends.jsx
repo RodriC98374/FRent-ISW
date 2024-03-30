@@ -1,40 +1,42 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect } from 'react';
 import './ListFriend.css';
 import { NavLink } from 'react-router-dom';
-import { getRegister } from '../../api/register.api';
+
+import { getFriends } from '../../api/register.api';
 
 export default function ListFriend() {
-  const [amigos, setAmigos] = useState([]);
+ 
 
-  const fetchAmigos = async () => {
-    try {
-      const response = await getRegister(); 
-      setAmigos(response.data); 
-    } catch (error) {
-      console.error('Error al obtener la lista de amigos:', error);
-    }
-  };
+  const [friends, setFriends] = useState([]);
 
   useEffect(() => {
-    fetchAmigos(); 
+        async function loadFriends(){
+        const res = await getFriends();
+        setFriends(res.data)
+      }
+      loadFriends();
   }, []);
 
+  // console.log(friends)
+
   return (
+
     <div className='list-friend'>
       <div>
-        <h1>Lista de amigos</h1>
+      <h1>Lista de amigos</h1>
       </div>
       <div className='lista'>
-        {amigos.map(amigo => (
-          <div key={amigo.id} className="card">
-            <img className='perfil' src={amigo.foto} alt=""></img>
-            <h1>{amigo.nombre}</h1>
-            <p>Edad: {amigo.edad} años</p>
-            <h2>Descripción</h2>
-            <p>{amigo.descripcion}</p>
-            <NavLink className= "btnC" to={`/listFriend/${amigo.id}`}>Alquilar</NavLink>
-          </div>
-        ))}
+      {friends.map(friend => (
+        <div key={friend.id_user} className="card">
+
+          <h1>{friend.first_name}</h1>
+          <p>Edad: {friend.birth_date} años</p>
+          <h2>Descripción</h2>
+          <p>{friend.personal_description}</p>
+          <NavLink className="btnC" to = '/rentaForm'> Alquilar</NavLink>
+          {/* <NavLink className="btnC" to={`/listFriend/${friend._user}`}>Alquilar</NavLink> */}
+        </div>
+      ))}
       </div>
     </div>
   );
