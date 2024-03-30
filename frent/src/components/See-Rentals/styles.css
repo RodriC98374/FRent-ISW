@@ -1,0 +1,99 @@
+#pendings {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  body {
+    font-family: "Alata", sans-serif;
+  }
+  
+  .title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Margen solo en la parte inferior */
+    border: 1px solid #ccc;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+  }
+  
+  
+  .icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+  }
+  
+  .pending {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+  
+  .user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+  }
+  
+  .time {
+    margin-top: 5px;
+    color: rgba(0, 0, 0, 0.5); /* Texto semi-transparente */
+  }
+  
+  .request-info {
+    flex-grow: 1;
+    margin-left: 20px;
+  }
+  
+  .date-time {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .details {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .verified {
+    background-color: white;
+    color: black;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 5px;
+  }
+  
+  .location {
+    background-color: white;
+    color: black;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+  
+  .price,
+  .description {
+    background-color: black;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-top: 5px;
+    width: auto; 
+    display: inline-block; 
+    margin-bottom: 10px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    justify-content: flex-end; /* Alinear los botones a la derecha */
+    margin-top: 10px;
+  }
+  
