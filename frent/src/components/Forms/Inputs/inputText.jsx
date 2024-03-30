@@ -1,6 +1,7 @@
 import React from "react";
 import "./inputText.css";
 
+
 export function InputText ({ label, id, type, placeholder, value, onChange, errors, register, required }) {
     return( 
         <div className="input-component">
