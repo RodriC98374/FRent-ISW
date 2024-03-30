@@ -1,6 +1,10 @@
 # Create your models here.
 from django.db import models
 from users.models import Friend, Client
+from django.core.validators import MinValueValidator
+from django.contrib import admin
+from django import forms
+#from .models import Rent
 
 
 class OutFit(models.Model):
@@ -10,6 +14,8 @@ class OutFit(models.Model):
 class Event(models.Model):
     id_event = models.IntegerField(primary_key=True)
     type_event= models.CharField(max_length=30)
+    def __str__(self):
+        return self.type_event
 
 class OutFit_Event(models.Model):
     id_event = models.ForeignKey(Event, on_delete=models.CASCADE)
@@ -22,7 +28,7 @@ class Rent(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     fecha_cita = models.DateField()
     time = models.TimeField()
-    duration = models.FloatField()
+    duration = models.FloatField(validators=[MinValueValidator(0.0)])
     location = models.CharField(max_length=50)
     description = models.CharField(max_length=200)
-    creado = models.DateTimeField(auto_now_add=True)
+    create = models.DateTimeField(auto_now_add=True)
