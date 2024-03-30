@@ -1,9 +1,9 @@
 import React from 'react';
-  import { useParams } from 'react-router-dom';
+  import { NavLink, useParams } from 'react-router-dom';
   import imgApp from '../../assets/imgApp';
   import { amigos } from './amigos';
   
-  const Perfil = () => {
+  const FriendProfile = () => {
     const { id } = useParams();
     const amigo = amigos.find(amigo => amigo.id === parseInt(id));
   
@@ -17,9 +17,10 @@ import React from 'react';
         <p>Edad: {amigo.edad} años</p>
         <h2>Descripción</h2>
         <p>{amigo.descripcion}</p>
+        <NavLink to = '/rentaForm'> Alquilar</NavLink>
       </div>
     );
   };
   
-  export default Perfil;
+  export default FriendProfile;
   
