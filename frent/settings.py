@@ -1,3 +1,4 @@
+
 """
 Django settings for frent project.
 
@@ -82,9 +83,9 @@ WSGI_APPLICATION = 'frent.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'frent',
-        'USER': 'postgres',
-        'PASSWORD': '123',
+        'NAME': 'frent22',
+        'USER': 'alfredo',
+        'PASSWORD': 'notebok456',
         'HOST': 'localhost',
         'OPTIONS': {
             'client_encoding': 'UTF8',
@@ -143,3 +144,4 @@ CORS_ORIGIN_WHITELIST = [
 CORS_ALLOW_CREDENTIALS = True
 
 AUTH_USER_MODEL = 'users.User'
+
