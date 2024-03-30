@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Country, State } from "country-state-city";
 
 import "./test.css";
+import InterestModal from "../Interests/interestSection";
 
 
 export function Test() {
@@ -281,7 +282,7 @@ export function Test() {
                         ></textarea>
                         {errors.descripcion && <span className="error-message">{errors.descripcion.message}</span>}
                     </div>
-                    <div className="input-2c">
+                    {/* <div className="input-2c">
                         <InputText
                             id={"gustos"}
                             label={"Gustos e Intereses"}
@@ -291,6 +292,10 @@ export function Test() {
                                 {required: true})}
                             errors={errors}
                         />
+                    </div> */}
+                    {/*intereses */}
+                    <div className="input-4c">
+                        <InterestModal/>
                     </div>
                 </div>
                 <div className="buttons-section">
