@@ -1,13 +1,15 @@
 from django.urls import path, include
-from rest_framework import routers
-from users import views
+from rest_framework.routers import DefaultRouter
+from .views import UserViewSet, ClientViewSet, FriendViewSet, TasteViewSet, PhotoViewSet, UserTasteViewSet
 
-# API versioning
-router = routers.DefaultRouter()
-router.register(r'users', views.UserView, 'users')
-router.register(r'friends', views.FriendView, 'friends')
-router.register(r'clients', views.ClientView, 'clients')
+router = DefaultRouter()
+router.register(r'users', UserViewSet)
+router.register(r'clients', ClientViewSet)
+router.register(r'friends', FriendViewSet)
+router.register(r'tastes', TasteViewSet)
+router.register(r'photos', PhotoViewSet)
+router.register(r'user_tastes', UserTasteViewSet)
 
 urlpatterns = [
-    path("api/v1/", include(router.urls))
+    path('api/v1/', include(router.urls)),
 ]

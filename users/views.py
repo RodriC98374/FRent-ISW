@@ -1,17 +1,29 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .serializer import UserSerializer, FriendSerializer, ClientSerializer
-from .models import User, Friend, Client
+from .models import User, Client, Friend, Taste, Photo, User_Taste
+from .serializers import UserSerializer, ClientSerializer, FriendSerializer, TasteSerializer, PhotoSerializer, UserTasteSerializer
 
-# Create your views here.
-class UserView(viewsets.ModelViewSet):
-    serializer_class = UserSerializer
+class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-class FriendView(viewsets.ModelViewSet):
-    serializer_class = FriendSerializer
-    queryset = Friend.objects.all()
-
-class ClientView(viewsets.ModelViewSet):
-    serializer_class = ClientSerializer
+class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
+    serializer_class = ClientSerializer
+
+class FriendViewSet(viewsets.ModelViewSet):
+    queryset = Friend.objects.all()
+    serializer_class = FriendSerializer
+
+class TasteViewSet(viewsets.ModelViewSet):
+    queryset = Taste.objects.all()
+    serializer_class = TasteSerializer
+
+class PhotoViewSet(viewsets.ModelViewSet):
+    queryset = Photo.objects.all()
+    serializer_class = PhotoSerializer
+
+class UserTasteViewSet(viewsets.ModelViewSet):
+    queryset = User_Taste.objects.all()
+    serializer_class = UserTasteSerializer
+
