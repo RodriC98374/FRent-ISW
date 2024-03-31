@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import './RentaForm.css';
-import { ButtonPrimary } from '../../../Buttons/buttonPrimary';
-import { ButtonSecondary } from '../../../Buttons/buttonSecondary';
+import { ButtonPrimary } from '../../Buttons/buttonPrimary';
+import { ButtonSecondary } from '../../Buttons/buttonSecondary';
 import { useForm } from 'react-hook-form';
-import { InputText } from '../../Inputs/inputText';
-import { SelectOptions } from '../../Selects/selectOptions';
+import { InputText } from '../Inputs/inputText';
+import { SelectOptions } from '../Selects/selectOptions';
 
-export default function RentaForm() {
+import './RentaForm.css';
+
+export default function RentFriendForm() {
   const { register, handleSubmit,
     formState: { errors },
-    watch,
     setValue,
     reset
   } = useForm();
