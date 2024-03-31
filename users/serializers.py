@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Client, Friend, Taste, Photo, User_Taste
+from .models import User, Client, Friend, Like, Photo, User_like
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,9 +17,9 @@ class FriendSerializer(serializers.ModelSerializer):
         model = Friend
         fields = ['first_name', 'last_name', 'email', 'personal_description', 'gender','country','password', 'birth_date','city', 'price']
 
-class TasteSerializer(serializers.ModelSerializer):
+class LikeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Taste
+        model = Like
         fields = '__all__'
 
 class PhotoSerializer(serializers.ModelSerializer):
@@ -27,7 +27,7 @@ class PhotoSerializer(serializers.ModelSerializer):
         model = Photo
         fields = '__all__'
 
-class UserTasteSerializer(serializers.ModelSerializer):
+class UserLikeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User_Taste
+        model = User_like
         fields = '__all__'
