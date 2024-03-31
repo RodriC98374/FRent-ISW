@@ -40,6 +40,10 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'users',
+
+    # notificaicones
+    'notificaciones_api'
+
 ]
 
 MIDDLEWARE = [
@@ -82,7 +86,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'frent',
         'USER': 'postgres',
-        'PASSWORD': 'pass',
+        'PASSWORD': '1234',
         'HOST': 'localhost',
         'PORT': '5432',
         'OPTIONS': {
