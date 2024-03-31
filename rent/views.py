@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from django.utils import timezone
 from django.db.models import F, ExpressionWrapper, fields
 from .models import OutFit, Event, OutFit_Event, Rent
-from .serializers import OutFitSerializer, EventSerializer, OutFitEventSerializer, RentSerializer, RentSerializer
+from .serializers import OutFitSerializer, EventSerializer, OutFitEventSerializer, RentSerializer
 
 class OutFitViewSet(viewsets.ModelViewSet):
     queryset = OutFit.objects.all()

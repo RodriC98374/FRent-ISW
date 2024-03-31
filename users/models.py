@@ -26,7 +26,7 @@ class UserManager(BaseUserManager):
             raise ValueError('Superuser must have is_superuser=True.')
 
         return self.create_user(email, password, **extra_fields)
-    
+
 class User(AbstractBaseUser, PermissionsMixin):
     id_user = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=30)
@@ -62,7 +62,7 @@ class Friend(User):
     price = models.DecimalField(max_digits=5, decimal_places=2)
 
 
-class Taste(models.Model):
+class Like(models.Model):
     name = models.CharField(max_length=50)
 
 class Photo(models.Model):
@@ -70,6 +70,6 @@ class Photo(models.Model):
     image = models.ImageField(upload_to='users/%d/%m/%Y', null=True, blank=True)
 
 
-class User_Taste(models.Model):
-    taste_id = models.ForeignKey(Taste, on_delete=models.CASCADE)
+class User_like(models.Model):
+    like_id = models.ForeignKey(Like, on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
