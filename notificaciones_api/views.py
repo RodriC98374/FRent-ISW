@@ -1,38 +1,22 @@
-from django.contrib.auth.models import User
-from django.http import JsonResponse
-from .models import Solicitud, Notificacion
+from .models import *
+from django.shortcuts import render
+from django.http import HttpResponse
+from .forms import *
+# create yours views
 
-def enviar_solicitud(request):
-    if request.method == 'POST':
-        remitente_id = request.POST.get('remitente')
-        destinatario_id = request.POST.get('destinatario')
-        remitente = User.objects.get(id=remitente_id)
-        destinatario = User.objects.get(id=destinatario_id)
-        solicitud = Solicitud.objects.create(remitente=remitente, destinatario=destinatario)
-        notificacion = Notificacion.objects.create(solicitud=solicitud)
-        return JsonResponse({'mensaje': 'Solicitud enviada'})
 
-def aceptar_solicitud(request, id_solicitud):
-    if request.method == 'POST':
-        solicitud = Solicitud.objects.get(id=id_solicitud)
-        solicitud.aceptada = True
-        solicitud.save()
-        notificacion = Notificacion.objects.get(solicitud=solicitud)
-        notificacion.leida = True
-        notificacion.save()
-        return JsonResponse({'mensaje': 'Solicitud aceptada'})
+def inicio(request):
+    notificaciones = Notificacion.objects.all()
 
-def rechazar_solicitud(request, id_solicitud):
-    if request.method == 'POST':
-        solicitud = Solicitud.objects.get(id=id_solicitud)
-        solicitud.delete()
-        notificacion = Notificacion.objects.get(solicitud=solicitud)
-        notificacion.delete()
-        return JsonResponse({'mensaje': 'Solicitud rechazada'})
+
+    context = {'notificaciones': notificaciones,}
+    return render(request, "notificaciones_api/inicio.html", context)
+
 
 def obtener_notificaciones(request):
     usuario = request.user
-    notificaciones = Notificacion.objects.filter(solicitud__destinatario=usuario, leida=False)
+    notificaciones = Notificacion.objects.filter(
+        solicitud__destinatario=usuario, leida=False)
     datos = []
     for notificacion in notificaciones:
         solicitud = notificacion.solicitud
