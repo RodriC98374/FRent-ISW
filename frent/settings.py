@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'users',
 
     # notificaicones
+    'coreapi',
     'notificaciones_api'
 
 ]
@@ -143,5 +144,4 @@ AUTH_USER_MODEL = 'users.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
-    # otras configuraciones...
 }
