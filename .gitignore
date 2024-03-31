@@ -1,6 +1,5 @@
 env
 venv
+media
+img
 __pycache__
-frent/__pycache__/__init__.cpython-312.pyc
-frent/__pycache__/settings.cpython-312.pyc
-frent/__pycache__/urls.cpython-312.pyc
