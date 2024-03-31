@@ -13,7 +13,6 @@ export const getRegister  = (id) => registersApi.get(/${id}/)
 
 export const createRegisterClient = (data) => registersApi.post('/users/clients/', data)
 
-
 export const createRegisterFriend = (data) => registersApi.post('/users/api/v1/friends/', data)
 
 export const getFriends = (data) => registersApi.get('/users/api/v1/friends/')

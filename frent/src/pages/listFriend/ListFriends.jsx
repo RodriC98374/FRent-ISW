@@ -18,7 +18,18 @@ export default function ListFriend() {
       loadFriends();
   }, []);
 
-  // console.log(friends)
+  const calculateAge = (birthDate) => {
+    const currentDate = new Date();
+    const dob = new Date(birthDate);
+    let age = currentDate.getFullYear() - dob.getFullYear();
+    const monthDiff = currentDate.getMonth() - dob.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < dob.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+  console.log(friends)
 
   return (
 
@@ -31,7 +42,7 @@ export default function ListFriend() {
         <div key={friend.id_user} className="card">
           <img src={imgApp.image}></img>
           <h1>{friend.first_name}</h1>
-          <p>Edad: {friend.birth_date} años</p>
+          <p>Edad: {calculateAge(friend.birth_date)} años</p>
           <h2>Descripción</h2>
           <p>{friend.personal_description}</p>
           <NavLink className="btnC" to = '/rentaForm'> Alquilar</NavLink>
