@@ -126,6 +126,7 @@ header .image-text .header-text{
 
 .sidebar .search-box{
   background: var(--primary-color-light);
+  border-radius: 10px;
 }
 
 .sidebar li a {

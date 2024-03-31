@@ -59,7 +59,7 @@ export default function RentaForm() {
           <div className='colums_inputs'>
             <div className='input-2c'>
               <InputText
-                id={"FechaCita"}
+                id={"dateCita"}
                 label={"Fecha Cita"}
                 type={"date"}
                 required={true}
@@ -85,7 +85,7 @@ export default function RentaForm() {
             </div>
             <div className='input-1c'>
               <InputText
-                id={"HoraCita"}
+                id={"horaCita"}
                 label={"Hora Cita"}
                 type={"time"}
                 required={true}
@@ -109,7 +109,7 @@ export default function RentaForm() {
             </div>
             <div className='Input-1c'>
                 <SelectOptions
-                    id = {"hora"}
+                    id = {"hour"}
                     label={"hora"}
                     name = {"hora"}
                     placeholder={"Elija la duracion de la cita"}
@@ -128,7 +128,7 @@ export default function RentaForm() {
             </div>
             <div className='input-1c'>
                 <SelectOptions
-                    id = {"evento"}
+                    id = {"event"}
                     label = {"evento"}
                     name = {"evento"}
                     placeholder={"Elija el tipo de evento"}
@@ -147,7 +147,7 @@ export default function RentaForm() {
             </div>
             <div className='input-1c'>
               <SelectOptions
-                id = {"tipoVestimenta"}
+                id = {"outfit"}
                 label={"Tipo de vestimenta"}
                 name = {"tipoVestimenta"}
                 placeholder={"Elija su vestimenta para el evento"}
@@ -176,7 +176,7 @@ export default function RentaForm() {
                     message: "Numero de caracteres excedido"
                   }
                 })}
-
+                errors = {errors}
               ></textarea>
               {errors.descripcion && <span className="error-message">{errors.descripcion.message}</span>}
             </div>

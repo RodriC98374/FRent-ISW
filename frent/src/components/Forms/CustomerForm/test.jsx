@@ -34,16 +34,16 @@ export function Test() {
           price: data.price
         };
     
-        /* const likes = [1, 2, 3, 5] */
+        const likes = [1, 2, 3, 5]
     
         const res = await createRegisterFriend(client);
     
-        /* const user_likes = {
+        const user_likes = {
           likes: likes,
           user_id: res.data.id_user
-        }; */
+        };
 
-        /* const res_likes = await createLikes(user_likes); */
+        const res_likes = await createLikes(user_likes);
     
         alert("Datos enviados correctamente");
         reset();
@@ -56,10 +56,17 @@ export function Test() {
         { value: "noIndicado", label: "Prefiero no decirlo" }
     ];
 
+    const optionsPrice = [
+        {value: "20bs", label: "20bs"},
+        {value: "30bs", label: "30bs"},
+        {value: "40bs", label: "40bs"},
+        {value: "50bs", label: "50bs"}
+    ]
+
     const [selectedCountry, setSelectedCountry] = useState("");
     const [selectedState, setSelectedState] = useState("");
     const [states, setStates] = useState([]);
-
+    const [selectedPrice, setSelectedPrice] = useState("");
     const [selectedGender, setSelectedGender] = useState("");
 
     const handleCountryChange = (e) => {
@@ -88,7 +95,7 @@ export function Test() {
                 <div className="colums-inputs">
                     <div className="input-2c">
                         <InputText
-                            id={"nombre"}
+                            id={"First_name"}
                             label={"Nombre(s)"}
                             type={"text"}
                             required={true}
@@ -113,7 +120,7 @@ export function Test() {
                     </div>
                     <div className="input-2c">
                         <InputText
-                            id={"apellido"}
+                            id={"Last_name"}
                             label={"Apellido(s)"}
                             type={"text"}
                             required={true}
@@ -138,7 +145,7 @@ export function Test() {
                     </div>
                     <div className="input-1c">
                         <InputText
-                            id={"fechaNacimiento"}
+                            id={"birth_date"}
                             label={"Fecha Nacimiento"}
                             type={"date"}
                             required={true}
@@ -165,7 +172,7 @@ export function Test() {
                     </div>
                     <div className="input-1c">
                         <SelectOptions
-                            id={"genero"}
+                            id={"Gender"}
                             label={"Género"}
                             name={"genero"}
                             placeholder={"Elija su género"}
@@ -184,7 +191,7 @@ export function Test() {
                     <div className="input-1c">
                         <SelectOptions
                             className="pais-select"
-                            id={"pais"}
+                            id={"Country"}
                             label={"País"}
                             name={"pais"}
                             placeholder={"Elija un país"}
@@ -205,7 +212,7 @@ export function Test() {
                     </div>
                     <div className="input-1c">
                         <SelectOptions
-                            id={"ciudad"}
+                            id={"City"}
                             label={"Ciudad"}
                             name={"ciudad"}
                             placeholder={"Elija una ciudad"}
@@ -229,7 +236,7 @@ export function Test() {
                     </div>
                     <div className="input-4c">
                         <InputText
-                            id={"correo"}
+                            id={"Email"}
                             label={"Correo electrónico"}
                             type={"email"}
                             required={true}
@@ -249,7 +256,7 @@ export function Test() {
                     </div>
                     <div className="input-2c">
                         <InputText
-                            id={"password"}
+                            id={"Password"}
                             label={"Contraseña"}
                             type={"password"}
                             required={true}
@@ -258,10 +265,10 @@ export function Test() {
                                 required: {
                                     value: true,
                                     message: "La contraseña es requerida",
+                                },
                                 minLength:{
                                     value: 8,
                                     message: "Debe tener al menos 8 caracteres"
-                                    }
                                 }
                             })}
                             errors={errors}
@@ -305,43 +312,35 @@ export function Test() {
                         ></textarea>
                         {errors.descripcion && <span className="error-message">{errors.descripcion.message}</span>}
                     </div>
-                    <div className="campos-form campos-mitad-mitad llevar-inicio">
-              <label htmlFor="precio">Precio por hora</label>
-              <select id="Precio" name="Precio"
-              {...register("price", {required: true})}
-              >
-              {
-                errors.precio && <span>Debe establecer un precio</span>
-              }
-                <option value="20">20bs</option>
-                <option value="30">30bs</option>
-                <option value="40">40bs</option>
-                <option value="50">50bs</option>
-              </select>
-            </div>
-                    {/* <div className="input-2c">
-                        <InputText
-                            id={"gustos"}
-                            label={"Gustos e Intereses"}
-                            type={"text"}
-                            placeholder={"Añada sus gustos e intereses"}
-                            register={register("gustos", 
-                                {required: true})}
+
+                    <div className="input-1c">
+                        <SelectOptions
+                            id={"price"}
+                            lavel ={"Precio"}
+                            name={"Price"}
+                            placeholder={"Seleccione un precio"}
+                            value={selectedPrice}
+                            required={true}
+                            options={optionsPrice}
+                            register={register("price",{
+                                required: {
+                                    value: true,
+                                    message: "Escoga un precio"
+                                }
+                            } )}
                             errors={errors}
+                            onChange={(e) => setSelectedPrice(e.target.value)}
                         />
-                    </div> */}
-                    {/*intereses */}
+
+                    </div>
                     <div className="input-4c">
                         <InterestModal/>
                     </div>
-                </div>
-                <div className="buttons-section">
-                    <ButtonSecondary label={"Cancelar"}/>
-                    <ButtonPrimary type={"submit"} label={"Registrarse"}/>
-                </div>
-                {/* <pre>
-                    {JSON.stringify(watch(), null, 2)},
-                </pre> */}
+                    </div>
+                    <div className="buttons-section">
+                        <ButtonSecondary label={"Cancelar"}/>
+                        <ButtonPrimary type={"submit"} label={"Registrarse"}/>
+                    </div>
             </form>
         </div>
     )
