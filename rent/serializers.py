@@ -17,7 +17,7 @@ class OutFitEventSerializer(serializers.ModelSerializer):
         model = OutFit_Event
         fields = '__all__'
 
-class AlquilerSerializer(serializers.ModelSerializer):
+class RentSerializer(serializers.ModelSerializer):
     client_id = serializers.PrimaryKeyRelatedField(queryset=Client.objects.all())
     friend_id = serializers.PrimaryKeyRelatedField(queryset=Friend.objects.all())
     event = serializers.PrimaryKeyRelatedField(queryset=Event.objects.all())
