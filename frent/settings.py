@@ -1,3 +1,4 @@
+
 """
 Django settings for frent project.
 
@@ -143,3 +144,4 @@ CORS_ORIGIN_WHITELIST = [
 CORS_ALLOW_CREDENTIALS = True
 
 AUTH_USER_MODEL = 'users.User'
+

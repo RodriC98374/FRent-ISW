@@ -1,16 +1,15 @@
 from rest_framework import serializers
-from .models import OutFit, Event, OutFit_Event, Rent
-from users.models import Friend, Client
+from .models import OutFit, Event, OutFit_Event, Rent, Client, Friend
 
 class OutFitSerializer(serializers.ModelSerializer):
     class Meta:
         model = OutFit
-        fields = '__all__'
+        fields = ['id', 'type_outfit']
 
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = '__all__'
+        fields = ['id_event', 'type_event']
 
 class OutFitEventSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,6 +21,7 @@ class RentSerializer(serializers.ModelSerializer):
     friend_id = serializers.PrimaryKeyRelatedField(queryset=Friend.objects.all())
     event = serializers.PrimaryKeyRelatedField(queryset=Event.objects.all())
 
+class RentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rent
-        fields = '__all__'
+        fields = ['id', 'client', 'friend', 'event', 'fecha_cita', 'time', 'duration', 'location', 'description', 'create']
