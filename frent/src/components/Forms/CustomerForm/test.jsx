@@ -34,16 +34,16 @@ export function Test() {
           price: data.price
         };
     
-        const likes = [1, 2, 3, 5]
+        /* const likes = [1, 2, 3, 5] */
     
         const res = await createRegisterFriend(client);
     
-        const user_likes = {
+        /* const user_likes = {
           likes: likes,
           user_id: res.data.id_user
-        };
+        }; */
 
-        const res_likes = await createLikes(user_likes);
+        /* const res_likes = await createLikes(user_likes); */
     
         alert("Datos enviados correctamente");
         reset();
