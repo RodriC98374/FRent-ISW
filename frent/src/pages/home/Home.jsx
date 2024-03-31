@@ -1,14 +1,14 @@
-import React from 'react'
-const centrar = {
-  textAlign: 'center'
-};
+import React from 'react';
+import './Home.css';
 
 export default function Home() {
   return (
-    <div style={centrar}>
-      <h1>
-        Home
-      </h1> 
+    <div className="home-container">
+      <div className="home-content">
+        <h1 className="home-title">Bienvenido a Alquiler de amigos</h1>
+        <p className="home-description">Encuentra el lugar ideal para tu alojamiento en nuestra plataforma.</p>
+        
+      </div>
     </div>
-  )
+  );
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ListFriend.css';
 import { NavLink } from 'react-router-dom';
+import imgApp from '../../assets/imgApp';
 
 import { getFriends } from '../../api/register.api';
 
@@ -39,7 +40,7 @@ export default function ListFriend() {
       <div className='lista'>
       {friends.map(friend => (
         <div key={friend.id_user} className="card">
-
+          <img src={imgApp.image}></img>
           <h1>{friend.first_name}</h1>
           <p>Edad: {calculateAge(friend.birth_date)} años</p>
           <h2>Descripción</h2>
