@@ -4,7 +4,7 @@ from .models import OutFit, Event, Rent
 class OutFitSerializer(serializers.ModelSerializer):
     class Meta:
         model = OutFit
-        fields = ['id', 'type_outfit']
+        fields = '__all__'
 
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
