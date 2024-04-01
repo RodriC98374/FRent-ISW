@@ -1,102 +1,92 @@
 /* ListFriend.css */
 
-.list-friend {
+.list-friend > h1{
     text-align: center;
   }
+
 .lista {
-    display: flex;
-    width: 100%;
-    flex-wrap: wrap; 
-    justify-content: center; 
-    max-width: 1100px;
-    margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  padding: 24px 48px;
+  height: 70vh;
 }
-/* .lista:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 255, 0.4); 
-    transition: cubic-bezier(0.165, 0.84, 0.44, 1) ease-in-out;
-  } */
   
   .card {
-    border: 1px solid #ccc;
+    font-family: Alata;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin: 20px;
+    padding: 18px 18px 40% 18px;
     background-color: #fff;
-    max-width: 300px;
-    margin: auto;
+    position: relative;
+    width: 280px;
+    height: 280px;
   }
   
-  .card img {
-    width: 200px;
-    height: 200px;
+  .top-card{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--secondary-color);
+    height: 84px;
+    border-radius: 8px 8px 0px 0px;
+  }
+  .card > img {
+    background-color: #fff;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     margin-bottom: 10px;
+    z-index: 999;
   }
+
+.card-texts{
+  text-align: center;
+}
   
-  .card h1 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-  }
-  
-  .card p {
-    font-size: 1rem;
-    color: #666;
-    margin-bottom: 10px;
-  }
-  .perfil {
-    width: 100px; 
-    height: 100px;
-    border-radius: 50%;
+/* .card > p {
+  font-size: var(--pS-size);
+  color: #666;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+} */
+
+.name-card{
+  font-size: var(--h6-size);
 }
 
-.btnC {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: var(--primary-color);
-    color: #fff;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-  }
-  
-  /* .btnC:hover {
-    background-color: #0056b3;
-  } */
-  
+.age-card{
+  font-size: var(--pM-size);
+  color: #00000093;
+}
+
+.subtitle-card{
+  font-size: var(--pL-size);
+}
+
+.text-card{
+  font-size: var(--pL-size);
+}
+.button-card { 
+  position: absolute;
+  width: 84.8%;
+  text-align: center;
+  bottom: 0;
+  left: 0;
+  padding: 16px 24px;
+  background-color: var(--quaternary-color);
+  color: #fff;
+  border-radius: 0 0 8px 8px;
+}
+
+.button-card > a {
+  text-decoration: none;
+  color: #000;
+}
 
 
-
-/* Es para los perfiles  */
-.perfil {
-    text-align: center;
-    margin: 20px;
-  }
-  
-  .perfil h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-  
-  .perfil img {
-    width: 200px;
-    height: 200px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .perfil p {
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
-  
-  .perfil h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  
-  .perfil p {
-    font-size: 16px;
-  }
-  

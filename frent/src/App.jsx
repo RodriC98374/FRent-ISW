@@ -6,7 +6,6 @@ import NavBar from './components/Navbar/NavBar';
 import Home from './pages/home/Home';
 import ListFriend from './pages/listFriend/ListFriends';
 import SelectionRegister from './pages/registros/SelectionRegister';
-import FriendProfile from './pages/listFriend/FriendProfile';
 import { CustomerForm } from './components/Forms/CustomerForm/CustomerForm';
 import RentFriendForm from './components/Forms/rentFriends/RentaForm';
 import { FriendForm } from './components/Forms/FriendForm/FriendForm';
@@ -27,7 +26,7 @@ function App() {
         <Route path="/customer" element={<CustomerForm/>}/>
         <Route path="/friend" element={<FriendForm/>} />
         <Route path="/listFriend" element = {<ListFriend/>}/>
-        <Route path="listFriend/:id" element={<FriendProfile/>} />
+        {/* <Route path="listFriend/:id" element={<FriendProfile/>} /> */}
         <Route path="/rentaForm" element = {<RentFriendForm/>}/>
         <Route path="/rentalSectio" element ={<RentalSection/>} />
         <Route path="/*" element={<h1 className='text-center'>404 Page Not Found</h1>}></Route>
