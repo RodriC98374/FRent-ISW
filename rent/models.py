@@ -20,12 +20,6 @@ class Event(models.Model):
     def __str__(self):
         return self.type_event
 
-class OutFit_Event(models.Model):
-    id_event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    id_outFit = models.ForeignKey(OutFit, on_delete=models.CASCADE)
-    
-    
-
 class Rent(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     friend = models.ForeignKey(Friend, on_delete=models.CASCADE)

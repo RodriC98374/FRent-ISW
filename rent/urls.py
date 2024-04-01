@@ -5,7 +5,6 @@ from . import views
 router = DefaultRouter()
 router.register(r'outfits', views.OutFitViewSet)
 router.register(r'events', views.EventViewSet)
-router.register(r'outfit_events', views.OutFitEventViewSet)
 router.register(r'rents', views.RentViewSet)
 
 urlpatterns = [
