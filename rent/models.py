@@ -1,10 +1,8 @@
-# Create your models here.
 from django.db import models
 from users.models import Friend, Client
 from django.core.validators import MinValueValidator,MaxValueValidator
 from django.contrib import admin
 from django import forms
-#from .models import Rent
 
 
 class OutFit(models.Model):
@@ -31,3 +29,4 @@ class Rent(models.Model):
     location = models.CharField(max_length=50)
     description = models.CharField(max_length=200)
     create = models.DateTimeField(auto_now_add=True)
+    
