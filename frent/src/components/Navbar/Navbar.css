@@ -1,3 +1,17 @@
+.modal-notification {
+  position: fixed;
+  top: 35%;
+  left: 80%;
+  transform: translate(-50%, -50%); /* Centra el modal exactamente en el centro de la ventana */
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Agrega sombra para resaltar el modal */
+  z-index: 999;
+  width: 30%; 
+}
+
 .logo-img{
   width: 120px;
 }
@@ -35,13 +49,29 @@
   color: #fff !important;
 }
 
-/*
-.a-option:hover{
-  color: #fff;
-} */
-
 a{
   text-decoration: none;
   font-size: var(--pL-size);
   font-weight: 500;
+}
+
+.card-modal-notification > img{
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  margin-left: 24px;
+}
+
+.card-modal-notification{
+  display: flex;
+  flex-flow: row wrap;
+  border: 1px solid #ccc;
+  align-items: center;
+  gap: 24px;
+  font-family: Alata;
+}
+
+.name-card{
+  font-size: var(--pL-size);
+  font-weight: 600;
 }

@@ -60,7 +60,7 @@ export default function RentFriendForm() {
             <div className='input-2c'>
               <InputText
                 id={"dateCita"}
-                label={"Fecha Cita"}
+                label={"Fecha del alquiler"}
                 type={"date"}
                 required={true}
                 placeholder={"dd/mm/aaaa"}
@@ -86,7 +86,7 @@ export default function RentFriendForm() {
             <div className='input-1c'>
               <InputText
                 id={"horaCita"}
-                label={"Hora Cita"}
+                label={"Hora del alquiler"}
                 type={"time"}
                 required={true}
                 register={register("horaCita", {
@@ -110,7 +110,7 @@ export default function RentFriendForm() {
             <div className='Input-1c'>
                 <SelectOptions
                     id = {"hour"}
-                    label={"hora"}
+                    label={"Duración"}
                     name = {"hora"}
                     placeholder={"Elija la duracion de la cita"}
                     value={selectedHour}
@@ -129,7 +129,7 @@ export default function RentFriendForm() {
             <div className='input-1c'>
                 <SelectOptions
                     id = {"event"}
-                    label = {"evento"}
+                    label = {"Tipo de evento"}
                     name = {"evento"}
                     placeholder={"Elija el tipo de evento"}
                     value = {selectedEvent}
@@ -166,7 +166,7 @@ export default function RentFriendForm() {
             </div>
             <div className="input-4c location">
               <label htmlFor="location">Ubicación</label>
-              <textarea name="location" className="textArea"
+              <textarea placeholder='Escriba la ubicación del encuentro' name="location" className="textArea"
                 {...register("location", {
                   required: {
                     value: true
@@ -182,8 +182,8 @@ export default function RentFriendForm() {
             </div>
 
             <div className="input-4c descripction">
-              <label htmlFor="descripcion">Descripción</label>
-              <textarea name="descripcion" className="textAreaDescription"
+              <label htmlFor="descripcion">Descripción del encuentro</label>
+              <textarea placeholder='Describa brevemente el evento' name="descripcion" className="textAreaDescription"
                 {...register("descripcion", {
                   required: {
                     value: false
