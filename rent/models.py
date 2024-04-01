@@ -1,10 +1,8 @@
-# Create your models here.
 from django.db import models
 from users.models import Friend, Client
 from django.core.validators import MinValueValidator,MaxValueValidator
 from django.contrib import admin
 from django import forms
-#from .models import Rent
 
 
 class OutFit(models.Model):
