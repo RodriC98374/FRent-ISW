@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'users',
     'rent',
+    'notificaciones_api',
+    'coreapi'
+    
 ]
 
 MIDDLEWARE = [
