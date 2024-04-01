@@ -29,3 +29,4 @@ class Rent(models.Model):
     location = models.CharField(max_length=50)
     description = models.CharField(max_length=200)
     create = models.DateTimeField(auto_now_add=True)
+    
