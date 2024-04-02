@@ -1,32 +1,8 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { getFriends } from '../../api/register.api';
-
+import { NavLink } from 'react-router-dom'
 import './Navbar.css';
 
 export default function NavBar() {
-
-    const [modalVisible, setModalVisible] = useState(false);
-    const [friends, setFriends] = useState([]);
-
-    const openModal = () => {
-        setModalVisible(true);
-    };
-
-    const closeModal = () => {
-        setModalVisible(false);
-    };
-
-    
-    useEffect(() => {
-            async function loadFriends(){
-            const res = await getFriends();
-            setFriends(res.data)
-        }
-        loadFriends();
-    }, []);
-
     return (
         <>
             <nav className="navbar-body">
@@ -51,7 +27,7 @@ export default function NavBar() {
                             <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"><path fill="currentColor" d="M21 19v1H3v-1l2-2v-6c0-3.1 2.03-5.83 5-6.71V4a2 2 0 0 1 2-2a2 2 0 0 1 2 2v.29c2.97.88 5 3.61 5 6.71v6zm-7 2a2 2 0 0 1-2 2a2 2 0 0 1-2-2"/></svg>
                         </NavLink>
                     </li> */}
-                    <li onClick={openModal} onMouseEnter={openModal} onMouseLeave={closeModal}>
+                    <li>
                         <div className="navbar-option">
                             <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M21 19v1H3v-1l2-2v-6c0-3.1 2.03-5.83 5-6.71V4a2 2 0 0 1 2-2a2 2 0 0 1 2 2v.29c2.97.88 5 3.61 5 6.71v6zm-7 2a2 2 0 0 1-2 2a2 2 0 0 1-2-2"/>
@@ -61,21 +37,6 @@ export default function NavBar() {
                     </li>
                 </ul>
             </nav>
-            {modalVisible && (
-                <div className="modal-notification">
-                    <h3>Notificaciones</h3>
-                    {friends && 
-                        friends.map((friend) => (
-                            <div key={friend.first_name} className="card-modal-notification">
-                                <img src="https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg" alt="Foto de perfil" />
-                                <div className="card-text">
-                                    <p className="name-card">{friend.first_name} {friend.last_name}</p>
-                                    <p>Acepto ser tu amigo!</p>
-                                </div>
-                            </div> 
-                    ))}
-                </div>
-            )}
         </>
     )
 }

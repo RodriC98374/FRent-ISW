@@ -5,7 +5,8 @@ import { InputText } from "../Inputs/inputText";
 import { SelectOptions } from "../Selects/selectOptions";
 import { useState } from "react";
 import { Country, State } from "country-state-city";
-import { createRegisterFriend, createLikes } from "../../../api/register.api";
+import { createRegisterFriend } from "../../../api/register.api";
+import { createLikes } from "../../../api/register.api";
 
 import InterestModal from "../Interests/interestSection";
 
@@ -20,7 +21,7 @@ export function FriendForm() {
   } = useForm();
 
   const onSubmit = handleSubmit(async (data) => {
-    const client = {
+    const friend = {
       city: data.City,
       country: data.Country,
       email: data.Email,
@@ -33,20 +34,23 @@ export function FriendForm() {
       price: data.price,
     };
 
-    const likes = [1, 2, 3, 5];
+    try {
 
-    const res = await createRegisterFriend(client);
+      const resFriend = await createRegisterFriend(friend);
+    
 
-    const user_likes = {
-      likes: likes,
-      user_id: res.data.id_user,
-    };
+       const user_likes = {
+        likes: selectedInterests,
+        user_id: resFriend.data.id_user
+      }; 
+      
+      await createLikes(user_likes); 
 
-    const res_likes = await createLikes(user_likes);
-
-    console.log(res_likes);
-    alert("Datos enviados correctamente");
-    reset();
+      alert("Datos enviados correctamente");
+      reset();
+    } catch (error) {
+      console.error("Error al enviar los datos:", error);
+    } 
   });
 
   const optionsGender = [
@@ -62,6 +66,12 @@ export function FriendForm() {
     { value: "50", label: "50 bs"},
     { value: "60", label: "60 bs"}
   ];
+
+  const [selectedInterests, setSelectedInterests] = useState([]);
+
+  const handleSaveInterests = (selectedInterests) => {
+    setSelectedInterests(selectedInterests);
+  };
 
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedState, setSelectedState] = useState("");
@@ -97,12 +107,12 @@ export function FriendForm() {
           <div className="colums-inputs">
             <div className="input-2c">
               <InputText
-                id={"nombre"}
+                id={"first_name"}
                 label={"Nombre(s)"}
                 type={"text"}
                 required={true}
                 placeholder={"Ingrese su(s) nombre(s)"}
-                register={register("nombre", {
+                register={register("First_name", {
                   required: {
                     value: true,
                     message: "El nombre es requerido",
@@ -121,12 +131,12 @@ export function FriendForm() {
             </div>
             <div className="input-2c">
               <InputText
-                id={"apellido"}
+                id={"Last_name"}
                 label={"Apellido(s)"}
                 type={"text"}
                 required={true}
                 placeholder={"Ingrese su(s) apellido(s)"}
-                register={register("apellido", {
+                register={register("Last_name", {
                   required: {
                     value: true,
                     message: "El apellido es requerido",
@@ -145,12 +155,12 @@ export function FriendForm() {
             </div>
             <div className="input-1c">
               <InputText
-                id={"fechaNacimiento"}
+                id={"birth_date"}
                 label={"Fecha Nacimiento"}
                 type={"date"}
                 required={true}
                 placeholder={"DD/MM/AA"}
-                register={register("fechaNacimiento", {
+                register={register("birth_date", {
                   required: {
                     value: true,
                     message: "Fecha de nacimiento requerida",
@@ -172,14 +182,14 @@ export function FriendForm() {
             </div>
             <div className="input-1c">
               <SelectOptions
-                id={"genero"}
+                id={"Gender"}
                 label={"Género"}
                 name={"genero"}
                 placeholder={"Elija su género"}
                 value={selectedGender}
                 required={true}
                 options={optionsGender}
-                register={register("genero", {
+                register={register("Gender", {
                   required: {
                     value: true,
                     message: "Campo requerido",
@@ -192,7 +202,7 @@ export function FriendForm() {
             <div className="input-1c">
               <SelectOptions
                 className="pais-select"
-                id={"pais"}
+                id={"Country"}
                 label={"País"}
                 name={"pais"}
                 placeholder={"Elija un país"}
@@ -203,7 +213,7 @@ export function FriendForm() {
                   value: country.isoCode,
                   label: country.name,
                 }))}
-                register={register("pais", {
+                register={register("Country", {
                   required: {
                     value: true,
                     message: "Campo requerido",
@@ -214,7 +224,7 @@ export function FriendForm() {
             </div>
             <div className="input-1c">
               <SelectOptions
-                id={"ciudad"}
+                id={"City"}
                 label={"Ciudad"}
                 name={"ciudad"}
                 placeholder={"Elija una ciudad"}
@@ -225,7 +235,7 @@ export function FriendForm() {
                   value: state.isoCode,
                   label: state.name && state.name.replace(" Department", ""),
                 }))}
-                register={register("ciudad", {
+                register={register("City", {
                   required: {
                     value: true,
                     message: "Campo requerido",
@@ -236,12 +246,12 @@ export function FriendForm() {
             </div>
             <div className="input-4c">
               <InputText
-                id={"correo"}
+                id={"Email"}
                 label={"Correo electrónico"}
                 type={"email"}
                 required={true}
                 placeholder={"Ingrese su correo electrónico"}
-                register={register("correo", {
+                register={register("Email", {
                   required: {
                     value: true,
                     message: "El Correo es requerido",
@@ -256,12 +266,12 @@ export function FriendForm() {
             </div>
             <div className="input-2c">
               <InputText
-                id={"password"}
+                id={"Password"}
                 label={"Contraseña"}
                 type={"password"}
                 required={true}
                 placeholder={"Ingrese su contraseña"}
-                register={register("password", {
+                register={register("Password", {
                   required: {
                     value: true,
                     message: "La contraseña es requerida",
@@ -287,7 +297,7 @@ export function FriendForm() {
                     message: "La confirmación de la contraseña es requerida",
                   },
                   validate: (value) => {
-                    if (value === watch("password")) {
+                    if (value === watch("Password")) {
                       return true;
                     } else {
                       return "Las contraseñas no coinciden";
@@ -302,12 +312,12 @@ export function FriendForm() {
               <textarea
                 name="descripcion"
                 className="textAreaDescription"
-                {...register("descripcion", {
+                {...register("Personal_description", {
                   required: {
                     value: false,
                   },
                   maxLength: {
-                    value: 500,
+                    value: 150,
                     message: "Numero de caracteres excedido",
                   },
                 })}
@@ -320,7 +330,7 @@ export function FriendForm() {
             </div>
             <div className="input-1c">
               <SelectOptions
-                id={"precio"}
+                id={"price"}
                 label={"Precio x Hora"}
                 name={"precio"}
                 placeholder={"Elija una tarifa por hora"}
@@ -328,7 +338,7 @@ export function FriendForm() {
                 required={true}
                 onChange={(e) => setSelectedPrices(e.target.value)}
                 options={priceOptions}
-                register={register("precio", {
+                register={register("price", {
                 required: {
                     value: true,
                     message: "Campo requerido",
@@ -338,16 +348,13 @@ export function FriendForm() {
               />
             </div>
             <div className="input-4c">
-              <InterestModal />
+            <InterestModal onSaveInterests={handleSaveInterests} />
             </div>
           </div>
           <div className="buttons-section">
             <ButtonSecondary label={"Cancelar"} />
             <ButtonPrimary type={"submit"} label={"Registrarse"} />
           </div>
-          {/* <pre>
-                        {JSON.stringify(watch(), null, 2)},
-                    </pre> */}
         </form>
       </div>
     </div>

@@ -5,9 +5,10 @@ import { InputText } from "../Inputs/inputText";
 import { SelectOptions } from "../Selects/selectOptions";
 import { useState } from "react";
 import { Country, State } from "country-state-city";
-import { createRegisterFriend, createLikes } from "../../../api/register.api";
+import { createRegisterClient} from "../../../api/register.api";
+import { createLikes } from "../../../api/register.api";
 
-import "./CustomerForm.css";
+import './customerForm.css';
 import InterestModal from "../Interests/interestSection";
 import { NavLink } from "react-router-dom";
 
@@ -32,23 +33,22 @@ export function CustomerForm() {
           password: data.Password,
           personal_description: data.Personal_description,
           birth_date: data.birth_date,
-          price: data.price
         };
     
-        const likes = [1, 2, 3, 5]
-    
-        const res = await createRegisterFriend(client);
-    
-        const user_likes = {
-          likes: likes,
-          user_id: res.data.id_user
-        };
-        
-        const res_likes = await createLikes(user_likes);
-    
-        console.log(res_likes);
-        alert("Datos enviados correctamente");
-        reset();
+        try{
+            const resClient = await createRegisterClient(client)
+            
+            const user_likes = {
+                likes: selectedInterests,
+                user_id: resClient.data.id_user
+            };
+
+            await createLikes (user_likes);
+            alert("Datos enviados correctamente");
+            reset();
+        }catch (error){
+            console.log(error)
+        }
     
       });
 
@@ -63,6 +63,11 @@ export function CustomerForm() {
     const [states, setStates] = useState([]);
 
     const [selectedGender, setSelectedGender] = useState("");
+    const [selectedInterests, setSelectedIntersts] = useState("");
+
+    const handleSaveInterests = (selectedInterests) => {
+        setSelectedIntersts(selectedInterests)
+    }
 
     const handleCountryChange = (e) => {
         const selectedCountryIsoCode = e.target.value;
@@ -91,15 +96,15 @@ export function CustomerForm() {
                     <div className="colums-inputs">
                         <div className="input-2c">
                             <InputText
-                                id={"nombre"}
+                                id={"First_name"}
                                 label={"Nombre(s)"}
                                 type={"text"}
                                 required={true}
                                 placeholder={"Ingrese su(s) nombre(s)"}
-                                register={register("nombre", {
+                                register={register("First_name", {
                                     required: {
                                         value: true,
-                                        message: "El nombre es requerido"
+                                        message: "Este campo es obligatorio"
                                     }, 
                                     minLength: {
                                         value: 2,
@@ -116,12 +121,12 @@ export function CustomerForm() {
                         </div>
                         <div className="input-2c">
                             <InputText
-                                id={"apellido"}
+                                id={"Last_name"}
                                 label={"Apellido(s)"}
                                 type={"text"}
                                 required={true}
                                 placeholder={"Ingrese su(s) apellido(s)"}
-                                register={register("apellido", {
+                                register={register("Last_name", {
                                     required: {
                                         value: true,
                                         message: "El apellido es requerido"
@@ -141,12 +146,12 @@ export function CustomerForm() {
                         </div>
                         <div className="input-1c">
                             <InputText
-                                id={"fechaNacimiento"}
+                                id={"birth_date"}
                                 label={"Fecha Nacimiento"}
                                 type={"date"}
                                 required={true}
                                 placeholder={"DD/MM/AA"}
-                                register={register("fechaNacimiento", {
+                                register={register("birth_date", {
                                     required: {
                                         value: true,
                                         message: "Fecha de nacimiento requerida",
@@ -168,14 +173,14 @@ export function CustomerForm() {
                         </div>
                         <div className="input-1c">
                             <SelectOptions
-                                id={"genero"}
+                                id={"Gender"}
                                 label={"Género"}
                                 name={"genero"}
                                 placeholder={"Elija su género"}
                                 value={selectedGender}
                                 required={true}
                                 options={optionsGender}
-                                register={register("genero", {
+                                register={register("Gender", {
                                     required:{
                                         value: true,
                                         message:"Campo requerido"
@@ -187,7 +192,7 @@ export function CustomerForm() {
                         <div className="input-1c">
                             <SelectOptions
                                 className="pais-select"
-                                id={"pais"}
+                                id={"Country"}
                                 label={"País"}
                                 name={"pais"}
                                 placeholder={"Elija un país"}
@@ -198,7 +203,7 @@ export function CustomerForm() {
                                     value: country.isoCode,
                                     label: country.name
                                 }))}
-                                register={register("pais", {
+                                register={register("Country", {
                                     required:{
                                         value: true,
                                         message:"Campo requerido"
@@ -208,7 +213,7 @@ export function CustomerForm() {
                         </div>
                         <div className="input-1c">
                             <SelectOptions
-                                id={"ciudad"}
+                                id={"City"}
                                 label={"Ciudad"}
                                 name={"ciudad"}
                                 placeholder={"Elija una ciudad"}
@@ -221,7 +226,7 @@ export function CustomerForm() {
                                         label: state.name && state.name.replace(" Department", "")        
                                     }))
                                 }
-                                register={register("ciudad", {
+                                register={register("City", {
                                     required: {
                                         value: true,
                                         message: "Campo requerido"
@@ -232,12 +237,12 @@ export function CustomerForm() {
                         </div>
                         <div className="input-4c">
                             <InputText
-                                id={"correo"}
+                                id={"Email"}
                                 label={"Correo electrónico"}
                                 type={"email"}
                                 required={true}
                                 placeholder={"Ingrese su correo electrónico"}
-                                register={register("correo", {
+                                register={register("Email", {
                                     required: {
                                         value: true,
                                         message: "El Correo es requerido"
@@ -252,19 +257,19 @@ export function CustomerForm() {
                         </div>
                         <div className="input-2c">
                             <InputText
-                                id={"password"}
+                                id={"Password"}
                                 label={"Contraseña"}
                                 type={"password"}
                                 required={true}
                                 placeholder={"Ingrese su contraseña"}
-                                register={register("password", {
+                                register={register("Password", {
                                     required: {
                                         value: true,
                                         message: "La contraseña es requerida",
+                                    },
                                     minLength:{
                                         value: 8,
                                         message: "Debe tener al menos 8 caracteres"
-                                        }
                                     }
                                 })}
                                 errors={errors}
@@ -283,7 +288,7 @@ export function CustomerForm() {
                                             message: "La confirmación de la contraseña es requerida"
                                         },
                                         validate: (value) => {
-                                            if(value === watch('password')){
+                                            if(value === watch('Password')){
                                                 return true;
                                             }else{
                                                 return "Las contraseñas no coinciden";
@@ -296,12 +301,12 @@ export function CustomerForm() {
                         <div className="input-4c descripction">
                             <label htmlFor="descripcion">Descripción</label>
                             <textarea name="descripcion" className="textAreaDescription"
-                            {...register("descripcion",{ 
+                            {...register("Personal_description",{ 
                                 required:{
                                     value:false
                                 }
                                 ,maxLength:{
-                                value: 500,
+                                value: 150,
                                 message: "Numero de caracteres excedido"
                             }})}
                             
@@ -309,7 +314,7 @@ export function CustomerForm() {
                             {errors.descripcion && <span className="error-message">{errors.descripcion.message}</span>}
                         </div>
                         <div className="input-4c">
-                            <InterestModal/>
+                            <InterestModal onSaveInterests={handleSaveInterests}/>
                         </div>
                     </div>
                     <div className="buttons-section">
@@ -318,9 +323,7 @@ export function CustomerForm() {
                         </NavLink>
                         <ButtonPrimary type={"submit"} label={"Registrarse"}/>
                     </div>
-                    {/* <pre>
-                        {JSON.stringify(watch(), null, 2)},
-                    </pre> */}
+                    
                 </form>
             </div>
         </div>
