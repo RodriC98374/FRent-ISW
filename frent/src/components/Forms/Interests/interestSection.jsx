@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./interestSection.css";
 import { getLikes } from "../../../api/register.api";
+import { ButtonPrimary } from "../../Buttons/buttonPrimary";
 
 const InterestModal = ({ onSaveInterests }) => {
     const [interests, setInterests] = useState([]);
@@ -56,12 +57,16 @@ const InterestModal = ({ onSaveInterests }) => {
     };
 
     const handleSaveInterests = () => {
-        console.log(interests)
-        console.log(idLikes)
-        onSaveInterests(idLikes);
-
-        handleCloseModal();
+        if (interests.idLikes < 2) {
+            alert("Debe seleccionar al menos dos intereses");
+        } else {
+            console.log(interests)
+            console.log(idLikes)
+            onSaveInterests(idLikes);
+            handleCloseModal();
+        }
     };
+    
 
     return (
         <>
@@ -117,7 +122,7 @@ const InterestModal = ({ onSaveInterests }) => {
                                     </li>
                                 ))}
                             </ul>
-                            <button className="saveInterest" onClick={(e) => { e.preventDefault(); handleSaveInterests(); }}>Guardar</button>
+                            <ButtonPrimary className="saveInterest" label={"Guardar"} onClick={(e) => { e.preventDefault(); handleSaveInterests(); }}/>
                         </div>
                     </div>
                 </div>

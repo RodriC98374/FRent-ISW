@@ -37,20 +37,20 @@ export function FriendForm() {
     try {
 
       const resFriend = await createRegisterFriend(friend);
-    
 
-       const user_likes = {
+
+      const user_likes = {
         likes: selectedInterests,
         user_id: resFriend.data.id_user
-      }; 
-      
-      await createLikes(user_likes); 
+      };
+
+      await createLikes(user_likes);
 
       alert("Datos enviados correctamente");
       reset();
     } catch (error) {
       console.error("Error al enviar los datos:", error);
-    } 
+    }
   });
 
   const optionsGender = [
@@ -60,11 +60,11 @@ export function FriendForm() {
   ];
 
   const priceOptions = [
-    { value: "20", label: "20 bs"},
-    { value: "30", label: "30 bs"},
-    { value: "40", label: "40 bs"},
-    { value: "50", label: "50 bs"},
-    { value: "60", label: "60 bs"}
+    { value: "20", label: "20 bs" },
+    { value: "30", label: "30 bs" },
+    { value: "40", label: "40 bs" },
+    { value: "50", label: "50 bs" },
+    { value: "60", label: "60 bs" }
   ];
 
   const [selectedInterests, setSelectedInterests] = useState([]);
@@ -170,10 +170,12 @@ export function FriendForm() {
                     const fechaActual = new Date();
                     const edad =
                       fechaActual.getFullYear() - fechaNacimiento.getFullYear();
-                    if (edad >= 18) {
-                      return true;
-                    } else {
+                    if (edad < 18) {
                       return "Debe ser mayor de edad";
+                    } else if (edad > 100) {
+                      return "Debe ser menor de 100 años";
+                    } else {
+                      return true;
                     }
                   },
                 })}
@@ -339,7 +341,7 @@ export function FriendForm() {
                 onChange={(e) => setSelectedPrices(e.target.value)}
                 options={priceOptions}
                 register={register("price", {
-                required: {
+                  required: {
                     value: true,
                     message: "Campo requerido",
                   },
@@ -348,7 +350,7 @@ export function FriendForm() {
               />
             </div>
             <div className="input-4c">
-            <InterestModal onSaveInterests={handleSaveInterests} />
+              <InterestModal onSaveInterests={handleSaveInterests} />
             </div>
           </div>
           <div className="buttons-section">

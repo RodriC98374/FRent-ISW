@@ -92,10 +92,11 @@ export default function RentFriendForm() {
         </div>
         <form action='' id="formulario-alquiler" onSubmit={onSubmit}>
           <div className='colums_inputs'>
-            <div className='input-2c'>
+            <div className='column-left'>
+            <div className='input-1c'>
               <InputText
                 id={"fecha_cita"}
-                label={"Fecha Cita"}
+                label={"Fecha de la cita"}
                 type={"date"}
                 required={true}
                 placeholder={"dd/mm/aaaa"}
@@ -121,7 +122,7 @@ export default function RentFriendForm() {
             <div className='input-1c'>
               <InputText
                 id={"time"}
-                label={"Hora Cita"}
+                label={"Hora de la cita"}
                 type={"time"}
                 required={true}
                 register={register("time", {
@@ -142,10 +143,11 @@ export default function RentFriendForm() {
                 errors={errors}
               />
             </div>
+            </div>
             <div className='Input-1c'>
               <SelectOptions
                 id={"duration"}
-                label={"Hora"}
+                label={"Duracion de la cita"}
                 name={"hora"}
                 placeholder={"Elija la duracion de la cita"}
                 value={selectedHour}
@@ -186,7 +188,7 @@ export default function RentFriendForm() {
             <div className='input-1c'>
               <SelectOptions
                 id={"outfit"}
-                label={"Tipo de vestimenta"}
+                label={"Vestimenta para el evento"}
                 name={"tipoVestimenta"}
                 placeholder={"Elija su vestimenta para el evento"}
                 value={selectedOutfit}
@@ -206,7 +208,7 @@ export default function RentFriendForm() {
               />
             </div>
             <div className="input-4c location">
-              <label htmlFor="location">Ubicación</label>
+              <label htmlFor="location">Ubicación de la cita</label>
               <textarea name="location" className="textArea"
                 {...register("location", {
                   required: {
