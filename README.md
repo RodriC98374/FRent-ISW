@@ -44,6 +44,12 @@ Ahora solo queda hacer las migraciones:
 python manage.py migrate
 ```
 
+Ahora para poblar una de las tablas de la base de datos:
+
+```bash
+python populate_data.py
+```
+
 Y el servidor (por defecto establecido en el puerto 8000) ya puede correr:
 
 ```bash
