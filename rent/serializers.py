@@ -15,6 +15,6 @@ class EventSerializer(serializers.ModelSerializer):
 class RentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rent
-        fields = '__all__'
+        fields = ['client', 'friend', 'event', 'outfit', 'fecha_cita', 'time', 'duration', 'location', 'description']
 
         

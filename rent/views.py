@@ -19,6 +19,7 @@ class RentViewSet(viewsets.ModelViewSet):
     queryset = Rent.objects.all()
     serializer_class = RentSerializer
     def get_queryset(self):
+        
         now = timezone.now()
         return Rent.objects.annotate(
             time_elapsed=ExpressionWrapper(now - F('create'), output_field=fields.DurationField()) 

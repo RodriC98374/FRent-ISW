@@ -25,8 +25,19 @@ def populate_data():
         "Dibujar",
         "Tocar Guitarra",
         "Arte",
-        "Deporte",
+        "Animales",
         "Natacion",
+        "Hacer ejercicio",
+        "Programar",
+        "Viajar",
+        "Escuchar música",
+        "Escribir",
+        "Fotografía",
+        "Jardinería",
+        "Meditar",
+        "Ciclismo",
+        "Voluntariado",
+        "Aprender idiomas",
     ]
 
     for gusto in gustos:

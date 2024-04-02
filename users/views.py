@@ -44,7 +44,7 @@ class UserLikeViewSet(viewsets.ModelViewSet):
 
         for like_id in likes:
             new_data = {
-                "taste_id": like_id,
+                "like_id": like_id,
                 "user_id": user_id
             }      
             serializer = self.get_serializer(data=new_data)
