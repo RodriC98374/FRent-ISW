@@ -38,6 +38,23 @@ Una vez activado el entorno virtual (debe aparecer "(venv)" al inicio de cada co
 pip install -r requirements.txt
 ```
 
+En frent settings.py debes poner los datos para conectarte a tu BD:
+
+```bash
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'frent',
+        'USER': 'Tu usuario',
+        'PASSWORD': 'Tu contrasena',
+        'HOST': 'localhost',
+        'OPTIONS': {
+            'client_encoding': 'UTF8',
+        },
+    }
+}
+```
+
 Ahora solo queda hacer las migraciones:
 
 ```bash
