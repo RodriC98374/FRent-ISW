@@ -12,7 +12,7 @@ urlpatterns = [
     # ruta que funcione el api de usuario
     path("api/v1/", include(router.urls)),
     # documetacion
-    path('docs/', include_docs_urls(title=" Documentacion API")),
+    #path('docs/', include_docs_urls(title=" Documentacion API")),
     #email
     path('send-email/', EmailAPIView.as_view(), name='send-email')
     
