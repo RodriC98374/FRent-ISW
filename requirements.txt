@@ -6,3 +6,6 @@ pillow==10.2.0
 psycopg2==2.9.9
 sqlparse==0.4.4
 tzdata==2024.1
+coreapi==2.3.3
+setuptools==69.2.0 
+

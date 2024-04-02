@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'rent',
     'notificaciones_api',
     'coreapi'
-    
+
 ]
 
 MIDDLEWARE = [
@@ -88,8 +88,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'frent_back',
-        'USER': 'alfredo',
-        'PASSWORD': 'notebok456',
+        # 'USER': 'alfredo',
+        'USER': 'postgres',
+        'PASSWORD': '1234',
+        # 'PASSWORD': 'notebok456',
         'HOST': 'localhost',
         'OPTIONS': {
             'client_encoding': 'UTF8',
@@ -152,3 +154,16 @@ CORS_ALLOW_CREDENTIALS = True
 
 AUTH_USER_MODEL = 'users.User'
 
+# documentacion
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+}
+
+
+# Servidor Correo
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'frent0462@gmail.com'  # Tu dirección de correo electrónico
+EMAIL_HOST_PASSWORD = 'jshvjzufpmdjoukt'  # Tu contraseña de correo electrónico
