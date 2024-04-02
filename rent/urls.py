@@ -7,6 +7,7 @@ router = DefaultRouter()
 router.register(r'outfits', views.OutFitViewSet)
 router.register(r'events', views.EventViewSet)
 router.register(r'rents', views.RentViewSet)
+router.register(r'price', views.RentPriceViewSet, basename='rent_price')
 
 urlpatterns = [
     path('', include(router.urls))

@@ -3,7 +3,8 @@ from rest_framework import viewsets
 from django.utils import timezone
 from django.db.models import F, ExpressionWrapper, fields
 from .models import OutFit, Event, Rent
-from .serializers import OutFitSerializer, EventSerializer, RentSerializer
+from .serializers import OutFitSerializer, EventSerializer, RentSerializer, RentPriceSerializer
+
 
 class OutFitViewSet(viewsets.ModelViewSet):
     queryset = OutFit.objects.all()
@@ -24,3 +25,8 @@ class RentViewSet(viewsets.ModelViewSet):
         return Rent.objects.annotate(
             time_elapsed=ExpressionWrapper(now - F('create'), output_field=fields.DurationField()) 
         ).order_by('-fecha_cita')
+
+
+class RentPriceViewSet(viewsets.ModelViewSet):
+    queryset = Rent.objects.all()
+    serializer_class = RentPriceSerializer
