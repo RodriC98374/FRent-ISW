@@ -7,11 +7,12 @@ import './ViewReserve.css';
 import { ButtonSecondary } from '../Buttons/buttonSecondary';
 import { ButtonPrimary } from '../Buttons/buttonPrimary';
 import { getClient, getFriends, getRent, cancelRent } from '../../api/register.api';
+/* import ListFriend from '../../pages/listFriend/ListFriends'; */
 
 export default function ViewReserve() {
     const [listRent, setListRent] = useState([]);
     const [listClient, setListClient] = useState([]);
-    const [listFriend, setListFriend] = useState([]);
+    const [listFriend, setListFriend] = useState([]); 
 
     useEffect(() => {
         async function fetchData() {
@@ -26,16 +27,19 @@ export default function ViewReserve() {
                     setListClient(resClient.data);
                 }
 
-                const resFriend = await getFriends();
+                 const resFriend = await getFriends();
+                console.log(resFriend)
                 if(resFriend && resFriend.data){
                     setListFriend(resFriend.data);
-                }
+                } 
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
         }
         fetchData();
     }, []);
+
+    console.log(listFriend.id_user)
 
     const getClientName = (clientId) => {
         const client = listClient.find(client => client.id === clientId);
@@ -48,7 +52,7 @@ export default function ViewReserve() {
     const calculateTotalPrice = (duration, pricePerHour) => {
         return duration * pricePerHour;
     };
-
+/* 
     const calculateElapsedTime = (time) => {
         const requestTime = new Date(time);
         const currentTime = new Date();
@@ -75,7 +79,7 @@ export default function ViewReserve() {
         console.log('ElapsedTimeMessage:', elapsedTimeMessage);
         return elapsedTimeMessage;
     };
-    
+ */    
 
     const handleCancelReservation = async (reservationId) => {
         // Intentar cancelar la reserva en la base de datos
@@ -103,7 +107,7 @@ export default function ViewReserve() {
                         <div className='pending-info'>
                             <div className="user-info">
                                 <img src={rent.profilePic || imgApp.image} alt="Foto de perfil" className="profile-pic" />
-                                <p className="time">{calculateElapsedTime(rent.time)}</p>
+                                <p className="time">{rent.time}</p>
                             </div>
                             <div className="request-info">
                                 <h3 className='name-client'>{getClientName(rent.client_id)}</h3> 

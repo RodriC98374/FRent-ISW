@@ -92,7 +92,11 @@
     z-index: 1000; /* Asegura que el modal esté por encima del overlay */
     width: 29%;
     overflow: auto;
+
 }
+::-webkit-scrollbar {
+    display: none;
+}   
     
 .modal-content {
     position: relative;
