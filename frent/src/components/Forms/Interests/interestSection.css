@@ -74,8 +74,11 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Color de superposición semi-transparente */
-    z-index: 999; /* Coloca el modal por encima de todos los demás elementos */
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 999; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
     
 .modal {
@@ -88,11 +91,15 @@
     border-radius: 5px;
     z-index: 1000; /* Asegura que el modal esté por encima del overlay */
     width: 20%;
+    overflow: auto;
 }
     
 .modal-content {
+    position: relative;
     display: flex;
     flex-flow: row wrap;
+    height: 500px;
+    width: 400px;
 }
     
 .close {
