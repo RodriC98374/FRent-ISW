@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import OutFit, Event, Rent
-from users.models import Friend
-from decimal import Decimal
+
 
 class OutFitSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,18 +16,6 @@ class EventSerializer(serializers.ModelSerializer):
 class RentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rent
-        fields = ['id','client', 'friend', 'event', 'outfit', 'fecha_cita', 'time', 'duration', 'location', 'description']
+        fields = '__all__'
         
 
-class RentPriceSerializer(serializers.ModelSerializer):
-    total_price = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Rent
-        fields = ['id', 'friend', 'duration', 'total_price']
-    def get_total_price(self, obj):
-        duration_decimal = Decimal(str(obj.duration))
-        total_price = obj.friend.price* duration_decimal
-        return total_price
-
-        

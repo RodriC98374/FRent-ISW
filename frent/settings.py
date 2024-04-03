@@ -90,9 +90,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'frent_back',
         #(example, fill the user bellow) 'USER': 'postgres',
-        'USER': '...',
+        'USER': 'alfredo',
         #(example, fill the passwprd bellow) 'PASSWORD': 'passwordRANDOM123',
-        'PASSWORD': '...',
+        'PASSWORD': 'notebok456',
         'HOST': 'localhost',
         'OPTIONS': {
             'client_encoding': 'UTF8',
@@ -125,7 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/La_Paz'
 
 USE_I18N = True
 
