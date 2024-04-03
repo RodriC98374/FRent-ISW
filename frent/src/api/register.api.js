@@ -36,6 +36,8 @@ export const getEvent = () => registersApi.get('/rents/events/')
 
 export const getRent = () =>  registersApi.get('/rents/rents/')
 
-export const cancelRent = (id) => registersApi.delete(`/rents/rents/${id}/`)
+export const deleteRent = (id) => registersApi.delete(`/rents/rents/${id}/`)
 
 export const getPrice =  () => registersApi.get("/rents/price/")
+
+/* export const getTime = (id) => registersApi.get(`/rents/time_elapsed/${id}/`) */

@@ -105,11 +105,8 @@ const InterestModal = ({ onSaveInterests }) => {
             {showModal && (
                 <div className="modal-overlay">
                     <div className="modal">
+                    <h3 className="titleI">Seleccione Intereses</h3>
                         <div className="modal-content">
-                            <span className="close" onClick={handleCloseModal}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z"/></svg>
-                            </span>
-                            <h3>Seleccione Intereses</h3>
                             <ul className="tags-grid">
                                 {likes.map((like, index) => (
                                     <li
@@ -122,8 +119,9 @@ const InterestModal = ({ onSaveInterests }) => {
                                     </li>
                                 ))}
                             </ul>
-                            <button className="saveInterest"  onClick={(e) => { e.preventDefault(); handleSaveInterests(); }}>Guardar</button>
                         </div>
+            <button className="saveInterest"  onClick={(e) => { e.preventDefault(); handleSaveInterests(); }}>Guardar</button>
+
                     </div>
                 </div>
             )}

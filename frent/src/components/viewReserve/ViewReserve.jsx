@@ -6,13 +6,13 @@ import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
 import { ButtonSecondary } from "../Buttons/buttonSecondary";
 import { ButtonPrimary } from "../Buttons/buttonPrimary";
-import { getClient, getRent, getPrice } from "../../api/register.api";
+import { getClient, getRent, getPrice, deleteRent } from "../../api/register.api";
 
 export default function ViewReserve() {
     const [listRent, setListRent] = useState([]);
     const [listClient, setListClient] = useState([]);
     const [price, setPrice] = useState([]);
-    console.log(price)
+    /* console.log(price) */
 
     useEffect(() => {
         async function fetchData() {
@@ -20,6 +20,7 @@ export default function ViewReserve() {
                 const resRent = await getRent();
                 if (resRent && resRent.data) {
                     setListRent(resRent.data);
+                    console.log(resRent.data.id)
                 }
 
                 const resClient = await getClient();
@@ -29,12 +30,18 @@ export default function ViewReserve() {
                 }
 
                 const resPrice = await getPrice();
-                console.log(resPrice);
+                /* console.log(resPrice); */
                 if (resPrice && resPrice.data) {
                     const pricesArray = resPrice.data.map(item => item.total_price);
                     setPrice(pricesArray);
                 }
-                
+
+                /* const resTimeLap = await getTime();
+                console.log(resTimeLap)
+                if(resTimeLap && resTimeLap){
+                    const time = resTimeLap.data.map(item => item.)
+                } */
+
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -49,6 +56,28 @@ export default function ViewReserve() {
         }
         return "Cliente Desconocido";
     };
+
+    const handleAccept = async (rentId) => {
+        try {
+            console.log(`Aceptando alquiler con ID ${rentId}`);
+            await deleteRent(rentId);
+            setListRent(prevRentals => prevRentals.filter(rental => rental.id !== rentId));
+        } catch (error) {
+            console.error("Error al aceptar el alquiler:", error);
+        }
+    };
+
+    const handleReject = async (rentId) => {
+        try {
+            
+            console.log(`Rechazando alquiler con ID ${rentId}`);
+            await deleteRent(rentId);
+            setListRent(prevRentals => prevRentals.filter(rental => rental.id !== rentId));
+        } catch (error) {
+            console.error("Error al rechazar el alquiler:", error);
+        }
+    };
+
 
     return (
         <>
@@ -92,7 +121,7 @@ export default function ViewReserve() {
                                         </p>
                                     </div>
                                     <div className="price-description">
-                                            <p className="price">{price[index]}Bs</p>
+                                        <p className="price">{price[index]}Bs</p>
                                         <p className="description">{rent.description}</p>
                                     </div>
                                 </div>
@@ -102,8 +131,12 @@ export default function ViewReserve() {
                                 <ButtonPrimary
                                     type={"submit"}
                                     label={"Aceptar"}
+                                    onClick={() => handleAccept(rent.id)} 
                                 />
-                                <ButtonSecondary label={"Cancelar"} />
+                                <ButtonSecondary
+                                    label={"Cancelar"}
+                                    onClick={() => handleReject(rent.id)}
+                                />
                             </div>
                         </div>
                     ))}
