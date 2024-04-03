@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./interestSection.css";
 import { getLikes } from "../../../api/register.api";
-import { ButtonPrimary } from "../../Buttons/buttonPrimary";
+
 
 const InterestModal = ({ onSaveInterests }) => {
     const [interests, setInterests] = useState([]);
@@ -122,7 +122,7 @@ const InterestModal = ({ onSaveInterests }) => {
                                     </li>
                                 ))}
                             </ul>
-                            <ButtonPrimary className="saveInterest" label={"Guardar"} onClick={(e) => { e.preventDefault(); handleSaveInterests(); }}/>
+                            <button className="saveInterest"  onClick={(e) => { e.preventDefault(); handleSaveInterests(); }}>Guardar</button>
                         </div>
                     </div>
                 </div>

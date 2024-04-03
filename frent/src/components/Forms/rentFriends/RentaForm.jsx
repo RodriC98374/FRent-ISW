@@ -32,10 +32,10 @@ export default function RentFriendForm() {
       outfit: parseInt(data.id_outfit),
       location: data.location,
       description: data.description,
-      friend: 1,
-      client: 24
+      friend: 2,
+      client: 1
     };
-  
+
     try {
       const restRent = await createRegisterRent(frent);
       console.log(restRent);
@@ -45,7 +45,7 @@ export default function RentFriendForm() {
       console.log(error);
     }
   });
-  
+
 
   useEffect(() => {
     async function loadOutfit() {
@@ -93,56 +93,54 @@ export default function RentFriendForm() {
         <form action='' id="formulario-alquiler" onSubmit={onSubmit}>
           <div className='colums_inputs'>
             <div className='column-left'>
-            <div className='input-1c'>
-              <InputText
-                id={"fecha_cita"}
-                label={"Fecha de la cita"}
-                type={"date"}
-                required={true}
-                placeholder={"dd/mm/aaaa"}
-                register={register("fecha_cita", {
-                  required: {
-                    value: true,
-                    message: "Fecha de cita es requerida"
-                  },
-                  validate: (value) => {
-                    const fechaActual = new Date();
-                    const fechaPropuesta = new Date(value);
+              <div className='input-1c'>
+                <InputText
+                  id={"fecha_cita"}
+                  label={"Fecha de la cita"}
+                  type={"date"}
+                  required={true}
+                  placeholder={"dd/mm/aaaa"}
+                  register={register("fecha_cita", {
+                    required: {
+                      value: true,
+                      message: "Fecha de cita es requerida"
+                    },
+                    validate: (value) => {
+                      const fechaActual = new Date();
+                      const fechaPropuesta = new Date(value);
 
-                    if (isNaN(fechaPropuesta))
-                      return "La fecha ingresada no tiene un formato válido";
+                      if (isNaN(fechaPropuesta))
+                        return "La fecha ingresada no tiene un formato válido";
+                      else if (fechaPropuesta <= fechaActual)
+                        return "La fecha debe ser mayor a la actual";
 
-                    else if (fechaPropuesta <= fechaActual)
-                      return "La fecha debe ser mayor a la actual";
-                  }
-                })}
-                errors={errors}
-              />
-            </div>
-            <div className='input-1c'>
-              <InputText
-                id={"time"}
-                label={"Hora de la cita"}
-                type={"time"}
-                required={true}
-                register={register("time", {
-                  required: {
-                    value: true,
-                    message: "Hora de cita es requerida"
-                  },
-                  validate: value => {
-                    const horaActual = new Date().toLocaleTimeString('en-GB', { hour12: false });
-                    const horaCita = value;
+                      
+                      const fechaLimite = new Date(fechaActual);
+                      fechaLimite.setMonth(fechaLimite.getMonth() + 5);
 
-                    if (horaCita <= horaActual) {
-                      return "La hora de la cita debe ser posterior a la hora actual";
+                      if (fechaPropuesta > fechaLimite)
+                        return "La fecha propuesta excede el límite de 5 meses";
                     }
-                    return true;
-                  }
-                })}
-                errors={errors}
-              />
-            </div>
+
+                  })}
+                  errors={errors}
+                />
+              </div>
+              <div className='input-1c'>
+                <InputText
+                  id={"time"}
+                  label={"Hora de la cita"}
+                  type={"time"}
+                  required={true}
+                  register={register("time", {
+                    required: {
+                      value: true,
+                      message: "Hora de cita es requerida"
+                    }
+                  })}
+                  errors={errors}
+                />
+              </div>
             </div>
             <div className='Input-1c'>
               <SelectOptions
@@ -172,7 +170,7 @@ export default function RentFriendForm() {
                 value={selectedEvent}
                 required={true}
                 options={event.map((event, index) => ({
-                  value: event.id_event, 
+                  value: event.id_event,
                   label: event.type_event
                 }))}
                 register={register("id_event", {
@@ -226,9 +224,9 @@ export default function RentFriendForm() {
 
             <div className="input-4c descripction">
               <label htmlFor="descripcion">Descripción</label>
-              <textarea id = {"description"} name="description" className="textAreaDescription"
-                {...register("description",{
-                  required:{
+              <textarea id={"description"} name="description" className="textAreaDescription"
+                {...register("description", {
+                  required: {
                     value: false
                   },
                   maxLength: {
@@ -236,16 +234,17 @@ export default function RentFriendForm() {
                     message: "No debe  superar los 150 caracteres."
                   }
                 })}
-                errors = {errors}
+                errors={errors}
               ></textarea>
               {/* {errors.descripcion && <span className="error-message">{errors.descripcion.message}</span>} */}
             </div>
           </div>
           <div className="buttons-section">
-            <NavLink to='/listfriend'>
-            <ButtonSecondary label={"Cancelar"} />
-            </NavLink>
+            
             <ButtonPrimary type={"submit"} label={"Alquilar"} />
+            <NavLink to='/listfriend'>
+              <ButtonSecondary label={"Cancelar"} />
+            </NavLink>
           </div>
         </form>
       </div>

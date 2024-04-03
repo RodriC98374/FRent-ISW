@@ -1,5 +1,5 @@
 #pendings {
-    border: 1px solid #ccc;
+    /* border: 1px solid #ccc; */
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 10px;
@@ -38,10 +38,11 @@
   .pending {
     display: flex;
     flex-direction: column;
-    
     justify-content: space-between;
     margin-bottom: 10px;
     padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #241f1f;
   }
   
   .user-info {
@@ -113,9 +114,10 @@
   
   .action-buttons {
     display: flex;
-    justify-content: flex-end; /* Alinear los botones a la derecha */
+    justify-content: flex-end; 
     margin-top: 15px;
     margin-left: 15px;
+    gap: 15px;
   }
   
   .pending-info {
@@ -129,4 +131,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .total-price {
+    display: flex;
+    justify-content: initial;
   }
