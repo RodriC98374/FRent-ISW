@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { ButtonPrimary } from "../../Buttons/buttonPrimary";
 import { ButtonSecondary } from "../../Buttons/buttonSecondary";
+import { NavLink } from "react-router-dom";
 import { InputText } from "../Inputs/inputText";
 import { SelectOptions } from "../Selects/selectOptions";
 import { useState } from "react";
@@ -45,8 +46,6 @@ export function FriendForm() {
       };
 
       await createLikes(user_likes);
-
-      alert("Datos enviados correctamente");
       reset();
     } catch (error) {
       console.error("Error al enviar los datos:", error);
@@ -102,7 +101,7 @@ export function FriendForm() {
   return (
     <div className="body-page">
       <div className="form-body-container">
-        <h3>Datos Personales</h3>
+        <h3>Datos personales del amigo</h3>
         <form action="" id="formulario-cliente" onSubmit={onSubmit}>
           <div className="colums-inputs">
             <div className="input-2c">
@@ -319,7 +318,7 @@ export function FriendForm() {
                     value: false,
                   },
                   maxLength: {
-                    value: 150,
+                    value: 120,
                     message: "Numero de caracteres excedido",
                   },
                 })}
@@ -354,7 +353,9 @@ export function FriendForm() {
             </div>
           </div>
           <div className="buttons-section">
-            <ButtonSecondary label={"Cancelar"} />
+                <NavLink to="/">
+                    <ButtonSecondary label={"Cancelar"} />
+                </NavLink>
             <ButtonPrimary type={"submit"} label={"Registrarse"} />
           </div>
         </form>

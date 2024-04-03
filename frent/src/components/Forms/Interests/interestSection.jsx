@@ -120,7 +120,7 @@ const InterestModal = ({ onSaveInterests }) => {
                                 ))}
                             </ul>
                         </div>
-            <button className="saveInterest"  onClick={(e) => { e.preventDefault(); handleSaveInterests(); }}>Guardar</button>
+            <button className="saveInterest"  onClick={(e) => { e.preventDefault(); handleSaveInterests();  }}>Guardar</button>
 
                     </div>
                 </div>

@@ -4,50 +4,38 @@ import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
-import { ButtonSecondary } from "../Buttons/buttonSecondary";
-import { ButtonPrimary } from "../Buttons/buttonPrimary";
 import { getClient, getRent, getPrice, deleteRent } from "../../api/register.api";
 
 export default function ViewReserve() {
     const [listRent, setListRent] = useState([]);
     const [listClient, setListClient] = useState([]);
     const [price, setPrice] = useState([]);
-    /* console.log(price) */
 
     useEffect(() => {
-        async function fetchData() {
-            try {
-                const resRent = await getRent();
-                if (resRent && resRent.data) {
-                    setListRent(resRent.data);
-                    console.log(resRent.data.id)
-                }
-
-                const resClient = await getClient();
-                if (resClient && resClient.data) {
-                    setListClient(resClient.data);
-
-                }
-
-                const resPrice = await getPrice();
-                /* console.log(resPrice); */
-                if (resPrice && resPrice.data) {
-                    const pricesArray = resPrice.data.map(item => item.total_price);
-                    setPrice(pricesArray);
-                }
-
-                /* const resTimeLap = await getTime();
-                console.log(resTimeLap)
-                if(resTimeLap && resTimeLap){
-                    const time = resTimeLap.data.map(item => item.)
-                } */
-
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        }
         fetchData();
     }, []);
+
+    const fetchData = async () => {
+        try {
+            const resRent = await getRent();
+            if (resRent && resRent.data) {
+                setListRent(resRent.data);
+            }
+
+            const resClient = await getClient();
+            if (resClient && resClient.data) {
+                setListClient(resClient.data);
+            }
+
+            const resPrice = await getPrice();
+            if (resPrice && resPrice.data) {
+                const pricesArray = resPrice.data.map(item => item.total_price);
+                setPrice(pricesArray);
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
 
     const getClientName = (clientId) => {
         const client = listClient.find((client) => client.id === clientId);
@@ -59,9 +47,11 @@ export default function ViewReserve() {
 
     const handleAccept = async (rentId) => {
         try {
-            console.log(`Aceptando alquiler con ID ${rentId}`);
-            await deleteRent(rentId);
-            setListRent(prevRentals => prevRentals.filter(rental => rental.id !== rentId));
+            const accepted = window.confirm("¿Aceptas ser el amigo?");
+            if (accepted) {
+                await deleteRent(rentId);
+                fetchData(); // Actualizar datos después de aceptar
+            }
         } catch (error) {
             console.error("Error al aceptar el alquiler:", error);
         }
@@ -69,15 +59,15 @@ export default function ViewReserve() {
 
     const handleReject = async (rentId) => {
         try {
-            
-            console.log(`Rechazando alquiler con ID ${rentId}`);
-            await deleteRent(rentId);
-            setListRent(prevRentals => prevRentals.filter(rental => rental.id !== rentId));
+            const rejected = window.confirm("¿Estás seguro de que deseas rechazar ser amigo?");
+            if (rejected) {
+                await deleteRent(rentId);
+                fetchData(); 
+            }
         } catch (error) {
-            console.error("Error al rechazar el alquiler:", error);
+            console.error( error);
         }
     };
-
 
     return (
         <>
@@ -92,7 +82,8 @@ export default function ViewReserve() {
                     {listRent.map((rent, index) => (
                         <div
                             key={rent.id}
-                            className="pending">
+                            className="pending"
+                        >
                             <div className="pending-info">
                                 <div className="user-info">
                                     <img
@@ -128,15 +119,12 @@ export default function ViewReserve() {
                             </div>
                             <hr></hr>
                             <div className="action-buttons">
-                                <ButtonPrimary
-                                    type={"submit"}
-                                    label={"Aceptar"}
-                                    onClick={() => handleAccept(rent.id)} 
-                                />
-                                <ButtonSecondary
-                                    label={"Cancelar"}
+                                <button className="btnV"
+                                    onClick={() => handleAccept(rent.id)}
+                                >Aceptar</button>
+                                <button className="btnVR"
                                     onClick={() => handleReject(rent.id)}
-                                />
+                                >Rechazar</button>
                             </div>
                         </div>
                     ))}

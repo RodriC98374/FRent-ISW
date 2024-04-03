@@ -91,7 +91,7 @@ export function CustomerForm() {
     return (
         <div className="body-page">
             <div className="form-body-container">
-                <h3>Datos Personales</h3>
+                <h3>Datos personales del cliente</h3>
                 <form action="" id="formulario-cliente" onSubmit={onSubmit}>
                     <div className="colums-inputs">
                         <div className="input-2c">

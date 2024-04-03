@@ -39,7 +39,6 @@ export default function RentFriendForm() {
     try {
       const restRent = await createRegisterRent(frent);
       console.log(restRent);
-      alert("Datos enviados correctamente");
       reset();
     } catch (error) {
       console.log(error);
