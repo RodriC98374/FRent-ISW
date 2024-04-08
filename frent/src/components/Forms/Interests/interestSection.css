@@ -6,13 +6,9 @@
 }
 
 .col1, .col2{
-    width: 100%;
+    width: 200%;
 }
 
-.input-n-button{
-    display: flex;
-    flex-flow: row nowrap;
-}
 
 .plus-button{
     display: flex;
@@ -27,6 +23,7 @@
     font-size: larger;
 }
 
+
 .addInterest{
     color: #fff;
     background-color: var(--secondary-color);
@@ -34,14 +31,6 @@
     padding: 12px 24px;
     font-size: var(--pM-size);
     font-family: Alata;
-}
-
-.inputInterests{
-    margin-top: 8px;
-    padding: 12px 24px;
-    border-radius: 8px;
-    border: 2px solid #ccc;
-    width: 90%;
 }
 
 .tags-grid{
@@ -145,3 +134,15 @@ ul li {
    .titleI{
     margin: 0;
    }
+.selected-interest {
+    background-color: green;
+}
+
+.warning-message{
+    color: tomato;
+    font-size: 15px;
+}
+.col2I{
+    display: grid;
+    
+}

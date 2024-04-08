@@ -21,6 +21,21 @@ export function CustomerForm() {
         reset
     } = useForm();
 
+    const [selectedCountry, setSelectedCountry] = useState("");
+    const [selectedState, setSelectedState] = useState("");
+    const [states, setStates] = useState([]);
+    const [selectedGender, setSelectedGender] = useState("");
+    const [selectedInterests, setSelectedIntersts] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const translateErrorMessage = (errorMessage) => {
+        const errorTranslations = {
+            "user with this email already exists.": "Ya existe un usuario con este correo electrónico.",
+        };
+
+        return errorTranslations[errorMessage] || errorMessage;
+    };
+
     const onSubmit = handleSubmit(async (data) => {
 
         const client = {
@@ -48,26 +63,35 @@ export function CustomerForm() {
             reset();
         } catch (error) {
             console.log(error)
+            console.error("Error al enviar los datos:", error);
+            if (error.response && error.response.data && error.response.data.email) {
+                const translatedErrorMessage = translateErrorMessage(error.response.data.email[0]);
+                setErrorMessage(translatedErrorMessage);
+            } else {
+                setErrorMessage(
+                    "Error al enviar los datos, por favor inténtelo de nuevo."
+                );
+            }
         }
 
     });
 
     const optionsGender = [
-        { value: "masculino", label: "Masculino" },
         { value: "femenino", label: "Femenino" },
+        { value: "masculino", label: "Masculino" },
         { value: "noIndicado", label: "Prefiero no decirlo" }
     ];
 
-    const [selectedCountry, setSelectedCountry] = useState("");
-    const [selectedState, setSelectedState] = useState("");
-    const [states, setStates] = useState([]);
 
-    const [selectedGender, setSelectedGender] = useState("");
-    const [selectedInterests, setSelectedIntersts] = useState("");
+
 
     const handleSaveInterests = (selectedInterests) => {
         setSelectedIntersts(selectedInterests)
     }
+
+    const validateInterests = (value) => {
+        return value && value.length >= 2 && value.length <= 10;
+    };
 
     const handleCountryChange = (e) => {
         const selectedCountryIsoCode = e.target.value;
@@ -106,6 +130,10 @@ export function CustomerForm() {
                                         value: true,
                                         message: "Este campo es obligatorio"
                                     },
+                                    pattern: {
+                                        value: /^[a-zA-Z]+$/,
+                                        message: "El nombre solo puede contener letras",
+                                    },
                                     minLength: {
                                         value: 2,
                                         message: "El nombre debe tener al menos 2 caracteres"
@@ -131,6 +159,10 @@ export function CustomerForm() {
                                         value: true,
                                         message: "El apellido es requerido"
                                     },
+                                    pattern: {
+                                        value: /^[a-zA-Z]+$/,
+                                        message: "El nombre solo puede contener letras",
+                                    },
                                     minLength: {
                                         value: 2,
                                         message: "El apellido debe tener al menos 2 caracteres"
@@ -147,7 +179,7 @@ export function CustomerForm() {
                         <div className="input-1c">
                             <InputText
                                 id={"birth_date"}
-                                label={"Fecha Nacimiento"}
+                                label={"Fecha de nacimiento"}
                                 type={"date"}
                                 required={true}
                                 placeholder={"DD/MM/AA"}
@@ -172,163 +204,171 @@ export function CustomerForm() {
                                 errors={errors}
                             />
                         </div>
-                    <div className="input-1c">
-                        <SelectOptions
-                            id={"Gender"}
-                            label={"Género"}
-                            name={"genero"}
-                            placeholder={"Elija su género"}
-                            value={selectedGender}
-                            required={true}
-                            options={optionsGender}
-                            register={register("Gender", {
-                                required: {
-                                    value: true,
-                                    message: "Campo requerido"
-                                }
-                            })}
-                            errors={errors}
-                            onChange={(e) => setSelectedGender(e.target.value)}
-                        />
-                    </div>
-                    <div className="input-1c">
-                        <SelectOptions
-                            className="pais-select"
-                            id={"Country"}
-                            label={"País"}
-                            name={"pais"}
-                            placeholder={"Elija un país"}
-                            value={selectedCountry}
-                            required={true}
-                            onChange={handleCountryChange} // Manejador de cambio de selección
-                            options={Country.getAllCountries().map(country => ({
-                                value: country.isoCode,
-                                label: country.name
-                            }))}
-                            register={register("Country", {
-                                required: {
-                                    value: true,
-                                    message: "Campo requerido"
-                                }
-                            })}
-                            errors={errors}
-                        />
-                    </div>
-                    <div className="input-1c">
-                        <SelectOptions
-                            id={"City"}
-                            label={"Ciudad"}
-                            name={"ciudad"}
-                            placeholder={"Elija una ciudad"}
-                            value={selectedState}
-                            required={true}
-                            onChange={handleStateChange}
-                            options={
-                                states.map(state => ({
-                                    value: state.isoCode,
-                                    label: state.name && state.name.replace(" Department", "")
-                                }))
-                            }
-                            register={register("City", {
-                                required: {
-                                    value: true,
-                                    message: "Campo requerido"
-                                }
-                            })}
-                            errors={errors}
-                        />
-                    </div>
-                    <div className="input-4c">
-                        <InputText
-                            id={"Email"}
-                            label={"Correo electrónico"}
-                            type={"email"}
-                            required={true}
-                            placeholder={"Ingrese su correo electrónico"}
-                            register={register("Email", {
-                                required: {
-                                    value: true,
-                                    message: "El Correo es requerido"
-                                },
-                                pattern: {
-                                    value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
-                                    message: "Formato de email invalido"
-                                }
-                            })}
-                            errors={errors}
-                        />
-                    </div>
-                    <div className="input-2c">
-                        <InputText
-                            id={"Password"}
-                            label={"Contraseña"}
-                            type={"password"}
-                            required={true}
-                            placeholder={"Ingrese su contraseña"}
-                            register={register("Password", {
-                                required: {
-                                    value: true,
-                                    message: "La contraseña es requerida",
-                                },
-                                minLength: {
-                                    value: 8,
-                                    message: "Debe tener al menos 8 caracteres"
-                                }
-                            })}
-                            errors={errors}
-                        />
-                    </div>
-                    <div className="input-2c">
-                        <InputText
-                            id={"confirmarPassword"}
-                            label={"Confirmar contraseña"}
-                            type={"password"}
-                            required={true}
-                            placeholder={"Repita su contraseña"}
-                            register={register("confirmarPassword", {
-                                required: {
-                                    value: true,
-                                    message: "La confirmación de la contraseña es requerida"
-                                },
-                                validate: (value) => {
-                                    if (value === watch('Password')) {
-                                        return true;
-                                    } else {
-                                        return "Las contraseñas no coinciden";
+                        <div className="input-1c">
+                            <SelectOptions
+                                id={"Gender"}
+                                label={"Género"}
+                                name={"genero"}
+                                placeholder={"Elija su género"}
+                                value={selectedGender}
+                                required={true}
+                                options={optionsGender}
+                                register={register("Gender", {
+                                    required: {
+                                        value: true,
+                                        message: "Campo requerido"
                                     }
+                                })}
+                                errors={errors}
+                                onChange={(e) => setSelectedGender(e.target.value)}
+                            />
+                        </div>
+                        <div className="input-1c">
+                            <SelectOptions
+                                className="pais-select"
+                                id={"Country"}
+                                label={"País"}
+                                name={"pais"}
+                                placeholder={"Elija un país"}
+                                value={selectedCountry}
+                                required={true}
+                                onChange={handleCountryChange} // Manejador de cambio de selección
+                                options={Country.getAllCountries().map(country => ({
+                                    value: country.isoCode,
+                                    label: country.name
+                                }))}
+                                register={register("Country", {
+                                    required: {
+                                        value: true,
+                                        message: "Campo requerido"
+                                    }
+                                })}
+                                errors={errors}
+                            />
+                        </div>
+                        <div className="input-1c">
+                            <SelectOptions
+                                id={"City"}
+                                label={"Ciudad"}
+                                name={"ciudad"}
+                                placeholder={"Elija una ciudad"}
+                                value={selectedState}
+                                required={true}
+                                onChange={handleStateChange}
+                                options={
+                                    states.map(state => ({
+                                        value: state.isoCode,
+                                        label: state.name && state.name.replace(" Department", "")
+                                    }))
                                 }
-                            })}
-                            errors={errors}
-                        />
-                    </div>
-                    <div className="input-4c descripction">
-                        <label htmlFor="descripcion">Descripción</label>
-                        <textarea name="descripcion" className="textAreaDescription"
-                            {...register("Personal_description", {
-                                required: {
-                                    value: false
-                                }
-                                , maxLength: {
-                                    value: 150,
-                                    message: "Numero de caracteres excedido"
-                                }
-                            })}
+                                register={register("City", {
+                                    required: {
+                                        value: true,
+                                        message: "Campo requerido"
+                                    }
+                                })}
+                                errors={errors}
+                            />
+                        </div>
+                        <div className="input-4c">
+                            <InputText
+                                id={"Email"}
+                                label={"Correo electrónico"}
+                                type={"email"}
+                                required={true}
+                                placeholder={"Ingrese su correo electrónico"}
+                                register={register("Email", {
+                                    required: {
+                                        value: true,
+                                        message: "El Correo es requerido"
+                                    },
+                                    pattern: {
+                                        value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
+                                        message: "Formato de email invalido"
+                                    }
+                                })}
+                                errors={errors}
+                            />
+                            {errorMessage && <div className="error-message">{errorMessage}</div>}
+                        </div>
+                        <div className="input-2c">
+                            <InputText
+                                id={"Password"}
+                                label={"Contraseña"}
+                                type={"password"}
+                                required={true}
+                                placeholder={"Ingrese su contraseña"}
+                                register={register("Password", {
+                                    required: {
+                                        value: true,
+                                        message: "La contraseña es requerida",
+                                    },
+                                    minLength: {
+                                        value: 8,
+                                        message: "Debe tener al menos 8 caracteres"
+                                    }
+                                })}
+                                errors={errors}
+                            />
+                        </div>
+                        <div className="input-2c">
+                            <InputText
+                                id={"confirmarPassword"}
+                                label={"Confirmar contraseña"}
+                                type={"password"}
+                                required={true}
+                                placeholder={"Repita su contraseña"}
+                                register={register("confirmarPassword", {
+                                    required: {
+                                        value: true,
+                                        message: "La confirmación de la contraseña es requerida"
+                                    },
+                                    validate: (value) => {
+                                        if (value === watch('Password')) {
+                                            return true;
+                                        } else {
+                                            return "Las contraseñas no coinciden";
+                                        }
+                                    }
+                                })}
+                                errors={errors}
+                            />
+                        </div>
+                        <div className="input-4c descripction">
+                            <label htmlFor="descripcion">Descripción</label>
+                            <textarea name="descripcion" className="textAreaDescription"
+                                {...register("Personal_description", {
+                                    required: {
+                                        value: false
+                                    }
+                                    , maxLength: {
+                                        value: 150,
+                                        message: "Numero de caracteres excedido"
+                                    }
+                                })}
 
-                        ></textarea>
-                        {errors.descripcion && <span className="error-message">{errors.descripcion.message}</span>}
+                            ></textarea>
+                            {errors.descripcion && <span className="error-message">{errors.descripcion.message}</span>}
+                        </div>
+                        <div className="input-4c">
+                            <InterestModal onSaveInterests={handleSaveInterests}
+                                register={register("interests", {
+                                    validate: {
+                                        validateInterests: validateInterests
+                                    }
+                                })}
+                                errors={errors}
+                            />
+                        </div>
                     </div>
-                    <div className="input-4c">
-                        <InterestModal onSaveInterests={handleSaveInterests} />
+                    <div className="buttons-section">
+                        <NavLink to="/">
+                            <ButtonSecondary label={"Cancelar"} />
+                        </NavLink>
+                        <ButtonPrimary type={"submit"} label={"Registrarse"} />
                     </div>
-            </div>
-            <div className="buttons-section">
-                <NavLink to="/">
-                    <ButtonSecondary label={"Cancelar"} />
-                </NavLink>
-                <ButtonPrimary type={"submit"} label={"Registrarse"} />
-            </div>
 
-        </form>
+                </form>
             </div >
         </div >
     )

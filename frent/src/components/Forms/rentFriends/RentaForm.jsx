@@ -32,7 +32,7 @@ export default function RentFriendForm() {
       outfit: parseInt(data.id_outfit),
       location: data.location,
       description: data.description,
-      friend: 2,
+      friend: 3,
       client: 1
     };
 
@@ -102,7 +102,7 @@ export default function RentFriendForm() {
                   register={register("fecha_cita", {
                     required: {
                       value: true,
-                      message: "Fecha de cita es requerida"
+                      message: "Este campo es obligatorio."
                     },
                     validate: (value) => {
                       const fechaActual = new Date();
@@ -113,7 +113,7 @@ export default function RentFriendForm() {
                       else if (fechaPropuesta <= fechaActual)
                         return "La fecha debe ser mayor a la actual";
 
-                      
+
                       const fechaLimite = new Date(fechaActual);
                       fechaLimite.setMonth(fechaLimite.getMonth() + 5);
 
@@ -134,11 +134,21 @@ export default function RentFriendForm() {
                   register={register("time", {
                     required: {
                       value: true,
-                      message: "Hora de cita es requerida"
+                      message: "Este campo es obligatorio."
+                    },
+                    validate: (value) => {
+                      const selectedTime = new Date(`01/01/2000 ${value}`);
+                      const startTime = new Date(`01/01/2000 06:00`);
+                      const endTime = new Date(`01/01/2000 21:00`);
+
+                      if (selectedTime < startTime || selectedTime > endTime) {
+                        return "La hora debe estar entre las 6:00 AM y las 21:00 PM.";
+                      }
                     }
                   })}
                   errors={errors}
                 />
+
               </div>
             </div>
             <div className='Input-1c'>
@@ -167,18 +177,12 @@ export default function RentFriendForm() {
                 name={"evento"}
                 placeholder={"Elija el tipo de evento"}
                 value={selectedEvent}
-                required={true}
+                required={false}
                 options={event.map((event, index) => ({
                   value: event.id_event,
                   label: event.type_event
                 }))}
-                register={register("id_event", {
-                  required: {
-                    value: true,
-                    message: "Campo requerido"
-                  }
-                })}
-                errors={errors}
+                register={register("id_event")}
                 onChange={(e) => setSelectedEvent(e.target.value)}
               />
             </div>
@@ -189,63 +193,62 @@ export default function RentFriendForm() {
                 name={"tipoVestimenta"}
                 placeholder={"Elija su vestimenta para el evento"}
                 value={selectedOutfit}
-                required={true}
+                required={false}
                 options={outfit.map((outfit, index) => ({
                   value: outfit.id_oufit,
                   label: outfit.type_outfit
                 }))}
-                register={register("id_outfit", {
-                  required: {
-                    value: true,
-                    message: "Campo requerido"
-                  }
-                })}
-                errors={errors}
+                register={register("id_outfit")}
                 onChange={(e) => setSelectedOutfit(e.target.value)}
               />
             </div>
             <div className="input-4c location">
-              <label htmlFor="location">Ubicación de la cita</label>
-              <textarea name="location" className="textArea"
-                {...register("location", {
+              <InputText
+                id={"location"}
+                label={"Ubicación de la cita"}
+                type={"text"}
+                required={true}
+                placeholder={"Ingrese la ubicación de la cita"}
+                register={register("location", {
                   required: {
-                    value: true
-                  }
-                  , maxLength: {
-                    value: 100,
-                    message: "Numero de caracteres excedido"
+                    value: true,
+                    message: "Este campo es obligatorio."
+                  },
+                  maxLength: {
+                    value: 40,
+                    message: "La ubicación no debe exceder los 30 caracteres"
                   }
                 })}
                 errors={errors}
-              ></textarea>
-              {errors.descripcion && <span className="error-message">{errors.descripcion.message}</span>}
+              />
+
             </div>
 
             <div className="input-4c descripction">
-              <label htmlFor="descripcion">Descripción</label>
-              <textarea id={"description"} name="description" className="textAreaDescription"
-                {...register("description", {
-                  required: {
-                    value: false
-                  },
+            <InputText  
+                id = {"description"}
+                label={"Descripcion"}
+                type={"textarea"}
+                required={false}
+                placeholder={"Ingrese una descripcion para la cita"}
+                register={register("description", {
                   maxLength: {
                     value: 150,
-                    message: "No debe  superar los 150 caracteres."
+                    message: "La descripcion no debe exceder los 150 caracteres"
                   }
                 })}
                 errors={errors}
-              ></textarea>
-              {/* {errors.descripcion && <span className="error-message">{errors.descripcion.message}</span>} */}
+              />
             </div>
           </div>
           <div className="buttons-section">
-            
-            <ButtonPrimary type={"submit"} label={"Alquilar"} />
+
+            <ButtonPrimary type={"submit"} label={"Pagar"} />
             <NavLink to='/listfriend'>
               <ButtonSecondary label={"Cancelar"} />
             </NavLink>
           </div>
-        </form>
+          </form>
       </div>
     </div>
   );

@@ -18,6 +18,7 @@ export default function ViewReserve() {
     const fetchData = async () => {
         try {
             const resRent = await getRent();
+            console.log(resRent.data)
             if (resRent && resRent.data) {
                 setListRent(resRent.data);
             }

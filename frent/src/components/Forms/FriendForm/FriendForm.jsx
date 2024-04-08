@@ -21,6 +21,22 @@ export function FriendForm() {
     reset,
   } = useForm();
 
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedState, setSelectedState] = useState("");
+  const [states, setStates] = useState([]);
+  const [selectedInterests, setSelectedInterests] = useState([]);
+  const [selectedGender, setSelectedGender] = useState("");
+  const [selectedPrice, setSelectedPrices] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const translateErrorMessage = (errorMessage) => {
+    const errorTranslations = {
+      "user with this email already exists.": "Ya existe un usuario con este correo electrónico.",
+    };
+
+    return errorTranslations[errorMessage] || errorMessage;
+  };
+
   const onSubmit = handleSubmit(async (data) => {
     const friend = {
       city: data.City,
@@ -36,25 +52,31 @@ export function FriendForm() {
     };
 
     try {
-
       const resFriend = await createRegisterFriend(friend);
-
 
       const user_likes = {
         likes: selectedInterests,
-        user_id: resFriend.data.id_user
+        user_id: resFriend.data.id_user,
       };
 
       await createLikes(user_likes);
       reset();
     } catch (error) {
       console.error("Error al enviar los datos:", error);
+      if (error.response && error.response.data && error.response.data.email) {
+        const translatedErrorMessage = translateErrorMessage(error.response.data.email[0]);
+        setErrorMessage(translatedErrorMessage);
+      } else {
+        setErrorMessage(
+          "Error al enviar los datos, por favor inténtelo de nuevo."
+        );
+      }
     }
   });
 
   const optionsGender = [
-    { value: "masculino", label: "Masculino" },
     { value: "femenino", label: "Femenino" },
+    { value: "masculino", label: "Masculino" },
     { value: "noIndicado", label: "Prefiero no decirlo" },
   ];
 
@@ -66,18 +88,14 @@ export function FriendForm() {
     { value: "60", label: "60 bs" }
   ];
 
-  const [selectedInterests, setSelectedInterests] = useState([]);
-
   const handleSaveInterests = (selectedInterests) => {
     setSelectedInterests(selectedInterests);
   };
 
-  const [selectedCountry, setSelectedCountry] = useState("");
-  const [selectedState, setSelectedState] = useState("");
-  const [states, setStates] = useState([]);
+  const validateInterests = (value) => {
+    return value && value.length >= 2 && value.length <= 10;
+  };
 
-  const [selectedGender, setSelectedGender] = useState("");
-  const [selectedPrice, setSelectedPrices] = useState("");
 
   const handleCountryChange = (e) => {
     const selectedCountryIsoCode = e.target.value;
@@ -106,7 +124,7 @@ export function FriendForm() {
           <div className="colums-inputs">
             <div className="input-2c">
               <InputText
-                id={"first_name"}
+                id={"First_name"}
                 label={"Nombre(s)"}
                 type={"text"}
                 required={true}
@@ -115,6 +133,10 @@ export function FriendForm() {
                   required: {
                     value: true,
                     message: "El nombre es requerido",
+                  },
+                  pattern: {
+                    value: /^[a-zA-Z]+$/,
+                    message: "El nombre solo puede contener letras",
                   },
                   minLength: {
                     value: 2,
@@ -140,6 +162,10 @@ export function FriendForm() {
                     value: true,
                     message: "El apellido es requerido",
                   },
+                  pattern: {
+                    value: /^[a-zA-Z]+$/,
+                    message: "El nombre solo puede contener letras",
+                  },
                   minLength: {
                     value: 2,
                     message: "El apellido debe tener al menos 2 caracteres",
@@ -155,7 +181,7 @@ export function FriendForm() {
             <div className="input-1c">
               <InputText
                 id={"birth_date"}
-                label={"Fecha Nacimiento"}
+                label={"Fecha de nacimiento"}
                 type={"date"}
                 required={true}
                 placeholder={"DD/MM/AA"}
@@ -264,6 +290,7 @@ export function FriendForm() {
                 })}
                 errors={errors}
               />
+              {errorMessage && <div className="error-message">{errorMessage}</div>}
             </div>
             <div className="input-2c">
               <InputText
@@ -332,7 +359,7 @@ export function FriendForm() {
             <div className="input-1c">
               <SelectOptions
                 id={"price"}
-                label={"Precio x Hora"}
+                label={"Precio por hora"}
                 name={"precio"}
                 placeholder={"Elija una tarifa por hora"}
                 value={selectedPrice}
@@ -349,13 +376,22 @@ export function FriendForm() {
               />
             </div>
             <div className="input-4c">
-              <InterestModal onSaveInterests={handleSaveInterests} />
+              <InterestModal
+                onSaveInterests={handleSaveInterests}
+                register={register("interests", {
+                  validate: {
+                    validInterests: validateInterests
+                  }
+                })}
+                errors={errors}
+              />
+              {errors.interests && <div className="error-message">Debe seleccionar entre 2 y 10 intereses.</div>}
             </div>
           </div>
           <div className="buttons-section">
-                <NavLink to="/">
-                    <ButtonSecondary label={"Cancelar"} />
-                </NavLink>
+            <NavLink to="/">
+              <ButtonSecondary label={"Cancelar"} />
+            </NavLink>
             <ButtonPrimary type={"submit"} label={"Registrarse"} />
           </div>
         </form>

@@ -71,6 +71,7 @@ font-size: var(--pL-size);
 
 .text-card{
 font-size: var(--pL-size);
+text-align: unset;
 }
 .button-card { 
 position: absolute;
@@ -91,13 +92,15 @@ color: #000;
 
 
 .modalF{
-  position: relative;
+  position: fixed;
   height: 500px;
-  top: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  top: 72px;
+  left: 25vw;
+  display: grid;
+  place-items:  center;
   width: 500px;
+  z-index: 999;
+  transition: all 2s;
 }
 
 .close {
