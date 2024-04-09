@@ -28,6 +28,8 @@ export function CustomerForm() {
     const [selectedInterests, setSelectedIntersts] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
+    const [cityEnabled, setCityEnabled] = useState(false);
+
     const translateErrorMessage = (errorMessage) => {
         const errorTranslations = {
             "user with this email already exists.": "Ya existe un usuario con este correo electrónico.",
@@ -102,7 +104,7 @@ export function CustomerForm() {
         setSelectedState("");
         // Actualizar el valor en el formulario
         setValue("pais", selectedCountryIsoCode);
-        console.log(states);
+        setCityEnabled(true); 
     };
 
     const handleStateChange = (e) => {
@@ -268,6 +270,7 @@ export function CustomerForm() {
                                     }
                                 })}
                                 errors={errors}
+                                disabled={!cityEnabled}
                             />
                         </div>
                         <div className="input-4c">
