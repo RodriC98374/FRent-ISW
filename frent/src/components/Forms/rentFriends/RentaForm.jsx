@@ -193,7 +193,7 @@ export default function RentFriendForm() {
                 name={"evento"}
                 placeholder={"Elija el tipo de evento"}
                 value={selectedEvent}
-                //required={false}
+                required={false}
                 options={event.map((event, index) => ({
                   value: event.id_event,
                   label: event.type_event
@@ -209,7 +209,7 @@ export default function RentFriendForm() {
                 name={"tipoVestimenta"}
                 placeholder={"Elija su vestimenta para el evento"}
                 value={selectedOutfit}
-                //required={false}
+                required={false}
                 options={outfit.map((outfit, index) => ({
                   value: outfit.id_oufit,
                   label: outfit.type_outfit
@@ -250,7 +250,7 @@ export default function RentFriendForm() {
                 register={register("description", {
                   maxLength: {
                     value: 150,
-                    message: "La descripcion no debe exceder los 150 caracteres"
+                    message: "La descripción no debe exceder los 150 caracteres"
                   }
                 })}
                 errors={errors}
