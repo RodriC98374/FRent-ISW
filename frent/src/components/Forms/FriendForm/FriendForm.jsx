@@ -146,7 +146,7 @@ export function FriendForm() {
                   },
                   maxLength: {
                     value: 20,
-                    message: "Demaciados caracteres",
+                    message: "Demasiados caracteres",
                   },
                 })}
                 errors={errors}
@@ -174,7 +174,7 @@ export function FriendForm() {
                   },
                   maxLength: {
                     value: 20,
-                    message: "Demaciados caracteres",
+                    message: "Demasiados caracteres",
                   },
                 })}
                 errors={errors}

@@ -143,7 +143,7 @@ export function CustomerForm() {
                                     },
                                     maxLength: {
                                         value: 20,
-                                        message: "Demaciados caracteres"
+                                        message: "Demasiados caracteres"
                                     }
 
                                 })}
@@ -173,7 +173,7 @@ export function CustomerForm() {
                                     },
                                     maxLength: {
                                         value: 20,
-                                        message: "Demaciados caracteres"
+                                        message: "Demasiados caracteres"
                                     }
 
                                 })}
