@@ -131,7 +131,7 @@ export function CustomerForm() {
                                         message: "Este campo es obligatorio"
                                     },
                                     pattern: {
-                                        value: /^[a-zA-Z]+$/,
+                                        value: /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/,
                                         message: "El nombre solo puede contener letras",
                                     },
                                     minLength: {
@@ -140,7 +140,7 @@ export function CustomerForm() {
                                     },
                                     maxLength: {
                                         value: 20,
-                                        message: "Demaciados caracteres"
+                                        message: "Demasiados caracteres"
                                     }
 
                                 })}
@@ -160,7 +160,7 @@ export function CustomerForm() {
                                         message: "El apellido es requerido"
                                     },
                                     pattern: {
-                                        value: /^[a-zA-Z]+$/,
+                                        value: /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/,
                                         message: "El nombre solo puede contener letras",
                                     },
                                     minLength: {
@@ -169,7 +169,7 @@ export function CustomerForm() {
                                     },
                                     maxLength: {
                                         value: 20,
-                                        message: "Demaciados caracteres"
+                                        message: "Demasiados caracteres"
                                     }
 
                                 })}
@@ -305,12 +305,17 @@ export function CustomerForm() {
                                     },
                                     minLength: {
                                         value: 8,
-                                        message: "Debe tener al menos 8 caracteres"
-                                    }
+                                        message: "Debe tener al menos 8 caracteres",
+                                    },
+                                    pattern: {
+                                        value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+                                        message: "La contraseña debe contener al menos una letra y un número",
+                                    },
                                 })}
                                 errors={errors}
                             />
                         </div>
+
                         <div className="input-2c">
                             <InputText
                                 id={"confirmarPassword"}
@@ -336,23 +341,30 @@ export function CustomerForm() {
                         </div>
                         <div className="input-4c descripction">
                             <label htmlFor="descripcion">Descripción</label>
-                            <textarea name="descripcion" className="textAreaDescription"
+                            <textarea
+                                name="descripcion"
+                                className="textAreaDescription"
                                 {...register("Personal_description", {
-                                    required: {
-                                        value: false
-                                    }
-                                    , maxLength: {
+                                    maxLength: {
                                         value: 150,
-                                        message: "Numero de caracteres excedido"
-                                    }
+                                        message: "Exedio el numero de caracteres",
+                                    },
                                 })}
-
                             ></textarea>
-                            {errors.descripcion && <span className="error-message">{errors.descripcion.message}</span>}
+                            {errors.Personal_description && (
+                                <span className="error-message">
+                                    {errors.Personal_description.message}
+                                </span>
+                            )}
                         </div>
                         <div className="input-4c">
                             <InterestModal onSaveInterests={handleSaveInterests}
                                 register={register("interests", {
+                                    required: {
+                                        value: true,
+                                        message: "Seleccione al menos un interés"
+
+                                    },
                                     validate: {
                                         validateInterests: validateInterests
                                     }
