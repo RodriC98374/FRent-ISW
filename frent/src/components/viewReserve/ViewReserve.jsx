@@ -4,7 +4,7 @@ import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
-import { getClient, getRent, getPrice, deleteRent, get_likes_user} from "../../api/register.api";
+import { getClient, getRent, getPrice, deleteRent, get_likes_user } from "../../api/register.api";
 
 export default function ViewReserve() {
     const [listRent, setListRent] = useState([]);
@@ -16,14 +16,6 @@ export default function ViewReserve() {
         fetchData();
     }, []);
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            updateElapsedTimes();
-        }, 1000);
-        return () => clearInterval(timer);
-        }, []);
-
-    //Para obtener los gustos de los clientes que alquilaron xd
     useEffect(() => {
         if (listRent.length > 0) {
             const fetchDataForLikes = async () => {
@@ -44,8 +36,6 @@ export default function ViewReserve() {
             fetchDataForLikes();
         }
     }, [listRent]);
-
-    
 
     const fetchData = async () => {
         try {
@@ -74,7 +64,6 @@ export default function ViewReserve() {
         }
     };
 
-   
     const getClientName = (clientId) => {
         const client = listClient.find((clientName) => clientName.id_user === clientId);
         if (client) {
@@ -83,7 +72,6 @@ export default function ViewReserve() {
         return "Cliente Desconocido";
     };
 
-     //Para obtener los gustos de un cliente especifico
     const getClientLikes = (clientId) => {
         const clientLikes = likes_user.find((like) => like.id_user === clientId);
         if (clientLikes) {
@@ -91,6 +79,8 @@ export default function ViewReserve() {
         }
         return [];
     };
+
+
 
     const calculateTimePassed = (createdAt) => {
         const currentTime = new Date();
@@ -107,24 +97,12 @@ export default function ViewReserve() {
             return `${Math.floor(secondsPassed / 86400)} días`;
         }
     };
-
-    const updateElapsedTimes = () => {
-        setListRent(prevListRent => {
-            return prevListRent.map(rent => {
-                return {
-                    ...rent,
-                    elapsedTime: calculateTimePassed(rent.create)
-                };
-            });
-        });
-    };
-
     const handleAccept = async (rentId) => {
         try {
             const accepted = window.confirm("¿Aceptas ser el amigo?");
             if (accepted) {
                 await deleteRent(rentId);
-                fetchData(); 
+                fetchData();
             }
         } catch (error) {
             console.error("Error al aceptar el alquiler:", error);
@@ -143,6 +121,7 @@ export default function ViewReserve() {
         }
     };
 
+
     return (
         <>
             <div className="contV">
@@ -153,7 +132,7 @@ export default function ViewReserve() {
                     </h1>
                 </div>
                 <div id="pendings">
-    
+
                     {listRent.length === 0 ? (
                         <div className="placeholder-container">
                             <p className="placeholder-text">
@@ -174,21 +153,21 @@ export default function ViewReserve() {
                                             alt="Foto de perfil"
                                             className="profile-pic"
                                         />
-                                        <p className="time">Hace {rent.elapsedTime}</p>
+                                        <p className="time">Hace {calculateTimePassed(rent.create)}</p>
                                     </div>
                                     <div className="request-info">
                                         <h3 className="name-client">
                                             {getClientName(rent.client)}
                                         </h3>
-                                        <di className = "details">
-                                        <p className="verified-date">
-                                            <FaCalendar className="icon" />
-                                            {rent.fecha_cita} 
-                                        </p>
-                                        <p className="locationR">
-                                            <FaClock className="icon" /> 
-                                            {rent.time}
-                                        </p>
+                                        <di className="details">
+                                            <p className="verified-date">
+                                                <FaCalendar className="icon" />
+                                                {rent.fecha_cita}
+                                            </p>
+                                            <p className="locationR">
+                                                <FaClock className="icon" />
+                                                {rent.time}
+                                            </p>
                                         </di>
                                         <div className="details">
                                             <p className="verified">
@@ -202,10 +181,12 @@ export default function ViewReserve() {
                                         </div>
                                         <div className="price-description">
                                             <p className="price">{price[index]}Bs</p>
-                                            <p className="description">{rent.description}</p>
+                                            <div className="description">
+                                                <p >{rent.description}</p>
+                                            </div>
                                             {getClientLikes(rent.client).map(like => (
-                                            <p key={like} className="description">{like}</p>
-                                        ))}
+                                                <p key={like} className="descriptionLike">{like}</p>
+                                            ))}
                                         </div>
                                     </div>
                                 </div>
