@@ -52,6 +52,7 @@ export default function ListFriend() {
               <p className="age-card">Edad: {calculateAge(friend.birth_date)} años</p>
               <p className="subtitle-card">Descripción</p>
               <p className="text-card">{friend.personal_description}</p>
+              <p>{friend.price} bs.</p>
             </div>          
             <NavLink className="button-card" to='/rentaForm'>Alquilar</NavLink>
           </div>

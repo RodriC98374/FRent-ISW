@@ -83,9 +83,9 @@
     overflow: auto;
 
 }
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
     display: none;
-}   
+}    */
     
 .modal-content {
     position: relative;
