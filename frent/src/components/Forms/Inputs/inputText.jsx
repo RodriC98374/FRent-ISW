@@ -2,7 +2,16 @@ import React from "react";
 import "./inputText.css";
 
 
-export function InputText ({ label, id, type, placeholder, value, onChange, errors, register, required }) {
+export function InputText ({ label, 
+                                id, 
+                                type, 
+                                placeholder, 
+                                value, 
+                                onChange, 
+                                errors, 
+                                register, 
+                                required,
+                                maxLength}) {
     return( 
         <div className="input-component">
             <label htmlFor={id} >
@@ -14,7 +23,8 @@ export function InputText ({ label, id, type, placeholder, value, onChange, erro
                 placeholder={placeholder}
                 id={id} 
                 value={value} 
-                onChange={onChange} 
+                onChange={onChange}
+                maxLength={maxLength} 
                 {...register}
             />
             {errors && errors[id] && <span className="error-message">{errors[id].message}</span>}

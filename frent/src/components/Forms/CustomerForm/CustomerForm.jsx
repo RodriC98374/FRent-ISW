@@ -127,13 +127,14 @@ export function CustomerForm() {
                                 type={"text"}
                                 required={true}
                                 placeholder={"Ingrese su(s) nombre(s)"}
+                                maxLength={21}
                                 register={register("First_name", {
                                     required: {
                                         value: true,
                                         message: "Este campo es obligatorio"
                                     },
                                     pattern: {
-                                        value: /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/,
+                                        value: /^[a-zA-Z]+(?:\s[a-zA-Z]+){0,3}$/,
                                         message: "El nombre solo puede contener letras y maximo 3 espacios",
                                     },
                                     minLength: {
@@ -155,6 +156,7 @@ export function CustomerForm() {
                                 label={"Apellido(s)"}
                                 type={"text"}
                                 required={true}
+                                maxLength={21}
                                 placeholder={"Ingrese su(s) apellido(s)"}
                                 register={register("Last_name", {
                                     required: {
@@ -162,8 +164,8 @@ export function CustomerForm() {
                                         message: "El apellido es requerido"
                                     },
                                     pattern: {
-                                        value: /^[a-zA-Z]+$/,
-                                        message: "El nombre solo puede contener letras",
+                                        value: /^[a-zA-Z]+(?:\s[a-zA-Z]+){0,3}$/,
+                                        message: "El apellido solo puede contener letras y maximo 3 espacios",
                                     },
                                     minLength: {
                                         value: 2,

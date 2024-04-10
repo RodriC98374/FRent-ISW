@@ -137,8 +137,8 @@ export function FriendForm() {
                     message: "El nombre es requerido",
                   },
                   pattern: {
-                    value: /^[a-zA-Z]+$/,
-                    message: "El nombre solo puede contener letras",
+                    value: /^[a-zA-Z]+(?:\s[a-zA-Z]+){0,3}$/,
+                    message: "El nombre solo puede contener letras y maximo 3 espacios",
                   },
                   minLength: {
                     value: 2,
@@ -165,8 +165,8 @@ export function FriendForm() {
                     message: "El apellido es requerido",
                   },
                   pattern: {
-                    value: /^[a-zA-Z]+$/,
-                    message: "El nombre solo puede contener letras",
+                    value: /^[a-zA-Z]+(?:\s[a-zA-Z]+){0,3}$/,
+                    message: "El nombre solo puede contener letras y maximo 3 espacios",
                   },
                   minLength: {
                     value: 2,
