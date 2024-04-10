@@ -7,9 +7,10 @@ import { SelectOptions } from '../Selects/selectOptions';
 import { createRegisterRent } from '../../../api/register.api';
 import { getOutfit } from '../../../api/register.api';
 import { getEvent } from '../../../api/register.api';
+import CancelModal from './CancelModal';
 
 import './RentaForm.css';
-import { NavLink } from 'react-router-dom';
+
 
 export default function RentFriendForm() {
   const { register, handleSubmit,
@@ -22,6 +23,21 @@ export default function RentFriendForm() {
   const [selectedOutfit, setSelectedOutfit] = useState("");
   const [outfit, setOutfit] = useState([]);
   const [event, setEvent] = useState([])
+  const [showModal, setShowModal] = useState(false);
+
+  const handleCancel = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleConfirmCancel = () => {
+    // Aquí puedes agregar la redirección o cualquier otra acción que desees al confirmar la cancelación
+    setShowModal(false);
+  };
+
 
   const onSubmit = handleSubmit(async (data) => {
     const frent = {
@@ -32,8 +48,8 @@ export default function RentFriendForm() {
       outfit: parseInt(data.id_outfit),
       location: data.location,
       description: data.description,
-      friend: 2,
-      client: 5
+      friend: 3,
+      client: 1
     };
 
     try {
@@ -225,8 +241,8 @@ export default function RentFriendForm() {
             </div>
 
             <div className="input-4c descripction">
-            <InputText  
-                id = {"description"}
+              <InputText
+                id={"description"}
                 label={"Descripcion"}
                 type={"textarea"}
                 required={false}
@@ -242,13 +258,13 @@ export default function RentFriendForm() {
             </div>
           </div>
           <div className="buttons-section">
-
             <ButtonPrimary type={"submit"} label={"Alquilar"} />
-            <NavLink to='/listfriend'>
-              <ButtonSecondary label={"Cancelar"} />
-            </NavLink>
+            <ButtonSecondary onClick={handleCancel} label={"Cancelar"} />
           </div>
-          </form>
+          {showModal && (
+            <CancelModal onClose={handleCloseModal} onConfirm={handleConfirmCancel} />
+          )}
+        </form>
       </div>
     </div>
   );
