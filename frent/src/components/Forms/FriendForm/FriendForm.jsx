@@ -29,6 +29,8 @@ export function FriendForm() {
   const [selectedPrice, setSelectedPrices] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const [cityEnabled, setCityEnabled] = useState(false);
+
   const translateErrorMessage = (errorMessage) => {
     const errorTranslations = {
       "user with this email already exists.": "Ya existe un usuario con este correo electrónico.",
@@ -44,7 +46,7 @@ export function FriendForm() {
       email: data.Email,
       first_name: data.First_name,
       gender: data.Gender,
-      last_name: data.Last_name,
+      last_name: data.Last_name,   
       password: data.Password,
       personal_description: data.Personal_description,
       birth_date: data.birth_date,
@@ -106,7 +108,7 @@ export function FriendForm() {
     setSelectedState("");
     // Actualizar el valor en el formulario
     setValue("pais", selectedCountryIsoCode);
-    console.log(states);
+    setCityEnabled(true); 
   };
 
   const handleStateChange = (e) => {
@@ -135,8 +137,8 @@ export function FriendForm() {
                     message: "El nombre es requerido",
                   },
                   pattern: {
-                    value: /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/,
-                    message: "El nombre solo puede contener letras",
+                    value: /^[a-zA-Z]+(?:\s[a-zA-Z]+){0,3}$/,
+                    message: "El nombre solo puede contener letras y maximo 3 espacios",
                   },
 
                   minLength: {
@@ -164,8 +166,8 @@ export function FriendForm() {
                     message: "El apellido es requerido",
                   },
                   pattern: {
-                    value: /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/,
-                    message: "El nombre solo puede contener letras",
+                    value: /^[a-zA-Z]+(?:\s[a-zA-Z]+){0,3}$/,
+                    message: "El nombre solo puede contener letras y maximo 3 espacios",
                   },
                   minLength: {
                     value: 2,
@@ -252,6 +254,7 @@ export function FriendForm() {
             </div>
             <div className="input-1c">
               <SelectOptions
+                className="pais-select"
                 id={"City"}
                 label={"Ciudad"}
                 name={"ciudad"}
@@ -270,6 +273,7 @@ export function FriendForm() {
                   },
                 })}
                 errors={errors}
+                disabled={!cityEnabled}
               />
             </div>
             <div className="input-4c">
@@ -344,12 +348,13 @@ export function FriendForm() {
             <div className="input-4c descripction">
               <label htmlFor="descripcion">Descripción</label>
               <textarea
+                placeholder="Cuentanos sobre ti"
                 name="descripcion"
                 className="textAreaDescription"
                 {...register("Personal_description", {
                   maxLength: {
                     value: 150,
-                    message: "Exedio el numero de caracteres",
+                   message: "Numero de caracteres excedido",
                   },
                 })}
               ></textarea>
@@ -392,7 +397,7 @@ export function FriendForm() {
             <NavLink to="/">
               <ButtonSecondary label={"Cancelar"} />
             </NavLink>
-            <ButtonPrimary type={"submit"} label={"Registrarse"} />
+            <ButtonPrimary type={"submit"} label={"Registrar"} />
           </div>
         </form>
       </div>

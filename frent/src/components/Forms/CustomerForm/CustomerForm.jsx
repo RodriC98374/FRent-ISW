@@ -28,6 +28,8 @@ export function CustomerForm() {
     const [selectedInterests, setSelectedIntersts] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
+    const [cityEnabled, setCityEnabled] = useState(false);
+
     const translateErrorMessage = (errorMessage) => {
         const errorTranslations = {
             "user with this email already exists.": "Ya existe un usuario con este correo electrónico.",
@@ -102,7 +104,7 @@ export function CustomerForm() {
         setSelectedState("");
         // Actualizar el valor en el formulario
         setValue("pais", selectedCountryIsoCode);
-        console.log(states);
+        setCityEnabled(true); 
     };
 
     const handleStateChange = (e) => {
@@ -125,14 +127,15 @@ export function CustomerForm() {
                                 type={"text"}
                                 required={true}
                                 placeholder={"Ingrese su(s) nombre(s)"}
+                                maxLength={21}
                                 register={register("First_name", {
                                     required: {
                                         value: true,
                                         message: "Este campo es obligatorio"
                                     },
                                     pattern: {
-                                        value: /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/,
-                                        message: "El nombre solo puede contener letras",
+                                        value: /^[a-zA-Z]+(?:\s[a-zA-Z]+){0,3}$/,
+                                        message: "El nombre solo puede contener letras y maximo 3 espacios",
                                     },
                                     minLength: {
                                         value: 2,
@@ -153,6 +156,7 @@ export function CustomerForm() {
                                 label={"Apellido(s)"}
                                 type={"text"}
                                 required={true}
+                                maxLength={21}
                                 placeholder={"Ingrese su(s) apellido(s)"}
                                 register={register("Last_name", {
                                     required: {
@@ -160,8 +164,8 @@ export function CustomerForm() {
                                         message: "El apellido es requerido"
                                     },
                                     pattern: {
-                                        value: /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/,
-                                        message: "El nombre solo puede contener letras",
+                                        value: /^[a-zA-Z]+(?:\s[a-zA-Z]+){0,3}$/,
+                                        message: "El apellido solo puede contener letras y maximo 3 espacios",
                                     },
                                     minLength: {
                                         value: 2,
@@ -268,6 +272,7 @@ export function CustomerForm() {
                                     }
                                 })}
                                 errors={errors}
+                                disabled={!cityEnabled}
                             />
                         </div>
                         <div className="input-4c">
@@ -341,8 +346,9 @@ export function CustomerForm() {
                         </div>
                         <div className="input-4c descripction">
                             <label htmlFor="descripcion">Descripción</label>
-                            <textarea
-                                name="descripcion"
+                            <textarea 
+                                placeholder="Cuentanos sobre ti"
+                                name="descripcion" 
                                 className="textAreaDescription"
                                 {...register("Personal_description", {
                                     maxLength: {
@@ -377,7 +383,7 @@ export function CustomerForm() {
                         <NavLink to="/">
                             <ButtonSecondary label={"Cancelar"} />
                         </NavLink>
-                        <ButtonPrimary type={"submit"} label={"Registrarse"} />
+                        <ButtonPrimary type={"submit"} label={"Registrar"} />
                     </div>
 
                 </form>

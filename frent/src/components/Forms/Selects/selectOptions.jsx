@@ -10,7 +10,8 @@ export function SelectOptions({ label,
                                 placeholder, 
                                 options, 
                                 value, 
-                                onChange }) {
+                                onChange,
+                                disabled }) {
     return (
         <div className="select-component">
             <label htmlFor={id}>
@@ -24,6 +25,7 @@ export function SelectOptions({ label,
                 {...register}
                 value={value || ''}
                 onChange={onChange}
+                disabled={disabled}
             >
                 <option value="" disabled hidden>
                     {placeholder}
