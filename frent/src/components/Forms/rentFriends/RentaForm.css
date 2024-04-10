@@ -44,3 +44,9 @@ body {
   .form-container {
     text-align: center; /* Centra todo el contenido */
   }
+
+  .mensaje-exito {
+    color: green; /* O cualquier color deseado */
+    font-weight: bold;
+    margin-top: 10px; /* Ajusta el estilo según sea necesario */
+  }

@@ -7,7 +7,7 @@ import { SelectOptions } from '../Selects/selectOptions';
 import { createRegisterRent } from '../../../api/register.api';
 import { getOutfit } from '../../../api/register.api';
 import { getEvent } from '../../../api/register.api';
-
+import swal from 'sweetalert'; // Importar SweetAlert
 import './RentaForm.css';
 import { NavLink } from 'react-router-dom';
 
@@ -32,19 +32,37 @@ export default function RentFriendForm() {
       outfit: parseInt(data.id_outfit),
       location: data.location,
       description: data.description,
-      friend: 2,
-      client: 5
+      friend: 3,
+      client: 1
     };
 
     try {
       const restRent = await createRegisterRent(frent);
       console.log(restRent);
+      swal("Reserva exitosa", "", "success"); // Mostrar mensaje de reserva exitosa
+      setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
+        swal.close();
+      }, 1000);
       reset();
     } catch (error) {
       console.log(error);
     }
   });
 
+  const confirmCancel = () => {
+    swal({
+      title: "¿Está seguro de cancelar?",
+      icon: "warning",
+      buttons: ["Cancelar", "Aceptar"],
+      dangerMode: true,
+    }).then((willCancel) => {
+      if (willCancel) {
+        swal("Se canceló la operación", {
+          icon: "success",
+        });
+      }
+    });
+  };
 
   useEffect(() => {
     async function loadOutfit() {
@@ -52,7 +70,7 @@ export default function RentFriendForm() {
         const res = await getOutfit();
         setOutfit(res.data)
       } catch (error) {
-        console.log("Error al carhar las vestimentas: ", error)
+        console.log("Error al cargar las vestimentas: ", error)
       }
     }
 
@@ -66,13 +84,12 @@ export default function RentFriendForm() {
         setEvent(res.data)
         console.log(res.data)
       } catch (error) {
-        console.log("Error al carhar las vestimentas: ", error)
+        console.log("Error al cargar las vestimentas: ", error)
       }
     }
 
     loadEvent();
   }, [])
-
 
   const optionsHour = [
     { value: 1.0, label: "1 hora" },
@@ -81,7 +98,6 @@ export default function RentFriendForm() {
     { value: 4.0, label: "4 horas" },
     { value: 5.0, label: "5 horas" }
   ]
-
 
   return (
     <div className="container">
@@ -154,9 +170,9 @@ export default function RentFriendForm() {
             <div className='Input-1c'>
               <SelectOptions
                 id={"duration"}
-                label={"Duracion de la cita"}
+                label={"Duración de la cita"}
                 name={"hora"}
-                placeholder={"Elija la duracion de la cita"}
+                placeholder={"Elija la duración de la cita"}
                 value={selectedHour}
                 required={true}
                 options={optionsHour}
@@ -225,8 +241,8 @@ export default function RentFriendForm() {
             </div>
 
             <div className="input-4c descripction">
-            <InputText  
-                id = {"description"}
+              <InputText
+                id={"description"}
                 label={"Descripcion"}
                 type={"textarea"}
                 required={false}
@@ -242,13 +258,12 @@ export default function RentFriendForm() {
             </div>
           </div>
           <div className="buttons-section">
-
             <ButtonPrimary type={"submit"} label={"Alquilar"} />
             <NavLink to='/listfriend'>
-              <ButtonSecondary label={"Cancelar"} />
+              <ButtonSecondary label={"Cancelar"} onClick={confirmCancel} />
             </NavLink>
           </div>
-          </form>
+        </form>
       </div>
     </div>
   );
