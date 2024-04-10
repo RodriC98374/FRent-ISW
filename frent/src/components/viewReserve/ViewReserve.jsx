@@ -4,8 +4,7 @@ import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
-import { getClient, getRent, getPrice, deleteRent } from "../../api/register.api";
-import ViewInterest from "./interestClient/ViewInterest"; // Importamos el componente ViewInterest
+import { getClient, getRent, getPrice, deleteRent } from "../../api/register.api";  
 
 export default function ViewReserve() {
     const [listRent, setListRent] = useState([]);
