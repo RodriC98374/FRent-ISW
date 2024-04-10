@@ -229,7 +229,7 @@ export function CustomerForm() {
                                 id={"Country"}
                                 label={"País"}
                                 name={"pais"}
-                                placeholder={"Elija un país"}
+                                placeholder={"Seleccione su pais"}
                                 value={selectedCountry}
                                 required={true}
                                 onChange={handleCountryChange} // Manejador de cambio de selección

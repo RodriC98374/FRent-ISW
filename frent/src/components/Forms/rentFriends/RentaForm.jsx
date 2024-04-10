@@ -144,6 +144,9 @@ export default function RentFriendForm() {
                       if (selectedTime < startTime || selectedTime > endTime) {
                         return "La hora debe estar entre las 6:00 AM y las 21:00 PM.";
                       }
+
+
+
                     }
                   })}
                   errors={errors}
@@ -154,7 +157,7 @@ export default function RentFriendForm() {
             <div className='Input-1c'>
               <SelectOptions
                 id={"duration"}
-                label={"Duracion de la cita"}
+                label={"Duración de la cita"}
                 name={"hora"}
                 placeholder={"Elija la duracion de la cita"}
                 value={selectedHour}
