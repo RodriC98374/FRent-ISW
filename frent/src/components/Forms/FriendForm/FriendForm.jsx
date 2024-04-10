@@ -89,13 +89,13 @@ export function FriendForm() {
   ];
 
   const handleSaveInterests = (selectedInterests) => {
-    setSelectedInterests(selectedInterests);
+    if (selectedInterests.length < 2) {
+      setErrorMessage("Debe seleccionar al menos 2 intereses.");
+    } else {
+      setSelectedInterests(selectedInterests);
+      setErrorMessage(""); // Limpiar el mensaje de error si la validación pasa
+    }
   };
-
-  const validateInterests = (value) => {
-    return value && value.length >= 2 && value.length <= 10;
-  };
-
 
   const handleCountryChange = (e) => {
     const selectedCountryIsoCode = e.target.value;
@@ -135,16 +135,17 @@ export function FriendForm() {
                     message: "El nombre es requerido",
                   },
                   pattern: {
-                    value: /^[a-zA-Z]+$/,
+                    value: /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/,
                     message: "El nombre solo puede contener letras",
                   },
+
                   minLength: {
                     value: 2,
                     message: "El nombre debe tener al menos 2 caracteres",
                   },
                   maxLength: {
                     value: 20,
-                    message: "Demaciados caracteres",
+                    message: "Demasiados caracteres",
                   },
                 })}
                 errors={errors}
@@ -163,7 +164,7 @@ export function FriendForm() {
                     message: "El apellido es requerido",
                   },
                   pattern: {
-                    value: /^[a-zA-Z]+$/,
+                    value: /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/,
                     message: "El nombre solo puede contener letras",
                   },
                   minLength: {
@@ -172,7 +173,7 @@ export function FriendForm() {
                   },
                   maxLength: {
                     value: 20,
-                    message: "Demaciados caracteres",
+                    message: "Demasiados caracteres",
                   },
                 })}
                 errors={errors}
@@ -303,15 +304,20 @@ export function FriendForm() {
                   required: {
                     value: true,
                     message: "La contraseña es requerida",
-                    minLength: {
-                      value: 8,
-                      message: "Debe tener al menos 8 caracteres",
-                    },
+                  },
+                  minLength: {
+                    value: 8,
+                    message: "Debe tener al menos 8 caracteres",
+                  },
+                  pattern: {
+                    value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+                    message: "La contraseña debe contener al menos una letra y un número",
                   },
                 })}
                 errors={errors}
               />
             </div>
+
             <div className="input-2c">
               <InputText
                 id={"confirmarPassword"}
@@ -341,21 +347,19 @@ export function FriendForm() {
                 name="descripcion"
                 className="textAreaDescription"
                 {...register("Personal_description", {
-                  required: {
-                    value: false,
-                  },
                   maxLength: {
-                    value: 120,
-                    message: "Numero de caracteres excedido",
+                    value: 150,
+                    message: "Exedio el numero de caracteres",
                   },
                 })}
               ></textarea>
-              {errors.descripcion && (
+              {errors.Personal_description && (
                 <span className="error-message">
-                  {errors.descripcion.message}
+                  {errors.Personal_description.message}
                 </span>
               )}
             </div>
+
             <div className="input-1c">
               <SelectOptions
                 id={"price"}
@@ -378,13 +382,9 @@ export function FriendForm() {
             <div className="input-4c">
               <InterestModal
                 onSaveInterests={handleSaveInterests}
-                register={register("interests", {
-                  validate: {
-                    validInterests: validateInterests
-                  }
-                })}
                 errors={errors}
               />
+
               {errors.interests && <div className="error-message">Debe seleccionar entre 2 y 10 intereses.</div>}
             </div>
           </div>

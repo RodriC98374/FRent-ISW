@@ -40,4 +40,6 @@ export const deleteRent = (id) => registersApi.delete(`/rents/rents/${id}/`)
 
 export const getPrice =  () => registersApi.get("/rents/price/")
 
+export const getLikeClient = () => registersApi.get('/users/api/v1/user_tastes/');
+
 /* export const getTime = (id) => registersApi.get(`/rents/time_elapsed/${id}/`) */
