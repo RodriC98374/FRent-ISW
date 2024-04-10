@@ -115,6 +115,7 @@ const InterestModal = ({ onSaveInterests }) => {
             )}
         </>
     );
+    
 };
 
 export default React.memo(InterestModal);

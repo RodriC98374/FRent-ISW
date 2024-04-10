@@ -233,7 +233,7 @@ export function CustomerForm() {
                                 id={"Country"}
                                 label={"País"}
                                 name={"pais"}
-                                placeholder={"Elija un país"}
+                                placeholder={"Seleccione su pais"}
                                 value={selectedCountry}
                                 required={true}
                                 onChange={handleCountryChange} // Manejador de cambio de selección
@@ -310,12 +310,17 @@ export function CustomerForm() {
                                     },
                                     minLength: {
                                         value: 8,
-                                        message: "Debe tener al menos 8 caracteres"
-                                    }
+                                        message: "Debe tener al menos 8 caracteres",
+                                    },
+                                    pattern: {
+                                        value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+                                        message: "La contraseña debe contener al menos una letra y un número",
+                                    },
                                 })}
                                 errors={errors}
                             />
                         </div>
+
                         <div className="input-2c">
                             <InputText
                                 id={"confirmarPassword"}
@@ -346,23 +351,26 @@ export function CustomerForm() {
                                 name="descripcion" 
                                 className="textAreaDescription"
                                 {...register("Personal_description", {
-                                    required: {
-                                        value: false
-                                    }
-                                    , maxLength: {
+                                    maxLength: {
                                         value: 150,
-                                        message: "Numero de caracteres excedido"
-                                    }
+                                        message: "Exedio el numero de caracteres",
+                                    },
                                 })}
-
                             ></textarea>
-                            {errors && errors.Personal_description && (
-                                <span className="error-message">{errors.Personal_description.message}</span>
+                            {errors.Personal_description && (
+                                <span className="error-message">
+                                    {errors.Personal_description.message}
+                                </span>
                             )}
                         </div>
                         <div className="input-4c">
                             <InterestModal onSaveInterests={handleSaveInterests}
                                 register={register("interests", {
+                                    required: {
+                                        value: true,
+                                        message: "Seleccione al menos un interés"
+
+                                    },
                                     validate: {
                                         validateInterests: validateInterests
                                     }

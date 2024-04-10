@@ -67,40 +67,43 @@
     margin-left: 20px;
   }
   
-  .date-time {
-    font-weight: bold;
-    margin-bottom: 5px;
-    display: flex
-  }
   
   .details {
     display: flex;
     flex-wrap: wrap;
   }
   
-  .verified {
-    background-color: white;
-    color: black;
-    padding: 5px 10px;
+  .verified-date {
     display: flex;
-    border-radius: 5px;
-    margin-right: 5px;
-    flex-direction: row;
-    align-content: center;
-    justify-content: center;
+    margin-right: 40px;
+    align-items: center;
+  }
+
+  .verified{
+    display: flex;
+    margin-right: 62px;
     align-items: center;
   }
   
   .locationR {
     display: flex;
-    background-color: white;
+    justify-content: center;
     color: black;
     border-radius: 5px;
     
   }
+
+  .description {
+    line-height: 1.4; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    max-width: 600px;
+    display: flex;
+    overflow: hidden;
+}
   
   .price,
-  .description {
+  .descriptionLike {
     background-color: var( --tertiary-color);
     color: white;
     padding: 5px 10px;
@@ -122,15 +125,6 @@
   
   .pending-info {
     display: flex;
-  }
-
-  .timeR {
-    margin-left: 20px;
-    width: 25px;
-    height: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 
   .total-price {
@@ -163,6 +157,22 @@
 .btnVr:hover{
   background-color: var(--secondary-color);
   color: #fff;
+}
+
+.placeholder-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.placeholder-text {
+  text-align: center;
+  font-size: var(--h3-size);
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
 }
 
 
