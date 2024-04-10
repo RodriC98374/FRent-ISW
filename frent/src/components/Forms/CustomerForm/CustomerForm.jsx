@@ -133,8 +133,8 @@ export function CustomerForm() {
                                         message: "Este campo es obligatorio"
                                     },
                                     pattern: {
-                                        value: /^[a-zA-Z]+$/,
-                                        message: "El nombre solo puede contener letras",
+                                        value: /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/,
+                                        message: "El nombre solo puede contener letras y maximo 3 espacios",
                                     },
                                     minLength: {
                                         value: 2,
@@ -339,7 +339,9 @@ export function CustomerForm() {
                         </div>
                         <div className="input-4c descripction">
                             <label htmlFor="descripcion">Descripción</label>
-                            <textarea name="descripcion" className="textAreaDescription"
+                            <textarea 
+                                name="descripcion" 
+                                className="textAreaDescription"
                                 {...register("Personal_description", {
                                     required: {
                                         value: false
@@ -351,7 +353,9 @@ export function CustomerForm() {
                                 })}
 
                             ></textarea>
-                            {errors.descripcion && <span className="error-message">{errors.descripcion.message}</span>}
+                            {errors && errors.Personal_description && (
+                                <span className="error-message">{errors.Personal_description.message}</span>
+                            )}
                         </div>
                         <div className="input-4c">
                             <InterestModal onSaveInterests={handleSaveInterests}

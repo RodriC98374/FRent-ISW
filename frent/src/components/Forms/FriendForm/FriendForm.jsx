@@ -29,6 +29,8 @@ export function FriendForm() {
   const [selectedPrice, setSelectedPrices] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const [cityEnabled, setCityEnabled] = useState(false);
+
   const translateErrorMessage = (errorMessage) => {
     const errorTranslations = {
       "user with this email already exists.": "Ya existe un usuario con este correo electrónico.",
@@ -44,7 +46,7 @@ export function FriendForm() {
       email: data.Email,
       first_name: data.First_name,
       gender: data.Gender,
-      last_name: data.Last_name,
+      last_name: data.Last_name,   
       password: data.Password,
       personal_description: data.Personal_description,
       birth_date: data.birth_date,
@@ -106,7 +108,7 @@ export function FriendForm() {
     setSelectedState("");
     // Actualizar el valor en el formulario
     setValue("pais", selectedCountryIsoCode);
-    console.log(states);
+    setCityEnabled(true); 
   };
 
   const handleStateChange = (e) => {
@@ -269,6 +271,7 @@ export function FriendForm() {
                   },
                 })}
                 errors={errors}
+                disabled={!cityEnabled}
               />
             </div>
             <div className="input-4c">
@@ -345,15 +348,13 @@ export function FriendForm() {
                     value: false,
                   },
                   maxLength: {
-                    value: 120,
+                    value: 150,
                     message: "Numero de caracteres excedido",
                   },
                 })}
               ></textarea>
-              {errors.descripcion && (
-                <span className="error-message">
-                  {errors.descripcion.message}
-                </span>
+              {errors && errors.Personal_description && (
+                <span className="error-message">{errors.Personal_description.message}</span>
               )}
             </div>
             <div className="input-1c">
