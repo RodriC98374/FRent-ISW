@@ -21,8 +21,8 @@ class Event(models.Model):
 class Rent(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     friend = models.ForeignKey(Friend, on_delete=models.CASCADE)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    outfit= models.ForeignKey(OutFit, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, null = True)
+    outfit= models.ForeignKey(OutFit, on_delete=models.CASCADE, null = True)
     fecha_cita = models.DateField()
     time = models.TimeField()
     duration = models.FloatField(validators=[MinValueValidator(0.0)])

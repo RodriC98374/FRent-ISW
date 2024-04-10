@@ -90,9 +90,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'frent_back',
         #(example, fill the user bellow) 'USER': 'postgres',
-        'USER': 'alfredo',
+        'USER': 'gaspar',
         #(example, fill the passwprd bellow) 'PASSWORD': 'passwordRANDOM123',
-        'PASSWORD': 'notebok456',
+        'PASSWORD': 'armando1gaspar',
         'HOST': 'localhost',
         'OPTIONS': {
             'client_encoding': 'UTF8',
