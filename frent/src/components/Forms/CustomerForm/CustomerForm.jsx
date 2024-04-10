@@ -342,6 +342,7 @@ export function CustomerForm() {
                         <div className="input-4c descripction">
                             <label htmlFor="descripcion">Descripción</label>
                             <textarea 
+                                placeholder="Cuentanos sobre ti"
                                 name="descripcion" 
                                 className="textAreaDescription"
                                 {...register("Personal_description", {

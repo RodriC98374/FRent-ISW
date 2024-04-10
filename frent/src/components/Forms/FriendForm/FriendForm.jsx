@@ -253,6 +253,7 @@ export function FriendForm() {
             </div>
             <div className="input-1c">
               <SelectOptions
+                className="pais-select"
                 id={"City"}
                 label={"Ciudad"}
                 name={"ciudad"}
@@ -341,6 +342,7 @@ export function FriendForm() {
             <div className="input-4c descripction">
               <label htmlFor="descripcion">Descripción</label>
               <textarea
+                placeholder="Cuentanos sobre ti"
                 name="descripcion"
                 className="textAreaDescription"
                 {...register("Personal_description", {
