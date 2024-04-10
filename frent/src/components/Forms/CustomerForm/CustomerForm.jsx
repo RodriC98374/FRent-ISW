@@ -375,7 +375,7 @@ export function CustomerForm() {
                         <NavLink to="/">
                             <ButtonSecondary label={"Cancelar"} />
                         </NavLink>
-                        <ButtonPrimary type={"submit"} label={"Registrarse"} />
+                        <ButtonPrimary type={"submit"} label={"Registrar"} />
                     </div>
 
                 </form>

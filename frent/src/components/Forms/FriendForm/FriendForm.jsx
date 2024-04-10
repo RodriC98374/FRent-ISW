@@ -395,7 +395,7 @@ export function FriendForm() {
             <NavLink to="/">
               <ButtonSecondary label={"Cancelar"} />
             </NavLink>
-            <ButtonPrimary type={"submit"} label={"Registrarse"} />
+            <ButtonPrimary type={"submit"} label={"Registrar"} />
           </div>
         </form>
       </div>
