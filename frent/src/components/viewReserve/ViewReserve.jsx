@@ -4,21 +4,43 @@ import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
-import { getClient, getRent, getPrice, deleteRent } from "../../api/register.api";
+import { getClient, getRent, getPrice, deleteRent, get_likes_user} from "../../api/register.api";
 
 export default function ViewReserve() {
     const [listRent, setListRent] = useState([]);
     const [listClient, setListClient] = useState([]);
     const [price, setPrice] = useState([]);
+    const [likes_user, setLikesUser] = useState([]);
 
     useEffect(() => {
         fetchData();
     }, []);
 
+    //Para obtener los gustos de los clientes que alquilaron xd
+    useEffect(() => {
+        if (listRent.length > 0) {
+            const fetchDataForLikes = async () => {
+                try {
+                    const likesPromises = listRent.map(async rent => {
+                        const idClient = {
+                            id_user: rent.client
+                        }
+                        const resLikesUser = await get_likes_user(idClient);
+                        return resLikesUser.data || [];
+                    });
+                    const likesData = await Promise.all(likesPromises);
+                    setLikesUser(likesData.flat());
+                } catch (error) {
+                    console.error("Error fetching likes data:", error);
+                }
+            };
+            fetchDataForLikes();
+        }
+    }, [listRent]);
+
     const fetchData = async () => {
         try {
             const resRent = await getRent();
-            console.log(resRent.data)
             if (resRent && resRent.data) {
                 setListRent(resRent.data);
             }
@@ -38,12 +60,22 @@ export default function ViewReserve() {
         }
     };
 
+   
     const getClientName = (clientId) => {
-        const client = listClient.find((client) => client.id === clientId);
+        const client = listClient.find((clientName) => clientName.id_user === clientId);
         if (client) {
             return `${client.first_name} ${client.last_name}`;
         }
         return "Cliente Desconocido";
+    };
+
+     //Para obtener los gustos de un cliente especifico
+    const getClientLikes = (clientId) => {
+        const clientLikes = likes_user.find((like) => like.id_user === clientId);
+        if (clientLikes) {
+            return clientLikes.gustos;
+        }
+        return [];
     };
 
     const handleAccept = async (rentId) => {
@@ -96,7 +128,7 @@ export default function ViewReserve() {
                                 </div>
                                 <div className="request-info">
                                     <h3 className="name-client">
-                                        {getClientName(rent.client_id)}
+                                        {getClientName(rent.client)}
                                     </h3>
                                     <p className="date-time">
                                         <FaCalendar className="icon" />
@@ -114,7 +146,10 @@ export default function ViewReserve() {
                                     </div>
                                     <div className="price-description">
                                         <p className="price">{price[index]}Bs</p>
-                                        <p className="description">{rent.description}</p>
+                                        <p >{rent.description}</p>
+                                        {getClientLikes(rent.client).map(like => (
+                                            <p key={like} className="description">{like}</p>
+                                        ))}
                                     </div>
                                 </div>
                             </div>

@@ -100,7 +100,8 @@
   }
   
   .price,
-  .description {
+  .description
+   {
     background-color: var( --tertiary-color);
     color: white;
     padding: 5px 10px;

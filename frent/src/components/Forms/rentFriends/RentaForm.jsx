@@ -32,8 +32,8 @@ export default function RentFriendForm() {
       outfit: parseInt(data.id_outfit),
       location: data.location,
       description: data.description,
-      friend: 3,
-      client: 1
+      friend: 2,
+      client: 5
     };
 
     try {
