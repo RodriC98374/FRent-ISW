@@ -29,8 +29,6 @@ export function CustomerForm() {
     const [selectedInterests, setSelectedIntersts] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
-    const [cityEnabled, setCityEnabled] = useState(false);
-
     const translateErrorMessage = (errorMessage) => {
         const errorTranslations = {
             "user with this email already exists.": "Ya existe un usuario con este correo electrónico.",
@@ -108,7 +106,7 @@ export function CustomerForm() {
         setSelectedState("");
         // Actualizar el valor en el formulario
         setValue("pais", selectedCountryIsoCode);
-        setCityEnabled(true); 
+        console.log(states);
     };
 
     const handleStateChange = (e) => {
@@ -131,15 +129,14 @@ export function CustomerForm() {
                                 type={"text"}
                                 required={true}
                                 placeholder={"Ingrese su(s) nombre(s)"}
-                                maxLength={21}
                                 register={register("First_name", {
                                     required: {
                                         value: true,
                                         message: "Este campo es obligatorio"
                                     },
                                     pattern: {
-                                        value: /^[a-zA-Z]+(?:\s[a-zA-Z]+){0,3}$/,
-                                        message: "El nombre solo puede contener letras y maximo 3 espacios",
+                                        value: /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/,
+                                        message: "El nombre solo puede contener letras",
                                     },
                                     minLength: {
                                         value: 2,
@@ -160,7 +157,6 @@ export function CustomerForm() {
                                 label={"Apellido(s)"}
                                 type={"text"}
                                 required={true}
-                                maxLength={21}
                                 placeholder={"Ingrese su(s) apellido(s)"}
                                 register={register("Last_name", {
                                     required: {
@@ -168,8 +164,8 @@ export function CustomerForm() {
                                         message: "El apellido es requerido"
                                     },
                                     pattern: {
-                                        value: /^[a-zA-Z]+(?:\s[a-zA-Z]+){0,3}$/,
-                                        message: "El apellido solo puede contener letras y maximo 3 espacios",
+                                        value: /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/,
+                                        message: "El nombre solo puede contener letras",
                                     },
                                     minLength: {
                                         value: 2,
@@ -237,7 +233,7 @@ export function CustomerForm() {
                                 id={"Country"}
                                 label={"País"}
                                 name={"pais"}
-                                placeholder={"Seleccione su pais"}
+                                placeholder={"Elija un país"}
                                 value={selectedCountry}
                                 required={true}
                                 onChange={handleCountryChange} // Manejador de cambio de selección
@@ -276,7 +272,6 @@ export function CustomerForm() {
                                     }
                                 })}
                                 errors={errors}
-                                disabled={!cityEnabled}
                             />
                         </div>
                         <div className="input-4c">
@@ -350,15 +345,49 @@ export function CustomerForm() {
                         </div>
                         <div className="input-4c descripction">
                             <label htmlFor="descripcion">Descripción</label>
-                            <textarea 
-                                placeholder="Cuentanos sobre ti"
-                                name="descripcion" 
+                            <textarea
+                                name="descripcion"
                                 className="textAreaDescription"
                                 {...register("Personal_description", {
+                                    required: "Este campo es obligatorio",
                                     maxLength: {
                                         value: 150,
-                                        message: "Exedio el numero de caracteres",
+                                        message: "Excedió el número máximo de caracteres (150)",
                                     },
+
+                                    validate: {
+                                        noRepeatingCharacters: value => !/(.)\1{3}/.test(value) || "No puedes ingresar 4 caracteres iguales seguidos",
+                                        consonantsAndVowels: value => {
+                                            let hasConsonant = false;
+                                            let hasVowel = false;
+                                            for (let i = 0; i < value.length - 3; i++) {
+                                                const substring = value.substring(i, i + 4);
+                                                const consonants = substring.match(/[bcdfghjklmnpqrstvwxyz]/gi);
+                                                const vowels = substring.match(/[aeiou]/gi);
+                                                if (consonants && vowels) {
+                                                    hasConsonant = true;
+                                                    hasVowel = true;
+                                                } else if (consonants) {
+                                                    hasConsonant = true;
+                                                } else if (vowels) {
+                                                    hasVowel = true;
+                                                }
+                                                if (hasConsonant && hasVowel) {
+                                                    return true;
+                                                }
+                                            }
+                                            return "Cada grupo de 4 caracteres debe contener al menos una consonante y una vocal.";
+                                        },
+                                        consecutiveCharacters: value => {
+                                            if (!/^[aeiou\s]*$/i.test(value) && value.length > 22) {
+                                                const regex = /[^ ]{23,}/;
+                                                if (regex.test(value)) {
+                                                    return "Error: Hay más de 22 caracteres consecutivos sin espacio.";
+                                                }
+                                            }
+                                            return true;
+                                        }
+                                    }
                                 })}
                             ></textarea>
                             {errors.Personal_description && (
@@ -387,7 +416,7 @@ export function CustomerForm() {
                         <NavLink to="/">
                             <ButtonSecondary label={"Cancelar"} />
                         </NavLink>
-                        <ButtonPrimary type={"submit"} label={"Registrar"} />
+                        <ButtonPrimary type={"submit"} label={"Registrarse"} />
                     </div>
 
                 </form>
