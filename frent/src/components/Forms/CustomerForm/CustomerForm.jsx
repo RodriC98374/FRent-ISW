@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Country, State } from "country-state-city";
 import { createRegisterClient } from "../../../api/register.api";
 import { createLikes } from "../../../api/register.api";
+import swal from 'sweetalert';
 
 import "./customerForm.css";
 import InterestModal from "../Interests/interestSection";
@@ -29,6 +30,7 @@ export function CustomerForm() {
   const [selectedInterests, setSelectedInterests] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [cityEnabled, setCityEnabled] = useState(false);
+  const [errorLike, setErrorLike] = useState("");
 
   const translateErrorMessage = (errorMessage) => {
     const errorTranslations = {
@@ -61,7 +63,10 @@ export function CustomerForm() {
       };
 
       await createLikes(user_likes);
-      alert("Datos enviados correctamente");
+      swal("Registro exitoso", "El cliente se registró correctamente", "success");
+            setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
+                swal.close();
+            }, 2000);
       reset();
     } catch (error) {
       console.log(error);
@@ -87,10 +92,10 @@ export function CustomerForm() {
 
   const handleSaveInterests = (selectedInterests) => {
     if (selectedInterests.length < 2) {
-      setErrorMessage("Debe seleccionar al menos 2 intereses.");
+      setErrorLike("Debe seleccionar al menos 2 intereses.");
     } else {
       setSelectedInterests(selectedInterests);
-      setErrorMessage(""); // Limpiar el mensaje de error si la validación pasa
+      setErrorLike(""); // Limpiar el mensaje de error si la validación pasa
     }
   };
 
@@ -369,6 +374,7 @@ export function CustomerForm() {
                 onSaveInterests={handleSaveInterests}
                 errors={errors}
               />
+              <div className="error-message">{errorLike}</div>
             </div>
           </div>
           <div className="buttons-section">

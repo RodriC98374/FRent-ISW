@@ -53,10 +53,10 @@ export default function RentFriendForm() {
     try {
       const restRent = await createRegisterRent(frent);
       console.log(restRent);
-      swal("Reserva exitosa", "", "success");
-      setTimeout(() => {
+      swal("Reserva exitosa", "", "success"); // Mostrar mensaje de reserva exitosa
+      setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
         swal.close();
-      }, 1000);
+      }, 2000);
       reset();
     } catch (error) {
       console.log(error);

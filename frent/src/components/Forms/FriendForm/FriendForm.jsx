@@ -8,6 +8,7 @@ import { useState } from "react";
 import { Country, State } from "country-state-city";
 import { createRegisterFriend } from "../../../api/register.api";
 import { createLikes } from "../../../api/register.api";
+import swal from 'sweetalert';
 
 import InterestModal from "../Interests/interestSection";
 
@@ -28,6 +29,7 @@ export function FriendForm() {
   const [selectedGender, setSelectedGender] = useState("");
   const [selectedPrice, setSelectedPrices] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [errorLike, setErrorLike] = useState("");
 
   const [cityEnabled, setCityEnabled] = useState(false);
 
@@ -66,6 +68,10 @@ export function FriendForm() {
       };
 
       await createLikes(user_likes);
+      swal("Registro exitoso", "El cliente se registró correctamente", "success");
+      setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
+        swal.close();
+      }, 1000);
       reset();
     } catch (error) {
       console.error("Error al enviar los datos:", error);
@@ -96,10 +102,10 @@ export function FriendForm() {
 
   const handleSaveInterests = (selectedInterests) => {
     if (selectedInterests.length < 2) {
-      setErrorMessage("Debe seleccionar al menos 2 intereses.");
+      setErrorLike("Debe seleccionar al menos 2 intereses.");
     } else {
       setSelectedInterests(selectedInterests);
-      setErrorMessage(""); // Limpiar el mensaje de error si la validación pasa
+      setErrorLike(""); // Limpiar el mensaje de error si la validación pasa
     }
   };
 
@@ -394,7 +400,7 @@ export function FriendForm() {
                 errors={errors}
               />
 
-              {errors.interests && <div className="error-message">Debe seleccionar entre 2 y 10 intereses.</div>}
+              <div className="error-message">{errorLike}</div>
             </div>
           </div>
           <div className="buttons-section">
