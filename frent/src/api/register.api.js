@@ -1,9 +1,17 @@
 import axios from 'axios'
 
+const isProduction = process.env.NODE_ENV === "production";
+
+let baseURL = "http://localhost:8000";
+
+if (isProduction) {
+  baseURL = "https://deploy-is-production.up.railway.app";
+}
+
 const registersApi = axios.create({
-    baseURL: "http://localhost:8000",
-    responseType: 'json',
-    withCredentials: true
+  baseURL: baseURL,
+  responseType: 'json',
+  withCredentials: true
 });
 
 
