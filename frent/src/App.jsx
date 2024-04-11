@@ -26,7 +26,7 @@ function App() {
         <Route path="/customer" element={<CustomerForm/>}/>
         <Route path="/friend" element={<FriendForm/>} />
         <Route path="/listFriend" element = {<ListFriend/>}/>
-        <Route path="/rentaForm" element = {<RentFriendForm/>}/>
+        <Route path="/rentaForm/:id" element = {<RentFriendForm/>}/>
         <Route path="/rentalSectio" element ={<ViewReserve></ViewReserve>} />
         <Route path="/*" element={<h1 className='text-center'>404 Page Not Found</h1>}></Route>
       </Routes>

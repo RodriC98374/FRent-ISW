@@ -356,43 +356,9 @@ export function FriendForm() {
                 name="descripcion"
                 className="textAreaDescription"
                 {...register("Personal_description", {
-                  required: "Este campo es obligatorio",
                   maxLength: {
                     value: 150,
                     message: "Excedió el número máximo de caracteres (150)",
-                  },
-                  validate: {
-                    noRepeatingCharacters: value => !/(.)\1{3}/.test(value) || "No puedes ingresar 4 caracteres iguales seguidos",
-                    consonantsAndVowels: value => {
-                      let hasConsonant = false;
-                      let hasVowel = false;
-                      for (let i = 0; i < value.length - 3; i++) {
-                        const substring = value.substring(i, i + 4);
-                        const consonants = substring.match(/[bcdfghjklmnpqrstvwxyz]/gi);
-                        const vowels = substring.match(/[aeiou]/gi);
-                        if (consonants && vowels) {
-                          hasConsonant = true;
-                          hasVowel = true;
-                        } else if (consonants) {
-                          hasConsonant = true;
-                        } else if (vowels) {
-                          hasVowel = true;
-                        }
-                        if (hasConsonant && hasVowel) {
-                          return true;
-                        }
-                      }
-                      return "Cada grupo de 4 caracteres debe contener al menos una consonante y una vocal.";
-                    },
-                    consecutiveCharacters: value => {
-                      if (!/^[aeiou\s]*$/i.test(value) && value.length > 22) {
-                        const regex = /[^ ]{23,}/;
-                        if (regex.test(value)) {
-                          return "Error: Hay más de 22 caracteres consecutivos sin espacio.";
-                        }
-                      }
-                      return true;
-                    }
                   }
                 })}
               ></textarea>

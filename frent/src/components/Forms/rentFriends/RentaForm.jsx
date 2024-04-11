@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom'; // Importar useParams
 import { ButtonPrimary } from '../../Buttons/buttonPrimary';
 import { ButtonSecondary } from '../../Buttons/buttonSecondary';
 import { useForm } from 'react-hook-form';
@@ -9,16 +9,13 @@ import { createRegisterRent } from '../../../api/register.api';
 import { getOutfit } from '../../../api/register.api';
 import { getEvent } from '../../../api/register.api';
 import swal from 'sweetalert'; // Importar SweetAlert
-//import CancelModal from './CancelModal';
 
 import './RentaForm.css';
 
-
 export default function RentFriendForm() {
-  const { register, handleSubmit,
-    formState: { errors },
-    reset
-  } = useForm();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const { id } = useParams(); // Obtener el ID del amigo de la URL
+  const friendId = parseInt(id); // Convertir el ID a entero
 
   const [selectedHour, setSelectedHour] = useState("");
   const [selectedEvent, setSelectedEvent] = useState("");
@@ -49,19 +46,15 @@ export default function RentFriendForm() {
       outfit: parseInt(data.id_outfit),
       location: data.location,
       description: data.description,
-      friend: 3,
-      client: 1
+      friend: friendId, // Asignar el ID del amigo
+      client: 1 // Suponiendo que el ID del cliente es 1 (puedes cambiarlo según tu lógica)
     };
 
     try {
       const restRent = await createRegisterRent(frent);
       console.log(restRent);
-      swal("Reserva exitosa", "", "success"); // Mostrar mensaje de reserva exitosa
-      setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
-        swal.close();
-      }, 1000);
-      swal("Reserva exitosa", "", "success"); // Mostrar mensaje de reserva exitosa
-      setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
+      swal("Reserva exitosa", "", "success");
+      setTimeout(() => {
         swal.close();
       }, 1000);
       reset();
@@ -186,9 +179,6 @@ export default function RentFriendForm() {
                       if (selectedTime < startTime || selectedTime > endTime) {
                         return "La hora debe estar entre las 6:00 AM y las 21:00 PM.";
                       }
-
-
-
                     }
                   })}
                   errors={errors}
@@ -271,54 +261,20 @@ export default function RentFriendForm() {
 
 
             <div className="input-4c descripction">
-              <InputText
-                id={"description"}
-                label={"Descripción"}
-                type={"textarea"}
-                required={false}
-                placeholder={"Ingrese una descripción"}
-                register={register("description", {
-                  required: "Este campo es obligatorio",
-                  maxLength: {
-                    value: 150,
-                    message: "Excedió el número máximo de caracteres (150)",
-                  },
-                  validate: {
-                    noRepeatingCharacters: value => !/(.)\1{3}/.test(value) || "No puedes ingresar 4 caracteres iguales seguidos",
-                    consonantsAndVowels: value => {
-                      let hasConsonant = false;
-                      let hasVowel = false;
-                      for (let i = 0; i < value.length - 3; i++) {
-                        const substring = value.substring(i, i + 4);
-                        const consonants = substring.match(/[bcdfghjklmnpqrstvwxyz]/gi);
-                        const vowels = substring.match(/[aeiou]/gi);
-                        if (consonants && vowels) {
-                          hasConsonant = true;
-                          hasVowel = true;
-                        } else if (consonants) {
-                          hasConsonant = true;
-                        } else if (vowels) {
-                          hasVowel = true;
-                        }
-                        if (hasConsonant && hasVowel) {
-                          return true;
-                        }
-                      }
-                      return "Cada grupo de 4 caracteres debe contener al menos una consonante y una vocal.";
-                    },
-                    consecutiveCharacters: value => {
-                      if (!/^[aeiou\s]*$/i.test(value) && value.length > 22) {
-                        const regex = /[^ ]{23,}/;
-                        if (regex.test(value)) {
-                          return "Error: Hay más de 22 caracteres consecutivos sin espacio.";
-                        }
-                      }
-                      return true;
-                    }
-                  }
-                })}
-                errors={errors}
-              />
+            <InputText
+    id={"description"}
+    label={"Descripción"}
+    type={"textarea"}
+    required={false}
+    placeholder={"Ingrese una descripción"}
+    register={register("description", {
+        maxLength: {
+            value: 150,
+            message: "Excedió el número máximo de caracteres (150)",
+        },     
+    })}
+    errors={errors}
+/>
 
 
             </div>
