@@ -59,11 +59,7 @@ export default function RentFriendForm() {
       swal("Reserva exitosa", "", "success"); // Mostrar mensaje de reserva exitosa
       setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
         swal.close();
-      }, 1000);
-      swal("Reserva exitosa", "", "success"); // Mostrar mensaje de reserva exitosa
-      setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
-        swal.close();
-      }, 1000);
+      }, 2000);
       reset();
     } catch (error) {
       console.log(error);
