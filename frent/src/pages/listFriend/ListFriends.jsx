@@ -53,7 +53,7 @@ export default function ListFriend() {
               <p className="text-card">{friend.personal_description}</p>
               <p>{friend.price} bs.</p>
             </div>
-            <NavLink className="button-card" to='/rentaForm'>Alquilar</NavLink>
+            <NavLink className="button-card" to={`/rentaForm/${friend.id_user}`}>Alquilar</NavLink>
           </div>
         ))}
       </div>

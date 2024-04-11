@@ -29,6 +29,7 @@ export function FriendForm() {
   const [selectedGender, setSelectedGender] = useState("");
   const [selectedPrice, setSelectedPrices] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [errorLike, setErrorLike] = useState("");
 
   const [cityEnabled, setCityEnabled] = useState(false);
 
@@ -68,9 +69,9 @@ export function FriendForm() {
 
       await createLikes(user_likes);
       swal("Registro exitoso", "El cliente se registró correctamente", "success");
-          setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
-            swal.close();
-          }, 1000);
+      setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
+        swal.close();
+      }, 1000);
       reset();
     } catch (error) {
       console.error("Error al enviar los datos:", error);
@@ -101,10 +102,10 @@ export function FriendForm() {
 
   const handleSaveInterests = (selectedInterests) => {
     if (selectedInterests.length < 2) {
-      setErrorMessage("Debe seleccionar al menos 2 intereses.");
+      setErrorLike("Debe seleccionar al menos 2 intereses.");
     } else {
       setSelectedInterests(selectedInterests);
-      setErrorMessage(""); // Limpiar el mensaje de error si la validación pasa
+      setErrorLike(""); // Limpiar el mensaje de error si la validación pasa
     }
   };
 
@@ -361,43 +362,9 @@ export function FriendForm() {
                 name="descripcion"
                 className="textAreaDescription"
                 {...register("Personal_description", {
-                  required: "Este campo es obligatorio",
                   maxLength: {
                     value: 150,
                     message: "Excedió el número máximo de caracteres (150)",
-                  },
-                  validate: {
-                    noRepeatingCharacters: value => !/(.)\1{3}/.test(value) || "No puedes ingresar 4 caracteres iguales seguidos",
-                    consonantsAndVowels: value => {
-                      let hasConsonant = false;
-                      let hasVowel = false;
-                      for (let i = 0; i < value.length - 3; i++) {
-                        const substring = value.substring(i, i + 4);
-                        const consonants = substring.match(/[bcdfghjklmnpqrstvwxyz]/gi);
-                        const vowels = substring.match(/[aeiou]/gi);
-                        if (consonants && vowels) {
-                          hasConsonant = true;
-                          hasVowel = true;
-                        } else if (consonants) {
-                          hasConsonant = true;
-                        } else if (vowels) {
-                          hasVowel = true;
-                        }
-                        if (hasConsonant && hasVowel) {
-                          return true;
-                        }
-                      }
-                      return "Cada grupo de 4 caracteres debe contener al menos una consonante y una vocal.";
-                    },
-                    consecutiveCharacters: value => {
-                      if (!/^[aeiou\s]*$/i.test(value) && value.length > 22) {
-                        const regex = /[^ ]{23,}/;
-                        if (regex.test(value)) {
-                          return "Error: Hay más de 22 caracteres consecutivos sin espacio.";
-                        }
-                      }
-                      return true;
-                    }
                   }
                 })}
               ></textarea>
@@ -433,7 +400,7 @@ export function FriendForm() {
                 errors={errors}
               />
 
-              {errors.interests && <div className="error-message">Debe seleccionar entre 2 y 10 intereses.</div>}
+              <div className="error-message">{errorLike}</div>
             </div>
           </div>
           <div className="buttons-section">
