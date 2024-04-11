@@ -36,7 +36,6 @@ export default function RentFriendForm() {
   };
 
   const handleConfirmCancel = () => {
-    // Aquí puedes agregar la redirección o cualquier otra acción que desees al confirmar la cancelación
     setShowModal(false);
   };
 
@@ -57,6 +56,10 @@ export default function RentFriendForm() {
     try {
       const restRent = await createRegisterRent(frent);
       console.log(restRent);
+      swal("Reserva exitosa", "", "success"); // Mostrar mensaje de reserva exitosa
+      setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
+        swal.close();
+      }, 1000);
       swal("Reserva exitosa", "", "success"); // Mostrar mensaje de reserva exitosa
       setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
         swal.close();
@@ -84,13 +87,14 @@ export default function RentFriendForm() {
       }
     });
   };
-
+  
   useEffect(() => {
     async function loadOutfit() {
       try {
         const res = await getOutfit();
         setOutfit(res.data)
       } catch (error) {
+        console.log("Error al cargar las vestimentas: ", error)
         console.log("Error al cargar las vestimentas: ", error)
       }
     }
@@ -105,6 +109,7 @@ export default function RentFriendForm() {
         setEvent(res.data)
         console.log(res.data)
       } catch (error) {
+        console.log("Error al cargar las vestimentas: ", error)
         console.log("Error al cargar las vestimentas: ", error)
       }
     }
@@ -264,22 +269,60 @@ export default function RentFriendForm() {
 
             </div>
 
+
             <div className="input-4c descripction">
               <InputText
                 id={"description"}
-                label={"Descripcion"}
+                label={"Descripción"}
                 type={"textarea"}
                 required={false}
-                placeholder={"Ingrese una descripcion para la cita"}
+                placeholder={"Ingrese una descripción"}
                 register={register("description", {
+                  required: "Este campo es obligatorio",
                   maxLength: {
                     value: 150,
-                    message: "La descripción no debe exceder los 150 caracteres"
+                    message: "Excedió el número máximo de caracteres (150)",
+                  },
+                  validate: {
+                    noRepeatingCharacters: value => !/(.)\1{3}/.test(value) || "No puedes ingresar 4 caracteres iguales seguidos",
+                    consonantsAndVowels: value => {
+                      let hasConsonant = false;
+                      let hasVowel = false;
+                      for (let i = 0; i < value.length - 3; i++) {
+                        const substring = value.substring(i, i + 4);
+                        const consonants = substring.match(/[bcdfghjklmnpqrstvwxyz]/gi);
+                        const vowels = substring.match(/[aeiou]/gi);
+                        if (consonants && vowels) {
+                          hasConsonant = true;
+                          hasVowel = true;
+                        } else if (consonants) {
+                          hasConsonant = true;
+                        } else if (vowels) {
+                          hasVowel = true;
+                        }
+                        if (hasConsonant && hasVowel) {
+                          return true;
+                        }
+                      }
+                      return "Cada grupo de 4 caracteres debe contener al menos una consonante y una vocal.";
+                    },
+                    consecutiveCharacters: value => {
+                      if (!/^[aeiou\s]*$/i.test(value) && value.length > 22) {
+                        const regex = /[^ ]{23,}/;
+                        if (regex.test(value)) {
+                          return "Error: Hay más de 22 caracteres consecutivos sin espacio.";
+                        }
+                      }
+                      return true;
+                    }
                   }
                 })}
                 errors={errors}
               />
+
+
             </div>
+
           </div>
           <div className="buttons-section">
             <ButtonPrimary type={"submit"} label={"Alquilar"} />

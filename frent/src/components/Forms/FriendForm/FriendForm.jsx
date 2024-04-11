@@ -50,7 +50,7 @@ export function FriendForm() {
       email: data.Email,
       first_name: data.First_name,
       gender: data.Gender,
-      last_name: data.Last_name,   
+      last_name: data.Last_name,
       password: data.Password,
       personal_description: data.Personal_description,
       birth_date: data.birth_date,
@@ -112,7 +112,7 @@ export function FriendForm() {
     setSelectedState("");
     // Actualizar el valor en el formulario
     setValue("pais", selectedCountryIsoCode);
-    setCityEnabled(true); 
+    setCityEnabled(true);
   };
 
   const handleStateChange = (e) => {
@@ -356,10 +356,44 @@ export function FriendForm() {
                 name="descripcion"
                 className="textAreaDescription"
                 {...register("Personal_description", {
+                  required: "Este campo es obligatorio",
                   maxLength: {
                     value: 150,
-                   message: "Numero de caracteres excedido",
+                    message: "Excedió el número máximo de caracteres (150)",
                   },
+                  validate: {
+                    noRepeatingCharacters: value => !/(.)\1{3}/.test(value) || "No puedes ingresar 4 caracteres iguales seguidos",
+                    consonantsAndVowels: value => {
+                      let hasConsonant = false;
+                      let hasVowel = false;
+                      for (let i = 0; i < value.length - 3; i++) {
+                        const substring = value.substring(i, i + 4);
+                        const consonants = substring.match(/[bcdfghjklmnpqrstvwxyz]/gi);
+                        const vowels = substring.match(/[aeiou]/gi);
+                        if (consonants && vowels) {
+                          hasConsonant = true;
+                          hasVowel = true;
+                        } else if (consonants) {
+                          hasConsonant = true;
+                        } else if (vowels) {
+                          hasVowel = true;
+                        }
+                        if (hasConsonant && hasVowel) {
+                          return true;
+                        }
+                      }
+                      return "Cada grupo de 4 caracteres debe contener al menos una consonante y una vocal.";
+                    },
+                    consecutiveCharacters: value => {
+                      if (!/^[aeiou\s]*$/i.test(value) && value.length > 22) {
+                        const regex = /[^ ]{23,}/;
+                        if (regex.test(value)) {
+                          return "Error: Hay más de 22 caracteres consecutivos sin espacio.";
+                        }
+                      }
+                      return true;
+                    }
+                  }
                 })}
               ></textarea>
               {errors.Personal_description && (
