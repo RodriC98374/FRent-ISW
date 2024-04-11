@@ -361,19 +361,34 @@ export function FriendForm() {
                     value: 150,
                     message: "Excedió el número máximo de caracteres (150)",
                   },
-                  pattern: {
-                    value: /^(?!(\S* )\S{21})[a-zA-Z\s]*$/,
-                    message: "Cada grupo de 20 caracteres debe contener como máximo un espacio.",
-                  },
                   validate: {
                     noRepeatingCharacters: value => !/(.)\1{3}/.test(value) || "No puedes ingresar 4 caracteres iguales seguidos",
                     consonantsAndVowels: value => {
+                      let hasConsonant = false;
+                      let hasVowel = false;
                       for (let i = 0; i < value.length - 3; i++) {
                         const substring = value.substring(i, i + 4);
                         const consonants = substring.match(/[bcdfghjklmnpqrstvwxyz]/gi);
                         const vowels = substring.match(/[aeiou]/gi);
-                        if (!consonants || !vowels) {
-                          return "Cada grupo de 4 caracteres debe contener al menos una consonante y una vocal.";
+                        if (consonants && vowels) {
+                          hasConsonant = true;
+                          hasVowel = true;
+                        } else if (consonants) {
+                          hasConsonant = true;
+                        } else if (vowels) {
+                          hasVowel = true;
+                        }
+                        if (hasConsonant && hasVowel) {
+                          return true;
+                        }
+                      }
+                      return "Cada grupo de 4 caracteres debe contener al menos una consonante y una vocal.";
+                    },
+                    consecutiveCharacters: value => {
+                      if (!/^[aeiou\s]*$/i.test(value) && value.length > 22) {
+                        const regex = /[^ ]{23,}/;
+                        if (regex.test(value)) {
+                          return "Error: Hay más de 22 caracteres consecutivos sin espacio.";
                         }
                       }
                       return true;

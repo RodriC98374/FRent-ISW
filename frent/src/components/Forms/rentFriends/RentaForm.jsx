@@ -36,7 +36,6 @@ export default function RentFriendForm() {
   };
 
   const handleConfirmCancel = () => {
-    // Aquí puedes agregar la redirección o cualquier otra acción que desees al confirmar la cancelación
     setShowModal(false);
   };
 
@@ -270,7 +269,7 @@ export default function RentFriendForm() {
                 id={"description"}
                 label={"Descripción"}
                 type={"textarea"}
-                required={true}
+                required={false}
                 placeholder={"Ingrese una descripción"}
                 register={register("description", {
                   required: "Este campo es obligatorio",
@@ -278,19 +277,34 @@ export default function RentFriendForm() {
                     value: 150,
                     message: "Excedió el número máximo de caracteres (150)",
                   },
-                  pattern: {
-                    value: /^(?:[^\s]{22}\s)*[^\s]{0,22}$/,
-                    message: "Cada grupo de 22 caracteres debe contener un espacio.",
-                  },
                   validate: {
                     noRepeatingCharacters: value => !/(.)\1{3}/.test(value) || "No puedes ingresar 4 caracteres iguales seguidos",
                     consonantsAndVowels: value => {
+                      let hasConsonant = false;
+                      let hasVowel = false;
                       for (let i = 0; i < value.length - 3; i++) {
                         const substring = value.substring(i, i + 4);
                         const consonants = substring.match(/[bcdfghjklmnpqrstvwxyz]/gi);
                         const vowels = substring.match(/[aeiou]/gi);
-                        if (!consonants || !vowels) {
-                          return "Cada grupo de 4 caracteres debe contener al menos una consonante y una vocal.";
+                        if (consonants && vowels) {
+                          hasConsonant = true;
+                          hasVowel = true;
+                        } else if (consonants) {
+                          hasConsonant = true;
+                        } else if (vowels) {
+                          hasVowel = true;
+                        }
+                        if (hasConsonant && hasVowel) {
+                          return true;
+                        }
+                      }
+                      return "Cada grupo de 4 caracteres debe contener al menos una consonante y una vocal.";
+                    },
+                    consecutiveCharacters: value => {
+                      if (!/^[aeiou\s]*$/i.test(value) && value.length > 22) {
+                        const regex = /[^ ]{23,}/;
+                        if (regex.test(value)) {
+                          return "Error: Hay más de 22 caracteres consecutivos sin espacio.";
                         }
                       }
                       return true;
@@ -299,6 +313,8 @@ export default function RentFriendForm() {
                 })}
                 errors={errors}
               />
+
+
             </div>
 
           </div>
