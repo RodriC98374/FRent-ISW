@@ -8,6 +8,7 @@ import { useState } from "react";
 import { Country, State } from "country-state-city";
 import { createRegisterFriend } from "../../../api/register.api";
 import { createLikes } from "../../../api/register.api";
+import swal from 'sweetalert';
 
 import InterestModal from "../Interests/interestSection";
 
@@ -66,6 +67,10 @@ export function FriendForm() {
       };
 
       await createLikes(user_likes);
+      swal("Registro exitoso", "El cliente se registró correctamente", "success");
+          setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
+            swal.close();
+          }, 1000);
       reset();
     } catch (error) {
       console.error("Error al enviar los datos:", error);

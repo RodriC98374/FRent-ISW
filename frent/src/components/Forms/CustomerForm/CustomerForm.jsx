@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Country, State } from "country-state-city";
 import { createRegisterClient } from "../../../api/register.api";
 import { createLikes } from "../../../api/register.api";
+import swal from 'sweetalert';
 
 import './customerForm.css';
 import InterestModal from "../Interests/interestSection";
@@ -61,7 +62,10 @@ export function CustomerForm() {
             };
 
             await createLikes(user_likes);
-            alert("Datos enviados correctamente");
+            swal("Registro exitoso", "El cliente se registró correctamente", "success");
+            setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
+                swal.close();
+            }, 2000);
             reset();
         } catch (error) {
             console.log(error)
