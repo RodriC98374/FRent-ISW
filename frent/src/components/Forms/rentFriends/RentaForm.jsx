@@ -60,6 +60,10 @@ export default function RentFriendForm() {
       setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
         swal.close();
       }, 1000);
+      swal("Reserva exitosa", "", "success"); // Mostrar mensaje de reserva exitosa
+      setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
+        swal.close();
+      }, 1000);
       reset();
     } catch (error) {
       console.log(error);
@@ -83,13 +87,14 @@ export default function RentFriendForm() {
       }
     });
   };
-
+  
   useEffect(() => {
     async function loadOutfit() {
       try {
         const res = await getOutfit();
         setOutfit(res.data)
       } catch (error) {
+        console.log("Error al cargar las vestimentas: ", error)
         console.log("Error al cargar las vestimentas: ", error)
       }
     }
@@ -104,6 +109,7 @@ export default function RentFriendForm() {
         setEvent(res.data)
         console.log(res.data)
       } catch (error) {
+        console.log("Error al cargar las vestimentas: ", error)
         console.log("Error al cargar las vestimentas: ", error)
       }
     }
