@@ -243,22 +243,43 @@ export default function RentFriendForm() {
 
             </div>
 
+
             <div className="input-4c descripction">
               <InputText
                 id={"description"}
-                label={"Descripcion"}
+                label={"Descripción"}
                 type={"textarea"}
-                required={false}
-                placeholder={"Ingrese una descripcion para la cita"}
+                required={true}
+                placeholder={"Ingrese una descripción"}
                 register={register("description", {
+                  required: "Este campo es obligatorio",
                   maxLength: {
                     value: 150,
-                    message: "La descripcion no debe exceder los 150 caracteres"
+                    message: "Excedió el número máximo de caracteres (150)",
+                  },
+                  pattern: {
+                    value: /^(?:[^\s]{22}\s)*[^\s]{0,22}$/,
+                    message: "Cada grupo de 22 caracteres debe contener un espacio.",
+                  },
+                  validate: {
+                    noRepeatingCharacters: value => !/(.)\1{3}/.test(value) || "No puedes ingresar 4 caracteres iguales seguidos",
+                    consonantsAndVowels: value => {
+                      for (let i = 0; i < value.length - 3; i++) {
+                        const substring = value.substring(i, i + 4);
+                        const consonants = substring.match(/[bcdfghjklmnpqrstvwxyz]/gi);
+                        const vowels = substring.match(/[aeiou]/gi);
+                        if (!consonants || !vowels) {
+                          return "Cada grupo de 4 caracteres debe contener al menos una consonante y una vocal.";
+                        }
+                      }
+                      return true;
+                    }
                   }
                 })}
                 errors={errors}
               />
             </div>
+
           </div>
           <div className="buttons-section">
             <ButtonPrimary type={"submit"} label={"Alquilar"} />
