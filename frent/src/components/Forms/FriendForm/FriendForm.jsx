@@ -40,6 +40,10 @@ export function FriendForm() {
   };
 
   const onSubmit = handleSubmit(async (data) => {
+    if (selectedInterests.length < 2) {
+      setErrorMessage("Debe seleccionar al menos 2 intereses.");
+      return; // Detener el envío del formulario si no se seleccionan suficientes intereses
+    }
     const friend = {
       city: data.City,
       country: data.Country,
