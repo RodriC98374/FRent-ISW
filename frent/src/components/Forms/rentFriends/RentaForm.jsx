@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { ButtonPrimary } from '../../Buttons/buttonPrimary';
 import { ButtonSecondary } from '../../Buttons/buttonSecondary';
 import { useForm } from 'react-hook-form';
@@ -8,8 +9,10 @@ import { createRegisterRent } from '../../../api/register.api';
 import { getOutfit } from '../../../api/register.api';
 import { getEvent } from '../../../api/register.api';
 import swal from 'sweetalert'; // Importar SweetAlert
+//import CancelModal from './CancelModal';
+
 import './RentaForm.css';
-import { NavLink } from 'react-router-dom';
+
 
 export default function RentFriendForm() {
   const { register, handleSubmit,
@@ -22,6 +25,21 @@ export default function RentFriendForm() {
   const [selectedOutfit, setSelectedOutfit] = useState("");
   const [outfit, setOutfit] = useState([]);
   const [event, setEvent] = useState([])
+  const [showModal, setShowModal] = useState(false);
+
+  const handleCancel = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleConfirmCancel = () => {
+    // Aquí puedes agregar la redirección o cualquier otra acción que desees al confirmar la cancelación
+    setShowModal(false);
+  };
+
 
   const onSubmit = handleSubmit(async (data) => {
     const frent = {
@@ -60,6 +78,9 @@ export default function RentFriendForm() {
         swal("Se canceló la operación", {
           icon: "success",
         });
+        reset(); // Limpiar el formulario
+      } else {
+        swal.close();
       }
     });
   };
@@ -160,6 +181,9 @@ export default function RentFriendForm() {
                       if (selectedTime < startTime || selectedTime > endTime) {
                         return "La hora debe estar entre las 6:00 AM y las 21:00 PM.";
                       }
+
+
+
                     }
                   })}
                   errors={errors}
