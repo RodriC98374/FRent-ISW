@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { NavLink, useParams } from 'react-router-dom'; // Importar useParams
 import { ButtonPrimary } from '../../Buttons/buttonPrimary';
 import { ButtonSecondary } from '../../Buttons/buttonSecondary';
 import { useForm } from 'react-hook-form';
@@ -7,16 +8,14 @@ import { SelectOptions } from '../Selects/selectOptions';
 import { createRegisterRent } from '../../../api/register.api';
 import { getOutfit } from '../../../api/register.api';
 import { getEvent } from '../../../api/register.api';
-import CancelModal from './CancelModal';
+import swal from 'sweetalert'; // Importar SweetAlert
 
 import './RentaForm.css';
 
-
 export default function RentFriendForm() {
-  const { register, handleSubmit,
-    formState: { errors },
-    reset
-  } = useForm();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const { id } = useParams(); // Obtener el ID del amigo de la URL
+  const friendId = parseInt(id); // Convertir el ID a entero
 
   const [selectedHour, setSelectedHour] = useState("");
   const [selectedEvent, setSelectedEvent] = useState("");
@@ -34,7 +33,6 @@ export default function RentFriendForm() {
   };
 
   const handleConfirmCancel = () => {
-    // Aquí puedes agregar la redirección o cualquier otra acción que desees al confirmar la cancelación
     setShowModal(false);
   };
 
@@ -48,27 +46,49 @@ export default function RentFriendForm() {
       outfit: parseInt(data.id_outfit),
       location: data.location,
       description: data.description,
-      friend: 3,
-      client: 1
+      friend: friendId, // Asignar el ID del amigo
+      client: 1 // Suponiendo que el ID del cliente es 1 (puedes cambiarlo según tu lógica)
     };
 
     try {
       const restRent = await createRegisterRent(frent);
       console.log(restRent);
+      swal("Reserva exitosa", "", "success"); // Mostrar mensaje de reserva exitosa
+      setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
+        swal.close();
+      }, 2000);
       reset();
     } catch (error) {
       console.log(error);
     }
   });
 
-
+  const confirmCancel = () => {
+    swal({
+      title: "¿Está seguro de cancelar?",
+      icon: "warning",
+      buttons: ["Cancelar", "Aceptar"],
+      dangerMode: true,
+    }).then((willCancel) => {
+      if (willCancel) {
+        swal("Se canceló la operación", {
+          icon: "success",
+        });
+        reset(); // Limpiar el formulario
+      } else {
+        swal.close();
+      }
+    });
+  };
+  
   useEffect(() => {
     async function loadOutfit() {
       try {
         const res = await getOutfit();
         setOutfit(res.data)
       } catch (error) {
-        console.log("Error al carhar las vestimentas: ", error)
+        console.log("Error al cargar las vestimentas: ", error)
+        console.log("Error al cargar las vestimentas: ", error)
       }
     }
 
@@ -82,13 +102,13 @@ export default function RentFriendForm() {
         setEvent(res.data)
         console.log(res.data)
       } catch (error) {
-        console.log("Error al carhar las vestimentas: ", error)
+        console.log("Error al cargar las vestimentas: ", error)
+        console.log("Error al cargar las vestimentas: ", error)
       }
     }
 
     loadEvent();
   }, [])
-
 
   const optionsHour = [
     { value: 1.0, label: "1 hora" },
@@ -97,7 +117,6 @@ export default function RentFriendForm() {
     { value: 4.0, label: "4 horas" },
     { value: 5.0, label: "5 horas" }
   ]
-
 
   return (
     <div className="container">
@@ -160,9 +179,6 @@ export default function RentFriendForm() {
                       if (selectedTime < startTime || selectedTime > endTime) {
                         return "La hora debe estar entre las 6:00 AM y las 21:00 PM.";
                       }
-
-
-
                     }
                   })}
                   errors={errors}
@@ -175,7 +191,7 @@ export default function RentFriendForm() {
                 id={"duration"}
                 label={"Duración de la cita"}
                 name={"hora"}
-                placeholder={"Elija la duracion de la cita"}
+                placeholder={"Elija la duración de la cita"}
                 value={selectedHour}
                 required={true}
                 options={optionsHour}
@@ -243,30 +259,33 @@ export default function RentFriendForm() {
 
             </div>
 
+
             <div className="input-4c descripction">
-              <InputText
-                id={"description"}
-                label={"Descripcion"}
-                type={"textarea"}
-                required={false}
-                placeholder={"Ingrese una descripcion para la cita"}
-                register={register("description", {
-                  maxLength: {
-                    value: 150,
-                    message: "La descripcion no debe exceder los 150 caracteres"
-                  }
-                })}
-                errors={errors}
-              />
+            <InputText
+    id={"description"}
+    label={"Descripción"}
+    type={"textarea"}
+    required={false}
+    placeholder={"Ingrese una descripción"}
+    register={register("description", {
+        maxLength: {
+            value: 150,
+            message: "Excedió el número máximo de caracteres (150)",
+        },     
+    })}
+    errors={errors}
+/>
+
+
             </div>
+
           </div>
           <div className="buttons-section">
             <ButtonPrimary type={"submit"} label={"Alquilar"} />
-            <ButtonSecondary onClick={handleCancel} label={"Cancelar"} />
+            <NavLink to='/listfriend'>
+              <ButtonSecondary label={"Cancelar"} onClick={confirmCancel} />
+            </NavLink>
           </div>
-          {showModal && (
-            <CancelModal onClose={handleCloseModal} onConfirm={handleConfirmCancel} />
-          )}
         </form>
       </div>
     </div>

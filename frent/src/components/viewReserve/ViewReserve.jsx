@@ -4,7 +4,7 @@ import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
-import { getClient, getRent, getPrice, deleteRent, get_likes_user } from "../../api/register.api";
+import { getClient, getRent, getPrice, get_likes_user } from "../../api/register.api";
 
 export default function ViewReserve() {
     const [listRent, setListRent] = useState([]);
@@ -97,7 +97,7 @@ export default function ViewReserve() {
             return `${Math.floor(secondsPassed / 86400)} días`;
         }
     };
-    const handleAccept = async (rentId) => {
+    /* const handleAccept = async (rentId) => {
         try {
             const accepted = window.confirm("¿Aceptas ser el amigo?");
             if (accepted) {
@@ -119,7 +119,7 @@ export default function ViewReserve() {
         } catch (error) {
             console.error(error);
         }
-    };
+    }; */
 
 
     return (
@@ -159,7 +159,7 @@ export default function ViewReserve() {
                                         <h3 className="name-client">
                                             {getClientName(rent.client)}
                                         </h3>
-                                        <di className="details">
+                                        <div className="details">
                                             <p className="verified-date">
                                                 <FaCalendar className="icon" />
                                                 {rent.fecha_cita}
@@ -168,7 +168,7 @@ export default function ViewReserve() {
                                                 <FaClock className="icon" />
                                                 {rent.time}
                                             </p>
-                                        </di>
+                                        </div>
                                         <div className="details">
                                             <p className="verified">
                                                 <RiVerifiedBadgeFill className="icon" />
@@ -191,14 +191,14 @@ export default function ViewReserve() {
                                     </div>
                                 </div>
                                 <hr></hr>
-                                <div className="action-buttons">
+                                {/* <div className="action-buttons">
                                     <button className="btnV"
                                         onClick={() => handleAccept(rent.id)}
                                     >Aceptar</button>
                                     <button className="btnVR"
                                         onClick={() => handleReject(rent.id)}
                                     >Rechazar</button>
-                                </div>
+                                </div> */}
                             </div>
                         ))
                     )}

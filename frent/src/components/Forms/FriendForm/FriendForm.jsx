@@ -8,6 +8,7 @@ import { useState } from "react";
 import { Country, State } from "country-state-city";
 import { createRegisterFriend } from "../../../api/register.api";
 import { createLikes } from "../../../api/register.api";
+import swal from 'sweetalert';
 
 import InterestModal from "../Interests/interestSection";
 
@@ -28,6 +29,9 @@ export function FriendForm() {
   const [selectedGender, setSelectedGender] = useState("");
   const [selectedPrice, setSelectedPrices] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [errorLike, setErrorLike] = useState("");
+
+  const [cityEnabled, setCityEnabled] = useState(false);
 
   const translateErrorMessage = (errorMessage) => {
     const errorTranslations = {
@@ -38,6 +42,10 @@ export function FriendForm() {
   };
 
   const onSubmit = handleSubmit(async (data) => {
+    if (selectedInterests.length < 2) {
+      setErrorMessage("Debe seleccionar al menos 2 intereses.");
+      return; // Detener el envío del formulario si no se seleccionan suficientes intereses
+    }
     const friend = {
       city: data.City,
       country: data.Country,
@@ -60,6 +68,10 @@ export function FriendForm() {
       };
 
       await createLikes(user_likes);
+      swal("Registro exitoso", "El cliente se registró correctamente", "success");
+      setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
+        swal.close();
+      }, 1000);
       reset();
     } catch (error) {
       console.error("Error al enviar los datos:", error);
@@ -90,10 +102,10 @@ export function FriendForm() {
 
   const handleSaveInterests = (selectedInterests) => {
     if (selectedInterests.length < 2) {
-      setErrorMessage("Debe seleccionar al menos 2 intereses.");
+      setErrorLike("Debe seleccionar al menos 2 intereses.");
     } else {
       setSelectedInterests(selectedInterests);
-      setErrorMessage(""); // Limpiar el mensaje de error si la validación pasa
+      setErrorLike(""); // Limpiar el mensaje de error si la validación pasa
     }
   };
 
@@ -106,7 +118,7 @@ export function FriendForm() {
     setSelectedState("");
     // Actualizar el valor en el formulario
     setValue("pais", selectedCountryIsoCode);
-    console.log(states);
+    setCityEnabled(true);
   };
 
   const handleStateChange = (e) => {
@@ -135,8 +147,8 @@ export function FriendForm() {
                     message: "El nombre es requerido",
                   },
                   pattern: {
-                    value: /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/,
-                    message: "El nombre solo puede contener letras",
+                    value: /^[a-zA-Z]+(?:\s[a-zA-Z]+){0,3}$/,
+                    message: "El nombre solo puede contener letras y maximo 3 espacios",
                   },
 
                   minLength: {
@@ -164,8 +176,8 @@ export function FriendForm() {
                     message: "El apellido es requerido",
                   },
                   pattern: {
-                    value: /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/,
-                    message: "El nombre solo puede contener letras",
+                    value: /^[a-zA-Z]+(?:\s[a-zA-Z]+){0,3}$/,
+                    message: "El nombre solo puede contener letras y maximo 3 espacios",
                   },
                   minLength: {
                     value: 2,
@@ -252,6 +264,7 @@ export function FriendForm() {
             </div>
             <div className="input-1c">
               <SelectOptions
+                className="pais-select"
                 id={"City"}
                 label={"Ciudad"}
                 name={"ciudad"}
@@ -270,6 +283,7 @@ export function FriendForm() {
                   },
                 })}
                 errors={errors}
+                disabled={!cityEnabled}
               />
             </div>
             <div className="input-4c">
@@ -344,13 +358,14 @@ export function FriendForm() {
             <div className="input-4c descripction">
               <label htmlFor="descripcion">Descripción</label>
               <textarea
+                placeholder="Cuentanos sobre ti"
                 name="descripcion"
                 className="textAreaDescription"
                 {...register("Personal_description", {
                   maxLength: {
                     value: 150,
-                    message: "Exedio el numero de caracteres",
-                  },
+                    message: "Excedió el número máximo de caracteres (150)",
+                  }
                 })}
               ></textarea>
               {errors.Personal_description && (
@@ -385,14 +400,14 @@ export function FriendForm() {
                 errors={errors}
               />
 
-              {errors.interests && <div className="error-message">Debe seleccionar entre 2 y 10 intereses.</div>}
+              <div className="error-message">{errorLike}</div>
             </div>
           </div>
           <div className="buttons-section">
             <NavLink to="/">
               <ButtonSecondary label={"Cancelar"} />
             </NavLink>
-            <ButtonPrimary type={"submit"} label={"Registrarse"} />
+            <ButtonPrimary type={"submit"} label={"Registrar"} />
           </div>
         </form>
       </div>
