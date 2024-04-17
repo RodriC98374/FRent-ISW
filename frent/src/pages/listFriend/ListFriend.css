@@ -1,16 +1,16 @@
 /* ListFriend.css */
 
-.list-friend > h1{
+.list-friend > h1 {
   text-align: center;
 }
 
 .lista {
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-gap: 20px;
-justify-items: center;
-padding: 24px 48px;
-height: 70vh;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  padding: 24px 48px;
+  height: 70vh;
 }
 
 .card {
@@ -27,7 +27,7 @@ height: 70vh;
   height: 280px;
 }
 
-.top-card{
+.top-card {
   position: absolute;
   top: 0;
   left: 0;
@@ -45,8 +45,9 @@ height: 70vh;
   z-index: 999;
 }
 
-.card-texts{
-text-align: center;
+.card-texts {
+  text-align: center;
+  width: 100%;
 }
 
 /* .card > p {
@@ -56,40 +57,41 @@ margin-top: 0px !important;
 margin-bottom: 0px !important;
 } */
 
-.name-card{
-font-size: var(--h6-size);
+.name-card {
+  font-size: var(--h6-size);
 }
 
-.age-card{
-font-size: var(--pM-size);
-color: #00000093;
+.age-card {
+  font-size: var(--pM-size);
+  color: #00000093;
 }
 
-.subtitle-card{
-font-size: var(--pL-size);
+.subtitle-card {
+  font-size: var(--pL-size);
 }
 
-.text-card{
-font-size: var(--pL-size);
-text-align: unset;
+.text-card {
+  font-size: var(--pL-size);
+  text-align: unset;
+  width: 100%;
+  
 }
-.button-card { 
-position: absolute;
-width: 84.8%;
-text-align: center;
-bottom: 0;
-left: 0;
-padding: 16px 24px;
-background-color: var(--quaternary-color);
-color: #fff;
-border-radius: 0 0 8px 8px;
+.button-card {
+  position: absolute;
+  width: 84.8%;
+  text-align: center;
+  bottom: 0;
+  left: 0;
+  padding: 16px 24px;
+  background-color: var(--quaternary-color);
+  color: #fff;
+  border-radius: 0 0 8px 8px;
 }
 
 .button-card > a {
-text-decoration: none;
-color: #000;
+  text-decoration: none;
+  color: #000;
 }
-
 
 .modalF {
   position: fixed;
@@ -101,7 +103,7 @@ color: #000;
   place-items: center;
   width: 500px;
   z-index: 999;
-  transition: all 0.3s ease; 
+  transition: all 0.3s ease;
 }
 
 .modal-background {
@@ -111,16 +113,16 @@ color: #000;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 998; 
+  z-index: 998;
 }
 
 .close {
   position: absolute;
-  bottom: 25px; 
+  bottom: 25px;
   left: 60%;
-  transform: translateX(-50%); 
+  transform: translateX(-50%);
   font-size: 16px;
-  background-color: red; 
+  background-color: red;
   color: white;
   padding: 8px 16px;
   border: none;
@@ -129,5 +131,5 @@ color: #000;
 }
 
 .close:hover {
-  background-color: darkred; 
+  background-color: darkred;
 }
