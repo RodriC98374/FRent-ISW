@@ -23,6 +23,7 @@
 .descripction > textarea{
     border: 3px solid #ccc;
     border-radius: 8px;
+    padding: 12px 24px;
 }
 
 .location {
@@ -78,7 +79,7 @@
 
 .textAreaDescription {
     resize: none;
-    width: 100%;
+    width: 93%;
     height: 100px; /* Ajusta la altura según sea necesario */
 }
 
@@ -91,6 +92,13 @@
     display: flex;
     justify-content: space-between;
     margin-top: 48px;
+}
+
+.select-component > select {
+    border-radius: 4px;
+    padding: 12px 24px;
+    color:#7b7676;
+    border: 2px solid #ccc;
 }
 
 @media (max-width: 900px) {

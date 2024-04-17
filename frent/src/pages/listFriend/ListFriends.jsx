@@ -10,10 +10,14 @@ export default function ListFriend() {
   const staticImage = "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
 
   useEffect(() => {
-    async function loadFriends() {
-      const res = await getFriends();
-      setFriends(res.data);
-    }
+    const loadFriends = async () => {
+      try {
+        const res = await getFriends();
+        setFriends(res.data);
+      } catch (error) {
+        console.error("Error al cargar la lista de amigos:", error);
+      }
+    };
     loadFriends();
   }, []);
 
@@ -30,19 +34,19 @@ export default function ListFriend() {
 
   const openModal = (image) => {
     setSelectedImage(image);
-    document.body.style.overflow = 'hidden'; 
+    document.body.style.overflow = 'hidden';
   };
 
   const closeModal = () => {
     setSelectedImage(null);
-    document.body.style.overflow = 'auto'; 
+    document.body.style.overflow = 'auto';
   };
 
   return (
     <div className='list-friend'>
       <h1>Lista de amigos</h1>
       <div className='lista'>
-        {friends.map(friend => (
+        {friends.map((friend) => (
           <div key={friend.id_user} className="card">
             <div className="top-card"></div>
             <img src={staticImage} alt="foto de perfil" onClick={() => openModal(staticImage)} />
