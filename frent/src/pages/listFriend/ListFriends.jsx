@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import './ListFriend.css';
-import { NavLink } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import "./ListFriend.css";
+import { NavLink } from "react-router-dom";
 
-import { getFriends } from '../../api/register.api';
+import { getFriends } from "../../api/register.api";
 
 export default function ListFriend() {
   const [friends, setFriends] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
-  const staticImage = "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
+  const staticImage =
+    "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
 
   useEffect(() => {
     const loadFriends = async () => {
@@ -26,46 +27,99 @@ export default function ListFriend() {
     const dob = new Date(birthDate);
     let age = currentDate.getFullYear() - dob.getFullYear();
     const monthDiff = currentDate.getMonth() - dob.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < dob.getDate())) {
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && currentDate.getDate() < dob.getDate())
+    ) {
       age--;
     }
     return age;
   };
 
+  const formatDescription = (description) => {
+    let newDescription = "";
+
+    for (let i = 0; i < description.length; i++) {
+      if (i !== 30 && i !== 57) {
+        newDescription += description.charAt(i);
+      } else if (i >= 57) {
+        newDescription += "...";
+        break;
+      } else {
+        newDescription += " " + description.charAt(i);
+      }
+    }
+    return newDescription;
+  };
+
   const openModal = (image) => {
     setSelectedImage(image);
+<<<<<<< HEAD
     document.body.style.overflow = 'hidden';
+=======
+    document.body.style.overflow = "hidden";
+>>>>>>> ffcedc585d1b2dd2d948756ad4ea1b227c03b355
   };
 
   const closeModal = () => {
     setSelectedImage(null);
+<<<<<<< HEAD
     document.body.style.overflow = 'auto';
+=======
+    document.body.style.overflow = "auto";
+>>>>>>> ffcedc585d1b2dd2d948756ad4ea1b227c03b355
   };
 
   return (
-    <div className='list-friend'>
+    <div className="list-friend">
       <h1>Lista de amigos</h1>
+<<<<<<< HEAD
       <div className='lista'>
+=======
+      <div className="lista">
+>>>>>>> ffcedc585d1b2dd2d948756ad4ea1b227c03b355
         {friends.map((friend) => (
           <div key={friend.id_user} className="card">
             <div className="top-card"></div>
-            <img src={staticImage} alt="foto de perfil" onClick={() => openModal(staticImage)} />
+            <img
+              src={staticImage}
+              alt="foto de perfil"
+              onClick={() => openModal(staticImage)}
+            />
             <div className="card-texts">
-              <p className="name-card">{friend.first_name} {friend.last_name}</p>
-              <p className="age-card">Edad: {calculateAge(friend.birth_date)} años</p>
+              <p className="name-card">
+                {friend.first_name} {friend.last_name}
+              </p>
+              <p className="age-card">
+                Edad: {calculateAge(friend.birth_date)} años
+              </p>
               <p className="subtitle-card">Descripción</p>
-              <p className="text-card">{friend.personal_description}</p>
+              <p className="text-card">
+                {formatDescription(friend.personal_description)}
+              </p>
               <p>{friend.price} bs.</p>
             </div>
-            <NavLink className="button-card" to={`/rentaForm/${friend.id_user}`}>Alquilar</NavLink>
+            <NavLink
+              className="button-card"
+              to={`/rentaForm/${friend.id_user}`}
+            >
+              Alquilar
+            </NavLink>
           </div>
         ))}
       </div>
       {selectedImage && (
         <div className="modalF">
           <div className="modal-content">
-            <button className="close" onClick={closeModal}>Cerrar</button>
-            <img src={selectedImage} alt="imagen en tamaño grande" height="500px" width="500px" />
+            <button className="close" onClick={closeModal}>
+              Cerrar
+            </button>
+            <img
+              src={selectedImage}
+              alt="imagen en tamaño grande"
+              height="500px"
+              width="500px"
+            />
           </div>
         </div>
       )}
