@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Country, State } from "country-state-city";
 import { createRegisterClient } from "../../../api/register.api";
 import { createLikes } from "../../../api/register.api";
+import swal from 'sweetalert';
 
 import "./customerForm.css";
 import InterestModal from "../Interests/interestSection";
@@ -21,6 +22,24 @@ export function CustomerForm() {
     setValue,
     reset,
   } = useForm();
+
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedState, setSelectedState] = useState("");
+  const [states, setStates] = useState([]);
+  const [selectedGender, setSelectedGender] = useState("");
+  const [selectedInterests, setSelectedInterests] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [cityEnabled, setCityEnabled] = useState(false);
+  const [errorLike, setErrorLike] = useState("");
+
+  const translateErrorMessage = (errorMessage) => {
+    const errorTranslations = {
+      "user with this email already exists.":
+        "Ya existe un usuario con este correo electrónico.",
+    };
+
+    return errorTranslations[errorMessage] || errorMessage;
+  };
 
   const onSubmit = handleSubmit(async (data) => {
     const client = {
@@ -44,10 +63,24 @@ export function CustomerForm() {
       };
 
       await createLikes(user_likes);
-      alert("Datos enviados correctamente");
+      swal("Registro exitoso", "El cliente se registró correctamente", "success");
+            setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
+                swal.close();
+            }, 2000);
       reset();
     } catch (error) {
       console.log(error);
+      console.error("Error al enviar los datos:", error);
+      if (error.response && error.response.data && error.response.data.email) {
+        const translatedErrorMessage = translateErrorMessage(
+          error.response.data.email[0]
+        );
+        setErrorMessage(translatedErrorMessage);
+      } else {
+        setErrorMessage(
+          "Error al enviar los datos, por favor inténtelo de nuevo."
+        );
+      }
     }
   });
 
@@ -57,15 +90,13 @@ export function CustomerForm() {
     { value: "noIndicado", label: "Prefiero no decirlo" },
   ];
 
-  const [selectedCountry, setSelectedCountry] = useState("");
-  const [selectedState, setSelectedState] = useState("");
-  const [states, setStates] = useState([]);
-
-  const [selectedGender, setSelectedGender] = useState("");
-  const [selectedInterests, setSelectedIntersts] = useState("");
-
   const handleSaveInterests = (selectedInterests) => {
-    setSelectedIntersts(selectedInterests);
+    if (selectedInterests.length < 2) {
+      setErrorLike("Debe seleccionar al menos 2 intereses.");
+    } else {
+      setSelectedInterests(selectedInterests);
+      setErrorLike(""); // Limpiar el mensaje de error si la validación pasa
+    }
   };
 
   const handleCountryChange = (e) => {
@@ -77,6 +108,7 @@ export function CustomerForm() {
     setSelectedState("");
     // Actualizar el valor en el formulario
     setValue("pais", selectedCountryIsoCode);
+    setCityEnabled(true);
     console.log(states);
   };
 
@@ -90,8 +122,11 @@ export function CustomerForm() {
   return (
     <div className="body-page">
       <div className="form-body-container">
-        <h3>Datos Personales</h3>
-        <form action="" id="formulario-cliente" onSubmit={onSubmit}>
+        <h3>Datos personales del cliente</h3>
+        <form
+          action=""
+          id="formulario-cliente"
+          onSubmit={onSubmit}>
           <div className="colums-inputs">
             <div className="input-2c">
               <InputText
@@ -105,13 +140,17 @@ export function CustomerForm() {
                     value: true,
                     message: "Este campo es obligatorio",
                   },
+                  pattern: {
+                    value: /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/,
+                    message: "El nombre solo puede contener letras",
+                  },
                   minLength: {
                     value: 2,
                     message: "El nombre debe tener al menos 2 caracteres",
                   },
                   maxLength: {
                     value: 20,
-                    message: "Demaciados caracteres",
+                    message: "Demasiados caracteres",
                   },
                 })}
                 errors={errors}
@@ -139,7 +178,7 @@ export function CustomerForm() {
                   },
                   maxLength: {
                     value: 20,
-                    message: "Demaciados caracteres",
+                    message: "Demasiados caracteres",
                   },
                 })}
                 errors={errors}
@@ -148,7 +187,7 @@ export function CustomerForm() {
             <div className="input-1c">
               <InputText
                 id={"birth_date"}
-                label={"Fecha Nacimiento"}
+                label={"Fecha de nacimiento"}
                 type={"date"}
                 required={true}
                 placeholder={"DD/MM/AA"}
@@ -236,6 +275,7 @@ export function CustomerForm() {
                   },
                 })}
                 errors={errors}
+                disabled={!cityEnabled}
               />
             </div>
             <div className="input-4c">
@@ -257,6 +297,9 @@ export function CustomerForm() {
                 })}
                 errors={errors}
               />
+              {errorMessage && (
+                <div className="error-message">{errorMessage}</div>
+              )}
             </div>
             <div className="input-2c">
               <InputText
@@ -274,14 +317,16 @@ export function CustomerForm() {
                     value: 8,
                     message: "Debe tener al menos 8 caracteres",
                   },
-                  // pattern: {
-                  //     value: /^(?=.[A-Za-z])(?=.\d)[A-Za-z\d]{8,}$/,
-                  //     message: "La contraseña debe contener al menos una letra y un número",
-                  // },
+                  pattern: {
+                    value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+                    message:
+                      "La contraseña debe contener al menos una letra y un número",
+                  },
                 })}
                 errors={errors}
               />
             </div>
+
             <div className="input-2c">
               <InputText
                 id={"confirmarPassword"}
@@ -308,71 +353,38 @@ export function CustomerForm() {
             <div className="input-4c descripction">
               <label htmlFor="descripcion">Descripción</label>
               <textarea
+              placeholder="Cuentanos sobre ti"
                 name="descripcion"
                 className="textAreaDescription"
                 {...register("Personal_description", {
-                  required: {
-                    value: false,
-                  },
                   maxLength: {
                     value: 150,
-                    message: "Numero de caracteres excedido (150)",
+                    message: "Excedió el número máximo de caracteres (150)",
                   },
-
-                  validate: {
-                    noRepeatingCharacters: (value) =>
-                      !/(.)\1{3}/.test(value) ||
-                      "No puedes ingresar 4 caracteres iguales seguidos",
-                    consonantsAndVowels: (value) => {
-                      let hasConsonant = false;
-                      let hasVowel = false;
-                      for (let i = 0; i < value.length - 3; i++) {
-                        const substring = value.substring(i, i + 4);
-                        const consonants = substring.match(
-                          /[bcdfghjklmnpqrstvwxyz]/gi
-                        );
-                        const vowels = substring.match(/[aeiou]/gi);
-                        if (consonants && vowels) {
-                          hasConsonant = true;
-                          hasVowel = true;
-                        } else if (consonants) {
-                          hasConsonant = true;
-                        } else if (vowels) {
-                          hasVowel = true;
-                        }
-                        if (hasConsonant && hasVowel) {
-                          return true;
-                        }
-                      }
-                      return "Cada grupo de 4 caracteres debe contener al menos una consonante y una vocal.";
-                    },
-                    consecutiveCharacters: (value) => {
-                      if (!/^[aeiou\s]*$/i.test(value) && value.length > 22) {
-                        const regex = /[^ ]{23,}/;
-                        if (regex.test(value)) {
-                          return "Error: Hay más de 22 caracteres consecutivos sin espacio.";
-                        }
-                      }
-                      return true;
-                    },
-                  },
-                })}
-              ></textarea>
-              {errors.descripcion && (
+                })}></textarea>
+              {errors.Personal_description && (
                 <span className="error-message">
-                  {errors.descripcion.message}
+                  {errors.Personal_description.message}
                 </span>
               )}
             </div>
+
             <div className="input-4c">
-              <InterestModal onSaveInterests={handleSaveInterests} />
+              <InterestModal
+                onSaveInterests={handleSaveInterests}
+                errors={errors}
+              />
+              <div className="error-message">{errorLike}</div>
             </div>
           </div>
           <div className="buttons-section">
             <NavLink to="/">
               <ButtonSecondary label={"Cancelar"} />
             </NavLink>
-            <ButtonPrimary type={"submit"} label={"Registrarse"} />
+            <ButtonPrimary
+              type={"submit"}
+              label={"Registrar"}
+            />
           </div>
         </form>
       </div>
