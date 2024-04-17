@@ -356,7 +356,7 @@ export function FriendForm() {
               />
             </div>
             <div className="input-4c descripction">
-              <label htmlFor="descripcion">Descripción</label>
+              <label htmlFor="descripcion">Descripción personal</label>
               <textarea
                 placeholder="Cuentanos sobre ti"
                 name="descripcion"
