@@ -1,7 +1,7 @@
 import React from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import "./Details.css";
-import { FaUserFriends, FaCalendar, FaClock } from "react-icons/fa";
+import { FaUserFriends, FaCalendar, FaClock,FaKey  } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import imgApp from "../../assets/imgApp";
