@@ -1,7 +1,8 @@
 
-#POBLAR LA TABLA TASTE
-##CORRER CON  python populate_data.py
+# POBLAR LA TABLA TASTE
+# CORRER CON  python populate_data.py
 
+from users.models import Like
 import os
 import django
 
