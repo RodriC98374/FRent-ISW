@@ -1,14 +1,14 @@
 
-#POBLAR LA TABLA TASTE
-##CORRER CON  python populate_data.py
+# POBLAR LA TABLA TASTE
+# CORRER CON  python populate_data.py
 
+from users.models import Like
 import os
 import django
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'frent.settings')
 django.setup()
 
-from users.models import Like
 
 def populate_data():
     gustos = [
