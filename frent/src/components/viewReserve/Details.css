@@ -1,7 +1,7 @@
 .modal {
     display: flex;
     flex-direction: column;
-    width: 600px;
+    width: 520px;
     height: 600px;
     border: 3px solid black; /* Propiedades del borde */
   }
@@ -11,10 +11,11 @@
   .container {
     display: flex;
     padding: 10px;
-    height: 550px;
-    width: 550px;
+    height: 200px;
+    width: 480px;
     overflow: hidden;
-    flex-direction: row; /* Nueva propiedad */
+    flex-direction: row;
+    border-bottom: 3px solid black; 
   }
   
   .container img {
@@ -31,8 +32,8 @@
     display: flex;
     flex-direction: column; /* Mantener la alineación vertical */
     margin-bottom: 5px; /* Espacio entre cada detalle */
-    /* Elimina la propiedad width */
-  }
+    width: 100%;
+    }
   
   .modal-header {
     display: flex;
@@ -40,17 +41,14 @@
     margin-bottom: 10px; /* Space between the header and content */
     font-size: 20px; /* Size of the text */
     text-align: center;
-    border-bottom: 3px solid black; /* Propiedades del borde inferior */
-
+    border-bottom: 3px solid black; 
   }
   
-  /* Style the magnifying glass icon */
   .modal-header .FaSeach {
     margin-right: 5px;
   }
   
   
-  /* Style the "X" button (assuming it's within .modal) */
   .modal .AiOutlineClose {
     position: fixed;
     top: 10px;
@@ -58,3 +56,10 @@
     cursor: pointer;
     align-items: right;
   }
+
+  .cuerpo {
+    margin-top: 2px;
+    font-size: 12; 
+    line-height: 0.5;
+  }
+  

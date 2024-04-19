@@ -49,11 +49,28 @@ export const DetailsModal = ({ isOpen, closeModal, rent }) => {
             </p>
             <p className="locationR">
               <IoLocationSharp className="icon" />
-              Mi casa bv
+              Mi casa bb UwU
             </p>
           </div>
         </div>
+        
       </div>
+      <div className="cuerpo">
+            <p><strong>Duración:</strong> </p>
+            <p>1 hora</p>
+            <p><strong>Precio:</strong></p>
+            <p>40 BOB x 1 hora &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; 
+            &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;  40 BOB</p>
+            <p><strong>Lugar:</strong></p>
+            <p>Jose Aguirre Acha</p>
+            <p><strong>Tipo de evento:</strong></p>
+            <p>Boda</p>
+            <p><strong>Vestimenta del evento:</strong> </p>
+            <p>Elegante</p>
+            <p><strong>Descripción:</strong> </p>
+            <p>Es que te vi y dije, ig de la minita soy un lobo solitario auuuu</p>
+            <p><strong>Intereses:</strong> &lt;null&gt;</p>
+          </div>
     </div>
   );
 };
