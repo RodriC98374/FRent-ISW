@@ -10,13 +10,13 @@ from rest_framework import status
 from django.core.mail import send_mail
 
 
-def inicio(request):
-    notificaciones = Notificacion.objects.all()
-    context = {'notificaciones': notificaciones, }
-    return render(request, "notificaciones_api/inicio.html", context)
+# def inicio(request):
+#     notificaciones = Notificacion.objects.all()
+#     context = {'notificaciones': notificaciones, }
+#     return render(request, "notificaciones_api/inicio.html", context)
 
 
-class NotificacionesView(viewsets.ModelViewSet, APIView):
+class NotificacionesView(viewsets.ModelViewSet):
     serializer_class = NotificacionSerializer
     queryset = Notificacion.objects.all()
 
