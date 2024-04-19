@@ -3,16 +3,58 @@
     flex-direction: column;
     width: 600px;
     height: 600px;
+    border: 3px solid black; /* Propiedades del borde */
   }
-  
+  body {
+    font-family: "Alata", sans-serif;
+  }
   .container {
     display: flex;
     padding: 10px;
-    height: 400px;
-    width: 400px;
+    height: 550px;
+    width: 550px;
     overflow: hidden;
+    flex-direction: row; /* Nueva propiedad */
   }
   
   .container img {
     object-fit: cover;
+    width: 150px; /* Nueva propiedad */
+  }
+
+  .detalle {
+    display: flex;
+    align-items: center; /* Alinear elementos verticalmente */
+    margin-bottom: 5px; /* Espacio entre cada detalle */
+  }
+  .request-inf {
+    display: flex;
+    flex-direction: column; /* Mantener la alineación vertical */
+    margin-bottom: 5px; /* Espacio entre cada detalle */
+    /* Elimina la propiedad width */
+  }
+  
+  .modal-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Space between the header and content */
+    font-size: 20px; /* Size of the text */
+    text-align: center;
+    border-bottom: 3px solid black; /* Propiedades del borde inferior */
+
+  }
+  
+  /* Style the magnifying glass icon */
+  .modal-header .FaSeach {
+    margin-right: 5px;
+  }
+  
+  
+  /* Style the "X" button (assuming it's within .modal) */
+  .modal .AiOutlineClose {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    align-items: right;
   }

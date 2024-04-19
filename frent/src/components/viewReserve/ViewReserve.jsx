@@ -219,7 +219,7 @@ export default function ViewReserve() {
                                     >Rechazar</button>
                                 </div> */}
                                 {/* Renderiza el modal si se ha seleccionado un alquiler */}
-          <DetailsModal isOpen={selectedRent !== null} closeModal={closeModal} rent={selectedRent} />
+                <DetailsModal isOpen={selectedRent !== null} closeModal={closeModal} rent={selectedRent} />
                             </div>
                         ))
                     )}
