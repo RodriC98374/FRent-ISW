@@ -71,7 +71,6 @@ class UserLikeViewSet(viewsets.ModelViewSet):
             serializer = GustosSerializer(data={'id_user': usuario_id, 'gustos': gustos_nombres})
             
             if serializer.is_valid():
-                print(serializer.data)
                 return Response(serializer.data)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

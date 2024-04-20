@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'users',
     'rent',
     'notificaciones_api',
+    'notificacionesInterno',
     'coreapi'
 
 ]
