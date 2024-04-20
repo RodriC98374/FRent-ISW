@@ -40,3 +40,9 @@ class UserChangeForm(forms.ModelForm):
 
     def clean_password(self):
         return self.initial["password"]
+    
+
+class CustomUserCreationForm(forms.UserCreationForm):
+    class Meta(forms.UserCreationForm.Meta):
+        model = User
+        fields = ('first_name', 'last_name', 'email', 'personal_description', 'gender', 'country', 'birth_date', 'city')
