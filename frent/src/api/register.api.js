@@ -50,4 +50,12 @@ export const getPrice =  () => registersApi.get("/rents/price/")
 
 export const get_likes_user = (id) => registersApi.post('/users/api/v1/user_tastes/get_likes_user/', id)
 
+export const create_notification = (id) => registersApi.post('/notificacionesInterno/notiIn/', id)
+
+export const get_notifications_user = (id) => registersApi.get(`/notificacionesInterno/notiIn/${id}`)
+
+export const update_notifications_user = (id) => registersApi.patch(`/notificacionesInterno/notiIn/${id}/`)
+
+export const delete_notifications_user = (id) => registersApi.delete(`/notificacionesInterno/notiIn/${id}/`)
+
 /* export const getTime = (id) => registersApi.get(`/rents/time_elapsed/${id}/`) */
