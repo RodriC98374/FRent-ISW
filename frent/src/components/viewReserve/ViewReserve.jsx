@@ -4,7 +4,7 @@ import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
-import { getClient, getRent, getPrice, get_likes_user } from "../../api/register.api";
+import { getClient, getRent, getPrice, get_likes_user, deleteRent, getRegister, getClientID } from "../../api/register.api";
 
 export default function ViewReserve() {
     const [listRent, setListRent] = useState([]);
@@ -97,16 +97,22 @@ export default function ViewReserve() {
             return `${Math.floor(secondsPassed / 86400)} días`;
         }
     };
-    /* const handleAccept = async (rentId) => {
+
+    const handleAccept = async (rentId) => {
+        fetchClientEmail();
+
         try {
             const accepted = window.confirm("¿Aceptas ser el amigo?");
             if (accepted) {
+
                 await deleteRent(rentId);
                 fetchData();
             }
         } catch (error) {
             console.error("Error al aceptar el alquiler:", error);
+            console.log("los datos no aceptado:", rentId);
         }
+
     };
 
     const handleReject = async (rentId) => {
@@ -119,7 +125,19 @@ export default function ViewReserve() {
         } catch (error) {
             console.error(error);
         }
-    }; */
+    };
+
+    const fetchClientEmail = async () => {
+        const clientId = 8; // ID del cliente que deseas obtener
+        try {
+            const response = await getClientID(clientId);
+            const clientData = response.data;
+            const clientEmail = clientData.email;
+            console.log("Correo electrónico del cliente:", clientEmail);
+        } catch (error) {
+            console.error('Error al obtener el correo electrónico del cliente:', error);
+        }
+    };
 
 
     return (
@@ -191,19 +209,21 @@ export default function ViewReserve() {
                                     </div>
                                 </div>
                                 <hr></hr>
-                                {/* <div className="action-buttons">
+
+                                <div className="action-buttons">
                                     <button className="btnV"
-                                        onClick={() => handleAccept(rent.id)}
+                                        onClick={() => handleAccept(rent.id)} //rent.id
                                     >Aceptar</button>
                                     <button className="btnVR"
                                         onClick={() => handleReject(rent.id)}
                                     >Rechazar</button>
-                                </div> */}
+                                </div>
+
                             </div>
                         ))
                     )}
                 </div>
-            </div>
+            </div >
         </>
     );
 }
