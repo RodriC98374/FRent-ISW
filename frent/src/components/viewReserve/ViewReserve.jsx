@@ -4,7 +4,7 @@ import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
-import { getClient, getRent, getPrice, get_likes_user, deleteRent, getRegister, getClientID } from "../../api/register.api";
+import { getClient, getRent, getPrice, get_likes_user, deleteRent, getRegister, getClientID, getFriendID, createNotication } from "../../api/register.api";
 
 export default function ViewReserve() {
     const [listRent, setListRent] = useState([]);
@@ -99,12 +99,27 @@ export default function ViewReserve() {
     };
 
     const handleAccept = async (rentId) => {
-        fetchClientEmail();
+        console.log("los datos no aceptado:", rentId);
+
+        const clientResponse = await getClientID(8);
+        const clientEmail = clientResponse.data.email;
+        const friendResponse = await getFriendID(9);
+        const firstt_name = friendResponse.data.first_name;
+        const lastt_name = friendResponse.data.last_name;
+
+        // Obtener JSON y enviar a el correo electronico
+        const combinedData = {
+            email: clientEmail,
+            estado_solicitud: "Aprobada",
+            first_name: firstt_name,
+            last_name: lastt_name
+        };
+        console.log(combinedData);
+        createNotication(combinedData);
 
         try {
             const accepted = window.confirm("¿Aceptas ser el amigo?");
             if (accepted) {
-
                 await deleteRent(rentId);
                 fetchData();
             }
@@ -116,6 +131,7 @@ export default function ViewReserve() {
     };
 
     const handleReject = async (rentId) => {
+
         try {
             const rejected = window.confirm("¿Estás seguro de que deseas rechazar ser amigo?");
             if (rejected) {
@@ -127,17 +143,8 @@ export default function ViewReserve() {
         }
     };
 
-    const fetchClientEmail = async () => {
-        const clientId = 8; // ID del cliente que deseas obtener
-        try {
-            const response = await getClientID(clientId);
-            const clientData = response.data;
-            const clientEmail = clientData.email;
-            console.log("Correo electrónico del cliente:", clientEmail);
-        } catch (error) {
-            console.error('Error al obtener el correo electrónico del cliente:', error);
-        }
-    };
+
+
 
 
     return (

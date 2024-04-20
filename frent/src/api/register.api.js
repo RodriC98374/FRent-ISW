@@ -54,5 +54,8 @@ export const createNotication = (data) => registersApi.post('/notificaciones/sen
 
 export const getClientID = (id) => registersApi.get(`/users/api/v1/clients/${id}/`)
 
+export const getFriendID = (id) => registersApi.get(`/users/api/v1/friends/${id}/`)
+
+
 
 /* export const getTime = (id) => registersApi.get(`/rents/time_elapsed/${id}/`) */
