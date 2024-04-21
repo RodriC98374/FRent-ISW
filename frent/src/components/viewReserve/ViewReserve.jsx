@@ -4,8 +4,12 @@ import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
+<<<<<<< HEAD
 import { getClient, getRent, getPrice, get_likes_user } from "../../api/register.api";
 import { DetailsModal } from "./Details.js";
+=======
+import { getClient, getRent, getPrice, get_likes_user, deleteRent, create_notification} from "../../api/register.api";
+>>>>>>> 555fe102fcd7c79660eb35a4d7403f3bce17bc99
 
 export default function ViewReserve() {
     const [listRent, setListRent] = useState([]);
@@ -99,11 +103,18 @@ export default function ViewReserve() {
             return `${Math.floor(secondsPassed / 86400)} días`;
         }
     };
-    /* const handleAccept = async (rentId) => {
+    const handleAccept = async (rentId, rentClient, rentFriend) => {
         try {
             const accepted = window.confirm("¿Aceptas ser el amigo?");
             if (accepted) {
                 await deleteRent(rentId);
+                const dataNotification = {
+                    message: "Acepto ser tu amigo de alquiler!",
+                    from_user: rentFriend,
+                    to_user: rentClient,
+                    is_reading: false
+                }
+                await create_notification(dataNotification);
                 fetchData();
             }
         } catch (error) {
@@ -111,19 +122,29 @@ export default function ViewReserve() {
         }
     };
 
-    const handleReject = async (rentId) => {
+    const handleReject = async (rentId, rentClient, rentFriend) => {
         try {
             const rejected = window.confirm("¿Estás seguro de que deseas rechazar ser amigo?");
             if (rejected) {
                 await deleteRent(rentId);
+                const dataNotification = {
+                    message: "Rechazo tu solicitud de alquiler :(",
+                    from_user: rentFriend,
+                    to_user: rentClient,
+                    is_reading: false
+                }
+                await create_notification(dataNotification);
                 fetchData();
             }
         } catch (error) {
             console.error(error);
         }
+<<<<<<< HEAD
     }; */
     const openModal = (rent) => {
         setSelectedRent(rent);
+=======
+>>>>>>> 555fe102fcd7c79660eb35a4d7403f3bce17bc99
     };
 
     // Función para cerrar el modal
@@ -210,16 +231,20 @@ export default function ViewReserve() {
                                                 </div>
                                 </div>
                                 <hr></hr>
-                                {/* <div className="action-buttons">
+                                <div className="action-buttons">
                                     <button className="btnV"
-                                        onClick={() => handleAccept(rent.id)}
+                                        onClick={() => handleAccept(rent.id, rent.client, rent.friend)}
                                     >Aceptar</button>
                                     <button className="btnVR"
-                                        onClick={() => handleReject(rent.id)}
+                                        onClick={() => handleReject(rent.id, rent.client, rent.friend)}
                                     >Rechazar</button>
+<<<<<<< HEAD
                                 </div> */}
                                 {/* Renderiza el modal si se ha seleccionado un alquiler */}
                 <DetailsModal isOpen={selectedRent !== null} closeModal={closeModal} rent={selectedRent} />
+=======
+                                </div>
+>>>>>>> 555fe102fcd7c79660eb35a4d7403f3bce17bc99
                             </div>
                         ))
                     )}
