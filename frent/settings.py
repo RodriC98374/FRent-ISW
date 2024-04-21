@@ -167,14 +167,13 @@ REST_FRAMEWORK = {
 
 DJOSER = {
     'SERIALIZERS': {
-        'USER_CREATE': 'users.serializers.UserSerializer',
-        'USER': 'users.serializers.UserSerializer',
-        'CURRENT_USER': 'users.serializers.UserSerializer',
+        'user_create': 'users.serializers.UserSerializer',
+        'user': 'users.serializers.UserSerializer',
+        'current_user': 'users.serializers.UserSerializer',
     },
     'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
     'ACTIVATION_URL': 'activate/{uid}/{token}',
-    'SEND_ACTIVATION_EMAIL': True,
-    'SERIALIZERS': {},
+    'SEND_ACTIVATION_EMAIL': True, 
 }
 
 
