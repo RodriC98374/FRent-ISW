@@ -4,12 +4,8 @@ import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
-<<<<<<< HEAD
-import { getClient, getRent, getPrice, get_likes_user } from "../../api/register.api";
 import { DetailsModal } from "./Details.js";
-=======
 import { getClient, getRent, getPrice, get_likes_user, deleteRent, create_notification} from "../../api/register.api";
->>>>>>> 555fe102fcd7c79660eb35a4d7403f3bce17bc99
 
 export default function ViewReserve() {
     const [listRent, setListRent] = useState([]);
@@ -139,12 +135,9 @@ export default function ViewReserve() {
         } catch (error) {
             console.error(error);
         }
-<<<<<<< HEAD
-    }; */
+    }; 
     const openModal = (rent) => {
         setSelectedRent(rent);
-=======
->>>>>>> 555fe102fcd7c79660eb35a4d7403f3bce17bc99
     };
 
     // Función para cerrar el modal
@@ -238,14 +231,11 @@ export default function ViewReserve() {
                                     <button className="btnVR"
                                         onClick={() => handleReject(rent.id, rent.client, rent.friend)}
                                     >Rechazar</button>
-<<<<<<< HEAD
-                                </div> */}
+                                </div>
                                 {/* Renderiza el modal si se ha seleccionado un alquiler */}
                 <DetailsModal isOpen={selectedRent !== null} closeModal={closeModal} rent={selectedRent} />
-=======
                                 </div>
->>>>>>> 555fe102fcd7c79660eb35a4d7403f3bce17bc99
-                            </div>
+                           
                         ))
                     )}
                 </div>

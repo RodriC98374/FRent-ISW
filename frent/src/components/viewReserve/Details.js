@@ -71,6 +71,12 @@ export const DetailsModal = ({ isOpen, closeModal, rent }) => {
             <p>Es que te vi y dije, ig de la minita soy un lobo solitario auuuu</p>
             <p><strong>Intereses:</strong> &lt;null&gt;</p>
           </div>
+          <div class="pie">
+            <p><strong>Estado de la reserva:</strong></p>
+            <p class="pie.estado">
+              <span>Pendiente</span>
+            </p>
+          </div>
     </div>
   );
 };

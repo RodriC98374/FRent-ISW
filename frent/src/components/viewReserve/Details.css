@@ -2,8 +2,8 @@
     display: flex;
     flex-direction: column;
     width: 520px;
-    height: 600px;
-    border: 3px solid black; /* Propiedades del borde */
+    height: 800px;
+    border: 3px solid black; /* borde */
   }
   body {
     font-family: "Alata", sans-serif;
@@ -12,7 +12,7 @@
     display: flex;
     padding: 10px;
     height: 200px;
-    width: 480px;
+    width: 500px;
     overflow: hidden;
     flex-direction: row;
     border-bottom: 3px solid black; 
@@ -20,26 +20,25 @@
   
   .container img {
     object-fit: cover;
-    width: 150px; /* Nueva propiedad */
+    width: 150px;
   }
 
   .detalle {
     display: flex;
-    align-items: center; /* Alinear elementos verticalmente */
-    margin-bottom: 5px; /* Espacio entre cada detalle */
+    align-items: center; 
+    margin-bottom: 5px;
   }
   .request-inf {
     display: flex;
-    flex-direction: column; /* Mantener la alineación vertical */
+    flex-direction: column;
     margin-bottom: 5px; /* Espacio entre cada detalle */
     width: 100%;
     }
   
   .modal-header {
-    display: flex;
     align-items: center;
-    margin-bottom: 10px; /* Space between the header and content */
-    font-size: 20px; /* Size of the text */
+    margin-bottom: 10px;
+    font-size: 20px;
     text-align: center;
     border-bottom: 3px solid black; 
   }
@@ -63,3 +62,17 @@
     line-height: 0.5;
   }
   
+  .pie {
+    position: absolute;
+    bottom: 0; /* Position at the bottom */
+    width: 500px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-top: 3px solid black;
+    margin-bottom: 10px;
+  }
+  
+  .pie.estado span {
+    border: 2px solid black;
+  }
