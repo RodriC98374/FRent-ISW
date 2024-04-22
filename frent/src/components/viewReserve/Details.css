@@ -1,0 +1,78 @@
+.modal {
+    display: flex;
+    flex-direction: column;
+    width: 520px;
+    height: 800px;
+    border: 3px solid black; /* borde */
+  }
+  body {
+    font-family: "Alata", sans-serif;
+  }
+  .container {
+    display: flex;
+    padding: 10px;
+    height: 200px;
+    width: 500px;
+    overflow: hidden;
+    flex-direction: row;
+    border-bottom: 3px solid black; 
+  }
+  
+  .container img {
+    object-fit: cover;
+    width: 150px;
+  }
+
+  .detalle {
+    display: flex;
+    align-items: center; 
+    margin-bottom: 5px;
+  }
+  .request-inf {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px; /* Espacio entre cada detalle */
+    width: 100%;
+    }
+  
+  .modal-header {
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 20px;
+    text-align: center;
+    border-bottom: 3px solid black; 
+  }
+  
+  .modal-header .FaSeach {
+    margin-right: 5px;
+  }
+  
+  
+  .modal .AiOutlineClose {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    align-items: right;
+  }
+
+  .cuerpo {
+    margin-top: 2px;
+    font-size: 12; 
+    line-height: 0.5;
+  }
+  
+  .pie {
+    position: absolute;
+    bottom: 0; /* Position at the bottom */
+    width: 500px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-top: 3px solid black;
+    margin-bottom: 10px;
+  }
+  
+  .pie.estado span {
+    border: 2px solid black;
+  }

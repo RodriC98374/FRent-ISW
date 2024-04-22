@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { FaUserFriends, FaCalendar, FaClock } from "react-icons/fa";
+import { FaUserFriends, FaCalendar, FaClock, FaSearch  } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
+import { DetailsModal } from "./Details.js";
 import { getClient, getRent, getPrice, get_likes_user, deleteRent, create_notification} from "../../api/register.api";
 
 export default function ViewReserve() {
@@ -11,6 +12,7 @@ export default function ViewReserve() {
     const [listClient, setListClient] = useState([]);
     const [price, setPrice] = useState([]);
     const [likes_user, setLikesUser] = useState([]);
+    const [selectedRent, setSelectedRent] = useState(null);
 
     useEffect(() => {
         fetchData();
@@ -133,8 +135,15 @@ export default function ViewReserve() {
         } catch (error) {
             console.error(error);
         }
+    }; 
+    const openModal = (rent) => {
+        setSelectedRent(rent);
     };
 
+    // Función para cerrar el modal
+    const closeModal = () => {
+        setSelectedRent(null);
+    };
 
     return (
         <>
@@ -193,16 +202,26 @@ export default function ViewReserve() {
                                                 {rent.location}
                                             </p>
                                         </div>
-                                        <div className="price-description">
-                                            <p className="price">{price[index]}Bs</p>
-                                            <div className="description">
-                                                <p >{rent.description}</p>
+                                        
+                                        <div className="price-details">
+                                            <div className="price-container">
+                                                <p className="price">{price[index]}Bs</p>
+                                                
+                                                <button className="details-button" onClick={() => openModal(rent)}>
+                                                <FaSearch className="icon" />
+                                                VER DETALLES
+                                                </button>
                                             </div>
-                                            {getClientLikes(rent.client).map(like => (
-                                                <p key={like} className="descriptionLike">{like}</p>
-                                            ))}
-                                        </div>
-                                    </div>
+                                            </div>
+                                            <div className="description">
+                                                <p>{rent.description}</p>
+                                            </div>
+                                            {getClientLikes(rent.client).map((like) => (
+                                                <p key={like} className="descriptionLike">
+                                                                {like}
+                                                                </p>
+                                                ))}
+                                                </div>
                                 </div>
                                 <hr></hr>
                                 <div className="action-buttons">
@@ -213,7 +232,10 @@ export default function ViewReserve() {
                                         onClick={() => handleReject(rent.id, rent.client, rent.friend)}
                                     >Rechazar</button>
                                 </div>
-                            </div>
+                                {/* Renderiza el modal si se ha seleccionado un alquiler */}
+                <DetailsModal isOpen={selectedRent !== null} closeModal={closeModal} rent={selectedRent} />
+                                </div>
+                           
                         ))
                     )}
                 </div>
