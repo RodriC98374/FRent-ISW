@@ -44,6 +44,10 @@ INSTALLED_APPS = [
     'users',
     'rent',
     'notificaciones_api',
+    'coreapi',
+    'djoser',
+    'rest_framework.authtoken',
+    
     'notificacionesInterno',
     'coreapi'
 
@@ -88,9 +92,9 @@ WSGI_APPLICATION = 'frent.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'frent',
+        'NAME': 'frent_back_2',
         'USER': 'postgres',
-        'PASSWORD': '123',
+        'PASSWORD': 'notebok456',
         'HOST': 'localhost',
         'OPTIONS': {
             'client_encoding': 'UTF8',
@@ -156,6 +160,22 @@ AUTH_USER_MODEL = 'users.User'
 # documentacion
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+
+        #'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
+DJOSER = {
+    'SERIALIZERS': {
+        'user_create': 'users.serializers.UserSerializer',
+        'user': 'users.serializers.UserSerializer',
+        'current_user': 'users.serializers.UserSerializer',
+    },
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True, 
 }
 
 
