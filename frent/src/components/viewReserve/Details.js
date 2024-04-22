@@ -10,9 +10,9 @@ export const DetailsModal = ({ isOpen, closeModal, rent }) => {
   if (!isOpen || !rent) return null;
 
   return (
-    <div className="modal">
-        <div className="modal-header">
-        <FaSearch className="icon" />
+    <div className="modal1">
+        <div className="modal-header1">
+        <FaSearch className="icon1" />
         Detalles del alquiler
 
         <AiOutlineClose
@@ -21,33 +21,33 @@ export const DetailsModal = ({ isOpen, closeModal, rent }) => {
         onClick={closeModal}
         cursor={"pointer"}/>
       </div>
-      <div className="container">
-        <div className="user-info">
+      <div className="container1">
+        <div className="user-info1">
           <img
             src={rent.profilePic || imgApp.image}
             alt="Foto de perfil"
-            className="profile-pic"
+            className="profile-pic1"
           />
-          <p className="time">Hace 10 min</p>
+          <p className="time1">Hace 10 min</p>
         </div>
-        <div className="request-info">
-          <h3 className="name-client">Carlos Bodoque</h3>
-          <div className="detalle">
-            <p className="verified-date">
-              <FaCalendar className="icon" />
+        <div className="request-info1">
+          <h3 className="name-client1">Carlos Bodoque</h3>
+          <div className="detalle1">
+            <p className="verified-date1">
+              <FaCalendar className="icon1" />
               18/04/2024
             </p>
-            <p className="locationR">
-              <FaClock className="icon" />
+            <p className="locationR1">
+              <FaClock className="icon1" />
               15:30
             </p>
           </div>
-          <div className="detalle">
-            <p className="verified">
+          <div className="detalle1">
+            <p className="verified1">
               <RiVerifiedBadgeFill className="icon" />
               Verificado
             </p>
-            <p className="locationR">
+            <p className="locationR1">
               <IoLocationSharp className="icon" />
               Mi casa bb UwU
             </p>
@@ -55,7 +55,7 @@ export const DetailsModal = ({ isOpen, closeModal, rent }) => {
         </div>
         
       </div>
-      <div className="cuerpo">
+      <div className="cuerpo1">
             <p><strong>Duración:</strong> </p>
             <p>1 hora</p>
             <p><strong>Precio:</strong></p>
@@ -71,9 +71,9 @@ export const DetailsModal = ({ isOpen, closeModal, rent }) => {
             <p>Es que te vi y dije, ig de la minita soy un lobo solitario auuuu</p>
             <p><strong>Intereses:</strong> &lt;null&gt;</p>
           </div>
-          <div class="pie">
+          <div class="pie1">
             <p><strong>Estado de la reserva:</strong></p>
-            <p class="pie.estado">
+            <p class="pie.estado1">
               <span>Pendiente</span>
             </p>
           </div>

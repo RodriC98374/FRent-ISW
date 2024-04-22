@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import './LoginForm.css';
 import logoImage from '../../assets/img/Logo frent.png';
 
-const LoginForm = () => {
+export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState({ email: '', password: '' });
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
-  // Función para validar el correo electrónico
   const validateEmail = (email) => {
     const re = /\S+@\S+\.\S+/;
     return re.test(email);
@@ -16,26 +16,26 @@ const LoginForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     let formIsValid = true;
-    let errors = {};
 
-    // Validar email
     if (!email || !validateEmail(email)) {
-      errors.email = 'Escribe un correo electrónico válido.';
+      setEmailError('Escribe un correo electrónico válido.');
       formIsValid = false;
+    } else {
+      setEmailError('');
     }
 
-    // Validar contraseña
     if (!password) {
-      errors.password = 'La contraseña es requerida.';
+      setPasswordError('La contraseña es requerida.');
       formIsValid = false;
+    } else {
+      setPasswordError('');
     }
-
-    setErrors(errors);
 
     if (formIsValid) {
       console.log('Email:', email, 'Password:', password);
-      // Aquí iría la lógica de inicio de sesión
+      // Lógica de inicio de sesión aquí
     }
   };
 
@@ -56,13 +56,10 @@ const LoginForm = () => {
               id="email"
               placeholder="Escribe tu correo electrónico"
               value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                setErrors({...errors, email: '' });
-              }}
-              className={errors.email ? 'error-input' : ''}
+              onChange={(e) => setEmail(e.target.value)}
+              className={emailError ? 'error-input' : ''}
             />
-            {errors.email && <div className="error-message">{errors.email}</div>}
+            {emailError && <div className="error-message">{emailError}</div>}
           </div>
           <div className="input-group">
             <label htmlFor="password">Contraseña</label>
@@ -71,13 +68,10 @@ const LoginForm = () => {
               id="password"
               placeholder="Escribe tu contraseña"
               value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                setErrors({...errors, password: '' });
-              }}
-              className={errors.password ? 'error-input' : ''}
+              onChange={(e) => setPassword(e.target.value)}
+              className={passwordError ? 'error-input' : ''}
             />
-            {errors.password && <div className="error-message">{errors.password}</div>}
+            {passwordError && <div className="error-message">{passwordError}</div>}
             <Link to="/forgot-password" className="forgot-password">¿Has olvidado tu contraseña?</Link>
           </div>
           <button type="submit" className="login-button">Iniciar Sesión</button>
@@ -85,6 +79,4 @@ const LoginForm = () => {
       </div>
     </div>
   );
-};
-
-export default LoginForm;
+}
