@@ -5,6 +5,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id_user', 'first_name', 'last_name', 'email', 'personal_description', 'gender','country','password', 'birth_date','city']
+        
 """class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
@@ -26,7 +27,6 @@ class UserSerializer(serializers.ModelSerializer):
         )
         return user"""
 
-        
 
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:

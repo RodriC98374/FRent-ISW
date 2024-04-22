@@ -47,10 +47,7 @@ INSTALLED_APPS = [
     'coreapi',
     'djoser',
     'rest_framework.authtoken',
-    
     'notificacionesInterno',
-    'coreapi'
-
 ]
 
 MIDDLEWARE = [
@@ -92,9 +89,9 @@ WSGI_APPLICATION = 'frent.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'frent_back_2',
+        'NAME': 'frent',
         'USER': 'postgres',
-        'PASSWORD': 'notebok456',
+        'PASSWORD': '123',
         'HOST': 'localhost',
         'OPTIONS': {
             'client_encoding': 'UTF8',
