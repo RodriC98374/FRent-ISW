@@ -2,8 +2,10 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
+from rest_framework.decorators import action
+
 from .models import User, Client, Friend, Like, Photo, User_like
-from .serializers import UserSerializer, ClientSerializer, FriendSerializer, LikeSerializer, PhotoSerializer, UserLikeSerializer
+from .serializers import GustosSerializer, UserSerializer, ClientSerializer, FriendSerializer, LikeSerializer, PhotoSerializer, UserLikeSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -54,4 +56,25 @@ class UserLikeViewSet(viewsets.ModelViewSet):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
         return Response({"message": "Gustos creados correctamente"}, status=status.HTTP_201_CREATED)
+    
+    @action(detail=False, methods=['POST'])
+    def get_likes_user(self, request):
+        usuario_id = request.data.get('id_user', None)
+        if usuario_id is not None:
+            queryset = self.queryset.filter(user_id=usuario_id).select_related('like_id')
+            
+            gustos_nombres = []
+            for usuario_gusto in queryset:
+                gusto_nombre = usuario_gusto.like_id.name  
+                gustos_nombres.append(gusto_nombre)
+            
+            serializer = GustosSerializer(data={'id_user': usuario_id, 'gustos': gustos_nombres})
+            
+            if serializer.is_valid():
+                print(serializer.data)
+                return Response(serializer.data)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({"error": "ID de usuario no proporcionado"}, status=status.HTTP_400_BAD_REQUEST)
 

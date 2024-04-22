@@ -86,7 +86,6 @@ WSGI_APPLICATION = 'frent.wsgi.application'
 
 DATABASES = {
     'default': {
-        #MUST got created before a Postgres Database named "frent_back"
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'frent_back',
         #(example, fill the user bellow) 'USER': 'postgres',

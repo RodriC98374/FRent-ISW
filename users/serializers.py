@@ -31,3 +31,7 @@ class UserLikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = User_like
         fields = '__all__'
+
+class GustosSerializer(serializers.Serializer):
+    id_user = serializers.IntegerField()
+    gustos = serializers.ListField(child=serializers.CharField())

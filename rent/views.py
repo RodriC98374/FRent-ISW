@@ -30,8 +30,8 @@ class RentViewSet(viewsets.ModelViewSet):
         ).order_by('-fecha_cita')
   
 class RentPriceViewSet(viewsets.ModelViewSet):
-      queryset = Rent.objects.all()
-      serializer_class = RentPriceSerializer
+    queryset = Rent.objects.all().order_by('-create')  
+    serializer_class = RentPriceSerializer
     
     
 class RentTimeElapsedViewSet(viewsets.ModelViewSet):
