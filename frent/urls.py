@@ -11,6 +11,8 @@ urlpatterns = [
     #ruta de notificaciones y email
     path('notificaciones/', include('notificaciones_api.urls')),
     #ruta de la documentacion de la API
+    path('notificacionesInterno/', include('notificacionesInterno.urls')),
+    #ruta de la documentacion de la API
     path('documentation/', include_docs_urls(title=" Documentacion API FRENT")),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),

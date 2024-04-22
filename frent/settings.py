@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'djoser',
     'rest_framework.authtoken',
     
+    'notificacionesInterno',
+    'coreapi'
 
 ]
 
