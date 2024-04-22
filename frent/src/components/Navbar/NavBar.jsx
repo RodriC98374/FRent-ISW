@@ -46,6 +46,9 @@ export default function NavBar() {
                     <li>
                         <NavLink className="navbar-option" to="/rentalSectio">Alquileres</NavLink>
                     </li>
+                    <li>
+                        <NavLink className="navbar-option" to="/login">Iniciar Sesión</NavLink>
+                    </li>
                     {/* <li onClick={openModal}>
                         <div className="navbar-option">
                             <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24">

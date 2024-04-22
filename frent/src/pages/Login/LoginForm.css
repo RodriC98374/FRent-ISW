@@ -1,0 +1,110 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Alata", sans-serif;
+  background-color: #f4f4f4;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 10% 50px 50px;
+  gap: 10px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.login-info {
+  flex-basis: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.login-logo {
+  width: 110%;
+  max-width: 300px;
+  margin-bottom: 10px;
+}
+
+.login-form-container {
+  flex-basis: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.input-group input,
+.login-button {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  max-width: 400px;
+}
+
+.forgot-password {
+  margin-top: 5px;
+  font-size: 0.9rem;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+.register-link {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.register-link:hover {
+  text-decoration: underline;
+}
+
+.login-button {
+  color: white;
+  background-color: #333A73;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  max-width: 422px;
+}
+
+.login-button:hover {
+  background-color: #252c4a;
+}
+/*
+.error-message {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 5px;
+}
+*/
+.error-input {
+  border: 1px solid red;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 5px;
+}
