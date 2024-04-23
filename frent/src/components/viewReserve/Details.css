@@ -1,10 +1,18 @@
 .modal1 {
-    display: flex;
-    flex-direction: column;
-    width: 520px;
-    height: 800px;
-    border: 3px solid black; /* borde */
-  }
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  background-color: antiquewhite;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  width: 520px;
+  height: 80vh;
+  border: 3px solid black; /* borde */
+  z-index: 999; 
+  overflow: auto;
+}
+
   body {
     font-family: "Alata", sans-serif;
   }
@@ -13,7 +21,6 @@
     padding: 10px;
     height: 200px;
     width: 500px;
-    overflow: hidden;
     flex-direction: row;
     border-bottom: 3px solid black; 
   }
@@ -41,6 +48,9 @@
     font-size: 20px;
     text-align: center;
     border-bottom: 3px solid black; 
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
   }
   
   .modal-header1 .FaSeach1 {
@@ -75,4 +85,18 @@
   
   .pie1.estado1 span {
     border: 2px solid black;
+  }
+
+  .PrecioModal {
+    
+    display: grid;
+    padding: 15px;
+  }
+
+  .PrecioDetail{
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    margin: 0;
+
   }

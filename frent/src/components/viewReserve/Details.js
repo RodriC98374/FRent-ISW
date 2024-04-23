@@ -1,6 +1,6 @@
 import React from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import { FaCalendar, FaClock ,FaSearch} from "react-icons/fa";
+import { FaCalendar, FaClock, FaSearch } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import imgApp from "../../assets/imgApp";
@@ -11,15 +11,16 @@ export const DetailsModal = ({ isOpen, closeModal, rent }) => {
 
   return (
     <div className="modal1">
-        <div className="modal-header1">
-        <FaSearch className="icon1" />
-        Detalles del alquiler
-
-        <AiOutlineClose
-        size={30}
-        color="#000"
-        onClick={closeModal}
-        cursor={"pointer"}/>
+      <div className="modal-header1">
+        
+        <div className="modalPrueba"><FaSearch className="icon1" />
+        Detalles del alquiler</div>
+        <AiOutlineClose className="icon1"
+          size={30}
+          color="#000"
+          onClick={closeModal}
+          cursor={"pointer"}
+        />
       </div>
       <div className="container1">
         <div className="user-info1">
@@ -53,30 +54,53 @@ export const DetailsModal = ({ isOpen, closeModal, rent }) => {
             </p>
           </div>
         </div>
-        
       </div>
       <div className="cuerpo1">
-            <p><strong>Duración:</strong> </p>
-            <p>1 hora</p>
-            <p><strong>Precio:</strong></p>
-            <p>40 BOB x 1 hora &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; 
-            &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;  40 BOB</p>
-            <p><strong>Lugar:</strong></p>
-            <p>Jose Aguirre Acha</p>
-            <p><strong>Tipo de evento:</strong></p>
-            <p>Boda</p>
-            <p><strong>Vestimenta del evento:</strong> </p>
-            <p>Elegante</p>
-            <p><strong>Descripción:</strong> </p>
-            <p>Es que te vi y dije, ig de la minita soy un lobo solitario auuuu</p>
-            <p><strong>Intereses:</strong> &lt;null&gt;</p>
+        <p>
+          <strong>Duración:</strong>{" "}
+        </p>
+        <p>1 hora</p>
+        <div className="PrecioModal">
+          <h3>Precio</h3>
+          <div className="PrecioDetail">
+            <p>40 BOB x 1 hora</p>
+            <p>40 BOB</p>
           </div>
-          <div class="pie1">
-            <p><strong>Estado de la reserva:</strong></p>
-            <p class="pie.estado1">
-              <span>Pendiente</span>
-            </p>
-          </div>
+        </div>
+        {/* <p>
+          <strong>Precio:</strong>
+        </p>
+        <p>
+          40 BOB x 1 hora 40 BOB
+        </p> */}
+        <p>
+          <strong>Lugar:</strong>
+        </p>
+        <p>Jose Aguirre Acha</p>
+        <p>
+          <strong>Tipo de evento:</strong>
+        </p>
+        <p>Boda</p>
+        <p>
+          <strong>Vestimenta del evento:</strong>{" "}
+        </p>
+        <p>Elegante</p>
+        <p>
+          <strong>Descripción:</strong>{" "}
+        </p>
+        <p>Es que te vi y dije, ig de la minita soy un lobo solitario auuuu</p>
+        <p>
+          <strong>Intereses:</strong> &lt;null&gt;
+        </p>
+      </div>
+      <div className="pie1">
+        <p>
+          <strong>Estado de la reserva:</strong>
+        </p>
+        <p className="pie.estado1">
+          <span>Pendiente</span>
+        </p>
+      </div>
     </div>
   );
 };

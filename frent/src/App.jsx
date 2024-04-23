@@ -64,9 +64,9 @@ function App() {
               <Route path="/rentaForm/:id" element={<RentFriendForm />} />
               <Route path="/listRent" element={<ListFriend/>} />
               <Route path="/listFriend" element={<ListFriend />} />
-              <Route path='/calendarReservas' element = {<MyCalendar/>}/>
+              
             </Route>
-
+            <Route path='/calendarReservas' element = {<MyCalendar/>}/>
             <Route path="/rentalSectio" element={
               <ProtectedRoute isAllowed={user && user.roles.includes('friend')}>
                 <ViewReserve />
