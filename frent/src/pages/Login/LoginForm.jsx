@@ -1,43 +1,36 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { InputText } from '../../components/Forms/Inputs/inputText';
 import './LoginForm.css';
 import logoImage from '../../assets/img/Logo frent.png';
+import { validarLogin } from '../../api/register.api';
 
-export default function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+export default function LoginForm() {  
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    setValue,
+    reset,
+  } = useForm();
 
-  const validateEmail = (email) => {
-    const re = /\S+@\S+\.\S+/;
-    return re.test(email);
-  };
+  const onSubmit = handleSubmit(async (data) => {
+    const friend = {
+      email: data.Email,
+      password: data.Password,
+    };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    let formIsValid = true;
-
-    if (!email || !validateEmail(email)) {
-      setEmailError('Escribe un correo electrónico válido.');
-      formIsValid = false;
-    } else {
-      setEmailError('');
+    try {
+      const resFriend = await validarLogin(friend);
+    } catch (error) {
+      console.error("Error al enviar los datos:", error);
     }
+  });
+ 
 
-    if (!password) {
-      setPasswordError('La contraseña es requerida.');
-      formIsValid = false;
-    } else {
-      setPasswordError('');
-    }
-
-    if (formIsValid) {
-      console.log('Email:', email, 'Password:', password);
-      // Lógica de inicio de sesión aquí
-    }
-  };
+  
 
   return (
     <div className="login-container">
@@ -48,32 +41,51 @@ export default function LoginForm() {
         <Link to="/form" className="register-link">¿No tienes una cuenta? ¡Regístrate!</Link>
       </div>
       <div className="login-form-container">
-        <form onSubmit={handleSubmit} noValidate className="login-form">
+        <form onSubmit={onSubmit}  className="login-form">
           <div className="input-group">
-            <label htmlFor="email">Correo electrónico</label>
-            <input
-              type="email"
-              id="email"
-              placeholder="Escribe tu correo electrónico"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className={emailError ? 'error-input' : ''}
+            <InputText
+              type= {"text"}
+              id={"Email"}
+              label={"Correo electrónico"}
+              placeholder= {"Escribe tu correo electrónico"}
+              required={true}
+              register={register("Email", {
+                required: {
+                  value: true,
+                  message: "El correo es requerido"
+                },
+                pattern: {
+                  value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
+                  message: "Formato de email invalido",
+                }
+              })}
+              errors={errors}
             />
-            {emailError && <div className="error-message">{emailError}</div>}
           </div>
           <div className="input-group">
-            <label htmlFor="password">Contraseña</label>
-            <input
-              type="password"
-              id="password"
-              placeholder="Escribe tu contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className={passwordError ? 'error-input' : ''}
-            />
-            {passwordError && <div className="error-message">{passwordError}</div>}
-            <Link to="/forgot-password" className="forgot-password">¿Has olvidado tu contraseña?</Link>
-          </div>
+          <InputText
+                id={"Password"}
+                label={"Contraseña"}
+                type={"password"}
+                required={true}
+                placeholder={"Ingrese su contraseña"}
+                register={register("Password", {
+                  required: {
+                    value: true,
+                    message: "La contraseña es requerida",
+                  },
+                  minLength: {
+                    value: 8,
+                    message: "Debe tener al menos 8 caracteres",
+                  },
+                  pattern: {
+                    value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+                    message: "La contraseña debe contener al menos una letra y un número",
+                  },
+                })}
+                errors={errors}
+          />
+            </div>
           <button type="submit" className="login-button">Iniciar Sesión</button>
         </form>
       </div>

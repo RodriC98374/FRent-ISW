@@ -1,6 +1,6 @@
 import React from "react";
 import { IoCalendarOutline } from "react-icons/io5";
-/* import './EventList.css' */
+import './EventList.css'
 import dayjs from "dayjs";
 
 const EventList = ({ date, events, onAddEvent, isAM }) => {
@@ -14,12 +14,12 @@ const EventList = ({ date, events, onAddEvent, isAM }) => {
     <div className="listaEvento">
       <div className="title">
         <h2>
-          Nuevo Evento
+        Ver reservas
           <IoCalendarOutline className="Icon1" />
           {date.format("DD MMM")}
         </h2>
       </div>
-      <div className="cena-chefList">
+      <div className="reserv-container">
         <h3>Reservas</h3>
         <p>Total Reservas: 9</p>
         <div>

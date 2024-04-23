@@ -13,6 +13,7 @@ import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
 import LoginForm from './pages/Login/LoginForm'
 import MyCalendar from './components/Forms/rentFriends/calendar/MyCalendar';
 
+
 function App() {
   const [user, setUser] = useState(null);
 
