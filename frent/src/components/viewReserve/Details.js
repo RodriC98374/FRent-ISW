@@ -10,7 +10,11 @@ export const DetailsModal = ({ isOpen, closeModal, rent }) => {
   if (!isOpen || !rent) return null;
 
   return (
-    <div className="modal">
+    <>
+    <div className="modal-backdrop" onClick={closeModal}>
+
+    </div>
+    <div className="modalDet">
         <div className="modal-header">
         <FaSearch className="icon" />
         Detalles del alquiler
@@ -21,8 +25,8 @@ export const DetailsModal = ({ isOpen, closeModal, rent }) => {
         onClick={closeModal}
         cursor={"pointer"}/>
       </div>
-      <div className="container">
-        <div className="user-info">
+      <div className="containerDet">
+        
           <img
             src={rent.profilePic || imgApp.image}
             alt="Foto de perfil"
@@ -30,7 +34,7 @@ export const DetailsModal = ({ isOpen, closeModal, rent }) => {
           />
           <p className="time">Hace 10 min</p>
         </div>
-        <div className="request-info">
+        <div className="request-inf">
           <h3 className="name-client">Carlos Bodoque</h3>
           <div className="detalle">
             <p className="verified-date">
@@ -77,7 +81,8 @@ export const DetailsModal = ({ isOpen, closeModal, rent }) => {
               <span>Pendiente</span>
             </p>
           </div>
-    </div>
+    
+    </>
   );
 };
 

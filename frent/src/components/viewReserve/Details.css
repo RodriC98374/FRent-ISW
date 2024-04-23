@@ -1,4 +1,4 @@
-.modal {
+.modalDet {
     display: flex;
     flex-direction: column;
     width: 520px;
@@ -8,7 +8,7 @@
   body {
     font-family: "Alata", sans-serif;
   }
-  .container {
+  .containerDet {
     display: flex;
     padding: 10px;
     height: 200px;
@@ -18,7 +18,7 @@
     border-bottom: 3px solid black; 
   }
   
-  .container img {
+  .containerDet img {
     object-fit: cover;
     width: 150px;
   }
@@ -75,4 +75,24 @@
   
   .pie.estado span {
     border: 2px solid black;
+  }
+  .modal-backdrop {
+    position: fixed; /* Posicionamiento fijo para cubrir toda la pantalla */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Color de fondo semitransparente */
+    z-index: 99; /* Asegura que el backdrop esté por encima del resto del contenido */
+    display: none; /* Inicialmente oculto */
+  }
+  
+  /* Mostrar el modal-backdrop cuando el modal esté abierto */
+  .modal.open .modal-backdrop {
+    display: block; /* Muestra el backdrop cuando la clase "open" está presente */
+  }
+  
+  /* Deshabilitar eventos de click y scroll en el modal-backdrop */
+  .modal-backdrop {
+    pointer-events: none; /* Evita eventos de click */
   }
