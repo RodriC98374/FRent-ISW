@@ -11,6 +11,7 @@ export default function ViewReserve() {
     const [listClient, setListClient] = useState([]);
     const [price, setPrice] = useState([]);
     const [likes_user, setLikesUser] = useState([]);
+    const staticImage = "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
 
     useEffect(() => {
         fetchData();
@@ -149,7 +150,8 @@ export default function ViewReserve() {
                                 <div className="pending-info">
                                     <div className="user-info">
                                         <img
-                                            src={rent.profilePic || imgApp.image}
+                                            // src={rent.profilePic || imgApp.image}
+                                            src={staticImage}
                                             alt="Foto de perfil"
                                             className="profile-pic"
                                         />
