@@ -9,80 +9,63 @@ import "./Details.css";
 import { getClient, getRent, getPrice, get_likes_user, deleteRent, create_notification} from "../../api/register.api";
 
 export default function ViewReserve() {
-    const [listRent, setListRent] = useState([]);
-    const [listClient, setListClient] = useState([]);
-    const [price, setPrice] = useState([]);
-    const [likes_user, setLikesUser] = useState([]);
-    const [selectedRent, setSelectedRent] = useState(null);
+  const [listRent, setListRent] = useState([]);
+  const [listClient, setListClient] = useState([]);
+  const [price, setPrice] = useState([]);
+  const [likes_user, setLikesUser] = useState([]);
+  const [selectedRent, setSelectedRent] = useState(null);
 
-    useEffect(() => {
-        fetchData();
-    }, []);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-    useEffect(() => {
-        if (listRent.length > 0) {
-            const fetchDataForLikes = async () => {
-                try {
-                    const likesPromises = listRent.map(async rent => {
-                        const idClient = {
-                            id_user: rent.client
-                        }
-                        const resLikesUser = await get_likes_user(idClient);
-                        return resLikesUser.data || [];
-                    });
-                    const likesData = await Promise.all(likesPromises);
-                    setLikesUser(likesData.flat());
-                } catch (error) {
-                    console.error("Error fetching likes data:", error);
-                }
-            };
-            fetchDataForLikes();
-        }
-    }, [listRent]);
-
-    const fetchData = async () => {
+  useEffect(() => {
+    if (listRent.length > 0) {
+      const fetchDataForLikes = async () => {
         try {
-            const resRent = await getRent();
-            if (resRent && resRent.data) {
-                const sortedRent = resRent.data.sort((a, b) => {
-                    const dateA = new Date(a.create);
-                    const dateB = new Date(b.create);
-                    return dateB - dateA;
-                });
-                setListRent(sortedRent);
-            }
-
-            const resClient = await getClient();
-            if (resClient && resClient.data) {
-                setListClient(resClient.data);
-            }
-
-            const resPrice = await getPrice();
-            if (resPrice && resPrice.data) {
-                const pricesArray = resPrice.data.map(item => item.total_price);
-                setPrice(pricesArray);
-            }
+          const likesPromises = listRent.map(async (rent) => {
+            const idClient = {
+              id_user: rent.client,
+            };
+            const resLikesUser = await get_likes_user(idClient);
+            return resLikesUser.data || [];
+          });
+          const likesData = await Promise.all(likesPromises);
+          setLikesUser(likesData.flat());
         } catch (error) {
-            console.error("Error fetching data:", error);
+          console.error("Error fetching likes data:", error);
         }
-    };
+      };
+      fetchDataForLikes();
+    }
+  }, [listRent]);
 
-    const getClientName = (clientId) => {
-        const client = listClient.find((clientName) => clientName.id_user === clientId);
-        if (client) {
-            return `${client.first_name} ${client.last_name}`;
-        }
-        return "Cliente Desconocido";
-    };
+  const fetchData = async () => {
+    try {
+      const resRent = await getRent();
+      if (resRent && resRent.data) {
+        const sortedRent = resRent.data.sort((a, b) => {
+          const dateA = new Date(a.create);
+          const dateB = new Date(b.create);
+          return dateB - dateA;
+        });
+        setListRent(sortedRent);
+      }
 
-    const getClientLikes = (clientId) => {
-        const clientLikes = likes_user.find((like) => like.id_user === clientId);
-        if (clientLikes) {
-            return clientLikes.gustos;
-        }
-        return [];
-    };
+      const resClient = await getClient();
+      if (resClient && resClient.data) {
+        setListClient(resClient.data);
+      }
 
+      const resPrice = await getPrice();
+      if (resPrice && resPrice.data) {
+        const pricesArray = resPrice.data.map((item) => item.total_price);
+        setPrice(pricesArray);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
 
     const calculateTimePassed = (createdAt) => {
@@ -138,6 +121,22 @@ export default function ViewReserve() {
             console.error(error);
         }
     }; 
+    const getClientName = (clientId) => {
+      const client = listClient.find((clientName) => clientName.id_user === clientId);
+      if (client) {
+          return `${client.first_name} ${client.last_name}`;
+      }
+      return "Cliente Desconocido";
+  };
+
+  const getClientLikes = (clientId) => {
+      const clientLikes = likes_user.find((like) => like.id_user === clientId);
+      if (clientLikes) {
+          return clientLikes.gustos;
+      }
+      return [];
+  };
+
     const openModal = (rent) => {
         setSelectedRent(rent);
     };
@@ -151,79 +150,96 @@ export default function ViewReserve() {
         if (!isOpen || !rent) return null;
       
         return (
-          
-          <div className="modalDet">
-              <div className="modal-header">
-              <FaSearch className="icon" />
-              Detalles del alquiler
-      
-              <AiOutlineClose
-              size={30}
-              color="#000"
-              onClick={closeModal}
-              cursor={"pointer"}/>
-            </div>
-            <div className="containerDet">
+          <div className="modal1">
+            <div className="modal-header1">
               
+              <div className="modalPrueba"><FaSearch className="icon1" />
+              Detalles del alquiler</div>
+              <AiOutlineClose className="icon1"
+                size={30}
+                color="#000"
+                onClick={closeModal}
+                cursor={"pointer"}
+              />
+            </div>
+            <div className="container1">
+              <div className="user-info1">
                 <img
                   src={rent.profilePic || imgApp.image}
                   alt="Foto de perfil"
-                  className="profile-pic"
+                  className="profile-pic1"
                 />
-              
-              <div className="request-inf">
-                <h3 className="name-client">{getClientName(rent.client)}</h3>
-                <div className="detalle">
-                  <p className="verified-date">
+              </div>
+              <div className="request-info1">
+                <h3 className="name-client1">{getClientName(rent.client)}</h3>
+                <div className="detalle1">
+                  <p className="verified-date1">
                     <FaCalendar className="icon" />
                     {rent.fecha_cita}
                   </p>
-                  <p className="locationR">
+                  <p className="locationR1">
                     <FaClock className="icon" />
                     {rent.time}
                   </p>
                 </div>
-                <div className="detalle">
-                  <p className="verified">
+                <div className="detalle1">
+                  <p className="verified1">
                     <RiVerifiedBadgeFill className="icon" />
                     Verificado
                   </p>
-                  <p className="locationR">
+                  <p className="locationR1">
                     <IoLocationSharp className="icon" />
                     {rent.location}
                   </p>
                 </div>
               </div>
             </div>
-            
-            <div className="cuerpo">
-                  <p><strong>Duración:</strong> </p>
-                  <p>{rent.duration} horas</p>
-                  <p><strong>Precio:</strong></p>
-                  <p>40 BOB x 1 hora &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; 
-                  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;  40 BOB</p>
-                  <p><strong>Tipo de evento:</strong></p>
-                    {/*<p>{rent.event_id ? rent.event_id : <i>No especificado</i>}</p>*/}
-                    <p>Boda</p>
-                    <p><strong>Vestimenta del evento:</strong></p>
-                    {/*<p>{rent.outfit_id ? rent.outfit_id : <i>No especificado</i>}</p>*/}
-                    <p>Cosplay</p>
-                    <p><strong>Descripción:</strong></p>
-                    <p>{rent.description ? rent.description : <i>No especificado</i>}</p>
-                  <p><strong>Intereses:</strong></p>
+            <div className="cuerpo1">
+              <p>
+                <strong>Duración:</strong>{" "}
+              </p>
+              <p>{rent.duration} horas</p>
+              <div className="PrecioModal">
+                <h3>Precio</h3>
+                <div className="PrecioDetail">
+                  <p>40 BOB x 1 hora</p>
+                  <p>40 BOB</p>
+                </div>
+              </div>
+              <p>
+                <strong>Lugar:</strong>
+              </p>
+              <p>{rent.location}</p>
+              <p>
+                <strong>Tipo de evento:</strong>
+              </p>
+              {/*<p>{rent.event_id ? rent.event_id : <i>No especificado</i>}</p>*/}
+              <p>Boda</p>
+              <p>
+                <strong>Vestimenta del evento:</strong>{" "}
+              </p>
+              {/*<p>{rent.outfit_id ? rent.outfit_id : <i>No especificado</i>}</p>*/}
+              <p>Elegante</p>
+              <p>
+                <strong>Descripción:</strong>{" "}
+              </p>
+              <p>{rent.description ? rent.description : <i>No especificado</i>}</p>
+              <p><strong>Intereses:</strong></p>
                         {getClientLikes(rent.client).map((like) => (
                         <p key={like} className="descriptionLike">
                         {like}
                         </p>
                         ))}
             </div>
-                <div class="pie">
-                  <p><strong>Estado de la reserva:</strong></p>
-                  <p class="pie.estado">
-                    <span>Pendiente</span>
-                  </p>
-                </div>
-                </div>
+            <div className="pie1">
+              <p>
+                <strong>Estado de la reserva:</strong>
+              </p>
+              <p className="pie.estado1">
+                <span>Pendiente</span>
+              </p>
+            </div>
+          </div>
         );
       };
 
@@ -316,4 +332,7 @@ export default function ViewReserve() {
             </div>
         </>
     );
+
+  
+  
 }

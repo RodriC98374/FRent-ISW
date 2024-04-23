@@ -1,54 +1,84 @@
-.modalDet {
-    display: flex;
-    flex-direction: column;
-    width: 520px;
-    height: 800px;
-    border: 3px solid black; /* borde */
-  }
+.modal1 {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /*background-color: antiquewhite;*/
+  background-color: white;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  width: 520px;
+  height: 80vh;
+  border: 3px solid black; /* borde */
+  z-index: 999; 
+  overflow: auto;
+}
+
   body {
     font-family: "Alata", sans-serif;
   }
-  .containerDet {
+  .container1 {
     display: flex;
     padding: 10px;
     height: 200px;
     width: 500px;
-    overflow: hidden;
     flex-direction: row;
     border-bottom: 3px solid black; 
   }
   
-  .containerDet img {
+  .container1 img {
     object-fit: cover;
     width: 150px;
   }
 
-  .detalle {
+  .detalle1 {
     display: flex;
     align-items: center; 
     margin-bottom: 5px;
   }
-  .request-inf {
+  .verified-date1 {
+    display: flex;
+    margin-right: 40px;
+    align-items: center;
+  }
+
+  .verified1{
+    display: flex;
+    margin-right: 62px;
+    align-items: center;
+  }
+  
+  .locationR1 {
+    display: flex;
+    justify-content: center;
+    color: black;
+    border-radius: 5px;
+    
+  }
+  .request-inf1 {
     display: flex;
     flex-direction: column;
     margin-bottom: 5px; /* Espacio entre cada detalle */
     width: 100%;
     }
   
-  .modal-header {
+  .modal-header1 {
     align-items: center;
     margin-bottom: 10px;
     font-size: 20px;
     text-align: center;
     border-bottom: 3px solid black; 
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
   }
   
-  .modal-header .FaSeach {
+  .modal-header1 .FaSeach1 {
     margin-right: 5px;
   }
   
   
-  .modal .AiOutlineClose {
+  .modal1 .AiOutlineClose1 {
     position: fixed;
     top: 10px;
     right: 10px;
@@ -56,15 +86,14 @@
     align-items: right;
   }
 
-  .cuerpo {
+  .cuerpo1 {
     margin-top: 2px;
     font-size: 12; 
     line-height: 0.5;
     padding: 10px;
   }
   
-  .pie {
-    position: relative;
+  .pie1 {
     bottom: 0; /* Position at the bottom */
     width: 500px;
     display: flex;
@@ -74,7 +103,7 @@
     margin-bottom: 10px;
   }
   
-  .pie.estado span {
+  .pie1.estado1 span {
     border: 2px solid black;
   }
 
@@ -88,4 +117,17 @@
     width: auto; 
     display: inline-block; 
     margin-bottom: 10px;
+  }
+  .PrecioModal {
+    
+    display: grid;
+    padding: 15px;
+  }
+
+  .PrecioDetail{
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    margin: 0;
+
   }
