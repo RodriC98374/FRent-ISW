@@ -29,7 +29,8 @@ class ClientViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             try:
                 new_client = Client.objects.create_user(**serializer.validated_data)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                new_client_serializer = self.get_serializer(new_client)
+                return Response(new_client_serializer.data, status=status.HTTP_201_CREATED)
             except Exception as e:
                 return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
@@ -45,7 +46,8 @@ class FriendViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             try:
                 new_friend = Friend.objects.create_user(**serializer.validated_data)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                new_friend_serializer = self.get_serializer(new_friend)
+                return Response(new_friend_serializer.data, status=status.HTTP_201_CREATED)
             except Exception as e:
                 return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
