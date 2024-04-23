@@ -90,8 +90,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'frent',
-        'USER': 'postgres',
-        'PASSWORD': '123',
+        'USER': 'alfredo',
+        'PASSWORD': 'notebok456',
         'HOST': 'localhost',
         'OPTIONS': {
             'client_encoding': 'UTF8',
@@ -162,6 +162,11 @@ REST_FRAMEWORK = {
 
         #'rest_framework.permissions.IsAuthenticated',
     ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
+    
 }
 
 DJOSER = {
