@@ -54,19 +54,18 @@ export default function ListFriend() {
 
   const openModal = (image) => {
     setSelectedImage(image);
-
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
   };
 
   const closeModal = () => {
     setSelectedImage(null);
-    document.body.style.overflow = "auto";
+    document.body.style.overflow = 'auto';
   };
 
   return (
     <div className="list-friend">
       <h1>Lista de amigos</h1>
-      <div className="lista">
+      <div className='lista'>
         {friends.map((friend) => (
           <div key={friend.id_user} className="card">
             <div className="top-card"></div>

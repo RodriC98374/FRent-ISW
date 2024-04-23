@@ -4,7 +4,7 @@ import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
-import { getClient, getRent, getPrice, get_likes_user } from "../../api/register.api";
+import { getClient, getRent, getPrice, get_likes_user, deleteRent, create_notification} from "../../api/register.api";
 
 export default function ViewReserve() {
     const [listRent, setListRent] = useState([]);
@@ -98,11 +98,18 @@ export default function ViewReserve() {
             return `${Math.floor(secondsPassed / 86400)} días`;
         }
     };
-    /* const handleAccept = async (rentId) => {
+    const handleAccept = async (rentId, rentClient, rentFriend) => {
         try {
             const accepted = window.confirm("¿Aceptas ser el amigo?");
             if (accepted) {
                 await deleteRent(rentId);
+                const dataNotification = {
+                    message: "Acepto ser tu amigo de alquiler!",
+                    from_user: rentFriend,
+                    to_user: rentClient,
+                    is_reading: false
+                }
+                await create_notification(dataNotification);
                 fetchData();
             }
         } catch (error) {
@@ -110,17 +117,24 @@ export default function ViewReserve() {
         }
     };
 
-    const handleReject = async (rentId) => {
+    const handleReject = async (rentId, rentClient, rentFriend) => {
         try {
             const rejected = window.confirm("¿Estás seguro de que deseas rechazar ser amigo?");
             if (rejected) {
                 await deleteRent(rentId);
+                const dataNotification = {
+                    message: "Rechazo tu solicitud de alquiler :(",
+                    from_user: rentFriend,
+                    to_user: rentClient,
+                    is_reading: false
+                }
+                await create_notification(dataNotification);
                 fetchData();
             }
         } catch (error) {
             console.error(error);
         }
-    }; */
+    };
 
 
     return (
@@ -193,14 +207,14 @@ export default function ViewReserve() {
                                     </div>
                                 </div>
                                 <hr></hr>
-                                {/* <div className="action-buttons">
+                                <div className="action-buttons">
                                     <button className="btnV"
-                                        onClick={() => handleAccept(rent.id)}
+                                        onClick={() => handleAccept(rent.id, rent.client, rent.friend)}
                                     >Aceptar</button>
                                     <button className="btnVR"
-                                        onClick={() => handleReject(rent.id)}
+                                        onClick={() => handleReject(rent.id, rent.client, rent.friend)}
                                     >Rechazar</button>
-                                </div> */}
+                                </div>
                             </div>
                         ))
                     )}
