@@ -60,10 +60,11 @@
     margin-top: 2px;
     font-size: 12; 
     line-height: 0.5;
+    padding: 10px;
   }
   
   .pie {
-    position: absolute;
+    position: relative;
     bottom: 0; /* Position at the bottom */
     width: 500px;
     display: flex;
@@ -76,23 +77,15 @@
   .pie.estado span {
     border: 2px solid black;
   }
-  .modal-backdrop {
-    position: fixed; /* Posicionamiento fijo para cubrir toda la pantalla */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Color de fondo semitransparente */
-    z-index: 99; /* Asegura que el backdrop esté por encima del resto del contenido */
-    display: none; /* Inicialmente oculto */
-  }
-  
-  /* Mostrar el modal-backdrop cuando el modal esté abierto */
-  .modal.open .modal-backdrop {
-    display: block; /* Muestra el backdrop cuando la clase "open" está presente */
-  }
-  
-  /* Deshabilitar eventos de click y scroll en el modal-backdrop */
-  .modal-backdrop {
-    pointer-events: none; /* Evita eventos de click */
+
+  .cuerpo .descriptionLike {
+    background-color: var( --tertiary-color);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-top: 15px;
+    margin: 10px;
+    width: auto; 
+    display: inline-block; 
+    margin-bottom: 10px;
   }

@@ -4,7 +4,7 @@ import { FaCalendar, FaClock ,FaSearch} from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import imgApp from "../../assets/imgApp";
-import "./Details.css";
+
 
 export const DetailsModal = ({ isOpen, closeModal, rent }) => {
   if (!isOpen || !rent) return null;
@@ -32,8 +32,7 @@ export const DetailsModal = ({ isOpen, closeModal, rent }) => {
             alt="Foto de perfil"
             className="profile-pic"
           />
-          <p className="time">Hace 10 min</p>
-        </div>
+        
         <div className="request-inf">
           <h3 className="name-client">Carlos Bodoque</h3>
           <div className="detalle">
@@ -57,8 +56,8 @@ export const DetailsModal = ({ isOpen, closeModal, rent }) => {
             </p>
           </div>
         </div>
-        
       </div>
+      
       <div className="cuerpo">
             <p><strong>Duración:</strong> </p>
             <p>1 hora</p>
@@ -81,7 +80,7 @@ export const DetailsModal = ({ isOpen, closeModal, rent }) => {
               <span>Pendiente</span>
             </p>
           </div>
-    
+          </div>
     </>
   );
 };

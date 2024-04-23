@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { AiOutlineClose } from "react-icons/ai";
 import { FaUserFriends, FaCalendar, FaClock, FaSearch  } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
-import { DetailsModal } from "./Details.js";
+import "./Details.css";
 import { getClient, getRent, getPrice, get_likes_user, deleteRent, create_notification} from "../../api/register.api";
 
 export default function ViewReserve() {
@@ -110,6 +111,7 @@ export default function ViewReserve() {
                     to_user: rentClient,
                     is_reading: false
                 }
+                
                 await create_notification(dataNotification);
                 fetchData();
             }
@@ -144,6 +146,86 @@ export default function ViewReserve() {
     const closeModal = () => {
         setSelectedRent(null);
     };
+
+    const DetailsModal = ({ isOpen, closeModal, rent }) => {
+        if (!isOpen || !rent) return null;
+      
+        return (
+          
+          <div className="modalDet">
+              <div className="modal-header">
+              <FaSearch className="icon" />
+              Detalles del alquiler
+      
+              <AiOutlineClose
+              size={30}
+              color="#000"
+              onClick={closeModal}
+              cursor={"pointer"}/>
+            </div>
+            <div className="containerDet">
+              
+                <img
+                  src={rent.profilePic || imgApp.image}
+                  alt="Foto de perfil"
+                  className="profile-pic"
+                />
+              
+              <div className="request-inf">
+                <h3 className="name-client">{getClientName(rent.client)}</h3>
+                <div className="detalle">
+                  <p className="verified-date">
+                    <FaCalendar className="icon" />
+                    {rent.fecha_cita}
+                  </p>
+                  <p className="locationR">
+                    <FaClock className="icon" />
+                    {rent.time}
+                  </p>
+                </div>
+                <div className="detalle">
+                  <p className="verified">
+                    <RiVerifiedBadgeFill className="icon" />
+                    Verificado
+                  </p>
+                  <p className="locationR">
+                    <IoLocationSharp className="icon" />
+                    {rent.location}
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="cuerpo">
+                  <p><strong>Duración:</strong> </p>
+                  <p>{rent.duration} horas</p>
+                  <p><strong>Precio:</strong></p>
+                  <p>40 BOB x 1 hora &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; 
+                  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;  40 BOB</p>
+                  <p><strong>Tipo de evento:</strong></p>
+                    {/*<p>{rent.event_id ? rent.event_id : <i>No especificado</i>}</p>*/}
+                    <p>Boda</p>
+                    <p><strong>Vestimenta del evento:</strong></p>
+                    {/*<p>{rent.outfit_id ? rent.outfit_id : <i>No especificado</i>}</p>*/}
+                    <p>Cosplay</p>
+                    <p><strong>Descripción:</strong></p>
+                    <p>{rent.description ? rent.description : <i>No especificado</i>}</p>
+                  <p><strong>Intereses:</strong></p>
+                        {getClientLikes(rent.client).map((like) => (
+                        <p key={like} className="descriptionLike">
+                        {like}
+                        </p>
+                        ))}
+            </div>
+                <div class="pie">
+                  <p><strong>Estado de la reserva:</strong></p>
+                  <p class="pie.estado">
+                    <span>Pendiente</span>
+                  </p>
+                </div>
+                </div>
+        );
+      };
 
     return (
         <>
@@ -213,14 +295,6 @@ export default function ViewReserve() {
                                                 </button>
                                             </div>
                                             </div>
-                                            <div className="description">
-                                                <p>{rent.description}</p>
-                                            </div>
-                                            {getClientLikes(rent.client).map((like) => (
-                                                <p key={like} className="descriptionLike">
-                                                                {like}
-                                                                </p>
-                                                ))}
                                                 </div>
                                 </div>
                                 <hr></hr>
