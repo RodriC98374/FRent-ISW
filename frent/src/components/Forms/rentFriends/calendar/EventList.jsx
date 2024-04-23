@@ -22,7 +22,6 @@ const EventList = ({ date, events, onAddEvent, isAM }) => {
       <div className="cena-chefList">
         <h3>Reservas</h3>
         <p>Total Reservas: 9</p>
-
         <div>
           <div>
             <h4>Reserva 1</h4>

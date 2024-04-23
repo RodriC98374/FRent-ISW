@@ -14,7 +14,6 @@ dayjs.locale("es");
 
 function CalendarEdit() {
   const [selectedDate, setSelectedDate] = useState(null);
-  const [showEventForm, setShowEventForm] = useState(false);
   const [events, setEvents] = useState([
     {
       start: dayjs('2023-12-18T12:00:00').toDate(),
@@ -51,9 +50,6 @@ function CalendarEdit() {
     setSelectedDate(date);
   };
 
-  const handleSaveEvent = (newEvent) => {
-    setEvents([...events, newEvent]);
-  };
   return (
     <>
         <div className='calendar'>
