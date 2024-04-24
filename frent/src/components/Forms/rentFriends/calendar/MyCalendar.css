@@ -1,8 +1,9 @@
 .calendar {
-    height: 90vh;
-    width: 70%;
-    margin: 0 50px 0 30px 0 ;
-  }
+  height: 90vh;
+  width: 70%;
+  margin: 0 auto;
+}
+
   
   .rbc-calendar {
     background-color: #f0e4e4 !important;
@@ -69,6 +70,9 @@
   .calendarList {
     display: flex;
     flex-direction: column;
+    top: 80%;
+    /* justify-content: center;  */
+  /* align-items: center; */
   }
 
   .rbc-event, .rbc-day-slot .rbc-background-event {

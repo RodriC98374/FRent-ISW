@@ -71,4 +71,6 @@ export const delete_notifications_user = (id) => registersApi.delete(`/notificac
 
 export const validarLogin = (data) => registersApi.post('/users/login/', data)
 
+export const obtenerHorariosReservas = () => registersApi.get('/rents/rents/get_all_rents/')
+
 /* export const getTime = (id) => registersApi.get(`/rents/time_elapsed/${id}/`) */
