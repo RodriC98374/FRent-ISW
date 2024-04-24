@@ -37,6 +37,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     city = models.CharField(null=True, max_length=30)
     email = models.EmailField(unique=True)
     personal_description = models.CharField(max_length=150)
+
+    profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
+
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
@@ -54,7 +57,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.first_name
-  
+
 class Client(User):
     pass
 
@@ -66,7 +69,7 @@ class Like(models.Model):
     name = models.CharField(max_length=50)
 
 class Photo(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='users/%d/%m/%Y', null=True, blank=True)
 
 

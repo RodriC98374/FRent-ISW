@@ -5,7 +5,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 
 from .models import User, Client, Friend, Like, Photo, User_like
-from .serializers import GustosSerializer, UserSerializer, ClientSerializer, FriendSerializer, LikeSerializer, PhotoSerializer, UserLikeSerializer
+from .serializers import GustosSerializer, UserSerializer, ClientSerializer, FriendSerializer, LikeSerializer, PhotoSerializer, UserLikeSerializer, ProfileImageSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -32,6 +32,9 @@ class PhotoViewSet(viewsets.ModelViewSet):
     queryset = Photo.objects.all()
     serializer_class = PhotoSerializer
 
+class ProfileImageViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = ProfileImageSerializer
 
 class UserLikeViewSet(viewsets.ModelViewSet):
     queryset = User_like.objects.all()

@@ -35,3 +35,8 @@ class UserLikeSerializer(serializers.ModelSerializer):
 class GustosSerializer(serializers.Serializer):
     id_user = serializers.IntegerField()
     gustos = serializers.ListField(child=serializers.CharField())
+
+class ProfileImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('profile_image',)
