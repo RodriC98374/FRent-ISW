@@ -24,7 +24,7 @@ export default function RentFriendForm() {
   const [outfit, setOutfit] = useState([]);
   const [event, setEvent] = useState([]);
   const {userData} = useContext(UserContext);
-  const userId = userData.id;
+  const userId = userData.user_id;
   // eslint-disable-next-line
   const [showModal, setShowModal] = useState(false);
   // eslint-disable-next-line
@@ -42,6 +42,10 @@ export default function RentFriendForm() {
 
 
   const onSubmit = handleSubmit(async (data) => {
+
+    console.log("cliente", userId)
+    console.log("amigo", friendId)
+
     const frent = {
       fecha_cita: data.fecha_cita,
       time: data.time,
@@ -53,6 +57,18 @@ export default function RentFriendForm() {
       friend: friendId, // Asignar el ID del amigo
       client: userId // Suponiendo que el ID del cliente es 1 (puedes cambiarlo según tu lógica)
     };
+
+    console.log(frent)
+    
+    if(frent.event.isNaN){
+        delete frent.event;
+      } else if(frent.outfit.isNaN){
+        delete frent.outfit;
+      } else if(frent.description === ""){
+        delete frent.description;
+      }
+
+    console.log(frent);
 
     try {
       const restRent = await createRegisterRent(frent);

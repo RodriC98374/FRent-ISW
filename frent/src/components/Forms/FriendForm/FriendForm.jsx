@@ -67,6 +67,8 @@ export function FriendForm() {
         user_id: resFriend.data.id_user,
       };
 
+      console.log("el errorrr de los gustos esss: ", resFriend.data)
+
       await createLikes(user_likes);
       swal("Registro exitoso", "El cliente se registró correctamente", "success");
       setTimeout(() => { // Desaparecer el mensaje después de 1 segundo

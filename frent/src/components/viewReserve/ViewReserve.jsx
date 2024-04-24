@@ -6,7 +6,7 @@ import { RiVerifiedBadgeFill } from "react-icons/ri";
 //import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
 import "./Details.css";
-import { getClient, getRent, getPrice, get_likes_user, deleteRent, create_notification, createNotication, getClientID, getFriendID } from "../../api/register.api";
+import { getClient, getRent, getPrice, get_likes_user, deleteRent, create_notification, createNotication, getClientID, getFriendID, update_pending_rent, getPendingRent } from "../../api/register.api";
 
 export default function ViewReserve() {
   const [listRent, setListRent] = useState([]);
@@ -43,7 +43,7 @@ export default function ViewReserve() {
 
   const fetchData = async () => {
     try {
-      const resRent = await getRent();
+      const resRent = await getPendingRent(); //Cuando exista una sesion pasar el id del amigo xd
       if (resRent && resRent.data) {
         const sortedRent = resRent.data.sort((a, b) => {
           const dateA = new Date(a.create);
@@ -84,26 +84,33 @@ export default function ViewReserve() {
       return `${Math.floor(secondsPassed / 86400)} días`;
     }
   };
-  const handleAccept = async (rentId, rentClient, rentFriend) => {
-    try {
-      const accepted = window.confirm("¿Aceptas ser el amigo?");
-      if (accepted) {
-        sendFriendRequestEmail(rentClient, rentFriend, 1);
-        await deleteRent(rentId);
-        const dataNotification = {
-          message: "Acepto ser tu amigo de alquiler!",
-          from_user: rentFriend,
-          to_user: rentClient,
-          is_reading: false
-        }
+  
+    const handleAccept = async (rentId, rentClient, rentFriend) => {
+        try {
+            const accepted = window.confirm("¿Aceptas ser el amigo?");
+            if (accepted) {
+              sendFriendRequestEmail(rentClient, rentFriend, 1);
+              const data = {
+                status: "accepted"
+              }
+                await update_pending_rent(rentId, data);
 
-        await create_notification(dataNotification);
-        fetchData();
-      }
-    } catch (error) {
-      console.error("Error al aceptar el alquiler:", error);
-    }
-  };
+                // console.log("el daots ess", res.data)
+
+                const dataNotification = {
+                    message: "Acepto ser tu amigo de alquiler!",
+                    from_user: rentFriend,
+                    to_user: rentClient,
+                    is_reading: false
+                }
+                
+                await create_notification(dataNotification);
+                fetchData();
+            }
+        } catch (error) {
+            console.error("Error al aceptar el alquiler:", error);
+        }
+    };
 
   const handleReject = async (rentId, rentClient, rentFriend) => {
     try {
