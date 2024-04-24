@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-s-o6_879$-rbrk#6=3q)m^5c@pzylhn4u4krbaqnd!@b5ub8vk
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "deploy-is-production.up.railway.app", "127.0.0.1"]
 
 
 # Application definition
@@ -99,6 +99,16 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME':'railway',
+#         'USER':'postgres',
+#         'PASSWORD': 'ZjaRIGkTybRuZyXpEIGexxCbxajQozoa',
+#         'HOST': 'viaduct.proxy.rlwy.net',
+#         'PORT':'45613',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -134,7 +144,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'frontend', 'frent', 'build'),  # Archivos estáticos de la aplicación frontend
+# ]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -183,3 +197,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'frent0462@gmail.com'  # Tu dirección de correo electrónico
 EMAIL_HOST_PASSWORD = 'jshvjzufpmdjoukt'  # Tu contraseña de correo electrónico
+
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# CSRF_TRUSTED_ORIGINS = ["http://*", "https://deploy-is-production.up.railway.app/"]

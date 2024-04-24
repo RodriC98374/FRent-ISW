@@ -1,8 +1,6 @@
 from django.db import models
 from users.models import Friend, Client
-from django.core.validators import MinValueValidator,MaxValueValidator
-from django.contrib import admin
-from django import forms
+from django.core.validators import MinValueValidator
 
 
 class OutFit(models.Model):
@@ -21,12 +19,12 @@ class Event(models.Model):
 class Rent(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     friend = models.ForeignKey(Friend, on_delete=models.CASCADE)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    outfit= models.ForeignKey(OutFit, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, null=True)
+    outfit= models.ForeignKey(OutFit, on_delete=models.CASCADE, null=True)
     fecha_cita = models.DateField()
     time = models.TimeField()
     duration = models.FloatField(validators=[MinValueValidator(0.0)])
     location = models.CharField(max_length=50)
-    description = models.CharField(max_length=200)
+    description = models.CharField(max_length=200, null=True)
     create = models.DateTimeField(auto_now_add=True)
     
