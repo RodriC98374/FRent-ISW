@@ -11,6 +11,7 @@ import { FriendForm } from './components/Forms/FriendForm/FriendForm';
 /* import RentalSection from './pages/rentalSection/RentalSection'; */
 import ViewReserve from './components/viewReserve/ViewReserve';
 import LoginForm from './pages/Login/LoginForm';
+import AddAvailableHours from './components/Forms/AddAvailableHours/AddAvailableHours'
 
 
 
@@ -25,6 +26,9 @@ function App() {
           <Route path="/login" element={<LoginForm />} /> {/* Ruta para el formulario de inicio de sesión */}
           <Route path="/form" element={<SelectionRegister />} />
           <Route path="/customer" element={<CustomerForm />} />
+
+            <Route path='/addAvailableHours' element={<AddAvailableHours/>}/>
+
           <Route path="/friend" element={<FriendForm />} />
           <Route path="/listFriend" element={<ListFriend />} />
           <Route path="/rentaForm/:id" element={<RentFriendForm />} />

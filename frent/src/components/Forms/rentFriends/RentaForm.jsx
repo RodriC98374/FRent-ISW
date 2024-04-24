@@ -3,7 +3,7 @@ import { NavLink, useParams } from 'react-router-dom'; // Importar useParams
 import { ButtonPrimary } from '../../Buttons/buttonPrimary';
 import { ButtonSecondary } from '../../Buttons/buttonSecondary';
 import { useForm } from 'react-hook-form';
-import { InputText } from '../Inputs/inputText';
+import { InputText } from '../Inputs/InputText';
 import { SelectOptions } from '../Selects/selectOptions';
 import { createRegisterRent } from '../../../api/register.api';
 import { getOutfit } from '../../../api/register.api';
@@ -22,16 +22,17 @@ export default function RentFriendForm() {
   const [selectedOutfit, setSelectedOutfit] = useState("");
   const [outfit, setOutfit] = useState([]);
   const [event, setEvent] = useState([])
+  // eslint-disable-next-line
   const [showModal, setShowModal] = useState(false);
-
+  // eslint-disable-next-line
   const handleCancel = () => {
     setShowModal(true);
   };
-
+  // eslint-disable-next-line
   const handleCloseModal = () => {
     setShowModal(false);
   };
-
+  // eslint-disable-next-line
   const handleConfirmCancel = () => {
     setShowModal(false);
   };

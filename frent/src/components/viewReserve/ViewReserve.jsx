@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaUserFriends, FaCalendar, FaClock } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
-import imgApp from "../../assets/imgApp";
+//import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
 import { getClient, getRent, getPrice, get_likes_user, deleteRent, create_notification} from "../../api/register.api";
 
