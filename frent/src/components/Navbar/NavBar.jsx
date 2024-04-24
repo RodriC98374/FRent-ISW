@@ -33,7 +33,7 @@ export default function NavBar() {
 
   async function loadNotifications() {
     try {
-      const res = await get_notifications_user(2);
+      const res = await get_notifications_user(userData.user_id);
       setNotifications(res.data);
     } catch (error) {
       console.error("Error notifications:", error);
@@ -42,14 +42,14 @@ export default function NavBar() {
 
   const deleteNotifications = () => {
     if(notifications.length > 0){
-      delete_notifications_user(2);
+      delete_notifications_user(userData.user_id);
       loadNotifications()
     }
   }
 
   const readNotifications = () => {
     if(notifications.length > 0){
-      update_notifications_user(2);
+      update_notifications_user(userData.user_id);
       loadNotifications()
     }
   }
@@ -108,7 +108,7 @@ export default function NavBar() {
               <button className="navbar-option" onClick={handleLogout}>Cerrar Sesión</button>
             </li>
           )}
-          {userData && userData.user_type &&(
+          {userData && userData.user_type === 'Client' &&(
             <li onClick={openModal}>
             <div className="navbar-option">
               <svg
