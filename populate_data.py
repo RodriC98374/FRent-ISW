@@ -1,15 +1,17 @@
 
-#POBLAR LA TABLA TASTE
-##CORRER CON  python populate_data.py
-
+# POBLAR LA TABLA TASTE
+# CORRER CON  python populate_data.py
 import os
 import django
-
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'frent.settings')
 django.setup()
 
 from users.models import Like
 from rent.models import OutFit, Event
+<<<<<<< HEAD
+=======
+
+>>>>>>> 42b02f13ba9de51cbece77f7660c2e7ab5d9858b
 
 def populate_data():
     gustos = [
@@ -45,6 +47,10 @@ def populate_data():
         instancia_gusto = Like(name=gusto)
         instancia_gusto.save()
         
+<<<<<<< HEAD
+=======
+        
+>>>>>>> 42b02f13ba9de51cbece77f7660c2e7ab5d9858b
     outfits = [
         'Casual',
         'Formal',

@@ -44,8 +44,10 @@ INSTALLED_APPS = [
     'users',
     'rent',
     'notificaciones_api',
-    'coreapi'
-
+    'coreapi',
+    'djoser',
+    'rest_framework.authtoken',
+    'notificacionesInterno',
 ]
 
 MIDDLEWARE = [
@@ -157,6 +159,27 @@ AUTH_USER_MODEL = 'users.User'
 # documentacion
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+
+        #'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
+    
+}
+
+DJOSER = {
+    'SERIALIZERS': {
+        'user_create': 'users.serializers.UserSerializer',
+        'user': 'users.serializers.UserSerializer',
+        'current_user': 'users.serializers.UserSerializer',
+    },
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True, 
 }
 
 
