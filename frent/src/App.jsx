@@ -12,6 +12,7 @@ import ViewReserve from './components/viewReserve/ViewReserve';
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
 import LoginForm from './pages/Login/LoginForm'
 import MyCalendar from './components/Forms/rentFriends/calendar/MyCalendar';
+import UserProvider from './pages/Login/UserProvider';
 
 
 function App() {
@@ -40,16 +41,9 @@ function App() {
   return (
     <>
       <div className='body-app'>
+        
         <BrowserRouter>
           <NavBar user={user} />
-          {user ? (
-            <button onClick={logout}>Logout</button>
-          ) : (
-            <div>
-              <button onClick={() => login('client')}>Login como Cliente</button>
-              <button onClick={() => login('friend')}>Login como Amigo</button>
-            </div>
-          )}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<LoginForm />} /> 
@@ -75,7 +69,16 @@ function App() {
 
             <Route path="/*" element={<h1 className='text-center'>404 Page Not Found</h1>}></Route>
           </Routes>
+          {user ? (
+            <button onClick={logout}>Logout</button>
+          ) : (
+            <div>
+              <button onClick={() => login('client')}>Login como Cliente</button>
+              <button onClick={() => login('friend')}>Login como Amigo</button>
+            </div>
+          )}
         </BrowserRouter>
+        
       </div>
     </>
   );

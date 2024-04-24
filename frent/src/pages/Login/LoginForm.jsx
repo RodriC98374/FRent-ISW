@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { InputText } from '../../components/Forms/Inputs/inputText';
 import './LoginForm.css';
@@ -11,9 +11,6 @@ export default function LoginForm() {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
-    setValue,
-    reset,
   } = useForm();
 
   const onSubmit = handleSubmit(async (data) => {
@@ -28,6 +25,12 @@ export default function LoginForm() {
       console.error("Error al enviar los datos:", error);
     }
   });
+
+  baseUrl = 
+
+  iniciarSesion = async () => {
+    await axios.get()
+  }
  
 
   
