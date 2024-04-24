@@ -4,7 +4,7 @@ import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
-import { getClient, getRent, getPrice, get_likes_user, deleteRent, getRegister, getClientID, getFriendID, createNotication } from "../../api/register.api";
+import { getClient, getRent, getPrice, get_likes_user, deleteRent, getClientID, getFriendID, createNotication, getFriends } from "../../api/register.api";
 
 export default function ViewReserve() {
     const [listRent, setListRent] = useState([]);
@@ -98,28 +98,16 @@ export default function ViewReserve() {
         }
     };
 
-    const handleAccept = async (rentId) => {
-        console.log("los datos no aceptado:", rentId);
+    const handleAccept = async (rentId, clienID, friendID) => {
 
-        const clientResponse = await getClientID(8);
-        const clientEmail = clientResponse.data.email;
-        const friendResponse = await getFriendID(9);
-        const firstt_name = friendResponse.data.first_name;
-        const lastt_name = friendResponse.data.last_name;
-
-        // Obtener JSON y enviar a el correo electronico
-        const combinedData = {
-            email: clientEmail,
-            estado_solicitud: "Aprobada",
-            first_name: firstt_name,
-            last_name: lastt_name
-        };
-        console.log(combinedData);
-        createNotication(combinedData);
+        const datoscliente = getFriendID(friendID)
+        console.log(datoscliente);
+        console.log("los datos no aceptado:", friendID);
 
         try {
             const accepted = window.confirm("¿Aceptas ser el amigo?");
             if (accepted) {
+                sendFriendRequestEmail(clienID, 9, 1)
                 await deleteRent(rentId);
                 fetchData();
             }
@@ -130,11 +118,12 @@ export default function ViewReserve() {
 
     };
 
-    const handleReject = async (rentId) => {
-
+    const handleReject = async (rentId, clienID) => {
+        const datoscliente = getClientName(clienID);
         try {
             const rejected = window.confirm("¿Estás seguro de que deseas rechazar ser amigo?");
             if (rejected) {
+                sendFriendRequestEmail(8, 9, 0)
                 await deleteRent(rentId);
                 fetchData();
             }
@@ -144,6 +133,43 @@ export default function ViewReserve() {
     };
 
 
+    const sendFriendRequestEmail = async (clientID, friendID, isApproved) => {
+        try {
+            const clientResponse = await getClientID(clientID);
+            const clientEmail = clientResponse.data.email;
+
+            const friendResponse = await getFriendID(friendID);
+            const firstt_name = friendResponse.data.first_name;
+            const lastt_name = friendResponse.data.last_name;
+
+            let combinedData;
+
+            if (isApproved === 1) {
+                combinedData = {
+                    email: clientEmail,
+                    estado_solicitud: "Aprobo",
+                    first_name: firstt_name,
+                    last_name: lastt_name
+                };
+                // createNotification(combinedData);
+                createNotication(combinedData);
+                console.log(combinedData);
+                console.log("Correo electrónico enviado correctamente");
+            } else {
+                combinedData = {
+                    email: clientEmail,
+                    estado_solicitud: "Rechazo",
+                    first_name: firstt_name,
+                    last_name: lastt_name
+                };
+                createNotication(combinedData);
+
+                console.log("Correo electrónico enviado correctamente");
+            }
+        } catch (error) {
+            console.error("Error al enviar el correo electrónico:", error);
+        }
+    };
 
 
 
@@ -219,10 +245,10 @@ export default function ViewReserve() {
 
                                 <div className="action-buttons">
                                     <button className="btnV"
-                                        onClick={() => handleAccept(rent.id)} //rent.id
+                                        onClick={() => handleAccept(rent.id, rent.client)} //rent.id
                                     >Aceptar</button>
                                     <button className="btnVR"
-                                        onClick={() => handleReject(rent.id)}
+                                        onClick={() => handleReject(rent.id, rent.client)}
                                     >Rechazar</button>
                                 </div>
 
