@@ -2,7 +2,7 @@ import React from "react";
 import "./inputText.css";
 
 
-export function InputText ({ label, 
+function InputText ({ label, 
                                 id, 
                                 type, 
                                 placeholder, 
@@ -31,3 +31,5 @@ export function InputText ({ label,
         </div>  
     );
 }
+
+export default InputText;

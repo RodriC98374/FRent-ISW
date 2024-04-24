@@ -12,6 +12,10 @@ import ViewReserve from './components/viewReserve/ViewReserve';
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
 import LoginForm from './pages/Login/LoginForm'
 import MyCalendar from './components/Forms/rentFriends/calendar/MyCalendar';
+import AddAvailableHours from './components/Forms/AddAvailableHours/AddAvailableHours'
+
+
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -57,7 +61,10 @@ function App() {
               <ProtectedRoute isAllowed={user && user.roles.includes("client")}>
                 <CustomerForm />
               </ProtectedRoute>} />
-            <Route path="/friend" element={<FriendForm />} />
+  
+            <Route path='/addAvailableHours' element={<AddAvailableHours/>}/>
+
+          <Route path="/friend" element={<FriendForm />} />
         
 
             <Route element={<ProtectedRoute isAllowed={user && user.roles.includes('client')} redirectTo="/login" />}>

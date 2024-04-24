@@ -1,7 +1,7 @@
 import React from "react";
 import "./selectOptions.css";
 
-export function SelectOptions({ label, 
+function SelectOptions({ label, 
                                 id, 
                                 name, 
                                 errors, 
@@ -40,3 +40,6 @@ export function SelectOptions({ label,
         </div>
     );
 }
+
+
+export default SelectOptions;
