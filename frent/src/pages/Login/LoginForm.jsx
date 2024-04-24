@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom'; 
 import { useForm } from 'react-hook-form';
 import InputText from '../../components/Forms/Inputs/InputText';
 import './LoginForm.css';
@@ -10,7 +10,10 @@ import { UserContext } from './UserProvider';
 export default function LoginForm() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const { userData, setUserData } = useContext(UserContext); // Acceder al contexto
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
 console.log(userData)
+
   const onSubmit = handleSubmit(async (data) => {
     const { email, password } = data;
     const requestData = { email, password }; 
@@ -19,17 +22,23 @@ console.log(userData)
       const { data: responseData } = await validarLogin(requestData);
       console.log('Respuesta del servidor:', responseData); 
       
-      // Desestructurar y almacenar los datos en el estado del UserProvider
       setUserData({
         full_name: responseData.full_name,
         user_id: responseData.user_id,
         user_type: responseData.user_type
       });
+
+      setIsLoggedIn(true); 
+
       
     } catch (error) {
       console.error("Error al enviar los datos:", error);
     }
   });
+
+  if (isLoggedIn) {
+    return <Navigate to="/listFriend" />;
+  }
 
   return (
     <div className="login-container">
