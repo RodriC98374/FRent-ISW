@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { Calendar, dayjsLocalizer } from 'react-big-calendar';
 import dayjs from 'dayjs';
-import { IoCalendarOutline } from 'react-icons/io5';
 import EventList from './EventList'
-import {FaBriefcase } from 'react-icons/fa';
 import { FaKitchenSet } from "react-icons/fa6";
 import { IoMdBriefcase } from "react-icons/io";
 import 'dayjs/locale/es';
+import './MyCalendar.css'
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 
@@ -14,19 +13,17 @@ dayjs.locale("es");
 
 function CalendarEdit() {
   const [selectedDate, setSelectedDate] = useState(null);
-  const [showEventForm, setShowEventForm] = useState(false);
   const [events, setEvents] = useState([
     {
-      start: dayjs('2023-12-18T12:00:00').toDate(),
-      end: dayjs('2023-12-18T13:00:00').toDate(),
+      start: dayjs('2024-04-18T12:00:00').toDate(),
+      end: dayjs('2024-04-18T13:00:00').toDate(),
       eventType: 'Presencial',
-      personCount: 5,
     },
     {
       start: dayjs('2023-12-18T14:00:00').toDate(),
       end: dayjs('2023-12-18T15:00:00').toDate(),
       eventType: 'Pickup',
-      personCount: 8,
+      
     },
   ]);
 
@@ -38,7 +35,7 @@ function CalendarEdit() {
         dayjs(event.start).isSame(date, 'day') || dayjs(event.end).isSame(date, 'day')
     );
   
-    return hasEvent ? { style: { backgroundColor: '#4d3a6b', borderRadius: '10px' } } : {};
+    return hasEvent ? { style: { backgroundColor: '#333A73', borderRadius: '10px' } } : {};
   };
   
 
@@ -51,9 +48,6 @@ function CalendarEdit() {
     setSelectedDate(date);
   };
 
-  const handleSaveEvent = (newEvent) => {
-    setEvents([...events, newEvent]);
-  };
   return (
     <>
         <div className='calendar'>
@@ -69,10 +63,8 @@ function CalendarEdit() {
               event: ({ event }) => (
                 <button
                   onClick={() => handleAddEvent(dayjs(event.start))}
-                  style={{ backgroundColor: 'orange' }}
+                  style={{ backgroundColor: '#FBA834' }}
                 >
-                  {event.eventType === 'Presencial' ? <FaKitchenSet /> : <IoMdBriefcase />}
-                  {event.personCount}
                 </button>
               ),
             },
@@ -81,7 +73,7 @@ function CalendarEdit() {
           selectable={true}
           onSelectSlot={(slotInfo) => handleAddEvent(dayjs(slotInfo.start))}
         />
-
+        
         {selectedDate && (
           <EventList date={selectedDate} events={events} onAddEvent={handleAddEvent} />
         )}
