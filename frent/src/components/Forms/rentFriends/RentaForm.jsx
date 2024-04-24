@@ -3,7 +3,7 @@ import { NavLink, useParams } from 'react-router-dom'; // Importar useParams
 import { ButtonPrimary } from '../../Buttons/buttonPrimary';
 import { ButtonSecondary } from '../../Buttons/buttonSecondary';
 import { useForm } from 'react-hook-form';
-import InputText from "../Inputs/inputText.jsx";
+import InputText from "../Inputs/InputText.jsx";
 import SelectOptions from '../Selects/selectOptions.jsx';
 import { createRegisterRent } from '../../../api/register.api';
 import { getOutfit } from '../../../api/register.api';
@@ -24,7 +24,7 @@ export default function RentFriendForm() {
   const [outfit, setOutfit] = useState([]);
   const [event, setEvent] = useState([]);
   const {userData} = useContext(UserContext);
-  const userId = userData.id;
+  const userId = userData.user_id;
   // eslint-disable-next-line
   const [showModal, setShowModal] = useState(false);
   // eslint-disable-next-line
@@ -43,7 +43,8 @@ export default function RentFriendForm() {
 
   const onSubmit = handleSubmit(async (data) => {
 
-
+    console.log("cliente", userId)
+    console.log("amigo", friendId)
 
     const frent = {
       fecha_cita: data.fecha_cita,
