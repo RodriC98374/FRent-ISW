@@ -89,9 +89,9 @@ WSGI_APPLICATION = 'frent.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'frent',
-        'USER': 'alfredo',
-        'PASSWORD': 'notebok456',
+        'NAME': 'frent2',
+        'USER': 'postgres',
+        'PASSWORD': '123',
         'HOST': 'localhost',
         'OPTIONS': {
             'client_encoding': 'UTF8',
