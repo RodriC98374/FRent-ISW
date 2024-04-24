@@ -51,6 +51,15 @@ class ProfileImageViewSet(viewsets.ModelViewSet):
         users = User.objects.all()
         serializer = ProfileImageSerializer(users, many=True)
         return Response(serializer.data)
+    
+    def retrieve(self, request, pk=None):
+        try:
+            user = User.objects.get(id_user=pk)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = ProfileImageSerializer(user)
+        return Response(serializer.data)
 
 class UserLikeViewSet(viewsets.ModelViewSet):
     queryset = User_like.objects.all()
