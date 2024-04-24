@@ -65,6 +65,6 @@ export const update_notifications_user = (id) => registersApi.patch(`/notificaci
 
 export const delete_notifications_user = (id) => registersApi.delete(`/notificacionesInterno/notiIn/${id}/`)
 
-export const validarLogin = (id) => registersApi.get('/users/login/', data)
+export const validarLogin = (data) => registersApi.post('/users/login/', data)
 
 /* export const getTime = (id) => registersApi.get(`/rents/time_elapsed/${id}/`) */

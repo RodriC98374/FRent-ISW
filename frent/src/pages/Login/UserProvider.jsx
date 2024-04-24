@@ -1,23 +1,15 @@
-import { UserContext } from "./UserContext"
+// UserContext.js
 
-const usuario = [
-    {
-        id: 1,
-        nombre: 'Armando',
-        user: 'client'
-    },
-    {
-        id: 2,
-        nombre: 'Gaspar',
-        user: 'friend'
-    }
-]
+import React, { createContext, useState } from 'react';
 
+export const UserContext = createContext();
 
-export default function UserProvider({Children}) {
+export const UserProvider = ({ children }) => {
+  const [userData, setUserData] = useState(null);
+
   return (
-    <UserContext.Provider value={usuario}>
-        {Children}
+    <UserContext.Provider value={{ userData, setUserData }}>
+      {children}
     </UserContext.Provider>
-  )
-}
+  );
+};
