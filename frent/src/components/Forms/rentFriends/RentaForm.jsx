@@ -3,8 +3,8 @@ import { NavLink, useParams } from 'react-router-dom'; // Importar useParams
 import { ButtonPrimary } from '../../Buttons/buttonPrimary';
 import { ButtonSecondary } from '../../Buttons/buttonSecondary';
 import { useForm } from 'react-hook-form';
-import { InputText } from '../Inputs/InputText';
-import { SelectOptions } from '../Selects/selectOptions';
+import InputText from "../Inputs/InputText.jsx";
+import SelectOptions from '../Selects/selectOptions.jsx';
 import { createRegisterRent } from '../../../api/register.api';
 import { getOutfit } from '../../../api/register.api';
 import { getEvent } from '../../../api/register.api';
