@@ -2,8 +2,8 @@ import { useForm } from "react-hook-form";
 import { ButtonPrimary } from "../../Buttons/buttonPrimary";
 import { ButtonSecondary } from "../../Buttons/buttonSecondary";
 import { NavLink } from "react-router-dom";
-import { InputText } from "../Inputs/inputText";
-import { SelectOptions } from "../Selects/selectOptions";
+import InputText from "../Inputs/InputText";
+import SelectOptions from "../Selects/selectOptions";
 import { useState } from "react";
 import { Country, State } from "country-state-city";
 import { createRegisterFriend } from "../../../api/register.api";
@@ -356,7 +356,7 @@ export function FriendForm() {
               />
             </div>
             <div className="input-4c descripction">
-              <label htmlFor="descripcion">Descripción</label>
+              <label htmlFor="descripcion">Descripción personal</label>
               <textarea
                 placeholder="Cuentanos sobre ti"
                 name="descripcion"

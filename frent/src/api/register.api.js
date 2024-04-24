@@ -1,16 +1,24 @@
 import axios from 'axios'
 
+const isProduction = process.env.NODE_ENV === "production";
+
+let baseURL = "http://localhost:8000";
+
+if (isProduction) {
+  baseURL = "https://deploy-is-production.up.railway.app";
+}
+
 const registersApi = axios.create({
-    baseURL: "http://localhost:8000",
-    responseType: 'json',
-    withCredentials: true
+  baseURL: baseURL,
+  responseType: 'json',
+  withCredentials: true
 });
 
 
 
 export const getAllRegister = () => registersApi.get('/')
 
-export const getRegister  = (id) => registersApi.get(/${id}/)
+export const getRegister = (id) => registersApi.get(/${id}/)
 
 export const createRegisterClient = (data) => registersApi.post('/users/api/v1/clients/', data)
 
@@ -34,12 +42,29 @@ export const getOutfit = () => registersApi.get('/rents/outfits/')
 
 export const getEvent = () => registersApi.get('/rents/events/')
 
-export const getRent = () =>  registersApi.get('/rents/rents/')
+export const getRent = () => registersApi.get('/rents/rents/')
 
 export const deleteRent = (id) => registersApi.delete(`/rents/rents/${id}/`)
 
-export const getPrice =  () => registersApi.get("/rents/price/")
+export const getPrice = () => registersApi.get("/rents/price/")
 
 export const get_likes_user = (id) => registersApi.post('/users/api/v1/user_tastes/get_likes_user/', id)
+
+export const createNotication = (data) => registersApi.post('/notificaciones/send-email/', data);
+
+export const getClientID = (id) => registersApi.get(`/users/api/v1/clients/${id}/`)
+
+export const getFriendID = (id) => registersApi.get(`/users/api/v1/friends/${id}/`)
+
+
+export const create_notification = (id) => registersApi.post('/notificacionesInterno/notiIn/', id)
+
+export const get_notifications_user = (id) => registersApi.get(`/notificacionesInterno/notiIn/${id}`)
+
+export const update_notifications_user = (id) => registersApi.patch(`/notificacionesInterno/notiIn/${id}/`)
+
+export const delete_notifications_user = (id) => registersApi.delete(`/notificacionesInterno/notiIn/${id}/`)
+
+export const validarLogin = (data) => registersApi.post('/users/login/', data)
 
 /* export const getTime = (id) => registersApi.get(`/rents/time_elapsed/${id}/`) */

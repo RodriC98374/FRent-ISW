@@ -1,37 +1,41 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { NavLink, useParams } from 'react-router-dom'; // Importar useParams
 import { ButtonPrimary } from '../../Buttons/buttonPrimary';
 import { ButtonSecondary } from '../../Buttons/buttonSecondary';
 import { useForm } from 'react-hook-form';
-import { InputText } from '../Inputs/inputText';
-import { SelectOptions } from '../Selects/selectOptions';
+import InputText from "../Inputs/InputText.jsx";
+import SelectOptions from '../Selects/selectOptions.jsx';
 import { createRegisterRent } from '../../../api/register.api';
 import { getOutfit } from '../../../api/register.api';
 import { getEvent } from '../../../api/register.api';
 import swal from 'sweetalert'; // Importar SweetAlert
 
 import './RentaForm.css';
+import { UserContext } from '../../../pages/Login/UserProvider.jsx';
 
 export default function RentFriendForm() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
-  const { id } = useParams(); // Obtener el ID del amigo de la URL
-  const friendId = parseInt(id); // Convertir el ID a entero
+  const { id } = useParams(); 
+  const friendId = parseInt(id); 
 
   const [selectedHour, setSelectedHour] = useState("");
   const [selectedEvent, setSelectedEvent] = useState("");
   const [selectedOutfit, setSelectedOutfit] = useState("");
   const [outfit, setOutfit] = useState([]);
-  const [event, setEvent] = useState([])
+  const [event, setEvent] = useState([]);
+  const {userData} = useContext(UserContext);
+  const userId = userData.id;
+  // eslint-disable-next-line
   const [showModal, setShowModal] = useState(false);
-
+  // eslint-disable-next-line
   const handleCancel = () => {
     setShowModal(true);
   };
-
+  // eslint-disable-next-line
   const handleCloseModal = () => {
     setShowModal(false);
   };
-
+  // eslint-disable-next-line
   const handleConfirmCancel = () => {
     setShowModal(false);
   };
@@ -47,7 +51,7 @@ export default function RentFriendForm() {
       location: data.location,
       description: data.description,
       friend: friendId, // Asignar el ID del amigo
-      client: 1 // Suponiendo que el ID del cliente es 1 (puedes cambiarlo según tu lógica)
+      client: userId // Suponiendo que el ID del cliente es 1 (puedes cambiarlo según tu lógica)
     };
 
     try {
@@ -80,7 +84,7 @@ export default function RentFriendForm() {
       }
     });
   };
-  
+
   useEffect(() => {
     async function loadOutfit() {
       try {
@@ -261,20 +265,20 @@ export default function RentFriendForm() {
 
 
             <div className="input-4c descripction">
-            <InputText
-    id={"description"}
-    label={"Descripción"}
-    type={"textarea"}
-    required={false}
-    placeholder={"Ingrese una descripción"}
-    register={register("description", {
-        maxLength: {
-            value: 150,
-            message: "Excedió el número máximo de caracteres (150)",
-        },     
-    })}
-    errors={errors}
-/>
+              <InputText
+                id={"description"}
+                label={"Descripción"}
+                type={"textarea"}
+                required={false}
+                placeholder={"Ingrese una descripción"}
+                register={register("description", {
+                  maxLength: {
+                    value: 150,
+                    message: "Excedió el número máximo de caracteres (150)",
+                  },
+                })}
+                errors={errors}
+              />
 
 
             </div>
@@ -282,6 +286,7 @@ export default function RentFriendForm() {
           </div>
           <div className="buttons-section">
             <ButtonPrimary type={"submit"} label={"Alquilar"} />
+            <NavLink to = "/calendarReservas" >Mostrar reservas</NavLink>
             <NavLink to='/listfriend'>
               <ButtonSecondary label={"Cancelar"} onClick={confirmCancel} />
             </NavLink>

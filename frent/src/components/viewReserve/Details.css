@@ -1,0 +1,133 @@
+.modal1 {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /*background-color: antiquewhite;*/
+  background-color: white;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  width: 520px;
+  height: 80vh;
+  border: 3px solid black; /* borde */
+  z-index: 999; 
+  overflow: auto;
+}
+
+  body {
+    font-family: "Alata", sans-serif;
+  }
+  .container1 {
+    display: flex;
+    padding: 10px;
+    height: 200px;
+    width: 500px;
+    flex-direction: row;
+    border-bottom: 3px solid black; 
+  }
+  
+  .container1 img {
+    object-fit: cover;
+    width: 150px;
+  }
+
+  .detalle1 {
+    display: flex;
+    align-items: center; 
+    margin-bottom: 5px;
+  }
+  .verified-date1 {
+    display: flex;
+    margin-right: 40px;
+    align-items: center;
+  }
+
+  .verified1{
+    display: flex;
+    margin-right: 62px;
+    align-items: center;
+  }
+  
+  .locationR1 {
+    display: flex;
+    justify-content: center;
+    color: black;
+    border-radius: 5px;
+    
+  }
+  .request-inf1 {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px; /* Espacio entre cada detalle */
+    width: 100%;
+    }
+  
+  .modal-header1 {
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 20px;
+    text-align: center;
+    border-bottom: 3px solid black; 
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+  }
+  
+  .modal-header1 .FaSeach1 {
+    margin-right: 5px;
+  }
+  
+  
+  .modal1 .AiOutlineClose1 {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    align-items: right;
+  }
+
+  .cuerpo1 {
+    margin-top: 2px;
+    font-size: 12; 
+    line-height: 0.5;
+    padding: 10px;
+  }
+  
+  .pie1 {
+    bottom: 0; /* Position at the bottom */
+    width: 500px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-top: 3px solid black;
+    margin-bottom: 10px;
+  }
+  
+  .pie1.estado1 span {
+    border: 2px solid black;
+  }
+
+  .cuerpo .descriptionLike {
+    background-color: var( --tertiary-color);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-top: 15px;
+    margin: 10px;
+    width: auto; 
+    display: inline-block; 
+    margin-bottom: 10px;
+  }
+  .PrecioModal {
+    
+    display: grid;
+    padding: 15px;
+  }
+
+  .PrecioDetail{
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    margin: 0;
+
+  }
