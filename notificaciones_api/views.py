@@ -26,6 +26,7 @@ class NotificacionesView(viewsets.ModelViewSet):
 class EmailAPIView(APIView):
     def post(self, request):
         try:
+            print(request.data)
             email = request.data.get('email')
             subject = "Notificacion de Alquiler-Amigo"
             estado_solicitud = request.data.get('estado_solicitud')
@@ -39,6 +40,7 @@ class EmailAPIView(APIView):
                 f"</body>"
                 f"</html>"
             )
+            print(message)
 
             send_mail(subject, "", None, [email], html_message=message)
 

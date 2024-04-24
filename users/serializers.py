@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Client, Friend, Like, Photo, User_like
+from .models import Availability, User, Client, Friend, Like, Photo, User_like
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -56,3 +56,8 @@ class UserLikeSerializer(serializers.ModelSerializer):
 class GustosSerializer(serializers.Serializer):
     id_user = serializers.IntegerField()
     gustos = serializers.ListField(child=serializers.CharField())
+    
+class AvailabilitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Availability
+        fields = '__all__'

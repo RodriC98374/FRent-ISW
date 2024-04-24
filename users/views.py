@@ -10,8 +10,8 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer
-from .models import User, Client, Friend, Like, Photo, User_like
-from .serializers import GustosSerializer, UserSerializer, ClientSerializer, FriendSerializer, LikeSerializer, PhotoSerializer, UserLikeSerializer
+from .models import Availability, User, Client, Friend, Like, Photo, User_like
+from .serializers import AvailabilitySerializer, GustosSerializer, UserSerializer, ClientSerializer, FriendSerializer, LikeSerializer, PhotoSerializer, UserLikeSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -105,6 +105,25 @@ class UserLikeViewSet(viewsets.ModelViewSet):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({"error": "ID de usuario no proporcionado"}, status=status.HTTP_400_BAD_REQUEST)
+        
+class AvailabilityViewSet(viewsets.ModelViewSet):
+    queryset = Availability.objects.all()
+    serializer_class = AvailabilitySerializer
+    
+    @action(detail=True, methods=['GET'])
+    def get_availability_user(self, request, pk=None, *args, **kwargs):
+        availability_user = Availability.objects.filter(user_id=pk)
+        
+        availability_serial = AvailabilitySerializer(availability_user, many=True)
+        
+        if availability_serial.data:
+            return Response(availability_serial.data)
+        
+        return Response({'error': 'No tiene rangos'})    
+        
+        
+        # GET /users/api/v1/availability/11/get_availability_user/
+        
 
 class CustomLoginView(APIView):
     renderer_classes = [JSONRenderer, BrowsableAPIRenderer]

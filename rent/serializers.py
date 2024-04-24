@@ -31,3 +31,4 @@ class RentPriceSerializer(serializers.ModelSerializer):
         duration_decimal = Decimal(str(obj.duration))
         total_price = obj.friend.price * duration_decimal
         return total_price
+      
