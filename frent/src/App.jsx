@@ -12,6 +12,7 @@ import ViewReserve from './components/viewReserve/ViewReserve';
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
 import LoginForm from './pages/Login/LoginForm'
 import MyCalendar from './components/Forms/rentFriends/calendar/MyCalendar';
+import Photo from './pages/photo/PhotoForm';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -51,22 +52,24 @@ function App() {
           )}
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/login" element={<LoginForm />} /> 
+            <Route path="/login" element={<LoginForm />} />
             <Route path="/form" element={<SelectionRegister />} />
             <Route path="/customer" element={
               <ProtectedRoute isAllowed={user && user.roles.includes("client")}>
                 <CustomerForm />
               </ProtectedRoute>} />
             <Route path="/friend" element={<FriendForm />} />
-        
+
+            <Route path="/photo" element={<Photo />} />
+
 
             <Route element={<ProtectedRoute isAllowed={user && user.roles.includes('client')} redirectTo="/login" />}>
               <Route path="/rentaForm/:id" element={<RentFriendForm />} />
-              <Route path="/listRent" element={<ListFriend/>} />
+              <Route path="/listRent" element={<ListFriend />} />
               <Route path="/listFriend" element={<ListFriend />} />
-              
+
             </Route>
-            <Route path='/calendarReservas' element = {<MyCalendar/>}/>
+            <Route path='/calendarReservas' element={<MyCalendar />} />
             <Route path="/rentalSectio" element={
               <ProtectedRoute isAllowed={user && user.roles.includes('friend')}>
                 <ViewReserve />
