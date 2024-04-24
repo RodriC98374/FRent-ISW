@@ -41,3 +41,4 @@ class NotiInViewSet(viewsets.ModelViewSet):
     def destroy(self, request, pk=None, *args, **kwargs):
         notificationsFriend = NotificacionInterno.objects.filter(to_user=pk).delete()
         return Response(status=204)
+      #REPONSE a partir de un post

@@ -71,3 +71,20 @@ class Photo(models.Model):
 class User_like(models.Model):
     like_id = models.ForeignKey(Like, on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+class Availability(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    start = models.TimeField(default=timezone.now)
+    end = models.TimeField(default=timezone.now)
+    dia_semana = models.CharField(max_length=10, choices=[
+        ('lunes', 'Lunes'),
+        ('martes', 'Martes'),
+        ('miercoles', 'Miercoles'),
+        ('jueves', 'Jueves'),
+        ('viernes', 'Viernes'),
+        ('sabado', 'Sabado'),
+        ('domingo', 'Domingo'),
+    ])
+    
+    
+    

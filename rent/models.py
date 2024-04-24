@@ -27,4 +27,8 @@ class Rent(models.Model):
     location = models.CharField(max_length=50)
     description = models.CharField(max_length=200, null=True)
     create = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(default='pending', max_length=10) #Podria tener los estados de pending, accepted o rejeact
+    
+    
+    
     
