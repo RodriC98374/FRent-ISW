@@ -31,9 +31,9 @@ class RentViewSet(viewsets.ModelViewSet):
             time_elapsed=ExpressionWrapper(now - F('create'), output_field=fields.DurationField()) 
         ).order_by('-fecha_cita')
         
-    @action(detail=False, methods=['GET'])
+    @action(detail=True, methods=['GET'])
     def get_pendings_rents(self, request, pk=None):
-        rents = Rent.objects.filter(status="pending", friend=pk)
+        rents = Rent.objects.filter(status="pending", friend__id_user=pk)
         rents_serializer = RentSerializer(rents, many=True)
         return Response(rents_serializer.data)
     
