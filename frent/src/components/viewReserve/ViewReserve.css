@@ -177,5 +177,51 @@
   margin-bottom: 20px;
 }
 
+.details-button {
+  background-color: var(--tertiary-color);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-left: 10px;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: "Alata", sans-serif;
+}
 
+.details-button:hover {
+  background-color: var(--tertiary-color-darker);
+  color: rgb(10, 10, 10);
+}
 
+.details-button .icon {
+  margin-right: 10px;
+}
+
+/* Estilos para el precio y el icono de llave */
+.price-container {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.price-container .price {
+  background-color: var(--tertiary-color);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.price-container .icon {
+  color: black;
+}
+
+.price-details {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/*for modal*/

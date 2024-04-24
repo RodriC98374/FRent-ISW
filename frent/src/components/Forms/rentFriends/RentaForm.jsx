@@ -81,7 +81,7 @@ export default function RentFriendForm() {
       }
     });
   };
-  
+
   useEffect(() => {
     async function loadOutfit() {
       try {
@@ -262,20 +262,20 @@ export default function RentFriendForm() {
 
 
             <div className="input-4c descripction">
-            <InputText
-    id={"description"}
-    label={"Descripción"}
-    type={"textarea"}
-    required={false}
-    placeholder={"Ingrese una descripción"}
-    register={register("description", {
-        maxLength: {
-            value: 150,
-            message: "Excedió el número máximo de caracteres (150)",
-        },     
-    })}
-    errors={errors}
-/>
+              <InputText
+                id={"description"}
+                label={"Descripción"}
+                type={"textarea"}
+                required={false}
+                placeholder={"Ingrese una descripción"}
+                register={register("description", {
+                  maxLength: {
+                    value: 150,
+                    message: "Excedió el número máximo de caracteres (150)",
+                  },
+                })}
+                errors={errors}
+              />
 
 
             </div>
@@ -283,6 +283,7 @@ export default function RentFriendForm() {
           </div>
           <div className="buttons-section">
             <ButtonPrimary type={"submit"} label={"Alquilar"} />
+            <NavLink to = "/calendarReservas" >Mostrar reservas</NavLink>
             <NavLink to='/listfriend'>
               <ButtonSecondary label={"Cancelar"} onClick={confirmCancel} />
             </NavLink>
