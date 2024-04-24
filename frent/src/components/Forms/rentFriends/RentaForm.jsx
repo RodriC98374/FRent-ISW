@@ -52,6 +52,8 @@ export default function RentFriendForm() {
       friend: friendId, // Asignar el ID del amigo
       client: 2 // Suponiendo que el ID del cliente es 1 (puedes cambiarlo según tu lógica)
     };
+
+    console.log(frent)
     
     if(frent.event.isNaN){
         delete frent.event;
@@ -295,6 +297,7 @@ export default function RentFriendForm() {
           </div>
           <div className="buttons-section">
             <ButtonPrimary type={"submit"} label={"Alquilar"} />
+            <NavLink to = "/calendarReservas" >Mostrar reservas</NavLink>
             <NavLink to='/listfriend'>
               <ButtonSecondary label={"Cancelar"} onClick={confirmCancel} />
             </NavLink>
