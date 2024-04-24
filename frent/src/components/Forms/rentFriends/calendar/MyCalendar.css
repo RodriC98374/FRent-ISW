@@ -5,14 +5,15 @@
   }
   
   .rbc-calendar {
-    background-color: #312a2a !important;
+    background-color: #f0e4e4 !important;
     border-radius: 10px; 
+    color: #0000;
     
   }
   
   .rbc-toolbar .rbc-toolbar-label {
     text-align: center;
-    color: #ec8713;
+    color: #000;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   }
   
@@ -21,32 +22,32 @@
     border-radius: 10px !important;
   }
   .rbc-month-view {
-    background-color: #36323a !important;
+    background-color: #a5bfe6 !important;
   }
   
   .rbc-month-view {
-    background-color: #36323a;
+    background-color: #f2eff5;
     border: none;
     
   }
   .rbc-off-range-bg {
-    background: #1e1a1a !important;
+    background: #fcf9f9 !important;
     border-radius: 2px;
   }
    .rbc-header {
-    color: #ffff;
+    color: #000;
    }
   
    .rbc-date-cell {
     display: flex;
     padding: 10px 0px 0px 10px;
-    color: #fff;
+    color: #0e0a0a;
    }
   
    .rbc-today {
-    background-color: #ec8713 !important;
+    background-color: #FBA834 !important;
     border-radius: 6px;
-    border: 3px solid #fff;
+    border: 3px solid #000;
   }
   
   
@@ -67,4 +68,20 @@
   }
   .calendarList {
     display: flex;
+    flex-direction: column;
   }
+
+  .rbc-event, .rbc-day-slot .rbc-background-event {
+    border: none;
+    box-sizing: border-box;
+    box-shadow: none;
+    margin: 0;
+    padding: 2px 5px;
+    background-color: #3174ad;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    width: 80%;
+    height: 30px;
+    text-align: left;
+}

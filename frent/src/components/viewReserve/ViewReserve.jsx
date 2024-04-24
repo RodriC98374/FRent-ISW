@@ -3,7 +3,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { FaUserFriends, FaCalendar, FaClock, FaSearch } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
-import imgApp from "../../assets/imgApp";
+//import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
 import "./Details.css";
 import { getClient, getRent, getPrice, get_likes_user, deleteRent, create_notification, createNotication, getClientID, getFriendID } from "../../api/register.api";
@@ -14,6 +14,7 @@ export default function ViewReserve() {
   const [price, setPrice] = useState([]);
   const [likes_user, setLikesUser] = useState([]);
   const [selectedRent, setSelectedRent] = useState(null);
+  const staticImage = "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
 
   useEffect(() => {
     fetchData();
@@ -207,7 +208,8 @@ export default function ViewReserve() {
         <div className="container1">
           <div className="user-info1">
             <img
-              src={rent.profilePic || imgApp.image}
+              //src={rent.profilePic || imgApp.image}
+              src={staticImage}
               alt="Foto de perfil"
               className="profile-pic1"
             />
@@ -312,7 +314,8 @@ export default function ViewReserve() {
                 <div className="pending-info">
                   <div className="user-info">
                     <img
-                      src={rent.profilePic || imgApp.image}
+                      // src={rent.profilePic || imgApp.image}
+                      src={staticImage}
                       alt="Foto de perfil"
                       className="profile-pic"
                     />

@@ -1,0 +1,32 @@
+.listaEvento {
+    display: grid;
+    background-color: #f2eafa;
+    border-radius: 10px;
+    width: 410px;
+    height: 500px;
+    margin-top: 50px;
+    place-items: center;
+    border: 1px solid;
+    overflow: auto;    
+    background-color: #3174ad;
+}
+
+.titleE {
+    display: flex;
+}
+
+.titleE div {
+    display: flex;
+}
+
+.reserv-container {
+    border: 1px solid;
+    border-radius: 8px;
+    margin: 10px 20px 5px 20px;
+    color: #0c0b0b;
+    padding: 50px;
+}
+
+.reserv-container h3 {
+    color: chocolate;
+}

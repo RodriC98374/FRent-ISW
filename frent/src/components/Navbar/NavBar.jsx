@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import {
   get_notifications_user,
@@ -7,10 +7,12 @@ import {
 } from "../../api/register.api";
 import "./Navbar.css";
 import NotificationModal from "./notifications";
+import { UserContext } from "../../pages/Login/UserProvider";
 
 export default function NavBar() {
   const [modalVisible, setModalVisible] = useState(false);
   const [notifications, setNotifications] = useState([]);
+  const { userData, setUserData } = useContext(UserContext);
 
   useEffect(() => {
     loadNotifications();
@@ -52,6 +54,11 @@ export default function NavBar() {
     }
   }
 
+  const handleLogout = () => {
+    
+    setUserData(null);
+  }
+
   return (
     <>
       <nav className="navbar-body">
@@ -68,26 +75,41 @@ export default function NavBar() {
               Inicio
             </NavLink>
           </li>
-          <li onClick={closeModal}>
-            <NavLink className="navbar-option" to="listfriend">
-              Amigos
-            </NavLink>
-          </li>
-          <li onClick={closeModal}>
+          {userData && userData.user_type === 'Client' && (
+            <li onClick={closeModal}>
+              <NavLink className="navbar-option" to="listfriend">
+                Amigos
+              </NavLink>
+            </li>
+          )}
+          {!userData && (
+            <li onClick={closeModal}>
             <NavLink className="navbar-option" to="form">
               {" "}
               Registrarse
             </NavLink>
           </li>
-          <li onClick={closeModal}>
-            <NavLink className="navbar-option" to="/rentalSectio">
-              Alquileres
-            </NavLink>
-          </li>
-          <li>
+          )
+          }
+          {userData && userData.user_type === 'Friend' && (
+            <li onClick={closeModal}>
+              <NavLink className="navbar-option" to="/rentalSectio">
+                Alquileres
+              </NavLink>
+            </li>
+          )}
+          {!userData && (
+            <li>
               <NavLink className="navbar-option" to="/login">Iniciar Sesión</NavLink>
-          </li>
-          <li onClick={openModal}>
+            </li>
+          )}
+          {userData && (
+            <li>
+              <button className="navbar-option" onClick={handleLogout}>Cerrar Sesión</button>
+            </li>
+          )}
+          {userData && userData.user_type &&(
+            <li onClick={openModal}>
             <div className="navbar-option">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -103,6 +125,7 @@ export default function NavBar() {
               </svg>
             </div>
           </li>
+          )}
         </ul>
       </nav>
       {<NotificationModal
