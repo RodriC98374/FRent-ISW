@@ -39,4 +39,9 @@ class GustosSerializer(serializers.Serializer):
 class ProfileImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('profile_image',)
+        fields = ('id_user', 'profile_image')
+
+    def update(self, instance, validated_data):
+        instance.profile_image = validated_data.get('profile_image', instance.profile_image)
+        instance.save()
+        return instance

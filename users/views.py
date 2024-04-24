@@ -33,8 +33,19 @@ class PhotoViewSet(viewsets.ModelViewSet):
     serializer_class = PhotoSerializer
 
 class ProfileImageViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = ProfileImageSerializer
+    def create(self, request):
+        serializer = ProfileImageSerializer(data=request.data)
+        if serializer.is_valid():
+            user_id = request.data.get('id_user')
+            try:
+                user = User.objects.get(id_user=user_id)
+            except User.DoesNotExist:
+                return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+            serializer.update(user, request.data)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserLikeViewSet(viewsets.ModelViewSet):
     queryset = User_like.objects.all()
