@@ -4,7 +4,7 @@ import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
-import { getClient, getRent, getPrice, get_likes_user, deleteRent, getClientID, getFriendID, createNotication, getFriends } from "../../api/register.api";
+import { getClient, getRent, getPrice, get_likes_user, deleteRent, getClientID, getFriendID, createNotication } from "../../api/register.api";
 
 export default function ViewReserve() {
     const [listRent, setListRent] = useState([]);
@@ -98,16 +98,11 @@ export default function ViewReserve() {
         }
     };
 
-    const handleAccept = async (rentId, clienID, friendID) => {
-
-        const datoscliente = getFriendID(friendID)
-        console.log(datoscliente);
-        console.log("los datos no aceptado:", friendID);
-
+    const handleAccept = async (rentId, rentClient, rentFriend) => {
         try {
             const accepted = window.confirm("¿Aceptas ser el amigo?");
             if (accepted) {
-                sendFriendRequestEmail(clienID, 9, 1)
+                sendFriendRequestEmail(rentClient, rentFriend, 1)
                 await deleteRent(rentId);
                 fetchData();
             }
@@ -118,12 +113,11 @@ export default function ViewReserve() {
 
     };
 
-    const handleReject = async (rentId, clienID) => {
-        const datoscliente = getClientName(clienID);
+    const handleReject = async (rentId, rentClient, rentFriend) => {
         try {
             const rejected = window.confirm("¿Estás seguro de que deseas rechazar ser amigo?");
             if (rejected) {
-                sendFriendRequestEmail(8, 9, 0)
+                sendFriendRequestEmail(rentClient, rentFriend, 0)
                 await deleteRent(rentId);
                 fetchData();
             }
@@ -245,10 +239,10 @@ export default function ViewReserve() {
 
                                 <div className="action-buttons">
                                     <button className="btnV"
-                                        onClick={() => handleAccept(rent.id, rent.client)} //rent.id
+                                        onClick={() => handleAccept(rent.id, rent.client, rent.friend)} //rent.id
                                     >Aceptar</button>
                                     <button className="btnVR"
-                                        onClick={() => handleReject(rent.id, rent.client)}
+                                        onClick={() => handleReject(rent.id, rent.client, rent.friend)}
                                     >Rechazar</button>
                                 </div>
 

@@ -47,7 +47,7 @@ export default function RentFriendForm() {
       location: data.location,
       description: data.description,
       friend: friendId, // Asignar el ID del amigo
-      client: 1 // Suponiendo que el ID del cliente es 1 (puedes cambiarlo según tu lógica)
+      client: 2 // Suponiendo que el ID del cliente es 1 (puedes cambiarlo según tu lógica)
     };
 
     try {
@@ -80,7 +80,7 @@ export default function RentFriendForm() {
       }
     });
   };
-  
+
   useEffect(() => {
     async function loadOutfit() {
       try {
@@ -261,20 +261,20 @@ export default function RentFriendForm() {
 
 
             <div className="input-4c descripction">
-            <InputText
-    id={"description"}
-    label={"Descripción"}
-    type={"textarea"}
-    required={false}
-    placeholder={"Ingrese una descripción"}
-    register={register("description", {
-        maxLength: {
-            value: 150,
-            message: "Excedió el número máximo de caracteres (150)",
-        },     
-    })}
-    errors={errors}
-/>
+              <InputText
+                id={"description"}
+                label={"Descripción"}
+                type={"textarea"}
+                required={false}
+                placeholder={"Ingrese una descripción"}
+                register={register("description", {
+                  maxLength: {
+                    value: 150,
+                    message: "Excedió el número máximo de caracteres (150)",
+                  },
+                })}
+                errors={errors}
+              />
 
 
             </div>
