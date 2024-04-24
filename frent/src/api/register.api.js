@@ -18,7 +18,7 @@ const registersApi = axios.create({
 
 export const getAllRegister = () => registersApi.get('/')
 
-export const getRegister  = (id) => registersApi.get(/${id}/)
+export const getRegister = (id) => registersApi.get(/${id}/)
 
 export const createRegisterClient = (data) => registersApi.post('/users/api/v1/clients/', data)
 
@@ -42,13 +42,20 @@ export const getOutfit = () => registersApi.get('/rents/outfits/')
 
 export const getEvent = () => registersApi.get('/rents/events/')
 
-export const getRent = () =>  registersApi.get('/rents/rents/')
+export const getRent = () => registersApi.get('/rents/rents/')
 
 export const deleteRent = (id) => registersApi.delete(`/rents/rents/${id}/`)
 
-export const getPrice =  () => registersApi.get("/rents/price/")
+export const getPrice = () => registersApi.get("/rents/price/")
 
 export const get_likes_user = (id) => registersApi.post('/users/api/v1/user_tastes/get_likes_user/', id)
+
+export const createNotication = (data) => registersApi.post('/notificaciones/send-email/', data);
+
+export const getClientID = (id) => registersApi.get(`/users/api/v1/clients/${id}/`)
+
+export const getFriendID = (id) => registersApi.get(`/users/api/v1/friends/${id}/`)
+
 
 export const create_notification = (id) => registersApi.post('/notificacionesInterno/notiIn/', id)
 
