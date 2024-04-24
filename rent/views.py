@@ -29,8 +29,8 @@ class RentViewSet(viewsets.ModelViewSet):
         ).order_by('-fecha_cita')
         
     @action(detail=False, methods=['GET'])
-    def get_pendings_rents(self, request):
-        rents = Rent.objects.filter(status="pending")
+    def get_pendings_rents(self, request, pk=None):
+        rents = Rent.objects.filter(status="pending", friend=pk)
         rents_serializer = RentSerializer(rents, many=True)
         return Response(rents_serializer.data)
     
