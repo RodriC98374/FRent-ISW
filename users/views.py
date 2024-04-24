@@ -147,4 +147,3 @@ class CustomLoginView(APIView):
             })
         else:
             return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_400_BAD_REQUEST)
-        
