@@ -43,7 +43,7 @@ export default function ViewReserve() {
 
   const fetchData = async () => {
     try {
-      const resRent = await getPendingRent(); //Cuando exista una sesion pasar el id del amigo xd
+      const resRent = await getPendingRent(28); //Cuando exista una sesion pasar el id del amigo xd
       if (resRent && resRent.data) {
         const sortedRent = resRent.data.sort((a, b) => {
           const dateA = new Date(a.create);
