@@ -22,22 +22,25 @@ export default function RentFriendForm() {
   const [selectedOutfit, setSelectedOutfit] = useState("");
   const [outfit, setOutfit] = useState([]);
   const [event, setEvent] = useState([])
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
 
-  const handleCancel = () => {
-    setShowModal(true);
-  };
+  // const handleCancel = () => {
+  //   setShowModal(true);
+  // };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
+  // const handleCloseModal = () => {
+  //   setShowModal(false);
+  // };
 
-  const handleConfirmCancel = () => {
-    setShowModal(false);
-  };
+  // const handleConfirmCancel = () => {
+  //   setShowModal(false);
+  // };
 
 
   const onSubmit = handleSubmit(async (data) => {
+
+
+
     const frent = {
       fecha_cita: data.fecha_cita,
       time: data.time,
@@ -49,6 +52,16 @@ export default function RentFriendForm() {
       friend: friendId, // Asignar el ID del amigo
       client: 2 // Suponiendo que el ID del cliente es 1 (puedes cambiarlo según tu lógica)
     };
+    
+    if(frent.event.isNaN){
+        delete frent.event;
+      } else if(frent.outfit.isNaN){
+        delete frent.outfit;
+      } else if(frent.description === ""){
+        delete frent.description;
+      }
+
+    console.log(frent);
 
     try {
       const restRent = await createRegisterRent(frent);

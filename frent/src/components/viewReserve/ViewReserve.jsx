@@ -40,6 +40,7 @@ export default function ViewReserve() {
     const fetchData = async () => {
         try {
             const resRent = await getRent();
+            console.log(resRent.data)
             if (resRent && resRent.data) {
                 const sortedRent = resRent.data.sort((a, b) => {
                     const dateA = new Date(a.create);
