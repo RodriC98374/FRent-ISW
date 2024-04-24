@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { NavLink, useParams } from 'react-router-dom'; // Importar useParams
 import { ButtonPrimary } from '../../Buttons/buttonPrimary';
 import { ButtonSecondary } from '../../Buttons/buttonSecondary';
@@ -11,17 +11,20 @@ import { getEvent } from '../../../api/register.api';
 import swal from 'sweetalert'; // Importar SweetAlert
 
 import './RentaForm.css';
+import { UserContext } from '../../../pages/Login/UserProvider.jsx';
 
 export default function RentFriendForm() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
-  const { id } = useParams(); // Obtener el ID del amigo de la URL
-  const friendId = parseInt(id); // Convertir el ID a entero
+  const { id } = useParams(); 
+  const friendId = parseInt(id); 
 
   const [selectedHour, setSelectedHour] = useState("");
   const [selectedEvent, setSelectedEvent] = useState("");
   const [selectedOutfit, setSelectedOutfit] = useState("");
   const [outfit, setOutfit] = useState([]);
-  const [event, setEvent] = useState([])
+  const [event, setEvent] = useState([]);
+  const {userData} = useContext(UserContext);
+  const userId = userData.id;
   // eslint-disable-next-line
   const [showModal, setShowModal] = useState(false);
   // eslint-disable-next-line
@@ -48,7 +51,7 @@ export default function RentFriendForm() {
       location: data.location,
       description: data.description,
       friend: friendId, // Asignar el ID del amigo
-      client: 1 // Suponiendo que el ID del cliente es 1 (puedes cambiarlo según tu lógica)
+      client: userId // Suponiendo que el ID del cliente es 1 (puedes cambiarlo según tu lógica)
     };
 
     try {

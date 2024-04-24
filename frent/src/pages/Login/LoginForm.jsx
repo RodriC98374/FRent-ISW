@@ -37,7 +37,7 @@ console.log(userData)
   });
 
   if (isLoggedIn) {
-    return <Navigate to="/listFriend" />;
+    return <Navigate to="/" />;
   }
 
   return (

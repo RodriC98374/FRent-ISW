@@ -28,11 +28,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<LoginForm />} /> 
             <Route path="/form" element={<SelectionRegister />} />
-            <Route path="/customer" element={
-              <ProtectedRoute isAllowed={userData && userData.user_type === "Client"}>
-                <CustomerForm />
-              </ProtectedRoute>} />
-  
+            <Route path="/customer" element={<CustomerForm />} />
             <Route path='/addAvailableHours' element={<AddAvailableHours/>}/>
 
             <Route path="/friend" element={<FriendForm />} />

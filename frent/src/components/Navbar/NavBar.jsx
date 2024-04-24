@@ -12,7 +12,7 @@ import { UserContext } from "../../pages/Login/UserProvider";
 export default function NavBar() {
   const [modalVisible, setModalVisible] = useState(false);
   const [notifications, setNotifications] = useState([]);
-  const { userData } = useContext(UserContext);
+  const { userData, setUserData } = useContext(UserContext);
 
   useEffect(() => {
     loadNotifications();
@@ -54,6 +54,11 @@ export default function NavBar() {
     }
   }
 
+  const handleLogout = () => {
+    
+    setUserData(null);
+  }
+
   return (
     <>
       <nav className="navbar-body">
@@ -77,12 +82,15 @@ export default function NavBar() {
               </NavLink>
             </li>
           )}
-          <li onClick={closeModal}>
+          {!userData && (
+            <li onClick={closeModal}>
             <NavLink className="navbar-option" to="form">
               {" "}
               Registrarse
             </NavLink>
           </li>
+          )
+          }
           {userData && userData.user_type === 'Friend' && (
             <li onClick={closeModal}>
               <NavLink className="navbar-option" to="/rentalSectio">
@@ -95,7 +103,13 @@ export default function NavBar() {
               <NavLink className="navbar-option" to="/login">Iniciar Sesión</NavLink>
             </li>
           )}
-          <li onClick={openModal}>
+          {userData && (
+            <li>
+              <button className="navbar-option" onClick={handleLogout}>Cerrar Sesión</button>
+            </li>
+          )}
+          {userData && userData.user_type &&(
+            <li onClick={openModal}>
             <div className="navbar-option">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -111,6 +125,7 @@ export default function NavBar() {
               </svg>
             </div>
           </li>
+          )}
         </ul>
       </nav>
       {<NotificationModal
