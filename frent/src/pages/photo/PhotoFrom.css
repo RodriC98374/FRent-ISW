@@ -71,23 +71,22 @@
 }
 
 .remove-button {
+    color: #fff;
+    font-size: 20px;
     position: absolute;
-    top: 10px;
-    left: 10px;
-    background-color: #fff;
+    top: -15px;
+    right: -15px;
+    background-color: #ff0000;
     border: none;
     border-radius: 50%;
     padding: 8px;
     cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .remove-button i {
-    color: #ccc;
+    color: #fff;
     font-size: 16px;
-}
-
-.remove-button:hover i {
-    color: #ff0000;
 }
 
 .preview-image {
@@ -107,5 +106,5 @@
 }
 
 .next-button:hover {
-    background: #FF9C11;
+    background: #ff9c11;
 }
