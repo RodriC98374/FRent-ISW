@@ -57,5 +57,12 @@ export const getClientID = (id) => registersApi.get(`/users/api/v1/clients/${id}
 export const getFriendID = (id) => registersApi.get(`/users/api/v1/friends/${id}/`)
 
 
+export const create_notification = (id) => registersApi.post('/notificacionesInterno/notiIn/', id)
+
+export const get_notifications_user = (id) => registersApi.get(`/notificacionesInterno/notiIn/${id}`)
+
+export const update_notifications_user = (id) => registersApi.patch(`/notificacionesInterno/notiIn/${id}/`)
+
+export const delete_notifications_user = (id) => registersApi.delete(`/notificacionesInterno/notiIn/${id}/`)
 
 /* export const getTime = (id) => registersApi.get(`/rents/time_elapsed/${id}/`) */

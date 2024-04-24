@@ -55,6 +55,11 @@ a{
   font-weight: 500;
 }
 
+.modal-notification{
+  height: 350px;
+  overflow: auto;
+}
+
 .card-modal-notification > img{
   width: 70px;
   height: 70px;
@@ -74,4 +79,70 @@ a{
 .name-card{
   font-size: var(--pL-size);
   font-weight: 600;
+  display: inline;
 }
+
+.timePassed{
+  font-size: 13px;
+}
+
+.no_reading_card{
+  background-color: #ccc;
+  border: solid 0.5px #7e7e7e;
+}
+
+.reading{
+  padding: 5px;
+  background-color: rgb(228, 237, 237);
+  border-radius: 5px;
+  margin-left: 10px;
+  font-size: 11px;
+}
+
+.no_reading{
+  padding: 3px;
+  background-color: rgb(239, 221, 150);
+  border-radius: 5px;
+  font-size: 11px;
+  margin-left: 10px;
+}
+
+.footer_notification{
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
+
+.btn-notifications{
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 90px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 3px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 15px;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
