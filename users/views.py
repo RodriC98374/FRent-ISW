@@ -46,6 +46,11 @@ class ProfileImageViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def list(self, request):
+        users = User.objects.all()
+        serializer = ProfileImageSerializer(users, many=True)
+        return Response(serializer.data)
 
 class UserLikeViewSet(viewsets.ModelViewSet):
     queryset = User_like.objects.all()
