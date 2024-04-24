@@ -142,7 +142,9 @@ class CustomLoginView(APIView):
             return Response({
                 'token': token.key,
                 'user_id': user.pk,
-                'full_name': user.get_full_name(),
+                #'full_name': user.get_full_name(),
+                'first_name': user.first_name,
+                'last_name': user.last_name,
                 'user_type': user_type
             })
         else:
