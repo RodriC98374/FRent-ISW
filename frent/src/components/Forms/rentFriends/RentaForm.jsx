@@ -302,7 +302,7 @@ export default function RentFriendForm() {
           </div>
           <div className="buttons-section">
             <ButtonPrimary type={"submit"} label={"Alquilar"} />
-            <NavLink to = "/calendarReservas" >Mostrar reservas</NavLink>
+            <NavLink to = {`/calendarReservas/${friendId}`} >Mostrar reservas</NavLink>
             <NavLink to='/listfriend'>
               <ButtonSecondary label={"Cancelar"} onClick={confirmCancel} />
             </NavLink>

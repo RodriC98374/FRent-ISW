@@ -39,7 +39,7 @@ function App() {
               <Route path="/listFriend" element={<ListFriend />} />
             </Route>
             
-            <Route path='/calendarReservas' element = {<MyCalendar/>}/>
+            <Route path='/calendarReservas/:id' element = {<MyCalendar/>}/>
             
             <Route path="/rentalSectio" element={
               <ProtectedRoute isAllowed={userData && userData.user_type === 'Friend'}>

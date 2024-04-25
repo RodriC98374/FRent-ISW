@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, dayjsLocalizer } from 'react-big-calendar';
+import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import EventList from './EventList';
 import { obtenerHorariosReservas } from '../../../../api/register.api';
@@ -12,7 +13,11 @@ dayjs.locale('es');
 function CalendarEdit() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [events, setEvents] = useState([]);
+  const { id } = useParams(); 
+  const friendId = parseInt(id); 
+  
 
+  console.log(events)
   const localizer = dayjsLocalizer(dayjs, {
     messages: {
       today: 'Hoy',
@@ -20,19 +25,6 @@ function CalendarEdit() {
       next: 'Siguiente',
     },
   });
-
-  useEffect(() => {
-    cargarEventos();
-  }, []);
-
-  const cargarEventos = async () => {
-    try {
-      const data = await obtenerHorariosReservas();
-      setEvents(data); // Actualizar eventos con los datos obtenidos
-    } catch (error) {
-      console.error('Error al cargar eventos:', error);
-    }
-  };
 
   const dayStyleGetter = (date) => {
     const hasEvent = events.some(
@@ -43,6 +35,27 @@ function CalendarEdit() {
     return hasEvent ? { style: { backgroundColor: '#333A73', borderRadius: '10px' } } : {};
   };
 
+  useEffect(() => {
+    cargarEventos();
+  }, []);
+
+  const cargarEventos = async () => {
+    try {
+      const res = await obtenerHorariosReservas(friendId);
+      const eventosTransformados = res.data.map((evento, index) => ({
+      start: dayjs(evento.fecha_alquiler + 'T' + evento.hora_inicio).toDate(),
+      end: dayjs(evento.fecha_alquiler + 'T' + evento.hora_fin).toDate(),
+      eventType: `${evento.tipo_evento} ${index + 1}`, // Añadir un contador al tipo de evento
+      duration: `${evento.duration} horas`, // Añadir la duración y especificar las horas
+    }));
+    setEvents(eventosTransformados); // Actualizar eventos con los datos obtenidos
+    } catch (error) {
+      console.error('Error al cargar eventos:', error);
+    }
+  };
+  
+
+  
   const calendarStyle = {
     height: 500,
     backgroundColor: '#fff',
