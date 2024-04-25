@@ -1,8 +1,6 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin,UserManager
 from django.db import models
 from django.utils import timezone
-
-
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -41,7 +39,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
 
     is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
 
     objects = UserManager()
@@ -76,3 +74,20 @@ class Photo(models.Model):
 class User_like(models.Model):
     like_id = models.ForeignKey(Like, on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+class Availability(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    start = models.TimeField(default=timezone.now)
+    end = models.TimeField(default=timezone.now)
+    dia_semana = models.CharField(max_length=10, choices=[
+        ('lunes', 'Lunes'),
+        ('martes', 'Martes'),
+        ('miercoles', 'Miercoles'),
+        ('jueves', 'Jueves'),
+        ('viernes', 'Viernes'),
+        ('sabado', 'Sabado'),
+        ('domingo', 'Domingo'),
+    ])
+    
+    
+    
