@@ -23,7 +23,8 @@ console.log(userData)
       console.log('Respuesta del servidor:', responseData); 
       
       setUserData({
-        full_name: responseData.full_name,
+        first_name: responseData.first_name,
+        last_name: responseData.last_name,
         user_id: responseData.user_id,
         user_type: responseData.user_type
       });

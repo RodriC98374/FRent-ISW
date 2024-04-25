@@ -1,24 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { FaUserFriends, FaCalendar, FaClock, FaSearch } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
+import { UserContext } from "../../pages/Login/UserProvider";
 //import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
 import "./Details.css";
 import { getClient, getPrice, get_likes_user, deleteRent, create_notification, createNotication, getClientID, getFriendID, update_pending_rent, getPendingRent } from "../../api/register.api";
 
 export default function ViewReserve() {
+  const { userData } = useContext(UserContext);
   const [listRent, setListRent] = useState([]);
   const [listClient, setListClient] = useState([]);
   const [price, setPrice] = useState([]);
   const [likes_user, setLikesUser] = useState([]);
   const [selectedRent, setSelectedRent] = useState(null);
+  const [friendId, setFriendId] = useState(null);
   const staticImage = "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
+
+
+    console.log("Hola como estas ", listRent)
+  console.log("Hola mundo es el id del amigo",friendId)
+  useEffect(() => {
+    if (userData) {
+      setFriendId(userData.user_id);
+    }
+  }, [userData]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [friendId]);
 
   useEffect(() => {
     if (listRent.length > 0) {
@@ -43,7 +55,8 @@ export default function ViewReserve() {
 
   const fetchData = async () => {
     try {
-      const resRent = await getPendingRent(28); //Cuando exista una sesion pasar el id del amigo xd
+
+      const resRent = await getPendingRent(friendId); //Cuando exista una sesion pasar el id del amigo xd
       if (resRent && resRent.data) {
         const sortedRent = resRent.data.sort((a, b) => {
           const dateA = new Date(a.create);
@@ -264,13 +277,11 @@ export default function ViewReserve() {
           <p>
             <strong>Tipo de evento:</strong>
           </p>
-          {/*<p>{rent.event_id ? rent.event_id : <i>No especificado</i>}</p>*/}
-          <p>Boda</p>
+          <p>{rent.event ? rent.event : <i>No especificado</i>}</p>
           <p>
             <strong>Vestimenta del evento:</strong>{" "}
           </p>
-          {/*<p>{rent.outfit_id ? rent.outfit_id : <i>No especificado</i>}</p>*/}
-          <p>Elegante</p>
+          <p>{rent.outfit ? rent.outfit : <i>No especificado</i>}</p>
           <p>
             <strong>Descripción:</strong>{" "}
           </p>
