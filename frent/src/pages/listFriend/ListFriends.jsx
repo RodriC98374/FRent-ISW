@@ -52,6 +52,14 @@ export default function ListFriend() {
     return newDescription;
   };
 
+  const getImage = (imageFriend) => {
+    if(imageFriend){
+      return imageFriend;
+    }
+    return staticImage;
+  }
+
+
   const openModal = (image) => {
     setSelectedImage(image);
     document.body.style.overflow = 'hidden';
@@ -70,7 +78,7 @@ export default function ListFriend() {
           <div key={friend.id_user} className="card">
             <div className="top-card"></div>
             <img
-              src={staticImage}
+              src={getImage(friend.image)}
               alt="foto de perfil"
               onClick={() => openModal(staticImage)}
             />
