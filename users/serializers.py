@@ -4,7 +4,7 @@ from .models import Availability, User, Client, Friend, Like, Photo, User_like
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id_user', 'first_name', 'last_name', 'email', 'personal_description', 'gender','country','password', 'birth_date','city']
+        fields = ['id_user', 'first_name', 'last_name', 'email', 'personal_description', 'gender','country','password', 'birth_date','city', 'image']
         
 """class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -31,12 +31,12 @@ class UserSerializer(serializers.ModelSerializer):
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
-        fields = ['id_user', 'first_name', 'last_name', 'email', 'personal_description', 'gender','country','password', 'birth_date','city']
+        fields = ['id_user', 'first_name', 'last_name', 'email', 'personal_description', 'gender','country','password', 'birth_date','city', 'image']
 
 class FriendSerializer(serializers.ModelSerializer):
     class Meta:
         model = Friend
-        fields = ['id_user', 'first_name', 'last_name', 'email', 'personal_description', 'gender','country','password', 'birth_date','city', 'price']
+        fields = ['id_user', 'first_name', 'last_name', 'email', 'personal_description', 'gender','country','password', 'birth_date','city', 'price', 'image']
 
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:

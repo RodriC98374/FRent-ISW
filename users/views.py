@@ -42,6 +42,8 @@ class FriendViewSet(viewsets.ModelViewSet):
     
     def create(self, request):
         serializer = self.get_serializer(data=request.data)
+        print(request.data)
+        
         if serializer.is_valid():
             try:
                 new_friend = Friend.objects.create_user(**serializer.validated_data)
@@ -120,9 +122,6 @@ class AvailabilityViewSet(viewsets.ModelViewSet):
             return Response(availability_serial.data)
         
         return Response({'error': 'No tiene rangos'})    
-        
-        
-        # GET /users/api/v1/availability/11/get_availability_user/
         
 
 class CustomLoginView(APIView):
