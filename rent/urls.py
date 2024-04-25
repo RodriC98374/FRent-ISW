@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework.documentation import include_docs_urls
 from . import views
-from .views import GetFriendRentsCalendar
+from .views import GetFriendRentsCalendar,RentDetailView
 
 router = DefaultRouter()
 router.register(r'outfits', views.OutFitViewSet)
@@ -13,4 +13,5 @@ router.register(r'time_elapsed', views.RentTimeElapsedViewSet, basename='time_el
 urlpatterns = [
     path('', include(router.urls)),
     path('friend-calendar/<int:id_amigo>/', GetFriendRentsCalendar.as_view(), name='friend_calendar'),
+    path('rent_detail/<int:friend_id>/', RentDetailView.as_view(), name='rent_detail'),
 ]

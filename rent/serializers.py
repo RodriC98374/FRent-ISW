@@ -15,6 +15,8 @@ class EventSerializer(serializers.ModelSerializer):
 
 
 class RentSerializer(serializers.ModelSerializer):
+    #outfit = OutFitSerializer(read_only=True)
+    #event = EventSerializer(read_only=True)
     class Meta:
         model = Rent
         fields = "__all__"
