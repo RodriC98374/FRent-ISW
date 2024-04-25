@@ -19,6 +19,8 @@ export default function ViewReserve() {
   const [friendId, setFriendId] = useState(null);
   const staticImage = "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
 
+
+    console.log("Hola como estas ", listRent)
   console.log("Hola mundo es el id del amigo",friendId)
   useEffect(() => {
     if (userData) {
@@ -53,6 +55,7 @@ export default function ViewReserve() {
 
   const fetchData = async () => {
     try {
+
       const resRent = await getPendingRent(friendId); //Cuando exista una sesion pasar el id del amigo xd
       if (resRent && resRent.data) {
         const sortedRent = resRent.data.sort((a, b) => {
@@ -274,13 +277,11 @@ export default function ViewReserve() {
           <p>
             <strong>Tipo de evento:</strong>
           </p>
-          {/*<p>{rent.event_id ? rent.event_id : <i>No especificado</i>}</p>*/}
-          <p>Boda</p>
+          <p>{rent.event ? rent.event : <i>No especificado</i>}</p>
           <p>
             <strong>Vestimenta del evento:</strong>{" "}
           </p>
-          {/*<p>{rent.outfit_id ? rent.outfit_id : <i>No especificado</i>}</p>*/}
-          <p>Elegante</p>
+          <p>{rent.outfit ? rent.outfit : <i>No especificado</i>}</p>
           <p>
             <strong>Descripción:</strong>{" "}
           </p>

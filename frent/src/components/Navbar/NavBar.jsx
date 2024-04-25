@@ -112,7 +112,7 @@ export default function NavBar() {
             <li>
               <div className="user-sesion-container">
                 <div className="user-sesion">
-                <span>{userData.first_name} {userData.last_name}</span>
+                <span>{userData.first_name}</span>
               <span className="user">
                   {userData.user_type}
               </span>

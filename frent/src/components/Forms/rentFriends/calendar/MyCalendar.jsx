@@ -13,6 +13,7 @@ dayjs.locale('es');
 function CalendarEdit() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [events, setEvents] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false); 
   const { id } = useParams(); 
   const friendId = parseInt(id); 
   
@@ -45,10 +46,10 @@ function CalendarEdit() {
       const eventosTransformados = res.data.map((evento, index) => ({
       start: dayjs(evento.fecha_alquiler + 'T' + evento.hora_inicio).toDate(),
       end: dayjs(evento.fecha_alquiler + 'T' + evento.hora_fin).toDate(),
-      eventType: `${evento.tipo_evento} ${index + 1}`, // Añadir un contador al tipo de evento
-      duration: `${evento.duration} horas`, // Añadir la duración y especificar las horas
+      eventType: `${evento.tipo_evento} ${index + 1}`,
+      duration: `${evento.duration} horas`, 
     }));
-    setEvents(eventosTransformados); // Actualizar eventos con los datos obtenidos
+    setEvents(eventosTransformados); 
     } catch (error) {
       console.error('Error al cargar eventos:', error);
     }
@@ -63,10 +64,12 @@ function CalendarEdit() {
 
   const handleAddEvent = (date) => {
     setSelectedDate(date);
+    setModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setSelectedDate(null);
+    setModalOpen(false);
   };
 
   return (
@@ -94,12 +97,14 @@ function CalendarEdit() {
             onSelectSlot={(slotInfo) => handleAddEvent(dayjs(slotInfo.start))}
           />
           {selectedDate && (
+            <div className='modalBackground'>
             <EventList
               date={selectedDate}
               events={events}
               onAddEvent={handleAddEvent}
               onCloseModal={handleCloseModal}
             />
+            </div>
           )}
         </div>
       </div>

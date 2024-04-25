@@ -31,20 +31,17 @@ function App() {
             <Route path="/form" element={<SelectionRegister />} />
             <Route path="/customer" element={<CustomerForm />} />
             <Route path='/addAvailableHours' element={<AddAvailableHours/>}/>
-
             <Route path="/friend" element={<FriendForm />} />
-
             <Route path="/photo" element={<Photo />} />
 
 
             <Route element={<ProtectedRoute isAllowed={userData && userData.user_type === 'Client'} redirectTo="/login" />}>
               <Route path="/rentaForm/:id" element={<RentFriendForm />} />
               <Route path="/listRent" element={<ListFriend />} />
+              <Route path='/calendarReservas/:id' element = {<MyCalendar/>}/>
               <Route path="/listFriend" element={<ListFriend />} />
             </Route>
-            
-            <Route path='/calendarReservas/:id' element = {<MyCalendar/>}/>
-            
+
             <Route path="/rentalSectio" element={
               <ProtectedRoute isAllowed={userData && userData.user_type === 'Friend'}>
                 <ViewReserve />
