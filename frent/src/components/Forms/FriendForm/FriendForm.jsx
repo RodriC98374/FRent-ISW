@@ -10,6 +10,7 @@ import { createRegisterFriend } from "../../../api/register.api";
 import { createLikes } from "../../../api/register.api";
 import swal from "sweetalert";
 
+
 import InterestModal from "../Interests/interestSection";
 
 export function FriendForm() {
@@ -48,22 +49,35 @@ export function FriendForm() {
       setErrorMessage("Debe seleccionar al menos 2 intereses.");
       return; // Detener el envío del formulario si no se seleccionan suficientes intereses
     }
-    const formData = new FormData();
+    //const formData = new FormData();
 
-    formData.append("first_name", data.First_name);
-    formData.append("last_name", data.Last_name);
-    formData.append("email", data.Email);
-    formData.append("personal_description", data.Personal_description);
-    formData.append("gender", data.Gender);
-    formData.append("country", data.Country);
-    formData.append("password", data.Password);
-    formData.append("birth_date", data.birth_date);
-    formData.append("city", data.City);
-    formData.append("price", data.price);
-    formData.append("image", data.photo);
+    // formData.append("first_name", data.First_name);
+    // formData.append("last_name", data.Last_name);
+    // formData.append("email", data.Email);
+    // formData.append("personal_description", data.Personal_description);
+    // formData.append("gender", data.Gender);
+    // formData.append("country", data.Country);
+    // formData.append("password", data.Password);
+    // formData.append("birth_date", data.birth_date);
+    // formData.append("city", data.City);
+    // formData.append("price", data.price);
+    // // formData.append("image", data.photo);
+
+    const friend = {
+      city: data.City,
+      country: data.Country,
+      email: data.Email,
+      first_name: data.First_name,
+      gender: data.Gender,
+      last_name: data.Last_name,
+      password: data.Password,
+      personal_description: data.Personal_description,
+      birth_date: data.birth_date,
+      price: data.price,
+    };
 
     try {
-      const resFriend = await createRegisterFriend(formData);
+      const resFriend = await createRegisterFriend(friend);
 
       const user_likes = {
         likes: selectedInterests,
@@ -79,7 +93,7 @@ export function FriendForm() {
       setTimeout(() => {
         // Desaparecer el mensaje después de 1 segundo
         swal.close();
-        navigate("/login");
+        navigate("/photo");
       }, 1000);
       reset();
     } catch (error) {
@@ -420,7 +434,7 @@ export function FriendForm() {
             </div>
           </div>
 
-          <div className="input-1c">
+          {/* <div className="input-1c">
             <input
               name="photo"
               type="file"
@@ -432,15 +446,15 @@ export function FriendForm() {
             {errors.photo && (
               <span className="error-message">{errors.photo.message}</span>
             )}
-          </div>
+          </div> */}
 
           <div className="buttons-section">
             <NavLink to="/">
               <ButtonSecondary label={"Cancelar"} />
             </NavLink>
-            <NavLink to = "/photo">
+           
             <ButtonPrimary type={"submit"} label={"Siguiente"} />
-            </NavLink> 
+             
           </div>
         </form>
       </div>

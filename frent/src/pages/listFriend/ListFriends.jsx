@@ -53,9 +53,9 @@ export default function ListFriend() {
   };
 
   const getImage = (imageFriend) => {
-    if(imageFriend){
-      return imageFriend;
-    }
+    // if(imageFriend){
+    //   return imageFriend;
+    // }
     return staticImage;
   }
 
