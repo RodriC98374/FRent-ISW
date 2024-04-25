@@ -3,6 +3,7 @@ import './AddAvailableHours.css'
 import { ButtonSecondary } from '../../Buttons/buttonSecondary'
 import { ButtonPrimary } from '../../Buttons/buttonPrimary'
 import DayItem from './DayItem'
+import { NavLink } from 'react-router-dom'
 
 export default function AddAvailableHours() {
 
@@ -42,9 +43,12 @@ export default function AddAvailableHours() {
           </div>
           
           <div className="button-section">
+            <NavLink to= "/photo">
             <ButtonSecondary
               label="Atras"
             />
+            </NavLink>
+            
             <ButtonPrimary
               label="Registrar"
             />

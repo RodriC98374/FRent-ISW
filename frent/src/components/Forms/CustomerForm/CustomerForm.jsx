@@ -11,9 +11,12 @@ import swal from 'sweetalert';
 
 import "./customerForm.css";
 import InterestModal from "../Interests/interestSection";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export function CustomerForm() {
+
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -66,6 +69,7 @@ export function CustomerForm() {
       swal("Registro exitoso", "El cliente se registró correctamente", "success");
             setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
                 swal.close();
+                
             }, 2000);
       reset();
     } catch (error) {

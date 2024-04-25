@@ -9,14 +9,18 @@ import "./Navbar.css";
 import NotificationModal from "./notifications";
 import { UserContext } from "../../pages/Login/UserProvider";
 
+import { FaUser } from "react-icons/fa";
+
 export default function NavBar() {
   const [modalVisible, setModalVisible] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const { userData, setUserData } = useContext(UserContext);
 
   useEffect(() => {
-    loadNotifications();
-  }, []);
+    if(userData){
+      loadNotifications();
+    }
+  }, [userData]);
 
   const openModal = () => {
     if (modalVisible === false) {
@@ -33,7 +37,7 @@ export default function NavBar() {
 
   async function loadNotifications() {
     try {
-      const res = await get_notifications_user(2);
+      const res = await get_notifications_user(userData.user_id);
       setNotifications(res.data);
     } catch (error) {
       console.error("Error notifications:", error);
@@ -42,14 +46,14 @@ export default function NavBar() {
 
   const deleteNotifications = () => {
     if(notifications.length > 0){
-      delete_notifications_user(2);
+      delete_notifications_user(userData.user_id);
       loadNotifications()
     }
   }
 
   const readNotifications = () => {
     if(notifications.length > 0){
-      update_notifications_user(2);
+      update_notifications_user(userData.user_id);
       loadNotifications()
     }
   }
@@ -103,12 +107,25 @@ export default function NavBar() {
               <NavLink className="navbar-option" to="/login">Iniciar Sesión</NavLink>
             </li>
           )}
+          
           {userData && (
             <li>
-              <button className="navbar-option" onClick={handleLogout}>Cerrar Sesión</button>
+              <div className="user-sesion-container">
+                <div className="user-sesion">
+                <span>{userData.first_name}</span>
+              <span className="user">
+                  {userData.user_type}
+              </span>
+                </div><FaUser className="icon-sesion"/>
+              </div>
             </li>
           )}
-          {userData && userData.user_type &&(
+          {userData && (
+            <li>
+              <button className="logout" onClick={handleLogout}>Cerrar Sesión</button>
+            </li>
+          )}
+          {userData && userData.user_type === 'Client' &&(
             <li onClick={openModal}>
             <div className="navbar-option">
               <svg

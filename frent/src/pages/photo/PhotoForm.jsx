@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import './PhotoFrom.css';
+import { NavLink } from 'react-router-dom';
+import { ButtonSecondary } from '../../components/Buttons/buttonSecondary';
+import { ButtonPrimary } from '../../components/Buttons/buttonPrimary';
 
 const Photo = () => {
     const [file, setFile] = useState(null);
@@ -64,7 +67,19 @@ const Photo = () => {
                     <img src={URL.createObjectURL(file)} alt="Vista previa" className="preview-image" />
                 </div>
             )}
-            <button className="next-button">Siguiente</button>
+            <div className="button-section">
+            <NavLink to= "/friend">
+            <ButtonSecondary
+              label="Atras"
+            />
+            </NavLink>
+            <NavLink to = "/addAvailableHours">
+                <ButtonPrimary
+                                label="Siguiente"
+                            />
+            </NavLink>
+            
+           </div>
         </div>
     );
 }

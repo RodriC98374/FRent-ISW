@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { ButtonPrimary } from "../../Buttons/buttonPrimary";
 import { ButtonSecondary } from "../../Buttons/buttonSecondary";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import InputText from "../Inputs/InputText";
 import SelectOptions from "../Selects/selectOptions";
 import { useState } from "react";
@@ -13,6 +13,7 @@ import swal from 'sweetalert';
 import InterestModal from "../Interests/interestSection";
 
 export function FriendForm() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -73,6 +74,7 @@ export function FriendForm() {
       swal("Registro exitoso", "El cliente se registró correctamente", "success");
       setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
         swal.close();
+        navigate("/login");
       }, 1000);
       reset();
     } catch (error) {
@@ -409,7 +411,9 @@ export function FriendForm() {
             <NavLink to="/">
               <ButtonSecondary label={"Cancelar"} />
             </NavLink>
-            <ButtonPrimary type={"submit"} label={"Registrar"} />
+            <NavLink to = "/photo">
+            <ButtonPrimary type={"submit"} label={"Siguiente"} />
+            </NavLink> 
           </div>
         </form>
       </div>

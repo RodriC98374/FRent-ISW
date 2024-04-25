@@ -3,7 +3,7 @@ import { IoCalendarOutline } from "react-icons/io5";
 import './EventList.css'
 import dayjs from "dayjs";
 
-const EventList = ({ date, events, onAddEvent, isAM }) => {
+const EventList = ({ date, events, onCloseModal }) => {
   const filteredEvents = events.filter(
     (event) =>
       dayjs(date).isSame(dayjs(event.start), "day") ||
@@ -12,29 +12,24 @@ const EventList = ({ date, events, onAddEvent, isAM }) => {
 
   return (
     <div className="listaEvento">
+      <button className="closeButton" onClick={onCloseModal}>X</button>
       <div className="title">
         <h2>
-        Ver reservas
+          Ver reservas
           <IoCalendarOutline className="Icon1" />
           {date.format("DD MMM")}
         </h2>
       </div>
       <div className="reserv-container">
         <h3>Reservas</h3>
-        <p>Total Reservas: 9</p>
+        <p>Total Reservas: {filteredEvents.length}</p>
         <div>
-          <div>
-            <h4>Reserva 1</h4>
-            <p>12:00-15:00 / Duracion: 3horas</p>
-          </div>
-          <div>
-            <h4>Reserva 2</h4>
-            <p>12:00-15:00 / Duracion: 3horas</p>
-          </div>
-          <div>
-            <h4>Reserva 3</h4>
-            <p>12:00-15:00 / Duracion: 3horas</p>
-          </div>
+          {filteredEvents.map((event, index) => (
+            <div key={index}>
+              <h4>{event.eventType}</h4>
+              <p>{dayjs(event.start).format("HH:mm")}-{dayjs(event.end).format("HH:mm")} / Duración: {event.duration}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
