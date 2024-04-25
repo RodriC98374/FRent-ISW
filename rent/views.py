@@ -4,11 +4,15 @@ from decimal import Decimal
 from django.utils import timezone
 from django.db.models import F, ExpressionWrapper, fields
 from .models import OutFit, Event, Rent
+from users.models import Friend
 from .serializers import OutFitSerializer, EventSerializer, RentSerializer, RentPriceSerializer
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import action
-
+from datetime import datetime, timedelta
+from django.utils.timezone import now
+from rest_framework.views import APIView
+from rest_framework import status
 
 class OutFitViewSet(viewsets.ModelViewSet):
     queryset = OutFit.objects.all()
@@ -62,4 +66,48 @@ class RentTimeElapsedViewSet(viewsets.ModelViewSet):
             'time_elapsed': total_minutes,
         }
         return Response(response_data)
+
+class GetFriendRentsCalendar(APIView):
+    def get(self, request, id_amigo):
+        current_date = now().date()
+        rents = Rent.objects.filter(friend_id=id_amigo, fecha_cita__gte=current_date, status='accepted')
+
+        data = []
+        for rent in rents:
+            start_time = datetime.combine(rent.fecha_cita, rent.time)
+            end_time = start_time + timedelta(hours=rent.duration)
+            data.append({
+                'id_amigo': rent.friend.id_user,
+                'fecha_alquiler': rent.fecha_cita.strftime('%Y-%m-%d'),
+                'hora_inicio': start_time.strftime('%H:%M:%S'),
+                'hora_fin': end_time.strftime('%H:%M:%S'),
+                'duration': rent.duration,
+                'tipo_evento': rent.event.type_event if rent.event else 'No event',
+            })
+
+        if not data:
+            return Response({'mensaje': 'No hay alquileres para este amigo'})
+        return Response(data)
     
+class RentDetailView(APIView):
+    def get(self, request, friend_id):
+        get_object_or_404(Friend, id_user=friend_id)
+        rents = Rent.objects.filter(friend__id_user=friend_id,status='pending').select_related('event', 'outfit')
+        rent_details = []
+        for rent in rents:
+            rent_details.append({
+                #'rent_id': rent.id,
+                'fecha_cita': rent.fecha_cita,
+                'time': rent.time,
+                'duration': rent.duration,
+                'location': rent.location,
+                'description': rent.description,
+                'created': rent.create.strftime('%Y-%m-%d %H:%M:%S'),
+                'type_outfit': rent.outfit.type_outfit,
+                'type_event': rent.event.type_event,
+            })
+        
+        if not rent_details:
+            return Response({'mensaje': 'No hay alquileres encontrados para este amigo.'})
+        
+        return Response(rent_details)

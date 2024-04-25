@@ -15,6 +15,8 @@ class EventSerializer(serializers.ModelSerializer):
 
 
 class RentSerializer(serializers.ModelSerializer):
+    #outfit = OutFitSerializer(read_only=True)
+    #event = EventSerializer(read_only=True)
     class Meta:
         model = Rent
         fields = "__all__"
@@ -31,3 +33,4 @@ class RentPriceSerializer(serializers.ModelSerializer):
         duration_decimal = Decimal(str(obj.duration))
         total_price = obj.friend.price * duration_decimal
         return total_price
+      

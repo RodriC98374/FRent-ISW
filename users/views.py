@@ -11,7 +11,7 @@ from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer
 from .models import Availability, User, Client, Friend, Like, Photo, User_like
-from .serializers import AvailabilitySerializer, GustosSerializer, UserSerializer, ClientSerializer, FriendSerializer, LikeSerializer, PhotoSerializer, UserLikeSerializer
+from .serializers import AvailabilitySerializer, GustosSerializer, UserSerializer, ClientSerializer, FriendSerializer, LikeSerializer, PhotoSerializer, UserLikeSerializer, ProfileImageSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -63,6 +63,34 @@ class PhotoViewSet(viewsets.ModelViewSet):
     queryset = Photo.objects.all()
     serializer_class = PhotoSerializer
 
+class ProfileImageViewSet(viewsets.ModelViewSet):
+    def create(self, request):
+        serializer = ProfileImageSerializer(data=request.data)
+        if serializer.is_valid():
+            user_id = request.data.get('id_user')
+            try:
+                user = User.objects.get(id_user=user_id)
+            except User.DoesNotExist:
+                return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+            serializer.update(user, request.data)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def list(self, request):
+        users = User.objects.all()
+        serializer = ProfileImageSerializer(users, many=True)
+        return Response(serializer.data)
+    
+    def retrieve(self, request, pk=None):
+        try:
+            user = User.objects.get(id_user=pk)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = ProfileImageSerializer(user)
+        return Response(serializer.data)
 
 class UserLikeViewSet(viewsets.ModelViewSet):
     queryset = User_like.objects.all()
@@ -141,9 +169,10 @@ class CustomLoginView(APIView):
             return Response({
                 'token': token.key,
                 'user_id': user.pk,
-                'full_name': user.get_full_name(),
+                #'full_name': user.get_full_name(),
+                'first_name': user.first_name,
+                'last_name': user.last_name,
                 'user_type': user_type
             })
         else:
             return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_400_BAD_REQUEST)
-        
