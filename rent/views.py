@@ -108,6 +108,6 @@ class RentDetailView(APIView):
             })
         
         if not rent_details:
-            return Response({'mensaje': 'No hay alquileres encontrados para este amigo.'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'mensaje': 'No hay alquileres encontrados para este amigo.'})
         
         return Response(rent_details)
