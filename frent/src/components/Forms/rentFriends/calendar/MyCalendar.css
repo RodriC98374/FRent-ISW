@@ -1,0 +1,101 @@
+.calendar {
+  height: 90vh;
+  width: 70%;
+  margin: 0 auto;
+}
+
+  
+  .rbc-calendar {
+    background-color: #f0e4e4 !important;
+    border-radius: 10px; 
+    color: #0000;
+    
+  }
+  
+  .rbc-toolbar .rbc-toolbar-label {
+    text-align: center;
+    color: #000;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  }
+  
+  .rbc-month-view{
+    border: none !important;
+    border-radius: 10px !important;
+  }
+  .rbc-month-view {
+    background-color: #a5bfe6 !important;
+  }
+  
+  .rbc-month-view {
+    background-color: #f2eff5;
+    border: none;
+    
+  }
+  .rbc-off-range-bg {
+    background: #fcf9f9 !important;
+    border-radius: 2px;
+  }
+   .rbc-header {
+    color: #000;
+   }
+  
+   .rbc-date-cell {
+    display: flex;
+    padding: 10px 0px 0px 10px;
+    color: #0e0a0a;
+   }
+  
+   .rbc-today {
+    background-color: #FBA834 !important;
+    border-radius: 6px;
+    border: 3px solid #000;
+  }
+  
+  
+  .rbc-day-bg + .rbc-day-bg {
+    border-left: none !important; 
+  }
+  .rbc-month-row + .rbc-month-row {
+    border-top:none !important ;
+    margin: 3px; 
+  }
+  
+  .rbc-header + .rbc-header {
+    border-left: none !important;
+  }
+  .rbc-header {
+     border-bottom: none !important;
+     margin: 5px 0 10px 0 ;
+  }
+  .calendarList {
+    display: flex;
+    flex-direction: column;
+    top: 80%;
+    /* justify-content: center;  */
+  /* align-items: center; */
+  }
+
+  .rbc-event, .rbc-day-slot .rbc-background-event {
+    border: none;
+    box-sizing: border-box;
+    box-shadow: none;
+    margin: 0;
+    padding: 2px 5px;
+    background-color: #3174ad;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    width: 80%;
+    height: 30px;
+    text-align: left;
+}
+
+.modalBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
