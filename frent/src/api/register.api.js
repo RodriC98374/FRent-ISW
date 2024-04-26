@@ -1,12 +1,13 @@
 import axios from 'axios'
 
-const isProduction = process.env.NODE_ENV === "production";
+// const isProduction = process.env.NODE_ENV === "production";
 
 let baseURL = "http://localhost:8000";
+// let baseURL = "https://deploy-is-production.up.railway.app";
 
-if (isProduction) {
-  baseURL = "https://deploy-is-production.up.railway.app";
-}
+// if (isProduction) {
+//   baseURL = "https://deploy-is-production.up.railway.app";
+// }
 
 const registersApi = axios.create({
   baseURL: baseURL,
@@ -31,6 +32,9 @@ export const getFriends = (data) => registersApi.get('/users/api/v1/friends/')
 export const getClient = (data) => registersApi.get('/users/api/v1/clients/')
 
 export const createLikes = (data) => registersApi.post('/users/api/v1/user_tastes/', data)
+
+export const createAvailability = (data) => registersApi.post('/users/api/v1/availability/', data)
+
 
 export const deleteRegister = (id) => registersApi.delete(/${id}/)
 

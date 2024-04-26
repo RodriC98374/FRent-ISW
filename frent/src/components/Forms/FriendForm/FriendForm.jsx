@@ -4,11 +4,11 @@ import { ButtonSecondary } from "../../Buttons/buttonSecondary";
 import { NavLink, useNavigate } from "react-router-dom";
 import InputText from "../Inputs/InputText";
 import SelectOptions from "../Selects/selectOptions";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Country, State } from "country-state-city";
 import { createRegisterFriend } from "../../../api/register.api";
 import { createLikes } from "../../../api/register.api";
-import swal from 'sweetalert';
+import swal from "sweetalert";
 
 import InterestModal from "../Interests/interestSection";
 
@@ -20,7 +20,6 @@ export function FriendForm() {
     formState: { errors },
     watch,
     setValue,
-    reset,
   } = useForm();
 
   const [selectedCountry, setSelectedCountry] = useState("");
@@ -33,20 +32,35 @@ export function FriendForm() {
   const [errorLike, setErrorLike] = useState("");
 
   const [cityEnabled, setCityEnabled] = useState(false);
+  // const inputRef = React.useRef();
+  // const translateErrorMessage = (errorMessage) => {
+  //   const errorTranslations = {
+  //     "user with this email already exists.":
+  //       "Ya existe un usuario con este correo electrónico.",
+  //   };
 
-  const translateErrorMessage = (errorMessage) => {
-    const errorTranslations = {
-      "user with this email already exists.": "Ya existe un usuario con este correo electrónico.",
-    };
-
-    return errorTranslations[errorMessage] || errorMessage;
-  };
+  //   return errorTranslations[errorMessage] || errorMessage;
+  // };
 
   const onSubmit = handleSubmit(async (data) => {
     if (selectedInterests.length < 2) {
       setErrorMessage("Debe seleccionar al menos 2 intereses.");
       return; // Detener el envío del formulario si no se seleccionan suficientes intereses
     }
+    //const formData = new FormData();
+
+    // formData.append("first_name", data.First_name);
+    // formData.append("last_name", data.Last_name);
+    // formData.append("email", data.Email);
+    // formData.append("personal_description", data.Personal_description);
+    // formData.append("gender", data.Gender);
+    // formData.append("country", data.Country);
+    // formData.append("password", data.Password);
+    // formData.append("birth_date", data.birth_date);
+    // formData.append("city", data.City);
+    // formData.append("price", data.price);
+    // // formData.append("image", data.photo);
+
     const friend = {
       city: data.City,
       country: data.Country,
@@ -58,36 +72,58 @@ export function FriendForm() {
       personal_description: data.Personal_description,
       birth_date: data.birth_date,
       price: data.price,
+      likes: selectedInterests,
     };
 
-    try {
-      const resFriend = await createRegisterFriend(friend);
-
-      const user_likes = {
+    navigate("/photo", {
+      state: {
+        city: data.City,
+        country: data.Country,
+        email: data.Email,
+        first_name: data.First_name,
+        gender: data.Gender,
+        last_name: data.Last_name,
+        password: data.Password,
+        personal_description: data.Personal_description,
+        birth_date: data.birth_date,
+        price: data.price,
         likes: selectedInterests,
-        user_id: resFriend.data.id_user,
-      };
-
-      console.log("el errorrr de los gustos esss: ", resFriend.data)
-
-      await createLikes(user_likes);
-      swal("Registro exitoso", "El cliente se registró correctamente", "success");
-      setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
-        swal.close();
-        navigate("/login");
-      }, 1000);
-      reset();
-    } catch (error) {
-      console.error("Error al enviar los datos:", error);
-      if (error.response && error.response.data && error.response.data.email) {
-        const translatedErrorMessage = translateErrorMessage(error.response.data.email[0]);
-        setErrorMessage(translatedErrorMessage);
-      } else {
-        setErrorMessage(
-          "Error al enviar los datos, por favor inténtelo de nuevo."
-        );
       }
-    }
+    });
+
+    //   try {
+    //     const resFriend = await createRegisterFriend(friend);
+
+    //     const user_likes = {
+    //       likes: selectedInterests,
+    //       user_id: resFriend.data.id_user,
+    //     };
+
+    //     await createLikes(user_likes);
+    //     swal(
+    //       "Registro exitoso",
+    //       "El cliente se registró correctamente",
+    //       "success"
+    //     );
+    //     setTimeout(() => {
+    //       // Desaparecer el mensaje después de 1 segundo
+    //       swal.close();
+    //       navigate("/photo");
+    //     }, 1000);
+    //     reset();
+    //   } catch (error) {
+    //     console.error("Error al enviar los datos:", error);
+    //     if (error.response && error.response.data && error.response.data.email) {
+    //       const translatedErrorMessage = translateErrorMessage(
+    //         error.response.data.email[0]
+    //       );
+    //       setErrorMessage(translatedErrorMessage);
+    //     } else {
+    //       setErrorMessage(
+    //         "Error al enviar los datos, por favor inténtelo de nuevo."
+    //       );
+    //     }
+    //   }
   });
 
   const optionsGender = [
@@ -101,7 +137,7 @@ export function FriendForm() {
     { value: "30", label: "30 bs" },
     { value: "40", label: "40 bs" },
     { value: "50", label: "50 bs" },
-    { value: "60", label: "60 bs" }
+    { value: "60", label: "60 bs" },
   ];
 
   const handleSaveInterests = (selectedInterests) => {
@@ -152,7 +188,8 @@ export function FriendForm() {
                   },
                   pattern: {
                     value: /^[a-zA-Z]+(?:\s[a-zA-Z]+){0,3}$/,
-                    message: "El nombre solo puede contener letras y maximo 3 espacios",
+                    message:
+                      "El nombre solo puede contener letras y maximo 3 espacios",
                   },
 
                   minLength: {
@@ -181,7 +218,8 @@ export function FriendForm() {
                   },
                   pattern: {
                     value: /^[a-zA-Z]+(?:\s[a-zA-Z]+){0,3}$/,
-                    message: "El nombre solo puede contener letras y maximo 3 espacios",
+                    message:
+                      "El nombre solo puede contener letras y maximo 3 espacios",
                   },
                   minLength: {
                     value: 2,
@@ -309,7 +347,9 @@ export function FriendForm() {
                 })}
                 errors={errors}
               />
-              {errorMessage && <div className="error-message">{errorMessage}</div>}
+              {errorMessage && (
+                <div className="error-message">{errorMessage}</div>
+              )}
             </div>
             <div className="input-2c">
               <InputText
@@ -329,7 +369,8 @@ export function FriendForm() {
                   },
                   pattern: {
                     value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-                    message: "La contraseña debe contener al menos una letra y un número",
+                    message:
+                      "La contraseña debe contener al menos una letra y un número",
                   },
                 })}
                 errors={errors}
@@ -369,7 +410,7 @@ export function FriendForm() {
                   maxLength: {
                     value: 150,
                     message: "Excedió el número máximo de caracteres (150)",
-                  }
+                  },
                 })}
               ></textarea>
               {errors.Personal_description && (
@@ -407,13 +448,27 @@ export function FriendForm() {
               <div className="error-message">{errorLike}</div>
             </div>
           </div>
+
+          {/* <div className="input-1c">
+            <input
+              name="photo"
+              type="file"
+              ref={inputRef}
+              onChange={(e) => {
+                setValue("photo", e.target.files[0]);
+              }}
+            />
+            {errors.photo && (
+              <span className="error-message">{errors.photo.message}</span>
+            )}
+          </div> */}
+
           <div className="buttons-section">
             <NavLink to="/">
               <ButtonSecondary label={"Cancelar"} />
             </NavLink>
-            <NavLink to = "/photo">
+
             <ButtonPrimary type={"submit"} label={"Siguiente"} />
-            </NavLink> 
           </div>
         </form>
       </div>
