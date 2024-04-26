@@ -78,8 +78,8 @@ class GetFriendRentsCalendar(APIView):
             data.append({
                 'id_amigo': rent.friend.id_user,
                 'fecha_alquiler': rent.fecha_cita.strftime('%Y-%m-%d'),
-                'hora_inicio': start_time.strftime('%Y-%m-%d %H:%M:%S'),
-                'hora_fin': end_time.strftime('%Y-%m-%d %H:%M:%S'),
+                'hora_inicio': start_time.strftime('%H:%M:%S'),
+                'hora_fin': end_time.strftime('%H:%M:%S'),
                 'duration': rent.duration,
                 'tipo_evento': rent.event.type_event if rent.event else 'No event',
             })
