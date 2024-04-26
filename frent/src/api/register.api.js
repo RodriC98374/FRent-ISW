@@ -33,6 +33,9 @@ export const getClient = (data) => registersApi.get('/users/api/v1/clients/')
 
 export const createLikes = (data) => registersApi.post('/users/api/v1/user_tastes/', data)
 
+export const createAvailability = (data) => registersApi.post('/users/api/v1/availability/', data)
+
+
 export const deleteRegister = (id) => registersApi.delete(/${id}/)
 
 export const updateRegister = (id, date) => registersApi.put(/${id}/, date)

@@ -10,7 +10,6 @@ import { createRegisterFriend } from "../../../api/register.api";
 import { createLikes } from "../../../api/register.api";
 import swal from "sweetalert";
 
-
 import InterestModal from "../Interests/interestSection";
 
 export function FriendForm() {
@@ -21,7 +20,6 @@ export function FriendForm() {
     formState: { errors },
     watch,
     setValue,
-    reset,
   } = useForm();
 
   const [selectedCountry, setSelectedCountry] = useState("");
@@ -34,15 +32,15 @@ export function FriendForm() {
   const [errorLike, setErrorLike] = useState("");
 
   const [cityEnabled, setCityEnabled] = useState(false);
-  const inputRef = React.useRef();
-  const translateErrorMessage = (errorMessage) => {
-    const errorTranslations = {
-      "user with this email already exists.":
-        "Ya existe un usuario con este correo electrónico.",
-    };
+  // const inputRef = React.useRef();
+  // const translateErrorMessage = (errorMessage) => {
+  //   const errorTranslations = {
+  //     "user with this email already exists.":
+  //       "Ya existe un usuario con este correo electrónico.",
+  //   };
 
-    return errorTranslations[errorMessage] || errorMessage;
-  };
+  //   return errorTranslations[errorMessage] || errorMessage;
+  // };
 
   const onSubmit = handleSubmit(async (data) => {
     if (selectedInterests.length < 2) {
@@ -74,41 +72,58 @@ export function FriendForm() {
       personal_description: data.Personal_description,
       birth_date: data.birth_date,
       price: data.price,
+      likes: selectedInterests,
     };
 
-    try {
-      const resFriend = await createRegisterFriend(friend);
-
-      const user_likes = {
+    navigate("/photo", {
+      state: {
+        city: data.City,
+        country: data.Country,
+        email: data.Email,
+        first_name: data.First_name,
+        gender: data.Gender,
+        last_name: data.Last_name,
+        password: data.Password,
+        personal_description: data.Personal_description,
+        birth_date: data.birth_date,
+        price: data.price,
         likes: selectedInterests,
-        user_id: resFriend.data.id_user,
-      };
-
-      await createLikes(user_likes);
-      swal(
-        "Registro exitoso",
-        "El cliente se registró correctamente",
-        "success"
-      );
-      setTimeout(() => {
-        // Desaparecer el mensaje después de 1 segundo
-        swal.close();
-        navigate("/photo");
-      }, 1000);
-      reset();
-    } catch (error) {
-      console.error("Error al enviar los datos:", error);
-      if (error.response && error.response.data && error.response.data.email) {
-        const translatedErrorMessage = translateErrorMessage(
-          error.response.data.email[0]
-        );
-        setErrorMessage(translatedErrorMessage);
-      } else {
-        setErrorMessage(
-          "Error al enviar los datos, por favor inténtelo de nuevo."
-        );
       }
-    }
+    });
+
+    //   try {
+    //     const resFriend = await createRegisterFriend(friend);
+
+    //     const user_likes = {
+    //       likes: selectedInterests,
+    //       user_id: resFriend.data.id_user,
+    //     };
+
+    //     await createLikes(user_likes);
+    //     swal(
+    //       "Registro exitoso",
+    //       "El cliente se registró correctamente",
+    //       "success"
+    //     );
+    //     setTimeout(() => {
+    //       // Desaparecer el mensaje después de 1 segundo
+    //       swal.close();
+    //       navigate("/photo");
+    //     }, 1000);
+    //     reset();
+    //   } catch (error) {
+    //     console.error("Error al enviar los datos:", error);
+    //     if (error.response && error.response.data && error.response.data.email) {
+    //       const translatedErrorMessage = translateErrorMessage(
+    //         error.response.data.email[0]
+    //       );
+    //       setErrorMessage(translatedErrorMessage);
+    //     } else {
+    //       setErrorMessage(
+    //         "Error al enviar los datos, por favor inténtelo de nuevo."
+    //       );
+    //     }
+    //   }
   });
 
   const optionsGender = [
@@ -452,9 +467,8 @@ export function FriendForm() {
             <NavLink to="/">
               <ButtonSecondary label={"Cancelar"} />
             </NavLink>
-           
+
             <ButtonPrimary type={"submit"} label={"Siguiente"} />
-             
           </div>
         </form>
       </div>
