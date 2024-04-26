@@ -11,7 +11,7 @@ from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer
 from .models import Availability, User, Client, Friend, Like, Photo, User_like
-from .serializers import AvailabilitySerializer, GustosSerializer, UserSerializer, ClientSerializer, FriendSerializer, LikeSerializer, PhotoSerializer, UserLikeSerializer
+from .serializers import AvailabilitySerializer, GustosSerializer, UserSerializer, ClientSerializer, FriendSerializer, LikeSerializer, PhotoSerializer, UserLikeSerializer, ProfileImageSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -42,6 +42,8 @@ class FriendViewSet(viewsets.ModelViewSet):
     
     def create(self, request):
         serializer = self.get_serializer(data=request.data)
+        print(request.data)
+        
         if serializer.is_valid():
             try:
                 new_friend = Friend.objects.create_user(**serializer.validated_data)
@@ -61,6 +63,34 @@ class PhotoViewSet(viewsets.ModelViewSet):
     queryset = Photo.objects.all()
     serializer_class = PhotoSerializer
 
+class ProfileImageViewSet(viewsets.ModelViewSet):
+    def create(self, request):
+        serializer = ProfileImageSerializer(data=request.data)
+        if serializer.is_valid():
+            user_id = request.data.get('id_user')
+            try:
+                user = User.objects.get(id_user=user_id)
+            except User.DoesNotExist:
+                return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+            serializer.update(user, request.data)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def list(self, request):
+        users = User.objects.all()
+        serializer = ProfileImageSerializer(users, many=True)
+        return Response(serializer.data)
+    
+    def retrieve(self, request, pk=None):
+        try:
+            user = User.objects.get(id_user=pk)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = ProfileImageSerializer(user)
+        return Response(serializer.data)
 
 class UserLikeViewSet(viewsets.ModelViewSet):
     queryset = User_like.objects.all()
@@ -120,10 +150,26 @@ class AvailabilityViewSet(viewsets.ModelViewSet):
             return Response(availability_serial.data)
         
         return Response({'error': 'No tiene rangos'})    
+    
+    def create(self, request, *args, **kwargs):
+        user_id = request.data.get('user_id', None)
+        disponibilidades = request.data.get('disponibilidades', [])
         
-        
-        # GET /users/api/v1/availability/11/get_availability_user/
-        
+        for dispo in disponibilidades:
+            new_data = {
+                "user_id": user_id,
+                "start": dispo[1],
+                "end": dispo[2],
+                "dia_semana": dispo[0],
+            }      
+            serializer = self.get_serializer(data=new_data)
+            if serializer.is_valid():
+                self.perform_create(serializer)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "Disponibilidad Almacenado Correctamente"}, status=status.HTTP_201_CREATED)
+            
+                
 
 class CustomLoginView(APIView):
     renderer_classes = [JSONRenderer, BrowsableAPIRenderer]

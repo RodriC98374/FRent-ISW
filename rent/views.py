@@ -4,6 +4,7 @@ from decimal import Decimal
 from django.utils import timezone
 from django.db.models import F, ExpressionWrapper, fields
 from .models import OutFit, Event, Rent
+from users.models import Friend
 from .serializers import OutFitSerializer, EventSerializer, RentSerializer, RentPriceSerializer
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -11,7 +12,7 @@ from rest_framework.decorators import action
 from datetime import datetime, timedelta
 from django.utils.timezone import now
 from rest_framework.views import APIView
-
+from rest_framework import status
 
 class OutFitViewSet(viewsets.ModelViewSet):
     queryset = OutFit.objects.all()
@@ -87,3 +88,26 @@ class GetFriendRentsCalendar(APIView):
         if not data:
             return Response({'mensaje': 'No hay alquileres para este amigo'})
         return Response(data)
+    
+class RentDetailView(APIView):
+    def get(self, request, friend_id):
+        get_object_or_404(Friend, id_user=friend_id)
+        rents = Rent.objects.filter(friend__id_user=friend_id,status='pending').select_related('event', 'outfit')
+        rent_details = []
+        for rent in rents:
+            rent_details.append({
+                #'rent_id': rent.id,
+                'fecha_cita': rent.fecha_cita,
+                'time': rent.time,
+                'duration': rent.duration,
+                'location': rent.location,
+                'description': rent.description,
+                'created': rent.create.strftime('%Y-%m-%d %H:%M:%S'),
+                'type_outfit': rent.outfit.type_outfit,
+                'type_event': rent.event.type_event,
+            })
+        
+        if not rent_details:
+            return Response({'mensaje': 'No hay alquileres encontrados para este amigo.'})
+        
+        return Response(rent_details)
