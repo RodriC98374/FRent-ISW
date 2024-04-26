@@ -59,7 +59,7 @@ export default function NavBar() {
   }
 
   const handleLogout = () => {
-    
+    localStorage.removeItem('authToken');
     setUserData(null);
   }
 
@@ -122,6 +122,7 @@ export default function NavBar() {
           )}
           {userData && (
             <li>
+            
               <button className="logout" onClick={handleLogout}>Cerrar Sesión</button>
             </li>
           )}

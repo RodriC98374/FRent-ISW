@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link, Navigate } from 'react-router-dom'; 
 import { useForm } from 'react-hook-form';
 import InputText from '../../components/Forms/Inputs/InputText';
@@ -10,9 +10,16 @@ import { UserContext } from './UserProvider';
 export default function LoginForm() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const { userData, setUserData } = useContext(UserContext); // Acceder al contexto
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);  
+  const [loginError, setLoginError] = useState("");
 
-console.log(userData)
+  useEffect(() => {
+    const authToken = localStorage.getItem('authToken');
+    if (authToken) {
+      // Establecer el estado de autenticación si se encuentra un token en localStorage
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const onSubmit = handleSubmit(async (data) => {
     const { email, password } = data;
@@ -21,26 +28,30 @@ console.log(userData)
     try {
       const { data: responseData } = await validarLogin(requestData);
       console.log('Respuesta del servidor:', responseData); 
+      console.log(responseData)
       
       setUserData({
+        token: responseData.token,
         first_name: responseData.first_name,
         last_name: responseData.last_name,
         user_id: responseData.user_id,
         user_type: responseData.user_type
       });
-
+      localStorage.setItem('authToken', responseData.token);
+     
       setIsLoggedIn(true); 
-
-      
     } catch (error) {
       console.error("Error al enviar los datos:", error);
+      setLoginError("Correo electrónico o contraseña incorrectos");
+      
     }
   });
+  
 
   if (isLoggedIn) {
-    return <Navigate to="/" />;
+    
+    return <Navigate to="/"></Navigate>
   }
-
   return (
     <div className="login-container">
       <div className="login-info">
@@ -95,6 +106,7 @@ console.log(userData)
               errors={errors}
             />
           </div>
+          {loginError && <p className="error-message">{loginError}</p>}
           <button type="submit" className="login-button">Iniciar Sesión</button>
         </form>
       </div>
