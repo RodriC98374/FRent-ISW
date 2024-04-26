@@ -36,7 +36,7 @@ class ClientSerializer(serializers.ModelSerializer):
 class FriendSerializer(serializers.ModelSerializer):
     class Meta:
         model = Friend
-        fields = ['id_user', 'first_name', 'last_name', 'email', 'personal_description', 'gender','country','password', 'birth_date','city', 'price']
+        fields = ['id_user', 'first_name', 'last_name', 'email', 'personal_description', 'gender','country','password', 'birth_date','city', 'price', 'image']
 
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
