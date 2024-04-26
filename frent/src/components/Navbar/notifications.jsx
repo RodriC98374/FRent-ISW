@@ -41,7 +41,7 @@ function NotificationModal({
       <div className="modal-notification">
         <div className="title_notification">
           <h2>Notificaciones</h2>
-          <div class="tooltip">
+          <div className="tooltip">
             <button onClick={deleteNotifications}>
               <svg
                 width="24"
@@ -60,10 +60,10 @@ function NotificationModal({
                 <path d="M13 9H15V17H13V9Z" fill="currentColor" />
               </svg>
             </button>
-            <span class="tooltiptext">Vaciar bandeja</span>
+            <span className="tooltiptext">Vaciar bandeja</span>
           </div>
 
-          <div class="tooltip">
+          <div className="tooltip">
             <button onClick={readNotifications}>
               <svg
                 width="24"
@@ -84,11 +84,11 @@ function NotificationModal({
                 />
               </svg>
             </button>
-            <span class="tooltiptext">Marcar como leidos</span>
+            <span className="tooltiptext">Marcar como leidos</span>
           </div>
         </div>
 
-        {notifications && notifications.length > 0 ? (
+        {Array.isArray(notifications) && notifications.length > 0 ? (
           notifications.map((notification, key) => (
             <div
               key={key}

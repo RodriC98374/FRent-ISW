@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import {
   get_notifications_user,
@@ -16,12 +16,6 @@ export default function NavBar() {
   const [notifications, setNotifications] = useState([]);
   const { userData, setUserData } = useContext(UserContext);
 
-  useEffect(() => {
-    if(userData){
-      loadNotifications();
-    }
-  }, [userData]);
-
   const openModal = () => {
     if (modalVisible === false) {
       loadNotifications();
@@ -37,6 +31,8 @@ export default function NavBar() {
 
   async function loadNotifications() {
     try {
+      console.log("la id esss", userData.user_id)
+
       const res = await get_notifications_user(userData.user_id);
       setNotifications(res.data);
     } catch (error) {
