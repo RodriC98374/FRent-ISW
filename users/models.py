@@ -36,12 +36,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     personal_description = models.CharField(max_length=150)
 
-    profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
+    # profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
-
+    image = models.ImageField(null=True, blank=True)
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
@@ -80,13 +80,13 @@ class Availability(models.Model):
     start = models.TimeField(default=timezone.now)
     end = models.TimeField(default=timezone.now)
     dia_semana = models.CharField(max_length=10, choices=[
-        ('lunes', 'Lunes'),
-        ('martes', 'Martes'),
-        ('miercoles', 'Miercoles'),
-        ('jueves', 'Jueves'),
-        ('viernes', 'Viernes'),
-        ('sabado', 'Sabado'),
-        ('domingo', 'Domingo'),
+        ('Lunes', 'Lunes'),
+        ('Martes', 'Martes'),
+        ('Miercoles', 'Miercoles'),
+        ('Jueves', 'Jueves'),
+        ('Viernes', 'Viernes'),
+        ('Sabado', 'Sabado'),
+        ('Domingo', 'Domingo'),
     ])
     
     
