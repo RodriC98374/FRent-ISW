@@ -3,7 +3,7 @@ import "./AddAvailableHours.css";
 import { ButtonSecondary } from "../../Buttons/buttonSecondary";
 import { ButtonPrimary } from "../../Buttons/buttonPrimary";
 import DayItem from "./DayItem";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, Navigate, useLocation } from "react-router-dom";
 
 import { createRegisterFriend } from "../../../api/register.api";
 import { createLikes, createAvailability } from "../../../api/register.api";
@@ -81,8 +81,8 @@ export default function AddAvailableHours() {
         password: data.password,
         personal_description: data.personal_description,
         birth_date: data.birth_date,
-        price: data.price,
-        image: data.image
+        price:   data.price,
+        image: data.image 
       };
       console.log(friend);
 
@@ -115,8 +115,10 @@ export default function AddAvailableHours() {
       await createAvailability(disponibilidad);
 
     } catch (Error) {
-      console.log("hola");
+      console.log("Ocurrio un error en:", Error);
+      <Navigate to="/"></Navigate>
     }
+
   };
 
   return (
