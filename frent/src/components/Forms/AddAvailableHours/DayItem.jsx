@@ -20,7 +20,6 @@ export default function DayItem({
     { value: "12:00", label: "12:00" },
   ]);
 
-
   useEffect(() => {
     onSelectTimeFrom(dayName, selectedTimeFrom);
     onSelectTimeTo(dayName, selectedTimeTo);
@@ -55,6 +54,8 @@ export default function DayItem({
 
   const toggleIcon = () => {
     iconSelected(!icon);
+    setSelectedTimeFrom("");
+    setSelectedTimeTo("");
   };
 
   const handleAMPMChange = (selectedValue) => {

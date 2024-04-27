@@ -8,6 +8,7 @@ import SelectOptions from '../Selects/selectOptions.jsx';
 import { createRegisterRent } from '../../../api/register.api';
 import { getOutfit } from '../../../api/register.api';
 import { getEvent } from '../../../api/register.api';
+import { getAvailabilityFriend } from '../../../api/register.api';
 import swal from 'sweetalert'; // Importar SweetAlert
 
 import './RentaForm.css';
@@ -23,10 +24,15 @@ export default function RentFriendForm() {
   const [selectedOutfit, setSelectedOutfit] = useState("");
   const [outfit, setOutfit] = useState([]);
   const [event, setEvent] = useState([]);
+  const [Availability, setAvailability] = useState ([]);
   const {userData} = useContext(UserContext);
   const userId = userData.user_id;
   // eslint-disable-next-line
   const [showModal, setShowModal] = useState(false);
+
+  console.log(Availability)
+
+
   // eslint-disable-next-line
   const handleCancel = () => {
     setShowModal(true);
@@ -108,12 +114,12 @@ export default function RentFriendForm() {
         setOutfit(res.data)
       } catch (error) {
         console.log("Error al cargar las vestimentas: ", error)
-        console.log("Error al cargar las vestimentas: ", error)
       }
     }
 
     loadOutfit();
   }, [])
+
 
   useEffect(() => {
     async function loadEvent() {
@@ -123,12 +129,25 @@ export default function RentFriendForm() {
         console.log(res.data)
       } catch (error) {
         console.log("Error al cargar las vestimentas: ", error)
-        console.log("Error al cargar las vestimentas: ", error)
       }
     }
 
     loadEvent();
   }, [])
+
+  useEffect (() => {
+    async function loadAvailability () {
+      try {
+        const res = await getAvailabilityFriend()
+        setAvailability(res.data)
+        console.log(res.data)
+      } catch (error) {
+        console.log("Error al cargar las vestimentas: ", error)
+     }
+    }
+
+    loadAvailability();
+  } )
 
   const optionsHour = [
     { value: 1.0, label: "1 hora" },

@@ -55,7 +55,7 @@ export default function NavBar() {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('authToken');
+    localStorage.removeItem('authToken'); 
     setUserData(null);
   }
 

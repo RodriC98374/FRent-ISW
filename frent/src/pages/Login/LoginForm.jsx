@@ -13,13 +13,13 @@ export default function LoginForm() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);  
   const [loginError, setLoginError] = useState("");
 
-  useEffect(() => {
+ /*  useEffect(() => {
     const authToken = localStorage.getItem('authToken');
     if (authToken) {
       // Establecer el estado de autenticación si se encuentra un token en localStorage
       setIsLoggedIn(true);
     }
-  }, []);
+  }, []); */
 
   const onSubmit = handleSubmit(async (data) => {
     const { email, password } = data;
