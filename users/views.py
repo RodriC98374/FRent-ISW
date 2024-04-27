@@ -155,18 +155,20 @@ class AvailabilityViewSet(viewsets.ModelViewSet):
         user_id = request.data.get('user_id', None)
         disponibilidades = request.data.get('disponibilidades', [])
         
+        
         for dispo in disponibilidades:
-            new_data = {
-                "user_id": user_id,
-                "start": dispo[1],
-                "end": dispo[2],
-                "dia_semana": dispo[0],
-            }      
-            serializer = self.get_serializer(data=new_data)
-            if serializer.is_valid():
-                self.perform_create(serializer)
-            else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                if (dispo[1] != "") & (dispo[2] != ""):
+                    new_data = {
+                    "user_id": user_id,
+                    "start": dispo[1],
+                    "end": dispo[2],
+                    "dia_semana": dispo[0],
+                }      
+                serializer = self.get_serializer(data=new_data)
+                if serializer.is_valid():
+                    self.perform_create(serializer)
+                else:
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response({"message": "Disponibilidad Almacenado Correctamente"}, status=status.HTTP_201_CREATED)
             
                 
@@ -177,6 +179,7 @@ class CustomLoginView(APIView):
         email = request.data.get('email', None)
         password = request.data.get('password', None)
         user = authenticate(username=email, password=password)
+        
         if user:
             token, _ = Token.objects.get_or_create(user=user)
             if hasattr(user, 'client'):
