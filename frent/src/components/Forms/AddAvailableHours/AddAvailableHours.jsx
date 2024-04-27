@@ -3,7 +3,7 @@ import "./AddAvailableHours.css";
 import { ButtonSecondary } from "../../Buttons/buttonSecondary";
 import { ButtonPrimary } from "../../Buttons/buttonPrimary";
 import DayItem from "./DayItem";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, Navigate, useLocation, useNavigate } from "react-router-dom";
 
 import { createRegisterFriend } from "../../../api/register.api";
 import { createLikes, createAvailability } from "../../../api/register.api";
@@ -70,6 +70,7 @@ export default function AddAvailableHours() {
       //PETICION PARA REGISTRAR DATOS PERSONALES
       const data = friendData.friendDataNew;
 
+
       const friend = {
         city: data.city,
         country: data.country,
@@ -81,11 +82,25 @@ export default function AddAvailableHours() {
         personal_description: data.personal_description,
         birth_date: data.birth_date,
         price: data.price,
+        image: data.image,
       };
 
-      const resFriend = await createRegisterFriend(friend);
+      // const formData = new FormData();
 
-      console.log(resFriend.data);
+      // formData.append("city", data.city);
+      // formData.append("country", data.country);
+      // formData.append("email", data.email);
+      // formData.append("first_name", data.first_name);
+      // formData.append("gender", data.gender);
+      // formData.append("last_name", data.last_name);
+      // formData.append("password", data.last_name);
+      // formData.append("personal_description", data.personal_description);
+      // formData.append("birth_date", data.birth_date);
+      // formData.append("price", data.price);
+      // formData.append("image", data.image);
+
+
+      const resFriend = await createRegisterFriend(friend);
 
       //PETICION PARA REGISTRAR GUSTOS
       const user_likes = {
@@ -116,8 +131,10 @@ export default function AddAvailableHours() {
       navigate("/login")
 
     } catch (Error) {
-      console.log("hola");
+      console.log("Ocurrio un error en:", Error);
+      <Navigate to="/"></Navigate>
     }
+
   };
 
   return (

@@ -32,34 +32,12 @@ export function FriendForm() {
   const [errorLike, setErrorLike] = useState("");
 
   const [cityEnabled, setCityEnabled] = useState(false);
-  // const inputRef = React.useRef();
-  // const translateErrorMessage = (errorMessage) => {
-  //   const errorTranslations = {
-  //     "user with this email already exists.":
-  //       "Ya existe un usuario con este correo electrónico.",
-  //   };
-
-  //   return errorTranslations[errorMessage] || errorMessage;
-  // };
 
   const onSubmit = handleSubmit(async (data) => {
     if (selectedInterests.length < 2) {
       setErrorMessage("Debe seleccionar al menos 2 intereses.");
-      return; // Detener el envío del formulario si no se seleccionan suficientes intereses
+      return; 
     }
-    //const formData = new FormData();
-
-    // formData.append("first_name", data.First_name);
-    // formData.append("last_name", data.Last_name);
-    // formData.append("email", data.Email);
-    // formData.append("personal_description", data.Personal_description);
-    // formData.append("gender", data.Gender);
-    // formData.append("country", data.Country);
-    // formData.append("password", data.Password);
-    // formData.append("birth_date", data.birth_date);
-    // formData.append("city", data.City);
-    // formData.append("price", data.price);
-    // // formData.append("image", data.photo);
 
     navigate("/photo", {
       state: {
@@ -77,39 +55,6 @@ export function FriendForm() {
       }
     });
 
-    //   try {
-    //     const resFriend = await createRegisterFriend(friend);
-
-    //     const user_likes = {
-    //       likes: selectedInterests,
-    //       user_id: resFriend.data.id_user,
-    //     };
-
-    //     await createLikes(user_likes);
-    //     swal(
-    //       "Registro exitoso",
-    //       "El cliente se registró correctamente",
-    //       "success"
-    //     );
-    //     setTimeout(() => {
-    //       // Desaparecer el mensaje después de 1 segundo
-    //       swal.close();
-    //       navigate("/photo");
-    //     }, 1000);
-    //     reset();
-    //   } catch (error) {
-    //     console.error("Error al enviar los datos:", error);
-    //     if (error.response && error.response.data && error.response.data.email) {
-    //       const translatedErrorMessage = translateErrorMessage(
-    //         error.response.data.email[0]
-    //       );
-    //       setErrorMessage(translatedErrorMessage);
-    //     } else {
-    //       setErrorMessage(
-    //         "Error al enviar los datos, por favor inténtelo de nuevo."
-    //       );
-    //     }
-    //   }
   });
 
   const optionsGender = [
