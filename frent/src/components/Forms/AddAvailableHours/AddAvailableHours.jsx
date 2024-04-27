@@ -3,7 +3,7 @@ import "./AddAvailableHours.css";
 import { ButtonSecondary } from "../../Buttons/buttonSecondary";
 import { ButtonPrimary } from "../../Buttons/buttonPrimary";
 import DayItem from "./DayItem";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import { createRegisterFriend } from "../../../api/register.api";
 import { createLikes, createAvailability } from "../../../api/register.api";
@@ -12,6 +12,7 @@ import swal from "sweetalert";
 export default function AddAvailableHours() {
   const location = useLocation();
   const friendData = location.state;
+  const navigate = useNavigate();
 
   const [mondayFrom, setMondayFrom] = useState("");
   const [mondayTo, setMondayTo] = useState("");
@@ -69,8 +70,6 @@ export default function AddAvailableHours() {
       //PETICION PARA REGISTRAR DATOS PERSONALES
       const data = friendData.friendDataNew;
 
-      console.log("los datos para enviar son: ", data)
-
       const friend = {
         city: data.city,
         country: data.country,
@@ -82,11 +81,11 @@ export default function AddAvailableHours() {
         personal_description: data.personal_description,
         birth_date: data.birth_date,
         price: data.price,
-        image: data.image
       };
-      console.log(friend);
 
       const resFriend = await createRegisterFriend(friend);
+
+      console.log(resFriend.data);
 
       //PETICION PARA REGISTRAR GUSTOS
       const user_likes = {
@@ -113,6 +112,8 @@ export default function AddAvailableHours() {
       console.log("Las disponibilidades son: ", disponibilidad)
 
       await createAvailability(disponibilidad);
+
+      navigate("/login")
 
     } catch (Error) {
       console.log("hola");

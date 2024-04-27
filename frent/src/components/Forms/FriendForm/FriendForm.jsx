@@ -6,9 +6,9 @@ import InputText from "../Inputs/InputText";
 import SelectOptions from "../Selects/selectOptions";
 import React, { useState } from "react";
 import { Country, State } from "country-state-city";
-import { createRegisterFriend } from "../../../api/register.api";
-import { createLikes } from "../../../api/register.api";
-import swal from "sweetalert";
+// import { createRegisterFriend } from "../../../api/register.api";
+// import { createLikes } from "../../../api/register.api";
+// import swal from "sweetalert";
 
 import InterestModal from "../Interests/interestSection";
 
@@ -60,20 +60,6 @@ export function FriendForm() {
     // formData.append("city", data.City);
     // formData.append("price", data.price);
     // // formData.append("image", data.photo);
-
-    const friend = {
-      city: data.City,
-      country: data.Country,
-      email: data.Email,
-      first_name: data.First_name,
-      gender: data.Gender,
-      last_name: data.Last_name,
-      password: data.Password,
-      personal_description: data.Personal_description,
-      birth_date: data.birth_date,
-      price: data.price,
-      likes: selectedInterests,
-    };
 
     navigate("/photo", {
       state: {

@@ -35,6 +35,7 @@ export const createLikes = (data) => registersApi.post('/users/api/v1/user_taste
 
 export const createAvailability = (data) => registersApi.post('/users/api/v1/availability/', data)
 
+export const getAvailabilityFriend = (id) => registersApi.get(`/users/api/v1/availability/${id}/get_availability_user/`)
 
 export const deleteRegister = (id) => registersApi.delete(/${id}/)
 

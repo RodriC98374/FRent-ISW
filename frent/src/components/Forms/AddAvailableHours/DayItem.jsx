@@ -55,6 +55,8 @@ export default function DayItem({
 
   const toggleIcon = () => {
     iconSelected(!icon);
+    setSelectedTimeFrom("");
+    setSelectedTimeTo("");
   };
 
   const handleAMPMChange = (selectedValue) => {
