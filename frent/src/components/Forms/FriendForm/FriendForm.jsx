@@ -6,9 +6,9 @@ import InputText from "../Inputs/InputText";
 import SelectOptions from "../Selects/selectOptions";
 import React, { useState } from "react";
 import { Country, State } from "country-state-city";
-import { createRegisterFriend } from "../../../api/register.api";
-import { createLikes } from "../../../api/register.api";
-import swal from "sweetalert";
+// import { createRegisterFriend } from "../../../api/register.api";
+// import { createLikes } from "../../../api/register.api";
+// import swal from "sweetalert";
 
 import InterestModal from "../Interests/interestSection";
 

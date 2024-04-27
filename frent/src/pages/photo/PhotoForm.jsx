@@ -9,6 +9,7 @@ const Photo = () => {
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [imageBinary, setBinary] = useState("");
   const location = useLocation();
   const friendData = location.state;
 
@@ -43,14 +44,16 @@ const Photo = () => {
       reader.onload= function () {
         const base64String = reader.result.split(",")[1];
       console.log("Datos binarios de la imagen:", base64String);
+      setBinary(base64String);
    }
   };
+
 
   const nextPage = async () => {
     if(!file) return; 
     const friendDataNew = {
       ...friendData,
-      image: file
+      image: imageBinary,
     }
       navigate("/addAvailableHours", { state: { friendDataNew } });
   };
