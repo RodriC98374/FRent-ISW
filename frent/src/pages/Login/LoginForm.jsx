@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, Navigate } from 'react-router-dom'; 
 import { useForm } from 'react-hook-form';
-import InputText from '../../components/Forms/Inputs/InputText';
+import InputText from '../../components/Forms/Inputs/inputText';
 import './LoginForm.css';
 import logoImage from '../../assets/img/Logo frent.png';
 import { validarLogin } from '../../api/register.api';

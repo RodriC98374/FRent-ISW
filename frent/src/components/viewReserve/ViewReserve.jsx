@@ -262,14 +262,12 @@ export default function ViewReserve() {
           <p>
             <strong>Duración:</strong>{" "}
           </p>
-          <p>{rent.duration} horas</p>
-          <div className="PrecioModal">
+          <p>{rent.duration} horas</p>     
             <h3>Precio</h3>
             <div className="PrecioDetail">
               <p>40 BOB x 1 hora</p>
               <p>40 BOB</p>
-            </div>
-          </div>
+            </div>         
           <p>
             <strong>Lugar:</strong>
           </p>
@@ -370,7 +368,7 @@ export default function ViewReserve() {
 
                         <button className="details-button" onClick={() => openModal(rent)}>
                           <FaSearch className="icon" />
-                          VER DETALLES
+                          Detalles
                         </button>
                       </div>
                     </div>
