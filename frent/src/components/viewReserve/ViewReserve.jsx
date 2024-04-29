@@ -20,8 +20,8 @@ export default function ViewReserve() {
   const staticImage = "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
 
 
-    console.log("Hola como estas ", listRent)
-  console.log("Hola mundo es el id del amigo",friendId)
+  console.log("Hola como estas ", listRent)
+  console.log("Hola mundo es el id del amigo", friendId)
   useEffect(() => {
     if (userData) {
       setFriendId(userData.user_id);
@@ -97,33 +97,33 @@ export default function ViewReserve() {
       return `${Math.floor(secondsPassed / 86400)} días`;
     }
   };
-  
-    const handleAccept = async (rentId, rentClient, rentFriend) => {
-        try {
-            const accepted = window.confirm("¿Aceptas ser el amigo?");
-            if (accepted) {
-              sendFriendRequestEmail(rentClient, rentFriend, 1);
-              const data = {
-                status: "accepted"
-              }
-                await update_pending_rent(rentId, data);
 
-                // console.log("el daots ess", res.data)
-
-                const dataNotification = {
-                    message: "Acepto ser tu amigo de alquiler!",
-                    from_user: rentFriend,
-                    to_user: rentClient,
-                    is_reading: false
-                }
-                
-                await create_notification(dataNotification);
-                fetchData();
-            }
-        } catch (error) {
-            console.error("Error al aceptar el alquiler:", error);
+  const handleAccept = async (rentId, rentClient, rentFriend) => {
+    try {
+      const accepted = window.confirm("¿Aceptas ser el amigo?");
+      if (accepted) {
+        sendFriendRequestEmail(rentClient, rentFriend, 1);
+        const data = {
+          status: "accepted"
         }
-    };
+        await update_pending_rent(rentId, data);
+
+        // console.log("el daots ess", res.data)
+
+        const dataNotification = {
+          message: "Acepto ser tu amigo de alquiler!",
+          from_user: rentFriend,
+          to_user: rentClient,
+          is_reading: false
+        }
+
+        await create_notification(dataNotification);
+        fetchData();
+      }
+    } catch (error) {
+      console.error("Error al aceptar el alquiler:", error);
+    }
+  };
 
   const handleReject = async (rentId, rentClient, rentFriend) => {
     try {
@@ -149,11 +149,9 @@ export default function ViewReserve() {
     try {
       const clientResponse = await getClientID(clientID);
       const clientEmail = clientResponse.data.email;
-
       const friendResponse = await getFriendID(friID);
       const firstt_name = friendResponse.data.first_name;
       const lastt_name = friendResponse.data.last_name;
-
       let combinedData;
 
       if (isApproved === 1) {
@@ -175,11 +173,22 @@ export default function ViewReserve() {
           last_name: lastt_name
         };
         createNotication(combinedData);
-
         console.log("Correo electrónico enviado correctamente");
       }
     } catch (error) {
       console.error("Error al enviar el correo electrónico:", error);
+
+      // Verificar si el error es debido a un problema de red
+      if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
+        console.error('No hay conexión a internet. El correo no pudo ser enviado.');
+        // Aquí puedes agregar lógica adicional, como almacenar el correo en una cola para enviar más tarde
+      } else if (error.message.includes('Network Error')) {
+        console.error('Error de red. El correo no pudo ser enviado.');
+        // Aquí puedes agregar lógica adicional, como almacenar el correo en una cola para enviar más tarde
+      } else {
+        console.error('Error desconocido al enviar el correo:', error);
+        // Aquí puedes agregar lógica adicional para manejar otros tipos de errores
+      }
     }
   };
 
