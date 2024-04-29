@@ -7,7 +7,7 @@ import { UserContext } from "../../pages/Login/UserProvider";
 //import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
 import "./Details.css";
-import { getClient, getPrice, get_likes_user, deleteRent, create_notification, createNotication, getClientID, getFriendID, update_pending_rent, getPendingRent } from "../../api/register.api";
+import { getClient, getPrice, get_likes_user, deleteRent, create_notification, createNotication, getClientID, getFriendID, update_pending_rent, getPendingRent,getEvent,getOutfit } from "../../api/register.api";
 
 export default function ViewReserve() {
   const { userData } = useContext(UserContext);
@@ -76,6 +76,8 @@ export default function ViewReserve() {
         const pricesArray = resPrice.data.map((item) => item.total_price);
         setPrice(pricesArray);
       }
+
+      //for Event and Outfit
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -192,6 +194,39 @@ export default function ViewReserve() {
     return "Cliente Desconocido";
   };
 
+  //For Get outfit,event
+  const getOutfitType = (outfitId) => {
+    try {
+      const resOutfit = getOutfit(); // Obtener todos los outfits
+      if (resOutfit && resOutfit.data) {
+        const outfit = resOutfit.data.find((item) => item.id_outfit === outfitId); // Encontrar el outfit por su id
+        if (outfit) {
+          return outfit.type_outfit; // Retornar el tipo de outfit
+        }
+      }
+      return "Tipo de outfit desconocido"; // Si no se encuentra el outfit o no hay respuesta
+    } catch (error) {
+      console.error("Error al obtener el tipo de outfit:", error);
+      return "Error al obtener el tipo de outfit";
+    }
+  };
+  
+  const getEventType = (eventId) => {
+    try {
+      const resEvent = getEvent(); // Obtener todos los eventos
+      if (resEvent && resEvent.data) {
+        const event = resEvent.data.find((item) => item.id_event === eventId); // Encontrar el evento por su id
+        if (event) {
+          return event.type_event; // Retornar el tipo de evento
+        }
+      }
+      return "Tipo de evento desconocido"; // Si no se encuentra el evento o no hay respuesta
+    } catch (error) {
+      console.error("Error al obtener el tipo de evento:", error);
+      return "Error al obtener el tipo de evento";
+    }
+  };
+
   const getClientLikes = (clientId) => {
     const clientLikes = likes_user.find((like) => like.id_user === clientId);
     if (clientLikes) {
@@ -200,8 +235,8 @@ export default function ViewReserve() {
     return [];
   };
 
-  const openModal = (rent) => {
-    setSelectedRent(rent);
+  const openModal = (rent, price) => {
+    setSelectedRent({ ...rent, price }); // Agregar el precio al objeto del alquiler seleccionado
   };
 
   // Función para cerrar el modal
@@ -265,8 +300,8 @@ export default function ViewReserve() {
           <p>{rent.duration} horas</p>     
             <h3>Precio</h3>
             <div className="PrecioDetail">
-              <p>40 BOB x 1 hora</p>
-              <p>40 BOB</p>
+              <p>20 BOB x {rent.duration} horas</p>
+              <p>{rent.price}</p>
             </div>         
           <p>
             <strong>Lugar:</strong>
@@ -275,11 +310,11 @@ export default function ViewReserve() {
           <p>
             <strong>Tipo de evento:</strong>
           </p>
-          <p>{rent.event ? rent.event : <i>No especificado</i>}</p>
+          <p>{rent.event ?  getEventType(rent.event): <i>No especificado</i>}</p>
           <p>
             <strong>Vestimenta del evento:</strong>{" "}
           </p>
-          <p>{rent.outfit ? rent.outfit : <i>No especificado</i>}</p>
+          <p>{rent.outfit ? getOutfitType(rent.outfit) : <i>No especificado</i>}</p>
           <p>
             <strong>Descripción:</strong>{" "}
           </p>
@@ -296,7 +331,7 @@ export default function ViewReserve() {
             <strong>Estado de la reserva:</strong>
           </p>
           <p className="pie.estado1">
-            <span>Pendiente</span>
+            <span>rent.status</span>
           </p>
         </div>
       </div>
@@ -366,7 +401,7 @@ export default function ViewReserve() {
                       <div className="price-container">
                         <p className="price">{price[index]}Bs</p>
 
-                        <button className="details-button" onClick={() => openModal(rent)}>
+                        <button className="details-button" onClick={() => openModal(rent,price[index])}>
                           <FaSearch className="icon" />
                           Detalles
                         </button>
