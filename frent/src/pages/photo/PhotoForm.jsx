@@ -13,23 +13,25 @@ const Photo = () => {
   const location = useLocation();
   const friendData = location.state;
 
-  // Load image data from localStorage on component mount
   useEffect(() => {
     const storedImageData = localStorage.getItem("imageData");
     if (storedImageData) {
-      const { imageBinary } = JSON.parse(storedImageData);
+      const { fileName, fileType, imageBinary } = JSON.parse(storedImageData);
+      const fileData = new File([base64ToArrayBuffer(imageBinary)], fileName, { type: fileType });
+      setFile(fileData);
       setImageBinary(imageBinary);
       setPreviewUrl(`data:image/jpeg;base64,${imageBinary}`);
+      setError(""); // Reset error message
     }
   }, []);
 
-  // Store image data in localStorage when it changes
   useEffect(() => {
-    if (imageBinary) {
-      const imageData = { imageBinary };
+    if (file && imageBinary) {
+      const imageData = { fileName: file.name, fileType: file.type, imageBinary };
       localStorage.setItem("imageData", JSON.stringify(imageData));
     }
-  }, [imageBinary]);
+  }, [file, imageBinary]);
+  
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -41,22 +43,20 @@ const Photo = () => {
       return;
     }
     if (!["image/jpeg", "image/png", "image/webp"].includes(fileType)) {
-      setError(
-        "Formato de archivo no válido. Solo se permiten archivos JPEG, PNG y WEBP."
-      );
+      setError("Formato de archivo no válido. Solo se permiten archivos JPEG, PNG y WEBP.");
       return;
     }
     setFile(selectedFile);
-    setError("");
+    setError(""); // Reset error message
     setPreviewUrl(URL.createObjectURL(selectedFile));
     convertImageToBinary(selectedFile);
   };
 
   const convertImageToBinary = (imageFile) => {
     const reader = new FileReader();
-    reader.readAsDataURL(imageFile);
+    reader.readAsArrayBuffer(imageFile);
     reader.onload = () => {
-      const base64String = reader.result.split(",")[1];
+      const base64String = arrayBufferToBase64(reader.result);
       setImageBinary(base64String);
     };
   };
@@ -84,6 +84,24 @@ const Photo = () => {
     handleFileChange({ target: { files: [droppedFile] } });
   };
 
+  const base64ToArrayBuffer = (base64) => {
+    const binaryString = window.atob(base64);
+    const bytes = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes.buffer;
+  };
+
+  const arrayBufferToBase64 = (buffer) => {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
+  };
   return (
     <div
       className="photo-container"
@@ -132,7 +150,7 @@ const Photo = () => {
         <NavLink to="/friend">
           <ButtonSecondary label="Atras" />
         </NavLink>
-        <ButtonPrimary onClick={nextPage} label={"Siguiente"} />
+        <ButtonPrimary onClick={nextPage} label={"Siguiente"} disabled={!file} />
       </div>
     </div>
   );
