@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./PhotoFrom.css";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { ButtonSecondary } from "../../components/Buttons/buttonSecondary";
@@ -9,22 +9,37 @@ const Photo = () => {
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
   const [previewUrl, setPreviewUrl] = useState(null);
-  const [imageBinary, setBinary] = useState("");
+  const [imageBinary, setImageBinary] = useState("");
   const location = useLocation();
   const friendData = location.state;
 
+  // Load image data from localStorage on component mount
+  useEffect(() => {
+    const storedImageData = localStorage.getItem("imageData");
+    if (storedImageData) {
+      const { imageBinary } = JSON.parse(storedImageData);
+      setImageBinary(imageBinary);
+      setPreviewUrl(`data:image/jpeg;base64,${imageBinary}`);
+    }
+  }, []);
+
+  // Store image data in localStorage when it changes
+  useEffect(() => {
+    if (imageBinary) {
+      const imageData = { imageBinary };
+      localStorage.setItem("imageData", JSON.stringify(imageData));
+    }
+  }, [imageBinary]);
+
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
-    if(!selectedFile) return;
-
+    if (!selectedFile) return;
     const fileSize = selectedFile.size / 1024 / 1024;
     const fileType = selectedFile.type;
-
     if (fileSize > 50) {
       setError("El archivo excede el tamaño máximo permitido (50 MB)");
       return;
     }
-
     if (!["image/jpeg", "image/png", "image/webp"].includes(fileType)) {
       setError(
         "Formato de archivo no válido. Solo se permiten archivos JPEG, PNG y WEBP."
@@ -34,96 +49,93 @@ const Photo = () => {
     setFile(selectedFile);
     setError("");
     setPreviewUrl(URL.createObjectURL(selectedFile));
-
     convertImageToBinary(selectedFile);
   };
 
   const convertImageToBinary = (imageFile) => {
-      var reader = new FileReader();
-      reader.readAsDataURL(imageFile);
-      reader.onload= function () {
-        const base64String = reader.result.split(",")[1];
-      console.log("Datos binarios de la imagen:", base64String);
-      setBinary(base64String);
-   }
+    const reader = new FileReader();
+    reader.readAsDataURL(imageFile);
+    reader.onload = () => {
+      const base64String = reader.result.split(",")[1];
+      setImageBinary(base64String);
+    };
   };
-
 
   const nextPage = async () => {
-    if(!file) return; 
-    const friendDataNew = {
-      ...friendData,
-      image: imageBinary,
-    }
-      navigate("/addAvailableHours", { state: { friendDataNew } });
+    if (!file) return;
+    const friendDataNew = { ...friendData, image: imageBinary };
+    navigate("/addAvailableHours", { state: { friendDataNew } });
   };
 
-const handleRemoveFile = () => {
-  setFile(null);
-  setPreviewUrl(null);
-};
+  const handleRemoveFile = () => {
+    setFile(null);
+    setPreviewUrl(null);
+    setImageBinary("");
+    localStorage.removeItem("imageData");
+  };
 
-const handleDragOver = (event) => {
-  event.preventDefault();
-};
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
 
-const handleDrop = (event) => {
-  event.preventDefault();
-  const droppedFile = event.dataTransfer.files[0];
-  handleFileChange({ target: { files: [droppedFile] } });
-};
+  const handleDrop = (event) => {
+    event.preventDefault();
+    const droppedFile = event.dataTransfer.files[0];
+    handleFileChange({ target: { files: [droppedFile] } });
+  };
 
-return (
-  <div
-    className="photo-container"
-    onDragOver={handleDragOver}
-    onDrop={handleDrop}
-    style={{ border: "2px dashed #ccc", padding: "20px" }}
-  >
-    <h2>Agregar Fotografías</h2>
-    <div className="upload-box">
-      <i className="fa fa-upload"></i>
-      <p>Elija un archivo o arrástrelo y suéltelo aquí</p>
-      <p>Formato JPG, PNG, WEBP, hasta 50 MB</p>
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleFileChange}
-        style={{ display: "none" }}
-      />
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <label htmlFor="file-input" className="upload-button">
-        Buscar Archivo
+  return (
+    <div
+      className="photo-container"
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
+      style={{ border: "2px dashed #ccc", padding: "20px" }}
+    >
+      <h2>Agregar Fotografías</h2>
+      <div className="upload-box">
+        <i className="fa fa-upload"></i>
+        <p>Elija un archivo o arrástrelo y suéltelo aquí</p>
+        <p>Formato JPG, PNG, WEBP, hasta 50 MB</p>
         <input
-          id="file-input"
           type="file"
-          accept="image/jpeg, image/png, image/webp"
+          accept="image/*"
           onChange={handleFileChange}
-          className="file-input"
           style={{ display: "none" }}
         />
-      </label>
-      {error && <p className="error-message">{error}</p>}
-    </div>
-    {file && (
-      <div className="preview-box">
-        <button onClick={handleRemoveFile} className="remove-button">
-          <i className="fas fa-times"></i>
-        </button>
-        <img
-          src={URL.createObjectURL(file)}
-          alt="Vista previa"
-          className="preview-image"
-        />
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        <label htmlFor="file-input" className="upload-button">
+          Buscar Archivo
+          <input
+            id="file-input"
+            type="file"
+            accept="image/jpeg, image/png, image/webp"
+            onChange={handleFileChange}
+            className="file-input"
+            style={{ display: "none" }}
+          />
+        </label>
+        {error && <p className="error-message">{error}</p>}
       </div>
-    )}
-    <div className="button-section">
-      <NavLink to="/friend">
-        <ButtonSecondary label="Atras" />
-      </NavLink>
-      <ButtonPrimary onClick={nextPage} label={"Siguiente"} />
+      {previewUrl && (
+        <div className="preview-box">
+          <button onClick={handleRemoveFile} className="remove-button">
+            <i className="fas fa-times"></i>
+          </button>
+          <img
+            src={previewUrl}
+            alt="Vista previa"
+            className="preview-image"
+          />
+        </div>
+      )}
+      <div className="button-section">
+        <NavLink to="/friend">
+          <ButtonSecondary label="Atras" />
+        </NavLink>
+        <ButtonPrimary onClick={nextPage} label={"Siguiente"} />
+      </div>
     </div>
-  </div>
-);
+  );
 };
+
 export default Photo;

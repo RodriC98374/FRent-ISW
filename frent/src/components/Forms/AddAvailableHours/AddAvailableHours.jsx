@@ -120,8 +120,8 @@ export default function AddAvailableHours() {
 
       //PETICION PARA REGISTRAR DISPONIBILIDAD
       const disponibilidad = {
-        user_id : resFriend.data.id_user,
-        disponibilidades : [["Lunes", mondayFrom, mondayTo], ["Martes", tuesdayFrom, tuesdayTo], ["Miercoles", wednesdayFrom, wednesdayTo], ["Jueves", thursdayFrom, thursdayTo], ["Viernes", fridayFrom, fridayTo], ["Sabado", saturdayFrom, saturdayTo], ["Domingo", sundayFrom, sundayTo]] 
+        user_id: resFriend.data.id_user,
+        disponibilidades: [["Lunes", mondayFrom, mondayTo], ["Martes", tuesdayFrom, tuesdayTo], ["Miercoles", wednesdayFrom, wednesdayTo], ["Jueves", thursdayFrom, thursdayTo], ["Viernes", fridayFrom, fridayTo], ["Sabado", saturdayFrom, saturdayTo], ["Domingo", sundayFrom, sundayTo]]
       }
 
       console.log("Las disponibilidades son: ", disponibilidad)
