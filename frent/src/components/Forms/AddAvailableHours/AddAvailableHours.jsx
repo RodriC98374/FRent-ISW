@@ -3,7 +3,7 @@ import "./AddAvailableHours.css";
 import { ButtonSecondary } from "../../Buttons/buttonSecondary";
 import { ButtonPrimary } from "../../Buttons/buttonPrimary";
 import DayItem from "./DayItem";
-import { NavLink, Navigate, useLocation } from "react-router-dom";
+import { NavLink, Navigate, useLocation, useNavigate } from "react-router-dom";
 
 import { createRegisterFriend } from "../../../api/register.api";
 import { createLikes, createAvailability } from "../../../api/register.api";
@@ -12,6 +12,7 @@ import swal from "sweetalert";
 export default function AddAvailableHours() {
   const location = useLocation();
   const friendData = location.state;
+  const navigate = useNavigate();
 
   const [mondayFrom, setMondayFrom] = useState("");
   const [mondayTo, setMondayTo] = useState("");
@@ -69,7 +70,6 @@ export default function AddAvailableHours() {
       //PETICION PARA REGISTRAR DATOS PERSONALES
       const data = friendData.friendDataNew;
 
-      console.log("los datos para enviar son: ", data)
 
       const friend = {
         city: data.city,
@@ -81,10 +81,24 @@ export default function AddAvailableHours() {
         password: data.password,
         personal_description: data.personal_description,
         birth_date: data.birth_date,
-        price:   data.price,
-        image: data.image 
+        price: data.price,
+        image: data.image,
       };
-      console.log(friend);
+
+      // const formData = new FormData();
+
+      // formData.append("city", data.city);
+      // formData.append("country", data.country);
+      // formData.append("email", data.email);
+      // formData.append("first_name", data.first_name);
+      // formData.append("gender", data.gender);
+      // formData.append("last_name", data.last_name);
+      // formData.append("password", data.last_name);
+      // formData.append("personal_description", data.personal_description);
+      // formData.append("birth_date", data.birth_date);
+      // formData.append("price", data.price);
+      // formData.append("image", data.image);
+
 
       const resFriend = await createRegisterFriend(friend);
 
@@ -113,6 +127,8 @@ export default function AddAvailableHours() {
       console.log("Las disponibilidades son: ", disponibilidad)
 
       await createAvailability(disponibilidad);
+
+      navigate("/login")
 
     } catch (Error) {
       console.log("Ocurrio un error en:", Error);

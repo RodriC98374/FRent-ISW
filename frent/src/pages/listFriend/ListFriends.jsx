@@ -53,9 +53,9 @@ export default function ListFriend() {
   };
 
   const getImage = (imageFriend) => {
-    // if(imageFriend){
-    //   return imageFriend;
-    // }
+    if(imageFriend){
+      return `data:image/png;base64,${imageFriend}`;
+    }
     return staticImage;
   }
 
@@ -80,7 +80,7 @@ export default function ListFriend() {
             <img
               src={getImage(friend.image)}
               alt="foto de perfil"
-              onClick={() => openModal(staticImage)}
+              onClick={() => openModal(getImage(friend.image))}
             />
             <div className="card-texts">
               <p className="name-card">

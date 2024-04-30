@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import { FaTag } from 'react-icons/fa';
 import { FaUserFriends, FaCalendar, FaClock, FaSearch } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
@@ -7,7 +8,7 @@ import { UserContext } from "../../pages/Login/UserProvider";
 //import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
 import "./Details.css";
-import { getClient, getPrice, get_likes_user, deleteRent, create_notification, createNotication, getClientID, getFriendID, update_pending_rent, getPendingRent } from "../../api/register.api";
+import { getClient, getPrice, get_likes_user, deleteRent, create_notification, createNotication, getClientID, getFriendID, update_pending_rent, getPendingRent,getEvent,getOutfit } from "../../api/register.api";
 
 export default function ViewReserve() {
   const { userData } = useContext(UserContext);
@@ -20,8 +21,8 @@ export default function ViewReserve() {
   const staticImage = "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
 
 
-    console.log("Hola como estas ", listRent)
-  console.log("Hola mundo es el id del amigo",friendId)
+  console.log("Hola como estas ", listRent)
+  console.log("Hola mundo es el id del amigo", friendId)
   useEffect(() => {
     if (userData) {
       setFriendId(userData.user_id);
@@ -76,6 +77,8 @@ export default function ViewReserve() {
         const pricesArray = resPrice.data.map((item) => item.total_price);
         setPrice(pricesArray);
       }
+
+      //for Event and Outfit
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -97,33 +100,33 @@ export default function ViewReserve() {
       return `${Math.floor(secondsPassed / 86400)} días`;
     }
   };
-  
-    const handleAccept = async (rentId, rentClient, rentFriend) => {
-        try {
-            const accepted = window.confirm("¿Aceptas ser el amigo?");
-            if (accepted) {
-              sendFriendRequestEmail(rentClient, rentFriend, 1);
-              const data = {
-                status: "accepted"
-              }
-                await update_pending_rent(rentId, data);
 
-                // console.log("el daots ess", res.data)
-
-                const dataNotification = {
-                    message: "Acepto ser tu amigo de alquiler!",
-                    from_user: rentFriend,
-                    to_user: rentClient,
-                    is_reading: false
-                }
-                
-                await create_notification(dataNotification);
-                fetchData();
-            }
-        } catch (error) {
-            console.error("Error al aceptar el alquiler:", error);
+  const handleAccept = async (rentId, rentClient, rentFriend) => {
+    try {
+      const accepted = window.confirm("¿Aceptas ser el amigo?");
+      if (accepted) {
+        sendFriendRequestEmail(rentClient, rentFriend, 1);
+        const data = {
+          status: "accepted"
         }
-    };
+        await update_pending_rent(rentId, data);
+
+        // console.log("el daots ess", res.data)
+
+        const dataNotification = {
+          message: "Acepto ser tu amigo de alquiler!",
+          from_user: rentFriend,
+          to_user: rentClient,
+          is_reading: false
+        }
+
+        await create_notification(dataNotification);
+        fetchData();
+      }
+    } catch (error) {
+      console.error("Error al aceptar el alquiler:", error);
+    }
+  };
 
   const handleReject = async (rentId, rentClient, rentFriend) => {
     try {
@@ -149,11 +152,9 @@ export default function ViewReserve() {
     try {
       const clientResponse = await getClientID(clientID);
       const clientEmail = clientResponse.data.email;
-
       const friendResponse = await getFriendID(friID);
       const firstt_name = friendResponse.data.first_name;
       const lastt_name = friendResponse.data.last_name;
-
       let combinedData;
 
       if (isApproved === 1) {
@@ -175,11 +176,22 @@ export default function ViewReserve() {
           last_name: lastt_name
         };
         createNotication(combinedData);
-
         console.log("Correo electrónico enviado correctamente");
       }
     } catch (error) {
       console.error("Error al enviar el correo electrónico:", error);
+
+      // Verificar si el error es debido a un problema de red
+      if (error.code === 'ENOTFOUND' || error.code === 'ECONNREFUSED') {
+        console.error('No hay conexión a internet. El correo no pudo ser enviado.');
+        // Aquí puedes agregar lógica adicional, como almacenar el correo en una cola para enviar más tarde
+      } else if (error.message.includes('Network Error')) {
+        console.error('Error de red. El correo no pudo ser enviado.');
+        // Aquí puedes agregar lógica adicional, como almacenar el correo en una cola para enviar más tarde
+      } else {
+        console.error('Error desconocido al enviar el correo:', error);
+        // Aquí puedes agregar lógica adicional para manejar otros tipos de errores
+      }
     }
   };
 
@@ -192,6 +204,39 @@ export default function ViewReserve() {
     return "Cliente Desconocido";
   };
 
+  //For Get outfit,event
+  const getOutfitType = (outfitId) => {
+    try {
+      const resOutfit = getOutfit(); // Obtener todos los outfits
+      if (resOutfit && resOutfit.data) {
+        const outfit = resOutfit.data.find((item) => item.id_outfit === outfitId); // Encontrar el outfit por su id
+        if (outfit) {
+          return outfit.type_outfit; // Retornar el tipo de outfit
+        }
+      }
+      return "Tipo de outfit desconocido"; // Si no se encuentra el outfit o no hay respuesta
+    } catch (error) {
+      console.error("Error al obtener el tipo de outfit:", error);
+      return "Error al obtener el tipo de outfit";
+    }
+  };
+  
+  const getEventType = (eventId) => {
+    try {
+      const resEvent = getEvent(); // Obtener todos los eventos
+      if (resEvent && resEvent.data) {
+        const event = resEvent.data.find((item) => item.id_event === eventId); // Encontrar el evento por su id
+        if (event) {
+          return event.type_event; // Retornar el tipo de evento
+        }
+      }
+      return "Tipo de evento desconocido"; // Si no se encuentra el evento o no hay respuesta
+    } catch (error) {
+      console.error("Error al obtener el tipo de evento:", error);
+      return "Error al obtener el tipo de evento";
+    }
+  };
+
   const getClientLikes = (clientId) => {
     const clientLikes = likes_user.find((like) => like.id_user === clientId);
     if (clientLikes) {
@@ -200,8 +245,8 @@ export default function ViewReserve() {
     return [];
   };
 
-  const openModal = (rent) => {
-    setSelectedRent(rent);
+  const openModal = (rent, price) => {
+    setSelectedRent({ ...rent, price }); // Agregar el precio al objeto del alquiler seleccionado
   };
 
   // Función para cerrar el modal
@@ -262,14 +307,12 @@ export default function ViewReserve() {
           <p>
             <strong>Duración:</strong>{" "}
           </p>
-          <p>{rent.duration} horas</p>
-          <div className="PrecioModal">
+          <p>{rent.duration} horas</p>     
             <h3>Precio</h3>
             <div className="PrecioDetail">
-              <p>40 BOB x 1 hora</p>
-              <p>40 BOB</p>
-            </div>
-          </div>
+              <p>20 BOB x {rent.duration} horas</p>
+              <p>{rent.price} BOB</p>
+            </div>         
           <p>
             <strong>Lugar:</strong>
           </p>
@@ -277,11 +320,11 @@ export default function ViewReserve() {
           <p>
             <strong>Tipo de evento:</strong>
           </p>
-          <p>{rent.event ? rent.event : <i>No especificado</i>}</p>
+          <p>{rent.event ?  getEventType(rent.event): <i>No especificado</i>}</p>
           <p>
             <strong>Vestimenta del evento:</strong>{" "}
           </p>
-          <p>{rent.outfit ? rent.outfit : <i>No especificado</i>}</p>
+          <p>{rent.outfit ? getOutfitType(rent.outfit) : <i>No especificado</i>}</p>
           <p>
             <strong>Descripción:</strong>{" "}
           </p>
@@ -289,7 +332,9 @@ export default function ViewReserve() {
           <p><strong>Intereses:</strong></p>
           {getClientLikes(rent.client).map((like) => (
             <p key={like} className="descriptionLike">
-              {like}
+                <svg className="tag-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                  <path fill="white" d="M5.5 7A1.5 1.5 0 0 1 4 5.5A1.5 1.5 0 0 1 5.5 4A1.5 1.5 0 0 1 7 5.5A1.5 1.5 0 0 1 5.5 7m15.91 4.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.11 0-2 .89-2 2v7c0 .55.22 1.05.59 1.41l8.99 9c.37.36.87.59 1.42.59c.55 0 1.05-.23 1.41-.59l7-7c.37-.36.59-.86.59-1.41c0-.56-.23-1.06-.59-1.42"/>
+                </svg> {like}
             </p>
           ))}
         </div>
@@ -298,7 +343,7 @@ export default function ViewReserve() {
             <strong>Estado de la reserva:</strong>
           </p>
           <p className="pie.estado1">
-            <span>Pendiente</span>
+            <span>rent.status</span>
           </p>
         </div>
       </div>
@@ -368,9 +413,9 @@ export default function ViewReserve() {
                       <div className="price-container">
                         <p className="price">{price[index]}Bs</p>
 
-                        <button className="details-button" onClick={() => openModal(rent)}>
+                        <button className="details-button" onClick={() => openModal(rent,price[index])}>
                           <FaSearch className="icon" />
-                          VER DETALLES
+                          Detalles
                         </button>
                       </div>
                     </div>

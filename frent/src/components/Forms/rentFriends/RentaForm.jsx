@@ -9,10 +9,11 @@ import { createRegisterRent } from "../../../api/register.api";
 import { getOutfit } from "../../../api/register.api";
 import { getEvent } from "../../../api/register.api";
 import { getAvailabilityFriend } from "../../../api/register.api";
-import swal from "sweetalert"; // Importar SweetAlert
+import swal from "sweetalert"; // Importar SweetAler
 
 import "./RentaForm.css";
 import { UserContext } from "../../../pages/Login/UserProvider.jsx";
+import "./RentaForm.css";
 
 export default function RentFriendForm() {
   const {
@@ -23,6 +24,7 @@ export default function RentFriendForm() {
   } = useForm();
   const { id } = useParams();
   const friendId = parseInt(id);
+  
 
   const [selectedHour, setSelectedHour] = useState("");
   const [selectedEvent, setSelectedEvent] = useState("");
@@ -36,7 +38,6 @@ export default function RentFriendForm() {
   // eslint-disable-next-line
   const [showModal, setShowModal] = useState(false);
 
-  console.log(availability);
 
   // eslint-disable-next-line
   const handleCancel = () => {
@@ -52,9 +53,6 @@ export default function RentFriendForm() {
   };
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log("cliente", userId);
-    console.log("amigo", friendId);
-
     const frent = {
       fecha_cita: data.fecha_cita,
       time: data.time,
@@ -67,7 +65,6 @@ export default function RentFriendForm() {
       client: userId, // Suponiendo que el ID del cliente es 1 (puedes cambiarlo según tu lógica)
     };
 
-    console.log(frent);
 
     if (frent.event.isNaN) {
       delete frent.event;
@@ -77,7 +74,6 @@ export default function RentFriendForm() {
       delete frent.description;
     }
 
-    console.log(frent);
 
     try {
       const restRent = await createRegisterRent(frent);
@@ -122,27 +118,22 @@ export default function RentFriendForm() {
     }
 
     loadOutfit();
-  }, []);
 
-  useEffect(() => {
     async function loadEvent() {
       try {
         const res = await getEvent();
         setEvent(res.data);
-        console.log(res.data);
       } catch (error) {
         console.log("Error al cargar las vestimentas: ", error);
       }
     }
 
     loadEvent();
-  }, []);
-
-  useEffect(() => {
     async function loadAvailability() {
       try {
         const res = await getAvailabilityFriend(friendId);
         setAvailability(res.data);
+        console.log(res.data);
       } catch (error) {
         console.log("Error al cargar las vestimentas: ", error);
       }
@@ -206,6 +197,7 @@ switch (dayOfWeek.toLowerCase(dayOfWeek)) {
   // Convierte las horas a objetos Date para comparaciones
   const startValidTime = new Date(`01/01/2000 ${startTime}`);
   const endValidTime = new Date(`01/01/2000 ${endTime}`);
+
 
   return (
     <div className="container">
@@ -312,6 +304,7 @@ switch (dayOfWeek.toLowerCase(dayOfWeek)) {
                 onChange={(e) => setSelectedEvent(e.target.value)}
               />
             </div>
+        
             <div className="input-1c">
               <SelectOptions
                 id={"outfit"}
@@ -322,6 +315,7 @@ switch (dayOfWeek.toLowerCase(dayOfWeek)) {
                 required={false}
                 options={outfit.map((outfit, index) => ({
                   value: outfit.id_oufit,
+                  
                   label: outfit.type_outfit,
                 }))}
                 register={register("id_outfit")}
@@ -339,11 +333,13 @@ switch (dayOfWeek.toLowerCase(dayOfWeek)) {
                   required: {
                     value: true,
                     message: "Este campo es obligatorio.",
+                    message: "Este campo es obligatorio.",
                   },
                   maxLength: {
                     value: 40,
                     message: "La ubicación no debe exceder los 30 caracteres",
                   },
+                    message: "La ubicación no debe exceder los 30 caracteres",
                 })}
                 errors={errors}
               />
@@ -371,14 +367,12 @@ switch (dayOfWeek.toLowerCase(dayOfWeek)) {
               type={"submit"}
               label={"Alquilar"}
             />
+            <ButtonPrimary type={"submit"} label={"Alquilar"} />
             <NavLink to={`/calendarReservas/${friendId}`}>
               Mostrar reservas
             </NavLink>
             <NavLink to="/listfriend">
-              <ButtonSecondary
-                label={"Cancelar"}
-                onClick={confirmCancel}
-              />
+              <ButtonSecondary label={"Cancelar"} onClick={confirmCancel} />
             </NavLink>
           </div>
         </form>
@@ -386,3 +380,4 @@ switch (dayOfWeek.toLowerCase(dayOfWeek)) {
     </div>
   );
 }
+
