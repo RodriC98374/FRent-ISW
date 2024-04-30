@@ -367,7 +367,6 @@ switch (dayOfWeek.toLowerCase(dayOfWeek)) {
               type={"submit"}
               label={"Alquilar"}
             />
-            <ButtonPrimary type={"submit"} label={"Alquilar"} />
             <NavLink to={`/calendarReservas/${friendId}`}>
               Mostrar reservas
             </NavLink>

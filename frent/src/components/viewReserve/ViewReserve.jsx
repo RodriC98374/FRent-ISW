@@ -245,6 +245,8 @@ export default function ViewReserve() {
     return [];
   };
 
+  
+
   const openModal = (rent, price) => {
     setSelectedRent({ ...rent, price }); // Agregar el precio al objeto del alquiler seleccionado
   };
@@ -256,6 +258,12 @@ export default function ViewReserve() {
 
   const DetailsModal = ({ isOpen, closeModal, rent }) => {
     if (!isOpen || !rent) return null;
+
+    const clientIndex = listClient.findIndex(
+      (client) => client.id_user === rent.client
+    );
+
+    const clientPrice = clientIndex !== -1 ? price[clientIndex] : null;
 
     return (
       <div className="modal1">
@@ -310,8 +318,8 @@ export default function ViewReserve() {
           <p>{rent.duration} horas</p>     
             <h3>Precio</h3>
             <div className="PrecioDetail">
-              <p>20 BOB x {rent.duration} horas</p>
-              <p>{rent.price} BOB</p>
+              <p>{clientPrice ? `${clientPrice}Bs (${rent.duration} horas)` : "Precio no disponible"}</p>
+              <p>{clientPrice ? `${clientPrice}Bs` : "Precio no disponible"}</p>
             </div>         
           <p>
             <strong>Lugar:</strong>
@@ -410,10 +418,10 @@ export default function ViewReserve() {
                     </div>
 
                     <div className="price-details">
+                    
                       <div className="price-container">
-                        <p className="price">{price[index]}Bs</p>
-
-                        <button className="details-button" onClick={() => openModal(rent,price[index])}>
+                      <p className="price">{price[listClient.findIndex((client) => client.id_user === rent.client)]}Bs</p>
+                      <button className="details-button" onClick={() => openModal(rent, price[listClient.findIndex((client) => client.id_user === rent.client)])}>
                           <FaSearch className="icon" />
                           Detalles
                         </button>
