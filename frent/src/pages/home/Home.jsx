@@ -6,7 +6,7 @@ export default function Home() {
     <div className="home-container">
       <div className="home-content">
         <h1 className="home-title">Bienvenido a Alquiler de amigos</h1>
-        <p className="home-description">Encuentra el lugar ideal para tu alojamiento en nuestra plataforma.</p>
+        <p className="home-description">Conéctate con personas que comparten tus intereses y pasiones en cada rincón de nuestra comunidad</p>
         
       </div>
     </div>
