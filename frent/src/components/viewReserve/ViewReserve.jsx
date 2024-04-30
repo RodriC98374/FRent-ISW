@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import { FaTag } from 'react-icons/fa';
 import { FaUserFriends, FaCalendar, FaClock, FaSearch } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
@@ -301,7 +302,7 @@ export default function ViewReserve() {
             <h3>Precio</h3>
             <div className="PrecioDetail">
               <p>20 BOB x {rent.duration} horas</p>
-              <p>{rent.price}</p>
+              <p>{rent.price} BOB</p>
             </div>         
           <p>
             <strong>Lugar:</strong>
@@ -322,7 +323,9 @@ export default function ViewReserve() {
           <p><strong>Intereses:</strong></p>
           {getClientLikes(rent.client).map((like) => (
             <p key={like} className="descriptionLike">
-              {like}
+                <svg className="tag-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                  <path fill="white" d="M5.5 7A1.5 1.5 0 0 1 4 5.5A1.5 1.5 0 0 1 5.5 4A1.5 1.5 0 0 1 7 5.5A1.5 1.5 0 0 1 5.5 7m15.91 4.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.11 0-2 .89-2 2v7c0 .55.22 1.05.59 1.41l8.99 9c.37.36.87.59 1.42.59c.55 0 1.05-.23 1.41-.59l7-7c.37-.36.59-.86.59-1.41c0-.56-.23-1.06-.59-1.42"/>
+                </svg> {like}
             </p>
           ))}
         </div>

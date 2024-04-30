@@ -108,13 +108,13 @@
   .descriptionLike {
     background-color: var( --tertiary-color);
     color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    margin-top: 15px;
-    margin: 10px;
+    padding: 8px 11px;
+    border-radius: 3px;
+    margin-top: 7px;
+    margin: 5px;
     width: auto; 
     display: inline-block; 
-    margin-bottom: 10px;
+    margin-bottom: 6px;
   }
   
   .action-buttons {
