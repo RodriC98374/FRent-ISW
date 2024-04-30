@@ -41,7 +41,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
-    image = models.ImageField(null=True, blank=True)
+    image = models.TextField(null=True, blank=True)
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
@@ -64,7 +64,7 @@ class Friend(User):
 
 
 class Like(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=51)
 
 class Photo(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
