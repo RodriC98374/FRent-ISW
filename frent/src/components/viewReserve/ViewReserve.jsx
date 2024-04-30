@@ -262,7 +262,7 @@ export default function ViewReserve() {
         <div className="modal-header1">
 
           <div className="modalPrueba"><FaSearch className="icon1" />
-            Detalles del alquiler</div>
+          &nbsp; <strong>Detalles del alquiler</strong></div>
           <AiOutlineClose className="icon1"
             size={30}
             color="#000"
@@ -313,11 +313,8 @@ export default function ViewReserve() {
               <p>20 BOB x {rent.duration} horas</p>
               <p>{rent.price} BOB</p>
             </div>         
-          <p>
-            <strong>Lugar:</strong>
-          </p>
-          <p>{rent.location}</p>
-          <p>
+          
+            <p>
             <strong>Tipo de evento:</strong>
           </p>
           <p>{rent.event ?  getEventType(rent.event): <i>No especificado</i>}</p>
