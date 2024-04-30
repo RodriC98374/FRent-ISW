@@ -156,11 +156,12 @@ class AvailabilityViewSet(viewsets.ModelViewSet):
         disponibilidades = request.data.get('disponibilidades', [])
         
         for dispo in disponibilidades:
-            new_data = {
-                "user_id": user_id,
-                "start": dispo[1],
-                "end": dispo[2],
-                "dia_semana": dispo[0],
+            if (dispo[1] != "") & (dispo[2] != ""):
+                new_data = {
+                    "user_id": user_id,
+                    "start": dispo[1],
+                    "end": dispo[2],
+                    "dia_semana": dispo[0],
             }      
             serializer = self.get_serializer(data=new_data)
             if serializer.is_valid():
