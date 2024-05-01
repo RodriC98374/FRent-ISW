@@ -9,7 +9,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.core.mail import send_mail
 
-from django.utils.html import format_html
 
 
 # def inicio(request):
@@ -35,8 +34,7 @@ class EmailAPIView(APIView):
             message = (
                 f"<html>"
                 f"<body>"
-                f"<strong>{first_name} {
-                    last_name}</strong> {estado_solicitud} tu solicitud de alquiler."
+                f"<strong>{first_name} {last_name}</strong> {estado_solicitud} tu solicitud de alquiler."
                 f"</body>"
                 f"</html>"
             )

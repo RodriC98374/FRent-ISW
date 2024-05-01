@@ -26,6 +26,7 @@ class ClientViewSet(viewsets.ModelViewSet):
     
     def create(self, request):
         serializer = self.get_serializer(data=request.data)
+        
         if serializer.is_valid():
             try:
                 new_client = Client.objects.create_user(**serializer.validated_data)
@@ -42,7 +43,6 @@ class FriendViewSet(viewsets.ModelViewSet):
     
     def create(self, request):
         serializer = self.get_serializer(data=request.data)
-        print(request.data)
         
         if serializer.is_valid():
             try:
@@ -194,7 +194,7 @@ class CustomLoginView(APIView):
                 #'full_name': user.get_full_name(),
                 'first_name': user.first_name,
                 'last_name': user.last_name,
-                'user_type': user_type
+                'user_type': user_type,
             })
         else:
             return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_400_BAD_REQUEST)
