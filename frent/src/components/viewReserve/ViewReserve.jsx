@@ -215,7 +215,7 @@ console.log("Son sus interesees: ",likes_user)
         <div className="modal1">
         <div className="modal-header1">
           <div className="modalPrueba"><FaSearch className="icon1" />
-            Detalles del alquiler</div>
+          &nbsp; <strong>Detalles del alquiler</strong></div>
           <AiOutlineClose className="icon1"
             size={30}
             color="#000"
@@ -391,6 +391,4 @@ console.log("Son sus interesees: ",likes_user)
       </div>
     </>
   );
-
-
 }

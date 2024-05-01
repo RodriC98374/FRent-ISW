@@ -145,8 +145,8 @@ export function CustomerForm() {
                     message: "Este campo es obligatorio",
                   },
                   pattern: {
-                    value: /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/,
-                    message: "El nombre solo puede contener letras",
+                    value: /^[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+(?:\s[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+)*$/,
+                    message: "El nombre solo puede contener letras y caracteres españoles",
                   },
                   minLength: {
                     value: 2,
@@ -173,8 +173,8 @@ export function CustomerForm() {
                     message: "El apellido es requerido",
                   },
                   pattern: {
-                    value: /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/,
-                    message: "El nombre solo puede contener letras",
+                    value: /^[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+(?:\s[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+)*$/,
+                    message: "El nombre solo puede contener letras y caracteres españoles",
                   },
                   minLength: {
                     value: 2,
