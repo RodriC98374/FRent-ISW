@@ -9,10 +9,13 @@ from .serializers import OutFitSerializer, EventSerializer, RentSerializer, Rent
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import action
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from django.utils.timezone import now
 from rest_framework.views import APIView
 from rest_framework import status
+from django.utils.timezone import localtime
+from django.db.models import Q
+from datetime import date, datetime, timedelta, time
 
 class OutFitViewSet(viewsets.ModelViewSet):
     queryset = OutFit.objects.all()
@@ -31,7 +34,22 @@ class RentViewSet(viewsets.ModelViewSet):
         return Rent.objects.annotate(
             time_elapsed=ExpressionWrapper(now - F('create'), output_field=fields.DurationField()) 
         ).order_by('-fecha_cita')
-        
+
+    def create(self, request, *args, **kwargs):
+      fecha_cita_str = request.data.get('fecha_cita')
+      time_str = request.data.get('time')
+      duration = float(request.data.get('duration'))
+      fecha_cita = date.fromisoformat(fecha_cita_str)
+      hora = time.fromisoformat(time_str)
+      datetime_ini = datetime.combine(fecha_cita, hora)
+      datetime_fin = datetime_ini+timedelta(hours=duration)
+      rents_superpuesta = Rent.objects.filter(
+          Q(fecha_cita=fecha_cita) & (Q(time__lte=datetime_fin.time(), time__gte=datetime_ini.time()) |Q(time__lt=datetime_ini.time(), time__gte=(datetime_ini - timedelta(hours=duration)).time())))
+      if rents_superpuesta.exists():
+          return Response({'error': 'La renta se superpone con otra renta existente.'},status=status.HTTP_400_BAD_REQUEST)
+      return super().create(request, *args, **kwargs)
+  
+  
     @action(detail=True, methods=['GET'])
     def get_pendings_rents(self, request, pk=None):
         rents = Rent.objects.filter(status="pending", friend__id_user=pk)
@@ -44,8 +62,7 @@ class RentViewSet(viewsets.ModelViewSet):
         rents_serializer = RentSerializer(rents, many=True)
         return Response(rents_serializer.data)
 
-        
-  
+
 class RentPriceViewSet(viewsets.ModelViewSet):
     queryset = Rent.objects.all().order_by('-create')  
     serializer_class = RentPriceSerializer
@@ -92,22 +109,41 @@ class GetFriendRentsCalendar(APIView):
 class RentDetailView(APIView):
     def get(self, request, friend_id):
         get_object_or_404(Friend, id_user=friend_id)
-        rents = Rent.objects.filter(friend__id_user=friend_id,status='pending').select_related('event', 'outfit')
+        #rents = Rent.objects.filter(friend__id_user=friend_id,status='pending').select_related('event', 'outfit')
+        rents = Rent.objects.filter(friend__id_user=friend_id).select_related('event', 'outfit')
         rent_details = []
         for rent in rents:
+            if rent.status=='pending':
+              nvar='Pendiente'
+            elif rent.status=='accepted':
+              nvar='Aceptado'
+            else:
+              nvar='Rechazado'
+            
             rent_details.append({
-                #'rent_id': rent.id,
+                'rent_id': rent.id,
+                'friend_id': rent.friend.id_user,
+                'client_id': rent.client.id_user,
                 'fecha_cita': rent.fecha_cita,
+                'nombre_cliente': rent.client.get_full_name(),
                 'time': rent.time,
                 'duration': rent.duration,
                 'location': rent.location,
                 'description': rent.description,
-                'created': rent.create.strftime('%Y-%m-%d %H:%M:%S'),
+                'created': self.format_datetime_with_colon(localtime(rent.create)),
                 'type_outfit': rent.outfit.type_outfit,
                 'type_event': rent.event.type_event,
+                #'status':rent.status,
+                'status':nvar,
+                'price': rent.duration*(float(rent.friend.price)),
+                'image': rent.client.image,
             })
         
         if not rent_details:
             return Response({'mensaje': 'No hay alquileres encontrados para este amigo.'})
         
         return Response(rent_details)
+      
+    def format_datetime_with_colon(self, datetime_obj):
+      datetime_str = datetime_obj.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
+      return datetime_str[:-2] + ':' + datetime_str[-2:]
