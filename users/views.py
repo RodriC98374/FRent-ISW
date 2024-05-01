@@ -183,9 +183,9 @@ class CustomLoginView(APIView):
         if user:
             token, _ = Token.objects.get_or_create(user=user)
             if hasattr(user, 'client'):
-                user_type = 'Client'
+                user_type = 'Cliente'
             elif hasattr(user, 'friend'):
-                user_type = 'Friend'
+                user_type = 'Amigo'
             else:
                 user_type = 'User'
             return Response({
