@@ -56,7 +56,7 @@ export default function LoginForm() {
       }else {
         setIsLoggedIn(false)
       }
-  }
+    } 
   checkLoggedIn(false) 
   }, [setUserData]);
 
@@ -74,7 +74,7 @@ export default function LoginForm() {
         first_name: responseData.first_name,
         last_name: responseData.last_name,
         user_id: responseData.user_id,
-        user_type: responseData.user_type
+        user_type: responseData.user_type,
       });
 
       saveToken(responseData.token);

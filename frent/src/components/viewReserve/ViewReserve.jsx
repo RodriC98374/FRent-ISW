@@ -17,8 +17,6 @@ export default function ViewReserve() {
   const [friendId, setFriendId] = useState(null);
   const staticImage = "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
 
-console.log("Son sus interesees: ",likes_user)
-  console.log("Hola como estas ", listRent)
   useEffect(() => {
     if (userData) {
       setFriendId(userData.user_id);
@@ -27,8 +25,7 @@ console.log("Son sus interesees: ",likes_user)
 
   useEffect(() => {
     fetchData();
-  }, [friendId]);
-  console.log("Hola mundo es el id la renta", listRent)
+  }, []);
 
   useEffect(() => {
     if (listRent.length > 0) {
@@ -55,7 +52,7 @@ console.log("Son sus interesees: ",likes_user)
   const fetchData = async () => {
     try {
 
-      const resRent = await getPendingRent(friendId); //Cuando exista una sesion pasar el id del amigo xd
+      const resRent = await getPendingRent(userData.user_id); //Cuando exista una sesion pasar el id del amigo xd
       if (resRent && resRent.data) {
         const sortedRent = resRent.data.sort((a, b) => {
           const dateA = new Date(a.create);

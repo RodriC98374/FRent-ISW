@@ -1,5 +1,5 @@
 .modal-notification {
-  position: fixed;
+  position: absolute;
   top: 35%;
   left: 80%;
   transform: translate(-50%, -50%); /* Centra el modal exactamente en el centro de la ventana */
@@ -10,6 +10,8 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Agrega sombra para resaltar el modal */
   z-index: 9999;
   width: 30%; 
+  height: 350px;
+  overflow: auto;
 }
 
 .logo-img{
@@ -53,11 +55,6 @@ a{
   text-decoration: none;
   font-size: var(--pL-size);
   font-weight: 500;
-}
-
-.modal-notification{
-  height: 350px;
-  overflow: auto;
 }
 
 .card-modal-notification > img{

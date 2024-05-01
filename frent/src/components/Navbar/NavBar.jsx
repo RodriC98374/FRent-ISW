@@ -118,7 +118,7 @@ export default function NavBar() {
               <button className="logout" onClick={signOut}>Cerrar Sesión</button>
             </li>
           )}
-          {userData && userData.user_type === 'Client' &&(
+          {userData && userData.user_type === 'Cliente' &&(
             <li onClick={openModal}>
             <div className="navbar-option">
               <svg

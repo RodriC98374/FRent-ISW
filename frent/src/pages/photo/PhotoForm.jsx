@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./PhotoFrom.css";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { ButtonSecondary } from "../../components/Buttons/buttonSecondary";
 import { ButtonPrimary } from "../../components/Buttons/buttonPrimary";
+import { createRegisterClient } from "../../api/register.api";
+import { createLikes } from "../../api/register.api";
+import swal from "sweetalert";
 
 const Photo = () => {
   const navigate = useNavigate();
@@ -11,28 +14,34 @@ const Photo = () => {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [imageBinary, setImageBinary] = useState("");
   const location = useLocation();
-  const friendData = location.state;
+  const userData = location.state;
 
-  useEffect(() => {
-    const storedImageData = localStorage.getItem("imageData");
-    if (storedImageData) {
-      const { fileName, fileType, imageBinary } = JSON.parse(storedImageData);
-      const fileData = new File([base64ToArrayBuffer(imageBinary)], fileName, { type: fileType });
-      setFile(fileData);
-      setImageBinary(imageBinary);
-      setPreviewUrl(`data:image/jpeg;base64,${imageBinary}`);
-      setError(""); // Reset error message
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedImageData = localStorage.getItem("imageData");
+  //   if (storedImageData) {
+  //     const { fileName, fileType, imageBinary } = JSON.parse(storedImageData);
+  //     const fileData = new File([base64ToArrayBuffer(imageBinary)], fileName, {
+  //       type: fileType,
+  //     });
+  //     setFile(fileData);
+  //     setImageBinary(imageBinary);
+  //     setPreviewUrl(`data:image/jpeg;base64,${imageBinary}`);
+  //     setError(""); // Reset error message
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    if (file && imageBinary) {
-      const imageData = { fileName: file.name, fileType: file.type, imageBinary };
-      localStorage.setItem("imageData", JSON.stringify(imageData));
-    }
-  }, [file, imageBinary]);
+  // useEffect(() => {
+  //   if (file && imageBinary) {
+  //     const imageData = {
+  //       fileName: file.name,
+  //       fileType: file.type,
+  //       imageBinary,
+  //     };
+  //     localStorage.setItem("imageData", JSON.stringify(imageData));
+  //   }
+  // }, [file, imageBinary]);
+
   
-
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     if (!selectedFile) return;
@@ -43,7 +52,9 @@ const Photo = () => {
       return;
     }
     if (!["image/jpeg", "image/png", "image/webp"].includes(fileType)) {
-      setError("Formato de archivo no válido. Solo se permiten archivos JPEG, PNG y WEBP.");
+      setError(
+        "Formato de archivo no válido. Solo se permiten archivos JPEG, PNG y WEBP."
+      );
       return;
     }
     setFile(selectedFile);
@@ -61,10 +72,58 @@ const Photo = () => {
     };
   };
 
+  const arrayBufferToBase64 = (buffer) => {
+    let binary = "";
+    const bytes = new Uint8Array(buffer);
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
+  };
+
   const nextPage = async () => {
-    if (!file) return;
-    const friendDataNew = { ...friendData, image: imageBinary };
-    navigate("/addAvailableHours", { state: { friendDataNew } });
+    console.log("que peo we", file);
+    console.log("que peo Bionary", imageBinary);
+    console.log("que peo we userdara", userData.image);
+
+    if (userData.is_client) {
+      const client = {
+        city: userData.city,
+        country: userData.country,
+        email: userData.email,
+        first_name: userData.first_name,
+        gender: userData.gender,
+        last_name: userData.last_name,
+        password: userData.password,
+        personal_description: userData.personal_description,
+        birth_date: userData.birth_date,
+        image: imageBinary,
+      };
+
+      const resFriend = await createRegisterClient(client);
+
+      //PETICION PARA REGISTRAR GUSTOS
+      const user_likes = {
+        likes: userData.likes,
+        user_id: resFriend.data.id_user,
+      };
+
+      await createLikes(user_likes);
+      swal(
+        "Registro exitoso",
+        "El cliente se registró correctamente",
+        "success"
+      );
+      setTimeout(() => {
+        swal.close();
+      }, 1000);
+
+      navigate("/login");
+    } else {
+      const friendDataNew = { ...userData, image: imageBinary? imageBinary : userData.image };
+      navigate("/addAvailableHours", { state: { friendDataNew } });
+    }
   };
 
   const handleRemoveFile = () => {
@@ -84,24 +143,6 @@ const Photo = () => {
     handleFileChange({ target: { files: [droppedFile] } });
   };
 
-  const base64ToArrayBuffer = (base64) => {
-    const binaryString = window.atob(base64);
-    const bytes = new Uint8Array(binaryString.length);
-    for (let i = 0; i < binaryString.length; i++) {
-      bytes[i] = binaryString.charCodeAt(i);
-    }
-    return bytes.buffer;
-  };
-
-  const arrayBufferToBase64 = (buffer) => {
-    let binary = '';
-    const bytes = new Uint8Array(buffer);
-    const len = bytes.byteLength;
-    for (let i = 0; i < len; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
-    return window.btoa(binary);
-  };
   return (
     <div
       className="photo-container"
@@ -134,23 +175,23 @@ const Photo = () => {
         </label>
         {error && <p className="error-message">{error}</p>}
       </div>
-      {previewUrl && (
+      {(previewUrl || userData.image) && (
         <div className="preview-box">
           <button onClick={handleRemoveFile} className="remove-button">
             <i className="fas fa-times"></i>
           </button>
-          <img
-            src={previewUrl}
-            alt="Vista previa"
-            className="preview-image"
-          />
+          <img src={previewUrl? previewUrl : `data:image/png;base64,${userData.image}`} alt="Vista previa" className="preview-image" />
         </div>
       )}
       <div className="button-section">
-        <NavLink to="/friend">
+        <NavLink to={userData.is_client? "/customer" : "/friend"}>
           <ButtonSecondary label="Atras" />
         </NavLink>
-        <ButtonPrimary onClick={nextPage} label={"Siguiente"} disabled={!file} />
+        <ButtonPrimary
+          onClick={nextPage}
+          label={userData.is_client? "Registrar" : "Siguiente"}
+          disabled={!file || !userData.image}
+        />
       </div>
     </div>
   );

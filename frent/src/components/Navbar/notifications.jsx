@@ -5,9 +5,10 @@ import "./Navbar.css";
 function NotificationModal({
   isVisible,
   notifications,
-  deleteNotifications,
+  deleteNotifications, 
   readNotifications,
 }) {
+
   const calculateTimePassed = (createdAt) => {
     const currentTime = new Date();
     const createdAtDate = new Date(createdAt);
@@ -88,7 +89,7 @@ function NotificationModal({
           </div>
         </div>
 
-        {Array.isArray(notifications) && notifications.length > 0 ? (
+        {notifications.length > 0 ? (
           notifications.map((notification, key) => (
             <div
               key={key}
@@ -97,7 +98,7 @@ function NotificationModal({
               )}`}
             >
               <img
-                src="https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg"
+                src={`data:image/png;base64,${notification.image}`}
                 alt="Foto de perfil"
               />
               <div className="card-text">
