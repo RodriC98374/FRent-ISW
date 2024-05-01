@@ -6,9 +6,6 @@ import InputText from "../Inputs/inputText";
 import SelectOptions from "../Selects/selectOptions";
 import React, { useState } from "react";
 import { Country, State } from "country-state-city";
-// import { createRegisterFriend } from "../../../api/register.api";
-// import { createLikes } from "../../../api/register.api";
-// import swal from "sweetalert";
 
 import InterestModal from "../Interests/interestSection";
 
@@ -379,20 +376,6 @@ export function FriendForm() {
               <div className="error-message">{errorLike}</div>
             </div>
           </div>
-
-          {/* <div className="input-1c">
-            <input
-              name="photo"
-              type="file"
-              ref={inputRef}
-              onChange={(e) => {
-                setValue("photo", e.target.files[0]);
-              }}
-            />
-            {errors.photo && (
-              <span className="error-message">{errors.photo.message}</span>
-            )}
-          </div> */}
 
           <div className="buttons-section">
             <NavLink to="/">

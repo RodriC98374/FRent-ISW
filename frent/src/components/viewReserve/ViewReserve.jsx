@@ -21,8 +21,6 @@ export default function ViewReserve() {
   const staticImage = "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
 
 
-  console.log("Hola como estas ", listRent)
-  console.log("Hola mundo es el id del amigo", friendId)
   useEffect(() => {
     if (userData) {
       setFriendId(userData.user_id);
@@ -31,7 +29,7 @@ export default function ViewReserve() {
 
   useEffect(() => {
     fetchData();
-  }, [friendId]);
+  }, []);
 
   useEffect(() => {
     if (listRent.length > 0) {
@@ -57,7 +55,7 @@ export default function ViewReserve() {
   const fetchData = async () => {
     try {
 
-      const resRent = await getPendingRent(friendId); //Cuando exista una sesion pasar el id del amigo xd
+      const resRent = await getPendingRent(userData.user_id); //Cuando exista una sesion pasar el id del amigo xd
       if (resRent && resRent.data) {
         const sortedRent = resRent.data.sort((a, b) => {
           const dateA = new Date(a.create);
@@ -83,7 +81,6 @@ export default function ViewReserve() {
       console.error("Error fetching data:", error);
     }
   };
-
 
   const calculateTimePassed = (createdAt) => {
     const currentTime = new Date();
@@ -194,7 +191,6 @@ export default function ViewReserve() {
       }
     }
   };
-
 
   const getClientName = (clientId) => {
     const client = listClient.find((clientName) => clientName.id_user === clientId);

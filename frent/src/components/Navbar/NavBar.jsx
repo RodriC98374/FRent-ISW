@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import {
   get_notifications_user,
@@ -56,6 +56,7 @@ export default function NavBar() {
 
   const handleLogout = () => {
     localStorage.removeItem('authToken'); 
+    closeModal();
     setUserData(null);
   }
 

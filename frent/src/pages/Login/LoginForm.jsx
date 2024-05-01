@@ -35,7 +35,7 @@ export default function LoginForm() {
         first_name: responseData.first_name,
         last_name: responseData.last_name,
         user_id: responseData.user_id,
-        user_type: responseData.user_type
+        user_type: responseData.user_type,
       });
       localStorage.setItem('authToken', responseData.token);
      
