@@ -8,13 +8,13 @@ import {
 import "./Navbar.css";
 import NotificationModal from "./notifications";
 import { UserContext } from "../../pages/Login/UserProvider";
-
+import { signOut } from "../../pages/Login/LoginForm";
 import { FaUser } from "react-icons/fa";
 
 export default function NavBar() {
   const [modalVisible, setModalVisible] = useState(false);
   const [notifications, setNotifications] = useState([]);
-  const { userData, setUserData } = useContext(UserContext);
+  const { userData} = useContext(UserContext);
 
   const openModal = () => {
     if (modalVisible === false) {
@@ -54,10 +54,6 @@ export default function NavBar() {
     }
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem('authToken'); 
-    setUserData(null);
-  }
 
   return (
     <>
@@ -75,7 +71,7 @@ export default function NavBar() {
               Inicio
             </NavLink>
           </li>
-          {userData && userData.user_type === 'Client' && (
+          {userData && userData.user_type === 'Cliente' && (
             <li onClick={closeModal}>
               <NavLink className="navbar-option" to="listfriend">
                 Amigos
@@ -91,7 +87,7 @@ export default function NavBar() {
           </li>
           )
           }
-          {userData && userData.user_type === 'Friend' && (
+          {userData && userData.user_type === 'Amigo' && (
             <li onClick={closeModal}>
               <NavLink className="navbar-option" to="/rentalSectio">
                 Alquileres
@@ -119,7 +115,7 @@ export default function NavBar() {
           {userData && (
             <li>
             
-              <button className="logout" onClick={handleLogout}>Cerrar Sesión</button>
+              <button className="logout" onClick={signOut}>Cerrar Sesión</button>
             </li>
           )}
           {userData && userData.user_type === 'Client' &&(

@@ -46,7 +46,7 @@ function CalendarEdit() {
       const eventosTransformados = res.data.map((evento, index) => ({
       start: dayjs(evento.fecha_alquiler + 'T' + evento.hora_inicio).toDate(),
       end: dayjs(evento.fecha_alquiler + 'T' + evento.hora_fin).toDate(),
-      eventType: `${evento.tipo_evento} ${index + 1}`,
+      eventType: `${evento.tipo_evento} `,
       duration: `${evento.duration} horas`, 
     }));
     setEvents(eventosTransformados); 
@@ -69,7 +69,7 @@ function CalendarEdit() {
 
   const handleCloseModal = () => {
     setSelectedDate(null);
-    setModalOpen(false);
+    setModalOpen(true);
   };
 
   return (
@@ -88,7 +88,7 @@ function CalendarEdit() {
                   <button
                     onClick={() => handleAddEvent(dayjs(event.start))}
                     style={{ backgroundColor: '#FBA834' }}
-                  ></button>
+                  > <div>{event.eventType}</div></button>
                 ),
               },
             }}

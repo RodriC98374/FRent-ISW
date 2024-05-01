@@ -3,16 +3,17 @@ import { NavLink, useParams } from "react-router-dom"; // Importar useParams
 import { ButtonPrimary } from "../../Buttons/buttonPrimary";
 import { ButtonSecondary } from "../../Buttons/buttonSecondary";
 import { useForm } from "react-hook-form";
-import InputText from "../Inputs/inputText.jsx";
+import InputText from "../Inputs/InputText.jsx";
 import SelectOptions from "../Selects/selectOptions.jsx";
 import { createRegisterRent } from "../../../api/register.api";
 import { getOutfit } from "../../../api/register.api";
 import { getEvent } from "../../../api/register.api";
 import { getAvailabilityFriend } from "../../../api/register.api";
-import swal from "sweetalert"; // Importar SweetAlert
+import swal from "sweetalert"; // Importar SweetAler
 
 import "./RentaForm.css";
 import { UserContext } from "../../../pages/Login/UserProvider.jsx";
+import "./RentaForm.css";
 
 export default function RentFriendForm() {
   const {
@@ -23,13 +24,15 @@ export default function RentFriendForm() {
   } = useForm();
   const { id } = useParams();
   const friendId = parseInt(id);
+  
 
   const [selectedHour, setSelectedHour] = useState("");
   const [selectedEvent, setSelectedEvent] = useState("");
   const [selectedOutfit, setSelectedOutfit] = useState("");
   const [outfit, setOutfit] = useState([]);
   const [event, setEvent] = useState([]);
-  const [Availability, setAvailability] = useState([]);
+  const [availability, setAvailability] = useState([]);
+  const [selectedDate2, setSelectedDate2] = useState(null); // Estado para la fecha seleccionada
   const { userData } = useContext(UserContext);
   const userId = userData.user_id;
   // eslint-disable-next-line
@@ -50,9 +53,6 @@ export default function RentFriendForm() {
   };
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log("cliente", userId);
-    console.log("amigo", friendId);
-
     const frent = {
       fecha_cita: data.fecha_cita,
       time: data.time,
@@ -65,6 +65,7 @@ export default function RentFriendForm() {
       client: userId, // Suponiendo que el ID del cliente es 1 (puedes cambiarlo según tu lógica)
     };
 
+
     if (frent.event.isNaN) {
       delete frent.event;
     } else if (frent.outfit.isNaN) {
@@ -72,6 +73,7 @@ export default function RentFriendForm() {
     } else if (frent.description === "") {
       delete frent.description;
     }
+
 
     try {
       const restRent = await createRegisterRent(frent);
@@ -121,7 +123,6 @@ export default function RentFriendForm() {
       try {
         const res = await getEvent();
         setEvent(res.data);
-        console.log(res.data);
       } catch (error) {
         console.log("Error al cargar las vestimentas: ", error);
       }
@@ -139,7 +140,7 @@ export default function RentFriendForm() {
     }
 
     loadAvailability();
-  }, []);
+  }, [friendId]);
 
   const optionsHour = [
     { value: 1.0, label: "1 hora" },
@@ -149,13 +150,65 @@ export default function RentFriendForm() {
     { value: 5.0, label: "5 horas" },
   ];
 
+  const handleDateChange = (e) => {
+    setSelectedDate2(e.target.value); // Actualiza el estado con la nueva fecha seleccionada
+  };
+
+  const selectedDateObject = new Date(selectedDate2);
+const dayOfWeek = selectedDateObject.toLocaleDateString('es-ES', { weekday: 'long' });
+
+  let startTime = "";
+  let endTime = "";
+
+switch (dayOfWeek.toLowerCase(dayOfWeek)) {
+  case 'lunes':
+    startTime = "08:00:00";
+    endTime = "9:00:00";
+    break;
+  case 'martes':
+    startTime = "10:00:00";
+    endTime = "11:00:00";
+    break;
+  case 'miércoles':
+    startTime = "22:00:00";
+    endTime = "23:00:00";
+    break;
+  case 'jueves':
+    startTime = "12:00:00";
+    endTime = "13:00:00";
+    break;
+  case 'viernes':
+    startTime = "13:00:00";
+    endTime = "14:00:00";
+    break;
+  case 'sábado':
+    startTime = "14:00:00";
+    endTime = "15:00:00";
+    break;
+  case 'domingo':
+    startTime = "15:00:00";
+    endTime = "16:00:00";
+    break;
+  default:
+    startTime = "00:00:00";
+    endTime = "23:59:59";
+    break;
+}
+  // Convierte las horas a objetos Date para comparaciones
+  const startValidTime = new Date(`01/01/2000 ${startTime}`);
+  const endValidTime = new Date(`01/01/2000 ${endTime}`);
+
+
   return (
     <div className="container">
       <div className="form-frame">
         <div className="title">
           <h1>Datos para el Alquiler</h1>
         </div>
-        <form action="" id="formulario-alquiler" onSubmit={onSubmit}>
+        <form
+          action=""
+          id="formulario-alquiler"
+          onSubmit={onSubmit}>
           <div className="colums_inputs">
             <div className="column-left">
               <div className="input-1c">
@@ -186,6 +239,7 @@ export default function RentFriendForm() {
                         return "La fecha propuesta excede el límite de 5 meses";
                     },
                   })}
+                  onChange={handleDateChange}
                   errors={errors}
                 />
               </div>
@@ -202,11 +256,12 @@ export default function RentFriendForm() {
                     },
                     validate: (value) => {
                       const selectedTime = new Date(`01/01/2000 ${value}`);
-                      const startTime = new Date(`01/01/2000 06:00`);
-                      const endTime = new Date(`01/01/2000 21:00`);
 
-                      if (selectedTime < startTime || selectedTime > endTime) {
-                        return "La hora debe estar entre las 6:00 AM y las 21:00 PM.";
+                      if (
+                        selectedTime < startValidTime ||
+                        selectedTime > endValidTime
+                      ) {
+                        return "Debe selecionar el rango de horas disponible del cliente";
                       }
                     },
                   })}
@@ -249,6 +304,7 @@ export default function RentFriendForm() {
                 onChange={(e) => setSelectedEvent(e.target.value)}
               />
             </div>
+        
             <div className="input-1c">
               <SelectOptions
                 id={"outfit"}
@@ -259,6 +315,7 @@ export default function RentFriendForm() {
                 required={false}
                 options={outfit.map((outfit, index) => ({
                   value: outfit.id_oufit,
+                  
                   label: outfit.type_outfit,
                 }))}
                 register={register("id_outfit")}
@@ -276,11 +333,13 @@ export default function RentFriendForm() {
                   required: {
                     value: true,
                     message: "Este campo es obligatorio.",
+                    message: "Este campo es obligatorio.",
                   },
                   maxLength: {
                     value: 40,
                     message: "La ubicación no debe exceder los 30 caracteres",
                   },
+                    message: "La ubicación no debe exceder los 30 caracteres",
                 })}
                 errors={errors}
               />
@@ -304,7 +363,10 @@ export default function RentFriendForm() {
             </div>
           </div>
           <div className="buttons-section">
-            <ButtonPrimary type={"submit"} label={"Alquilar"} />
+            <ButtonPrimary
+              type={"submit"}
+              label={"Alquilar"}
+            />
             <NavLink to={`/calendarReservas/${friendId}`}>
               Mostrar reservas
             </NavLink>
@@ -317,3 +379,4 @@ export default function RentFriendForm() {
     </div>
   );
 }
+
