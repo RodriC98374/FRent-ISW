@@ -5,9 +5,6 @@ import InputText from "../Inputs/InputText";
 import SelectOptions from "../Selects/selectOptions";
 import { useState } from "react";
 import { Country, State } from "country-state-city";
-import { createRegisterClient } from "../../../api/register.api";
-import { createLikes } from "../../../api/register.api";
-import swal from 'sweetalert';
 
 import "./customerForm.css";
 import InterestModal from "../Interests/interestSection";
@@ -23,7 +20,6 @@ export function CustomerForm() {
     formState: { errors },
     watch,
     setValue,
-    reset,
   } = useForm();
 
   const [selectedCountry, setSelectedCountry] = useState("");
@@ -45,47 +41,26 @@ export function CustomerForm() {
   };
 
   const onSubmit = handleSubmit(async (data) => {
-    const client = {
-      city: data.City,
-      country: data.Country,
-      email: data.Email,
-      first_name: data.First_name,
-      gender: data.Gender,
-      last_name: data.Last_name,
-      password: data.Password,
-      personal_description: data.Personal_description,
-      birth_date: data.birth_date,
-    };
-
-    try {
-      const resClient = await createRegisterClient(client);
-
-      const user_likes = {
-        likes: selectedInterests,
-        user_id: resClient.data.id_user,
-      };
-
-      await createLikes(user_likes);
-      swal("Registro exitoso", "El cliente se registró correctamente", "success");
-            setTimeout(() => { // Desaparecer el mensaje después de 1 segundo
-                swal.close();
-                
-            }, 2000);
-      reset();
-    } catch (error) {
-      console.log(error);
-      console.error("Error al enviar los datos:", error);
-      if (error.response && error.response.data && error.response.data.email) {
-        const translatedErrorMessage = translateErrorMessage(
-          error.response.data.email[0]
-        );
-        setErrorMessage(translatedErrorMessage);
-      } else {
-        setErrorMessage(
-          "Error al enviar los datos, por favor inténtelo de nuevo."
-        );
-      }
+    if (selectedInterests.length < 2) {
+      setErrorMessage("Debe seleccionar al menos 2 intereses.");
+      return; 
     }
+
+    navigate("/photo", {
+      state: {
+        city: data.City,
+        country: data.Country,
+        email: data.Email,
+        first_name: data.First_name,
+        gender: data.Gender,
+        last_name: data.Last_name,
+        password: data.Password,
+        personal_description: data.Personal_description,
+        birth_date: data.birth_date,
+        likes: selectedInterests,
+        is_client: true,
+      }
+    });
   });
 
   const optionsGender = [
@@ -145,8 +120,8 @@ export function CustomerForm() {
                     message: "Este campo es obligatorio",
                   },
                   pattern: {
-                    value: /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/,
-                    message: "El nombre solo puede contener letras",
+                    value: /^[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+(?:\s[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+)*$/,
+                    message: "El nombre solo puede contener letras y caracteres españoles",
                   },
                   minLength: {
                     value: 2,
@@ -173,8 +148,8 @@ export function CustomerForm() {
                     message: "El apellido es requerido",
                   },
                   pattern: {
-                    value: /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/,
-                    message: "El nombre solo puede contener letras",
+                    value: /^[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+(?:\s[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+)*$/,
+                    message: "El nombre solo puede contener letras y caracteres españoles",
                   },
                   minLength: {
                     value: 2,
@@ -385,10 +360,7 @@ export function CustomerForm() {
             <NavLink to="/">
               <ButtonSecondary label={"Cancelar"} />
             </NavLink>
-            <ButtonPrimary
-              type={"submit"}
-              label={"Registrar"}
-            />
+            <ButtonPrimary type={"submit"} label={"Siguiente"} />
           </div>
         </form>
       </div>

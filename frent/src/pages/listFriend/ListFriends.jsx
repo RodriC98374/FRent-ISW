@@ -15,6 +15,7 @@ export default function ListFriend() {
       try {
         const res = await getFriends();
         setFriends(res.data);
+        console.log(res.data);
       } catch (error) {
         console.error("Error al cargar la lista de amigos:", error);
       }

@@ -65,11 +65,31 @@ export default function AddAvailableHours() {
     }
   };
 
+  const backPage = () => {
+    const data = friendData.friendDataNew;
+    navigate("/photo", {
+      state: {
+        city: data.city,
+        country: data.country,
+        email: data.email,
+        first_name: data.first_name,
+        gender: data.gender,
+        last_name: data.last_name,
+        password: data.password,
+        personal_description: data.personal_description,
+        birth_date: data.birth_date,
+        price: data.price,
+        image: data.image,
+      }
+    });
+
+  }
+
+
   const submitDataFriend = async () => {
     try {
       //PETICION PARA REGISTRAR DATOS PERSONALES
       const data = friendData.friendDataNew;
-
 
       const friend = {
         city: data.city,
@@ -84,21 +104,6 @@ export default function AddAvailableHours() {
         price: data.price,
         image: data.image,
       };
-
-      // const formData = new FormData();
-
-      // formData.append("city", data.city);
-      // formData.append("country", data.country);
-      // formData.append("email", data.email);
-      // formData.append("first_name", data.first_name);
-      // formData.append("gender", data.gender);
-      // formData.append("last_name", data.last_name);
-      // formData.append("password", data.last_name);
-      // formData.append("personal_description", data.personal_description);
-      // formData.append("birth_date", data.birth_date);
-      // formData.append("price", data.price);
-      // formData.append("image", data.image);
-
 
       const resFriend = await createRegisterFriend(friend);
 
@@ -120,26 +125,32 @@ export default function AddAvailableHours() {
 
       //PETICION PARA REGISTRAR DISPONIBILIDAD
       const disponibilidad = {
-        user_id : resFriend.data.id_user,
-        disponibilidades : [["Lunes", mondayFrom, mondayTo], ["Martes", tuesdayFrom, tuesdayTo], ["Miercoles", wednesdayFrom, wednesdayTo], ["Jueves", thursdayFrom, thursdayTo], ["Viernes", fridayFrom, fridayTo], ["Sabado", saturdayFrom, saturdayTo], ["Domingo", sundayFrom, sundayTo]] 
-      }
+        user_id: resFriend.data.id_user,
+        disponibilidades: [
+          ["Lunes", mondayFrom, mondayTo],
+          ["Martes", tuesdayFrom, tuesdayTo],
+          ["Miercoles", wednesdayFrom, wednesdayTo],
+          ["Jueves", thursdayFrom, thursdayTo],
+          ["Viernes", fridayFrom, fridayTo],
+          ["Sabado", saturdayFrom, saturdayTo],
+          ["Domingo", sundayFrom, sundayTo],
+        ],
+      };
 
-      console.log("Las disponibilidades son: ", disponibilidad)
+      console.log("Las disponibilidades son: ", disponibilidad);
 
       await createAvailability(disponibilidad);
 
-      navigate("/login")
-
+      navigate("/login");
     } catch (Error) {
       console.log("Ocurrio un error en:", Error);
-      <Navigate to="/"></Navigate>
+      <Navigate to="/"></Navigate>;
     }
-
   };
 
   return (
     <div className="body-add-AH">
-      <div className="container">
+      <div className="container container-available">
         <h2>Elija su disponibilidad de días y horarios</h2>
         <div className="days-to-week">
           <DayItem
@@ -187,9 +198,7 @@ export default function AddAvailableHours() {
         </div>
 
         <div className="button-section">
-          <NavLink to="/photo">
-            <ButtonSecondary label="Atras" />
-          </NavLink>
+          <ButtonSecondary onClick = {backPage} label={"Atras"} />
 
           <ButtonPrimary onClick={submitDataFriend} label={"Registrar"} />
         </div>

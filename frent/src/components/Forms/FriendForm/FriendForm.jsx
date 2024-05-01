@@ -6,9 +6,6 @@ import InputText from "../Inputs/InputText";
 import SelectOptions from "../Selects/selectOptions";
 import React, { useState } from "react";
 import { Country, State } from "country-state-city";
-// import { createRegisterFriend } from "../../../api/register.api";
-// import { createLikes } from "../../../api/register.api";
-// import swal from "sweetalert";
 
 import InterestModal from "../Interests/interestSection";
 
@@ -118,11 +115,9 @@ export function FriendForm() {
                     message: "El nombre es requerido",
                   },
                   pattern: {
-                    value: /^[a-zA-Z]+(?:\s[a-zA-Z]+){0,3}$/,
-                    message:
-                      "El nombre solo puede contener letras y maximo 3 espacios",
+                    value: /^[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+(?:\s[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+)*$/,
+                    message: "El nombre solo puede contener letras y caracteres españoles",
                   },
-
                   minLength: {
                     value: 2,
                     message: "El nombre debe tener al menos 2 caracteres",
@@ -148,9 +143,8 @@ export function FriendForm() {
                     message: "El apellido es requerido",
                   },
                   pattern: {
-                    value: /^[a-zA-Z]+(?:\s[a-zA-Z]+){0,3}$/,
-                    message:
-                      "El nombre solo puede contener letras y maximo 3 espacios",
+                    value: /^[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+(?:\s[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+)*$/,
+                    message: "El nombre solo puede contener letras y caracteres españoles",
                   },
                   minLength: {
                     value: 2,
@@ -379,20 +373,6 @@ export function FriendForm() {
               <div className="error-message">{errorLike}</div>
             </div>
           </div>
-
-          {/* <div className="input-1c">
-            <input
-              name="photo"
-              type="file"
-              ref={inputRef}
-              onChange={(e) => {
-                setValue("photo", e.target.files[0]);
-              }}
-            />
-            {errors.photo && (
-              <span className="error-message">{errors.photo.message}</span>
-            )}
-          </div> */}
 
           <div className="buttons-section">
             <NavLink to="/">
