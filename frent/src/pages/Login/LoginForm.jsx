@@ -7,7 +7,7 @@ import logoImage from '../../assets/img/Logo frent.png';
 import { validarLogin } from '../../api/register.api';
 import { UserContext } from './UserProvider';
 
-export const singOut = () => {
+export const signOut = () => {
   window.sessionStorage.clear();
   window.location.reload();
 };
@@ -17,7 +17,9 @@ export const saveToken = (token) => {
 };
 
 export const getToken = () => {
-  return window.sessionStorage.getItem('authToken');
+  const res =  window.sessionStorage.getItem('authToken');
+  console.log("Este es el token",res)
+  return res ? res : null;
 };
 
 export const saveUser = (userData) => {
@@ -31,19 +33,32 @@ export const getUser = () => {
 
 export default function LoginForm() {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const { userData, setUserData } = useContext(UserContext); // Acceder al contexto
+  const { setUserData } = useContext(UserContext); // Acceder al contexto
   const [isLoggedIn, setIsLoggedIn] = useState(false);  
   const [loginError, setLoginError] = useState("");
 
   useEffect(() => {
-    const authToken = getToken();
-    if (authToken) {
-      setIsLoggedIn(true);
-      <Navigate to="/rentalSectio"></Navigate>
-    }
-  }, []);
 
- 
+    const checkLoggedIn = async () => {
+      const authToken = getToken();
+      console.log("authToken:", authToken); 
+      if (authToken) {
+        try{
+          const {data: usuario} = await validarLogin();
+          console.log("Usuario obtenido:", usuario);
+          setUserData(usuario)
+          setIsLoggedIn(false)
+        }catch (error){
+          console.error("Error al verificar la sesión:", error);
+          setIsLoggedIn(false);
+          signOut();
+        }
+      }else {
+        setIsLoggedIn(false)
+      }
+  }
+  checkLoggedIn(false) 
+  }, [setUserData]);
 
   const onSubmit = handleSubmit(async (data) => {
     const { email, password } = data;
