@@ -7,22 +7,18 @@ import { UserContext } from "../../pages/Login/UserProvider";
 //import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
 import "./Details.css";
-import { getClient, getPrice, get_likes_user, deleteRent, create_notification, createNotication, getClientID, getFriendID, update_pending_rent, getPendingRent } from "../../api/register.api";
+import { get_likes_user, deleteRent, create_notification, createNotication, getClientID, getFriendID, update_pending_rent, getPendingRent } from "../../api/register.api";
 
 export default function ViewReserve() {
   const { userData } = useContext(UserContext);
   const [listRent, setListRent] = useState([]);
-  const [listClient, setListClient] = useState([]);
-  const [price, setPrice] = useState([]);
   const [likes_user, setLikesUser] = useState([]);
   const [selectedRent, setSelectedRent] = useState(null);
   const [friendId, setFriendId] = useState(null);
-  const[detail, setDetail] = useState([])
   const staticImage = "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
 
-
+console.log("Son sus interesees: ",likes_user)
   console.log("Hola como estas ", listRent)
-  console.log("Hola mundo es el id del amigo", friendId)
   useEffect(() => {
     if (userData) {
       setFriendId(userData.user_id);
@@ -40,7 +36,8 @@ export default function ViewReserve() {
         try {
           const likesPromises = listRent.map(async (rent) => {
             const idClient = {
-              id_user: rent.client,
+              id_user: rent.client_id,
+
             };
             const resLikesUser = await get_likes_user(idClient);
             return resLikesUser.data || [];
@@ -68,18 +65,6 @@ export default function ViewReserve() {
         setListRent(sortedRent);
       }
 
-      const resClient = await getClient();
-      if (resClient && resClient.data) {
-        setListClient(resClient.data);
-      }
-
-      const resPrice = await getPrice();
-      if (resPrice && resPrice.data) {
-        const pricesArray = resPrice.data.map((item) => item.total_price);
-        setPrice(pricesArray);
-      }
-      /* const resEvent = await getOutfitAndEvent(friendId);
-      setDetail(resEvent.data) */
 
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -294,7 +279,7 @@ export default function ViewReserve() {
           </p>
           <p>{rent.description ? rent.description : <i>No especificado</i>}</p>
           <p><strong>Intereses:</strong></p>
-          {getClientLikes(rent.client).map((like) => (
+          {getClientLikes(rent.client_id).map((like) => (
             <p key={like} className="descriptionLike">
                 <svg className="tag-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
                   <path fill="white" d="M5.5 7A1.5 1.5 0 0 1 4 5.5A1.5 1.5 0 0 1 5.5 4A1.5 1.5 0 0 1 7 5.5A1.5 1.5 0 0 1 5.5 7m15.91 4.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.11 0-2 .89-2 2v7c0 .55.22 1.05.59 1.41l8.99 9c.37.36.87.59 1.42.59c.55 0 1.05-.23 1.41-.59l7-7c.37-.36.59-.86.59-1.41c0-.56-.23-1.06-.59-1.42"/>
@@ -307,7 +292,7 @@ export default function ViewReserve() {
             <strong>Estado de la reserva:</strong>
           </p>
           <p className="pie.estado1">
-            <span>rent.status</span>
+            <span>{rent.status}</span>
           </p>
         </div>
       </div>
@@ -390,10 +375,10 @@ export default function ViewReserve() {
                 <hr></hr>
                 <div className="action-buttons">
                   <button className="btnV"
-                    onClick={() => handleAccept(rent.id, rent.client, rent.friend)}
+                    onClick={() => handleAccept(rent.rent_id, rent.client_id, rent.friend_id)}
                   >Aceptar</button>
                   <button className="btnVR"
-                    onClick={() => handleReject(rent.id, rent.client, rent.friend)}
+                    onClick={() => handleReject(rent.rent_id, rent.client_id, rent.friend_id)}
                   >Rechazar</button>
                 </div>
                 {/* Renderiza el modal si se ha seleccionado un alquiler */}
