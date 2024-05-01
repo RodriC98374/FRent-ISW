@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { ButtonPrimary } from "../../Buttons/buttonPrimary";
 import { ButtonSecondary } from "../../Buttons/buttonSecondary";
 import { NavLink, useNavigate } from "react-router-dom";
-import InputText from "../Inputs/inputText";
+import InputText from "../Inputs/InputText";
 import SelectOptions from "../Selects/selectOptions";
 import React, { useState } from "react";
 import { Country, State } from "country-state-city";

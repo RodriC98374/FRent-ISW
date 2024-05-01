@@ -7,13 +7,35 @@
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
-  width: 520px;
+  width: 527px;
   height: 80vh;
   border: 3px solid black; /* borde */
   z-index: 999; 
   overflow: auto;
   border-radius: 10px;
 }
+
+.modal1::-webkit-scrollbar {
+  width:7px;
+  height:2px;
+  
+}
+
+.modal1::-webkit-scrollbar-thumb{
+  background-color: black;
+  border-radius: 10px;
+  height: 3px;
+}
+
+.modal-wrapper {
+  transition: opacity 0.3s ease; /* Efecto de transición para la opacidad */
+  opacity: 0; /* Inicialmente transparente */
+}
+
+.modal-wrapper.active {
+  opacity: 1; /* Mostrar el modal con opacidad completa cuando esté activo */
+}
+
 
   body {
     font-family: "Alata", sans-serif;
@@ -104,8 +126,11 @@
     margin-bottom: 10px;
   }
   
-  .pie1.estado1 span {
+  .pie1 span {
     border: 2px solid black;
+    border-radius: 10px;
+    background-color: var(--primary-color);
+    padding: 10px;
   }
 
   .PrecioDetail{

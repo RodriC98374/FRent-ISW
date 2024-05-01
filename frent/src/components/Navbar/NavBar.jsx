@@ -75,7 +75,7 @@ export default function NavBar() {
               Inicio
             </NavLink>
           </li>
-          {userData && userData.user_type === 'Client' && (
+          {userData && userData.user_type === 'Cliente' && (
             <li onClick={closeModal}>
               <NavLink className="navbar-option" to="listfriend">
                 Amigos
@@ -91,7 +91,7 @@ export default function NavBar() {
           </li>
           )
           }
-          {userData && userData.user_type === 'Friend' && (
+          {userData && userData.user_type === 'Amigo' && (
             <li onClick={closeModal}>
               <NavLink className="navbar-option" to="/rentalSectio">
                 Alquileres
