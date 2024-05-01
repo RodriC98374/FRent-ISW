@@ -208,3 +208,4 @@ EMAIL_HOST_PASSWORD = 'jshvjzufpmdjoukt'  # Tu contraseña de correo electrónic
 # STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # CSRF_TRUSTED_ORIGINS = ["http://*", "https://deploy-is-production.up.railway.app/"]
+

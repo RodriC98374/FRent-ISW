@@ -13,6 +13,8 @@ from datetime import datetime, timedelta
 from django.utils.timezone import now
 from rest_framework.views import APIView
 from rest_framework import status
+from django.utils.timezone import localtime
+
 
 class OutFitViewSet(viewsets.ModelViewSet):
     queryset = OutFit.objects.all()
@@ -95,16 +97,18 @@ class RentDetailView(APIView):
         rents = Rent.objects.filter(friend__id_user=friend_id,status='pending').select_related('event', 'outfit')
         rent_details = []
         for rent in rents:
+            formatted_create = self.format_datetime_with_colon(localtime(rent.create))
             rent_details.append({
                 'rent_id': rent.id,
                 'friend_id': rent.friend.id_user,
                 'client_id': rent.client.id_user,
                 'fecha_cita': rent.fecha_cita,
+                'nombre_cliente': rent.client.get_full_name(),
                 'time': rent.time,
                 'duration': rent.duration,
                 'location': rent.location,
                 'description': rent.description,
-                'created': rent.create.strftime('%Y-%m-%d %H:%M:%S'),
+                'created': self.format_datetime_with_colon(localtime(rent.create)),
                 'type_outfit': rent.outfit.type_outfit,
                 'type_event': rent.event.type_event,
                 'status':rent.status,
@@ -115,3 +119,7 @@ class RentDetailView(APIView):
             return Response({'mensaje': 'No hay alquileres encontrados para este amigo.'})
         
         return Response(rent_details)
+      
+    def format_datetime_with_colon(self, datetime_obj):
+      datetime_str = datetime_obj.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
+      return datetime_str[:-2] + ':' + datetime_str[-2:]
