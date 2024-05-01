@@ -263,18 +263,10 @@ console.log("Son sus interesees: ",likes_user)
           <p>{rent.duration} horas</p>     
             <h3>Precio</h3>
             <div className="PrecioDetail">
-<<<<<<< HEAD
-              <p>20 BOB x {rent.duration} horas</p>
-              <p>{rent.price} BOB</p>
-            </div>         
-          
-            <p>
-=======
               <p>{rent.price} Bs x {rent.duration}horas</p>
               <p>{rent.price} Bs</p>
           </div>         
           <p>
->>>>>>> 1cccd997d96dec704b69c2efebd4cac3cb342ae3
             <strong>Tipo de evento:</strong>
           </p>
           <p>{rent.type_event ? rent.type_event : <i>No especificado</i>}</p>
@@ -399,6 +391,4 @@ console.log("Son sus interesees: ",likes_user)
       </div>
     </>
   );
-
-
 }
