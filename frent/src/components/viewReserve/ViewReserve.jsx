@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import { FaTag } from 'react-icons/fa';
 import { FaUserFriends, FaCalendar, FaClock, FaSearch } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
@@ -8,7 +7,7 @@ import { UserContext } from "../../pages/Login/UserProvider";
 //import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
 import "./Details.css";
-import { getClient, getPrice, get_likes_user, deleteRent, create_notification, createNotication, getClientID, getFriendID, update_pending_rent, getPendingRent,getEvent,getOutfit } from "../../api/register.api";
+import { getClient, getPrice, get_likes_user, deleteRent, create_notification, createNotication, getClientID, getFriendID, update_pending_rent, getPendingRent } from "../../api/register.api";
 
 export default function ViewReserve() {
   const { userData } = useContext(UserContext);
@@ -18,6 +17,7 @@ export default function ViewReserve() {
   const [likes_user, setLikesUser] = useState([]);
   const [selectedRent, setSelectedRent] = useState(null);
   const [friendId, setFriendId] = useState(null);
+  const[detail, setDetail] = useState([])
   const staticImage = "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
 
 
@@ -32,6 +32,7 @@ export default function ViewReserve() {
   useEffect(() => {
     fetchData();
   }, [friendId]);
+  console.log("Hola mundo es el id la renta", listRent)
 
   useEffect(() => {
     if (listRent.length > 0) {
@@ -77,13 +78,13 @@ export default function ViewReserve() {
         const pricesArray = resPrice.data.map((item) => item.total_price);
         setPrice(pricesArray);
       }
+      /* const resEvent = await getOutfitAndEvent(friendId);
+      setDetail(resEvent.data) */
 
-      //for Event and Outfit
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-
 
   const calculateTimePassed = (createdAt) => {
     const currentTime = new Date();
@@ -195,47 +196,7 @@ export default function ViewReserve() {
     }
   };
 
-
-  const getClientName = (clientId) => {
-    const client = listClient.find((clientName) => clientName.id_user === clientId);
-    if (client) {
-      return `${client.first_name} ${client.last_name}`;
-    }
-    return "Cliente Desconocido";
-  };
-
-  //For Get outfit,event
-  const getOutfitType = (outfitId) => {
-    try {
-      const resOutfit = getOutfit(); // Obtener todos los outfits
-      if (resOutfit && resOutfit.data) {
-        const outfit = resOutfit.data.find((item) => item.id_outfit === outfitId); // Encontrar el outfit por su id
-        if (outfit) {
-          return outfit.type_outfit; // Retornar el tipo de outfit
-        }
-      }
-      return "Tipo de outfit desconocido"; // Si no se encuentra el outfit o no hay respuesta
-    } catch (error) {
-      console.error("Error al obtener el tipo de outfit:", error);
-      return "Error al obtener el tipo de outfit";
-    }
-  };
   
-  const getEventType = (eventId) => {
-    try {
-      const resEvent = getEvent(); // Obtener todos los eventos
-      if (resEvent && resEvent.data) {
-        const event = resEvent.data.find((item) => item.id_event === eventId); // Encontrar el evento por su id
-        if (event) {
-          return event.type_event; // Retornar el tipo de evento
-        }
-      }
-      return "Tipo de evento desconocido"; // Si no se encuentra el evento o no hay respuesta
-    } catch (error) {
-      console.error("Error al obtener el tipo de evento:", error);
-      return "Error al obtener el tipo de evento";
-    }
-  };
 
   const getClientLikes = (clientId) => {
     const clientLikes = likes_user.find((like) => like.id_user === clientId);
@@ -245,8 +206,6 @@ export default function ViewReserve() {
     return [];
   };
 
-  
-
   const openModal = (rent, price) => {
     setSelectedRent({ ...rent, price }); // Agregar el precio al objeto del alquiler seleccionado
   };
@@ -255,20 +214,21 @@ export default function ViewReserve() {
   const closeModal = () => {
     setSelectedRent(null);
   };
+  
 
   const DetailsModal = ({ isOpen, closeModal, rent }) => {
     if (!isOpen || !rent) return null;
 
-    const clientIndex = listClient.findIndex(
-      (client) => client.id_user === rent.client
-    );
+    const modalClassName = `modal-wrapper ${isOpen ? "active" : ""}`;
+    const overlayClassName = `overlay ${isOpen ? "active" : ""}`
 
-    const clientPrice = clientIndex !== -1 ? price[clientIndex] : null;
 
     return (
-      <div className="modal1">
+      <>
+        <div className={overlayClassName} onClick={closeModal}> </div>
+        <div className={modalClassName}>
+        <div className="modal1">
         <div className="modal-header1">
-
           <div className="modalPrueba"><FaSearch className="icon1" />
             Detalles del alquiler</div>
           <AiOutlineClose className="icon1"
@@ -288,7 +248,7 @@ export default function ViewReserve() {
             />
           </div>
           <div className="request-info1">
-            <h3 className="name-client1">{getClientName(rent.client)}</h3>
+            <h3 className="name-client1">{rent.nombre_cliente}</h3>
             <div className="detalle1">
               <p className="verified-date1">
                 <FaCalendar className="icon" />
@@ -318,21 +278,17 @@ export default function ViewReserve() {
           <p>{rent.duration} horas</p>     
             <h3>Precio</h3>
             <div className="PrecioDetail">
-              <p>{clientPrice ? `${clientPrice}Bs (${rent.duration} horas)` : "Precio no disponible"}</p>
-              <p>{clientPrice ? `${clientPrice}Bs` : "Precio no disponible"}</p>
-            </div>         
-          <p>
-            <strong>Lugar:</strong>
-          </p>
-          <p>{rent.location}</p>
+              <p>{rent.price} Bs x {rent.duration}horas</p>
+              <p>{rent.price} Bs</p>
+          </div>         
           <p>
             <strong>Tipo de evento:</strong>
           </p>
-          <p>{rent.event ?  getEventType(rent.event): <i>No especificado</i>}</p>
+          <p>{rent.type_event ? rent.type_event : <i>No especificado</i>}</p>
           <p>
-            <strong>Vestimenta del evento:</strong>{" "}
+            <strong>Vestimenta del evento:</strong>
           </p>
-          <p>{rent.outfit ? getOutfitType(rent.outfit) : <i>No especificado</i>}</p>
+         <p>{rent.type_outfit ? rent.type_outfit : <i>No especificado</i>}</p>
           <p>
             <strong>Descripción:</strong>{" "}
           </p>
@@ -355,6 +311,8 @@ export default function ViewReserve() {
           </p>
         </div>
       </div>
+        </div>
+      </>
     );
   };
 
@@ -390,11 +348,11 @@ export default function ViewReserve() {
                       alt="Foto de perfil"
                       className="profile-pic"
                     />
-                    <p className="time">Hace {calculateTimePassed(rent.create)}</p>
+                    <p className="time">Hace {calculateTimePassed(rent.created)}</p>
                   </div>
                   <div className="request-info">
                     <h3 className="name-client">
-                      {getClientName(rent.client)}
+                      {rent.nombre_cliente}
                     </h3>
                     <div className="details">
                       <p className="verified-date">
@@ -420,8 +378,8 @@ export default function ViewReserve() {
                     <div className="price-details">
                     
                       <div className="price-container">
-                      <p className="price">{price[listClient.findIndex((client) => client.id_user === rent.client)]}Bs</p>
-                      <button className="details-button" onClick={() => openModal(rent, price[listClient.findIndex((client) => client.id_user === rent.client)])}>
+                      <p className="price">{rent.price}Bs</p>
+                      <button className="details-button" onClick={() => openModal(rent, rent.price)}>
                           <FaSearch className="icon" />
                           Detalles
                         </button>
@@ -440,7 +398,7 @@ export default function ViewReserve() {
                 </div>
                 {/* Renderiza el modal si se ha seleccionado un alquiler */}
                 <DetailsModal isOpen={selectedRent !== null} closeModal={closeModal} rent={selectedRent} />
-              </div>
+              </div>  
 
             ))
           )}

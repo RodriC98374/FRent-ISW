@@ -10,6 +10,22 @@
     font-family: "Alata", sans-serif;
   }
 
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Fondo oscuro semi-transparente */
+    z-index: 998; /* Coloca el fondo detrás del modal */
+    display: none; /* Inicialmente oculto */
+  }
+  
+  .overlay.active {
+    display: block; /* Mostrar el fondo oscuro cuando el modal está activo */
+  }
+
+  
   .contV {
     display: flex;
     justify-content: center;

@@ -15,6 +15,27 @@
   border-radius: 10px;
 }
 
+.modal1::-webkit-scrollbar {
+  width:7px;
+  height:7px;
+  
+}
+
+.modal1::-webkit-scrollbar-thumb{
+  background-color: var(--primary-color);
+  border-radius: 10px;
+}
+
+.modal-wrapper {
+  transition: opacity 0.3s ease; /* Efecto de transición para la opacidad */
+  opacity: 0; /* Inicialmente transparente */
+}
+
+.modal-wrapper.active {
+  opacity: 1; /* Mostrar el modal con opacidad completa cuando esté activo */
+}
+
+
   body {
     font-family: "Alata", sans-serif;
   }

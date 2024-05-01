@@ -49,7 +49,7 @@ export const getEvent = () => registersApi.get('/rents/events/')
 
 export const getRent = () => registersApi.get('/rents/rents/')
 
-export const getPendingRent = (id) =>  registersApi.get(`/rents/rents/${id}/get_pendings_rents/`)
+/* export const getPendingRent = (id) =>  registersApi.get(`/rents/rents/${id}/get_pendings_rents/`) */
 
 export const update_pending_rent = (id, data) =>  registersApi.patch(`/rents/rents/${id}/`, data)
 
@@ -77,6 +77,8 @@ export const delete_notifications_user = (id) => registersApi.delete(`/notificac
 export const validarLogin = (data) => registersApi.post('/users/login/', data)
 
 export const obtenerHorariosReservas = (id) => registersApi.get(`/rents/friend-calendar/${id}/`)
+
+export const getPendingRent = (id) => registersApi.get(`/rents/rent_detail/${id}/`)
 
 
 /* export const getTime = (id) => registersApi.get(`/rents/time_elapsed/${id}/`) */
