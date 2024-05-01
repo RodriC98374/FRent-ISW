@@ -96,7 +96,9 @@ class RentDetailView(APIView):
         rent_details = []
         for rent in rents:
             rent_details.append({
-                #'rent_id': rent.id,
+                'rent_id': rent.id,
+                'friend_id': rent.friend.id_user,
+                'client_id': rent.client.id_user,
                 'fecha_cita': rent.fecha_cita,
                 'time': rent.time,
                 'duration': rent.duration,
@@ -105,6 +107,8 @@ class RentDetailView(APIView):
                 'created': rent.create.strftime('%Y-%m-%d %H:%M:%S'),
                 'type_outfit': rent.outfit.type_outfit,
                 'type_event': rent.event.type_event,
+                'status':rent.status,
+                'price': rent.duration*(float(rent.friend.price)),
             })
         
         if not rent_details:

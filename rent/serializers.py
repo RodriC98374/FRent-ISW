@@ -21,14 +21,13 @@ class RentSerializer(serializers.ModelSerializer):
         model = Rent
         fields = "__all__"
        # fields = ['id','client', 'friend', 'event', 'outfit', 'fecha_cita', 'time', 'duration', 'location', 'description']
+       
         
 class RentPriceSerializer(serializers.ModelSerializer):
     total_price = serializers.SerializerMethodField()
-
     class Meta:
         model = Rent
         fields = ['id', 'friend', 'duration', 'total_price']
-
     def get_total_price(self, obj):
         duration_decimal = Decimal(str(obj.duration))
         total_price = obj.friend.price * duration_decimal
