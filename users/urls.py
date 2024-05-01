@@ -11,10 +11,13 @@ router.register(r'likes', TasteViewSet)
 router.register(r'photos', PhotoViewSet)
 router.register(r'user_tastes', UserLikeViewSet)
 router.register(r'availability', AvailabilityViewSet)
-
 router.register(r'profile-image', ProfileImageViewSet, basename='profile-image')
+
 
 urlpatterns = [
     path('api/v1/', include(router.urls)),
     path('login/', CustomLoginView().as_view(), name='login'),
+    path('api/v1/friends/country/<str:country>/', FriendViewSet.as_view({
+        'get': 'list',
+    })),
 ]
