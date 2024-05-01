@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import { FaTag } from 'react-icons/fa';
 import { FaUserFriends, FaCalendar, FaClock, FaSearch } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
@@ -8,18 +7,15 @@ import { UserContext } from "../../pages/Login/UserProvider";
 //import imgApp from "../../assets/imgApp";
 import "./ViewReserve.css";
 import "./Details.css";
-import { getClient, getPrice, get_likes_user, deleteRent, create_notification, createNotication, getClientID, getFriendID, update_pending_rent, getPendingRent,getEvent,getOutfit } from "../../api/register.api";
+import { get_likes_user, deleteRent, create_notification, createNotication, getClientID, getFriendID, update_pending_rent, getPendingRent } from "../../api/register.api";
 
 export default function ViewReserve() {
   const { userData } = useContext(UserContext);
   const [listRent, setListRent] = useState([]);
-  const [listClient, setListClient] = useState([]);
-  const [price, setPrice] = useState([]);
   const [likes_user, setLikesUser] = useState([]);
   const [selectedRent, setSelectedRent] = useState(null);
   const [friendId, setFriendId] = useState(null);
   const staticImage = "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
-
 
   useEffect(() => {
     if (userData) {
@@ -37,7 +33,8 @@ export default function ViewReserve() {
         try {
           const likesPromises = listRent.map(async (rent) => {
             const idClient = {
-              id_user: rent.client,
+              id_user: rent.client_id,
+
             };
             const resLikesUser = await get_likes_user(idClient);
             return resLikesUser.data || [];
@@ -65,18 +62,7 @@ export default function ViewReserve() {
         setListRent(sortedRent);
       }
 
-      const resClient = await getClient();
-      if (resClient && resClient.data) {
-        setListClient(resClient.data);
-      }
 
-      const resPrice = await getPrice();
-      if (resPrice && resPrice.data) {
-        const pricesArray = resPrice.data.map((item) => item.total_price);
-        setPrice(pricesArray);
-      }
-
-      //for Event and Outfit
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -192,46 +178,7 @@ export default function ViewReserve() {
     }
   };
 
-  const getClientName = (clientId) => {
-    const client = listClient.find((clientName) => clientName.id_user === clientId);
-    if (client) {
-      return `${client.first_name} ${client.last_name}`;
-    }
-    return "Cliente Desconocido";
-  };
-
-  //For Get outfit,event
-  const getOutfitType = (outfitId) => {
-    try {
-      const resOutfit = getOutfit(); // Obtener todos los outfits
-      if (resOutfit && resOutfit.data) {
-        const outfit = resOutfit.data.find((item) => item.id_outfit === outfitId); // Encontrar el outfit por su id
-        if (outfit) {
-          return outfit.type_outfit; // Retornar el tipo de outfit
-        }
-      }
-      return "Tipo de outfit desconocido"; // Si no se encuentra el outfit o no hay respuesta
-    } catch (error) {
-      console.error("Error al obtener el tipo de outfit:", error);
-      return "Error al obtener el tipo de outfit";
-    }
-  };
   
-  const getEventType = (eventId) => {
-    try {
-      const resEvent = getEvent(); // Obtener todos los eventos
-      if (resEvent && resEvent.data) {
-        const event = resEvent.data.find((item) => item.id_event === eventId); // Encontrar el evento por su id
-        if (event) {
-          return event.type_event; // Retornar el tipo de evento
-        }
-      }
-      return "Tipo de evento desconocido"; // Si no se encuentra el evento o no hay respuesta
-    } catch (error) {
-      console.error("Error al obtener el tipo de evento:", error);
-      return "Error al obtener el tipo de evento";
-    }
-  };
 
   const getClientLikes = (clientId) => {
     const clientLikes = likes_user.find((like) => like.id_user === clientId);
@@ -249,14 +196,21 @@ export default function ViewReserve() {
   const closeModal = () => {
     setSelectedRent(null);
   };
+  
 
   const DetailsModal = ({ isOpen, closeModal, rent }) => {
     if (!isOpen || !rent) return null;
 
-    return (
-      <div className="modal1">
-        <div className="modal-header1">
+    const modalClassName = `modal-wrapper ${isOpen ? "active" : ""}`;
+    const overlayClassName = `overlay ${isOpen ? "active" : ""}`
 
+
+    return (
+      <>
+        <div className={overlayClassName} onClick={closeModal}> </div>
+        <div className={modalClassName}>
+        <div className="modal1">
+        <div className="modal-header1">
           <div className="modalPrueba"><FaSearch className="icon1" />
             Detalles del alquiler</div>
           <AiOutlineClose className="icon1"
@@ -276,7 +230,7 @@ export default function ViewReserve() {
             />
           </div>
           <div className="request-info1">
-            <h3 className="name-client1">{getClientName(rent.client)}</h3>
+            <h3 className="name-client1">{rent.nombre_cliente}</h3>
             <div className="detalle1">
               <p className="verified-date1">
                 <FaCalendar className="icon" />
@@ -306,27 +260,23 @@ export default function ViewReserve() {
           <p>{rent.duration} horas</p>     
             <h3>Precio</h3>
             <div className="PrecioDetail">
-              <p>20 BOB x {rent.duration} horas</p>
-              <p>{rent.price} BOB</p>
-            </div>         
-          <p>
-            <strong>Lugar:</strong>
-          </p>
-          <p>{rent.location}</p>
+              <p>{rent.price} Bs x {rent.duration}horas</p>
+              <p>{rent.price} Bs</p>
+          </div>         
           <p>
             <strong>Tipo de evento:</strong>
           </p>
-          <p>{rent.event ?  getEventType(rent.event): <i>No especificado</i>}</p>
+          <p>{rent.type_event ? rent.type_event : <i>No especificado</i>}</p>
           <p>
-            <strong>Vestimenta del evento:</strong>{" "}
+            <strong>Vestimenta del evento:</strong>
           </p>
-          <p>{rent.outfit ? getOutfitType(rent.outfit) : <i>No especificado</i>}</p>
+         <p>{rent.type_outfit ? rent.type_outfit : <i>No especificado</i>}</p>
           <p>
             <strong>Descripción:</strong>{" "}
           </p>
           <p>{rent.description ? rent.description : <i>No especificado</i>}</p>
           <p><strong>Intereses:</strong></p>
-          {getClientLikes(rent.client).map((like) => (
+          {getClientLikes(rent.client_id).map((like) => (
             <p key={like} className="descriptionLike">
                 <svg className="tag-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
                   <path fill="white" d="M5.5 7A1.5 1.5 0 0 1 4 5.5A1.5 1.5 0 0 1 5.5 4A1.5 1.5 0 0 1 7 5.5A1.5 1.5 0 0 1 5.5 7m15.91 4.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.11 0-2 .89-2 2v7c0 .55.22 1.05.59 1.41l8.99 9c.37.36.87.59 1.42.59c.55 0 1.05-.23 1.41-.59l7-7c.37-.36.59-.86.59-1.41c0-.56-.23-1.06-.59-1.42"/>
@@ -339,10 +289,12 @@ export default function ViewReserve() {
             <strong>Estado de la reserva:</strong>
           </p>
           <p className="pie.estado1">
-            <span>rent.status</span>
+            <span>{rent.status}</span>
           </p>
         </div>
       </div>
+        </div>
+      </>
     );
   };
 
@@ -378,11 +330,11 @@ export default function ViewReserve() {
                       alt="Foto de perfil"
                       className="profile-pic"
                     />
-                    <p className="time">Hace {calculateTimePassed(rent.create)}</p>
+                    <p className="time">Hace {calculateTimePassed(rent.created)}</p>
                   </div>
                   <div className="request-info">
                     <h3 className="name-client">
-                      {getClientName(rent.client)}
+                      {rent.nombre_cliente}
                     </h3>
                     <div className="details">
                       <p className="verified-date">
@@ -406,10 +358,10 @@ export default function ViewReserve() {
                     </div>
 
                     <div className="price-details">
+                    
                       <div className="price-container">
-                        <p className="price">{price[index]}Bs</p>
-
-                        <button className="details-button" onClick={() => openModal(rent,price[index])}>
+                      <p className="price">{rent.price}Bs</p>
+                      <button className="details-button" onClick={() => openModal(rent, rent.price)}>
                           <FaSearch className="icon" />
                           Detalles
                         </button>
@@ -420,15 +372,15 @@ export default function ViewReserve() {
                 <hr></hr>
                 <div className="action-buttons">
                   <button className="btnV"
-                    onClick={() => handleAccept(rent.id, rent.client, rent.friend)}
+                    onClick={() => handleAccept(rent.rent_id, rent.client_id, rent.friend_id)}
                   >Aceptar</button>
                   <button className="btnVR"
-                    onClick={() => handleReject(rent.id, rent.client, rent.friend)}
+                    onClick={() => handleReject(rent.rent_id, rent.client_id, rent.friend_id)}
                   >Rechazar</button>
                 </div>
                 {/* Renderiza el modal si se ha seleccionado un alquiler */}
                 <DetailsModal isOpen={selectedRent !== null} closeModal={closeModal} rent={selectedRent} />
-              </div>
+              </div>  
 
             ))
           )}

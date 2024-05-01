@@ -83,7 +83,9 @@ const Photo = () => {
   };
 
   const nextPage = async () => {
-    if (!file) return;
+    console.log("que peo we", file);
+    console.log("que peo Bionary", imageBinary);
+    console.log("que peo we userdara", userData.image);
 
     if (userData.is_client) {
       const client = {
@@ -119,7 +121,7 @@ const Photo = () => {
 
       navigate("/login");
     } else {
-      const friendDataNew = { ...userData, image: imageBinary };
+      const friendDataNew = { ...userData, image: imageBinary? imageBinary : userData.image };
       navigate("/addAvailableHours", { state: { friendDataNew } });
     }
   };
@@ -188,7 +190,7 @@ const Photo = () => {
         <ButtonPrimary
           onClick={nextPage}
           label={userData.is_client? "Registrar" : "Siguiente"}
-          disabled={!file}
+          disabled={!file || !userData.image}
         />
       </div>
     </div>

@@ -35,7 +35,7 @@ function App() {
             <Route path="/photo" element={<Photo />} />
 
 
-            <Route element={<ProtectedRoute isAllowed={userData && userData.user_type === 'Client'} redirectTo="/login" />}>
+            <Route element={<ProtectedRoute isAllowed={userData && userData.user_type === 'Cliente'} redirectTo="/login" />}>
               <Route path="/rentaForm/:id" element={<RentFriendForm />} />
               <Route path="/listRent" element={<ListFriend />} />
               <Route path='/calendarReservas/:id' element = {<MyCalendar/>}/>
@@ -43,7 +43,7 @@ function App() {
             </Route>
 
             <Route path="/rentalSectio" element={
-              <ProtectedRoute isAllowed={userData && userData.user_type === 'Friend'}>
+              <ProtectedRoute isAllowed={userData && userData.user_type === 'Amigo'}>
                 <ViewReserve />
               </ProtectedRoute>} />
 
