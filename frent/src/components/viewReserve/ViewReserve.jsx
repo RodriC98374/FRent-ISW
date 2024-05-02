@@ -155,51 +155,52 @@ export default function ViewReserve() {
       (rent) => rent.rent_id === currentRentId
     );
     if (!selectedRent) return false;
-
+  
     const { time, duration, fecha_cita } = selectedRent;
-
+  
     // Calcular la hora de inicio y fin del alquiler actual
     const startTime = new Date(`2000-01-01T${time}`);
     const endTime = new Date(startTime.getTime() + duration * 60 * 60 * 1000); // Sumar duración en milisegundos
-
+  
     // Verificar si hay algún alquiler aceptado en la misma fecha y hora
     const hasAcceptedRentSameDateTime = listRent.some((rent) => {
       return (
-        rent.status === "Aceptado" && rent.fecha_cita === fecha_cita && rent.time === time
-      );  
+        rent.status === "Aceptado" &&
+        rent.fecha_cita === fecha_cita &&
+        rent.time === time
+      );
     });
-
+  
     if (hasAcceptedRentSameDateTime) {
       // Si hay un alquiler aceptado en la misma fecha y hora, no se permite la aceptación
       return true;
     }
-
+  
     // Filtrar alquileres pendientes para verificar conflictos
     const conflicts = listRent.filter((rent) => {
       if (rent.rent_id === currentRentId || rent.status !== "Aceptado")
         return false; // Excluir el propio alquiler y alquileres no pendientes
-
+  
       const rentStartTime = new Date(`2000-01-01T${rent.time}`);
       const rentEndTime = new Date(
         rentStartTime.getTime() + rent.duration * 60 * 60 * 1000
       );
-
-      // Verificar si hay solapamiento de horarios
+  
+      // Verificar si hay solapamiento de horarios, pero solo cuando las fechas coinciden
       if (
-        (startTime >= rentStartTime && startTime < rentEndTime) || // Inicio dentro del rango
-        (endTime > rentStartTime && endTime <= rentEndTime) || // Fin dentro del rango
-        (startTime <= rentStartTime && endTime >= rentEndTime) // Incluye completamente el rango
+        fecha_cita === rent.fecha_cita &&
+        ((startTime >= rentStartTime && startTime < rentEndTime) || // Inicio dentro del rango
+          (endTime > rentStartTime && endTime <= rentEndTime) || // Fin dentro del rango
+          (startTime <= rentStartTime && endTime >= rentEndTime)) // Incluye completamente el rango
       ) {
         return true;
       }
-
+  
       return false;
     });
-
+  
     return conflicts.length > 0; // Si hay conflictos, devuelve true
-  };
-
-  const handleReject = async (rentId, rentClient, rentFriend) => {
+  };  const handleReject = async (rentId, rentClient, rentFriend) => {
     try {
       const rejected = window.confirm(
         "¿Estás seguro de que deseas rechazar ser amigo?"
