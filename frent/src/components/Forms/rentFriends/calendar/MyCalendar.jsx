@@ -34,7 +34,7 @@ function CalendarEdit() {
         dayjs(event.end).isSame(date, "day")
     );
     return hasEvent
-      ? { style: { backgroundColor: "#333A73", borderRadius: "10px" } }
+      ? { style: { backgroundColor: "#333A73", borderRadius: "10px",     border: "1px solid #000" } }
       : {};
   };
 

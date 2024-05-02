@@ -25,6 +25,12 @@
   position: relative;
   width: 280px;
   height: 280px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  transform: translateY(-8px);
 }
 
 .top-card {
@@ -86,11 +92,19 @@ margin-bottom: 0px !important;
   background-color: var(--quaternary-color);
   color: #fff;
   border-radius: 0 0 8px 8px;
+  transition: background-color 0.3s ease;
 }
+
+
 
 .button-card > a {
   text-decoration: none;
   color: #000;
+}
+
+.button-card:hover{
+  background-color: var(--tertiary-color);
+
 }
 
 .modalF {
