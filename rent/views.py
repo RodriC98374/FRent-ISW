@@ -94,10 +94,17 @@ class GetFriendRentsCalendar(APIView):
 class RentDetailView(APIView):
     def get(self, request, friend_id):
         get_object_or_404(Friend, id_user=friend_id)
-        rents = Rent.objects.filter(friend__id_user=friend_id,status='pending').select_related('event', 'outfit')
+        #rents = Rent.objects.filter(friend__id_user=friend_id,status='pending').select_related('event', 'outfit')
+        rents = Rent.objects.filter(friend__id_user=friend_id).select_related('event', 'outfit')
         rent_details = []
         for rent in rents:
-            formatted_create = self.format_datetime_with_colon(localtime(rent.create))
+            if rent.status=='pending':
+              nvar='Pendiente'
+            elif rent.status=='accepted':
+              nvar='Aceptado'
+            else:
+              nvar='Rechazado'
+            
             rent_details.append({
                 'rent_id': rent.id,
                 'friend_id': rent.friend.id_user,
@@ -111,9 +118,10 @@ class RentDetailView(APIView):
                 'created': self.format_datetime_with_colon(localtime(rent.create)),
                 'type_outfit': rent.outfit.type_outfit,
                 'type_event': rent.event.type_event,
-                'status':rent.status,
+                'status':nvar,
                 'price': rent.duration*(float(rent.friend.price)),
-            })
+                'image': rent.client.image
+            })  
         
         if not rent_details:
             return Response({'mensaje': 'No hay alquileres encontrados para este amigo.'})
