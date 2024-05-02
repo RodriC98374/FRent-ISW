@@ -236,6 +236,8 @@ switch (dayOfWeek.toLowerCase(dayOfWeek)) {
                       const selectedTime = new Date(`01/01/2000 ${value}`);
 
                       if (
+                        //console.log(selectedTime),   //para poder ver la hora que me deja alquilar
+                        //console.log(startValidTime),
                         selectedTime < startValidTime ||
                         selectedTime > endValidTime
                       ) {

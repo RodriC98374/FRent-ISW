@@ -178,7 +178,7 @@ export default function ViewReserve() {
     }
   };
 
-  
+
 
   const getClientLikes = (clientId) => {
     const clientLikes = likes_user.find((like) => like.id_user === clientId);
@@ -196,7 +196,13 @@ export default function ViewReserve() {
   const closeModal = () => {
     setSelectedRent(null);
   };
-  
+
+  const getImage = (imageFriend) => {
+    if (imageFriend) {
+      return `data:image/png;base64,${imageFriend}`;
+    }
+    return staticImage;
+  }
 
   const DetailsModal = ({ isOpen, closeModal, rent }) => {
     if (!isOpen || !rent) return null;
@@ -209,90 +215,91 @@ export default function ViewReserve() {
       <>
         <div className={overlayClassName} onClick={closeModal}> </div>
         <div className={modalClassName}>
-        <div className="modal1">
-        <div className="modal-header1">
-          <div className="modalPrueba"><FaSearch className="icon1" />
-          &nbsp; <strong>Detalles del alquiler</strong></div>
-          <AiOutlineClose className="icon1"
-            size={30}
-            color="#000"
-            onClick={closeModal}
-            cursor={"pointer"}
-          />
-        </div>
-        <div className="container1">
-          <div className="user-info1">
-            <img
-              //src={rent.profilePic || imgApp.image}
-              src={staticImage}
-              alt="Foto de perfil"
-              className="profile-pic1"
-            />
-          </div>
-          <div className="request-info1">
-            <h3 className="name-client1">{rent.nombre_cliente}</h3>
-            <div className="detalle1">
-              <p className="verified-date1">
-                <FaCalendar className="icon" />
-                {rent.fecha_cita}
+          <div className="modal1">
+            <div className="modal-header1">
+              <div className="modalPrueba"><FaSearch className="icon1" />
+                &nbsp; <strong>Detalles del alquiler</strong></div>
+              <AiOutlineClose className="icon1"
+                size={30}
+                color="#000"
+                onClick={closeModal}
+                cursor={"pointer"}
+              />
+            </div>
+            <div className="container1">
+              <div className="user-info1">
+                <img
+                  //src={rent.profilePic || imgApp.image}
+                  src={getImage(rent.image)}
+                  className="fotoperfil"
+                  alt="foto de perfil"
+                  onClick={() => openModal(getImage(rent.image))}
+                />
+              </div>
+              <div className="request-info1">
+                <h3 className="name-client1">{rent.nombre_cliente}</h3>
+                <div className="detalle1">
+                  <p className="verified-date1">
+                    <FaCalendar className="icon" />
+                    {rent.fecha_cita}
+                  </p>
+                  <p className="locationR1">
+                    <FaClock className="icon" />
+                    {rent.time}
+                  </p>
+                </div>
+                <div className="detalle1">
+                  <p className="verified1">
+                    <RiVerifiedBadgeFill className="icon" />
+                    Verificado
+                  </p>
+                  <p className="locationR1">
+                    <IoLocationSharp className="icon" />
+                    {rent.location}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="cuerpo1">
+              <p>
+                <strong>Duración:</strong>{" "}
               </p>
-              <p className="locationR1">
-                <FaClock className="icon" />
-                {rent.time}
+              <p>{rent.duration} horas</p>
+              <h3>Precio</h3>
+              <div className="PrecioDetail">
+                <p>{rent.price} Bs x {rent.duration}horas</p>
+                <p>{rent.price} Bs</p>
+              </div>
+              <p>
+                <strong>Tipo de evento:</strong>
+              </p>
+              <p>{rent.type_event ? rent.type_event : <i>No especificado</i>}</p>
+              <p>
+                <strong>Vestimenta del evento:</strong>
+              </p>
+              <p>{rent.type_outfit ? rent.type_outfit : <i>No especificado</i>}</p>
+              <p>
+                <strong>Descripción:</strong>{" "}
+              </p>
+              <p>{rent.description ? rent.description : <i>No especificado</i>}</p>
+              <p><strong>Intereses:</strong></p>
+              {getClientLikes(rent.client_id).map((like) => (
+                <p key={like} className="descriptionLike">
+                  <svg className="tag-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                    <path fill="white" d="M5.5 7A1.5 1.5 0 0 1 4 5.5A1.5 1.5 0 0 1 5.5 4A1.5 1.5 0 0 1 7 5.5A1.5 1.5 0 0 1 5.5 7m15.91 4.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.11 0-2 .89-2 2v7c0 .55.22 1.05.59 1.41l8.99 9c.37.36.87.59 1.42.59c.55 0 1.05-.23 1.41-.59l7-7c.37-.36.59-.86.59-1.41c0-.56-.23-1.06-.59-1.42" />
+                  </svg> {like}
+                </p>
+              ))}
+            </div>
+            <div className="pie1">
+              <p>
+                <strong>Estado de la reserva:</strong>
+              </p>
+              <p className="pie.estado1">
+                <span>{rent.status}</span>
               </p>
             </div>
-            <div className="detalle1">
-              <p className="verified1">
-                <RiVerifiedBadgeFill className="icon" />
-                Verificado
-              </p>
-              <p className="locationR1">
-                <IoLocationSharp className="icon" />
-                {rent.location}
-              </p>
-            </div>
           </div>
-        </div>
-        <div className="cuerpo1">
-          <p>
-            <strong>Duración:</strong>{" "}
-          </p>
-          <p>{rent.duration} horas</p>     
-            <h3>Precio</h3>
-            <div className="PrecioDetail">
-              <p>{rent.price} Bs x {rent.duration}horas</p>
-              <p>{rent.price} Bs</p>
-          </div>         
-          <p>
-            <strong>Tipo de evento:</strong>
-          </p>
-          <p>{rent.type_event ? rent.type_event : <i>No especificado</i>}</p>
-          <p>
-            <strong>Vestimenta del evento:</strong>
-          </p>
-         <p>{rent.type_outfit ? rent.type_outfit : <i>No especificado</i>}</p>
-          <p>
-            <strong>Descripción:</strong>{" "}
-          </p>
-          <p>{rent.description ? rent.description : <i>No especificado</i>}</p>
-          <p><strong>Intereses:</strong></p>
-          {getClientLikes(rent.client_id).map((like) => (
-            <p key={like} className="descriptionLike">
-                <svg className="tag-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
-                  <path fill="white" d="M5.5 7A1.5 1.5 0 0 1 4 5.5A1.5 1.5 0 0 1 5.5 4A1.5 1.5 0 0 1 7 5.5A1.5 1.5 0 0 1 5.5 7m15.91 4.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.11 0-2 .89-2 2v7c0 .55.22 1.05.59 1.41l8.99 9c.37.36.87.59 1.42.59c.55 0 1.05-.23 1.41-.59l7-7c.37-.36.59-.86.59-1.41c0-.56-.23-1.06-.59-1.42"/>
-                </svg> {like}
-            </p>
-          ))}
-        </div>
-        <div className="pie1">
-          <p>
-            <strong>Estado de la reserva:</strong>
-          </p>
-          <p className="pie.estado1">
-            <span>{rent.status}</span>
-          </p>
-        </div>
-      </div>
         </div>
       </>
     );
@@ -325,10 +332,10 @@ export default function ViewReserve() {
                 <div className="pending-info">
                   <div className="user-info">
                     <img
-                      // src={rent.profilePic || imgApp.image}
-                      src={staticImage}
-                      alt="Foto de perfil"
-                      className="profile-pic"
+                      src={getImage(rent.image)}
+                      className="fotoperfil"
+                      alt="foto de perfil"
+                      onClick={() => openModal(getImage(rent.image))}
                     />
                     <p className="time">Hace {calculateTimePassed(rent.created)}</p>
                   </div>
@@ -358,10 +365,10 @@ export default function ViewReserve() {
                     </div>
 
                     <div className="price-details">
-                    
+
                       <div className="price-container">
-                      <p className="price">{rent.price}Bs</p>
-                      <button className="details-button" onClick={() => openModal(rent, rent.price)}>
+                        <p className="price">{rent.price}Bs</p>
+                        <button className="details-button" onClick={() => openModal(rent, rent.price)}>
                           <FaSearch className="icon" />
                           Detalles
                         </button>
@@ -380,7 +387,7 @@ export default function ViewReserve() {
                 </div>
                 {/* Renderiza el modal si se ha seleccionado un alquiler */}
                 <DetailsModal isOpen={selectedRent !== null} closeModal={closeModal} rent={selectedRent} />
-              </div>  
+              </div>
 
             ))
           )}
