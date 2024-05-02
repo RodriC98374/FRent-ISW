@@ -25,6 +25,10 @@ export default function NavBar() {
     }
   };
 
+  const handleCloseModal = () => {
+    setModalVisible(false); 
+  };
+
   const closeModal = () => {
     setModalVisible(false);
   };
@@ -143,6 +147,7 @@ export default function NavBar() {
         notifications={notifications}
         deleteNotifications={deleteNotifications}
         readNotifications={readNotifications}
+        onClose={handleCloseModal}
       />}
     </>
   );

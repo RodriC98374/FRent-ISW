@@ -7,6 +7,7 @@ function NotificationModal({
   notifications,
   deleteNotifications, 
   readNotifications,
+  onClose
 }) {
 
   const calculateTimePassed = (createdAt) => {
@@ -40,6 +41,7 @@ function NotificationModal({
   return (
     isVisible && (
       <div className="modal-notification">
+      <button className="boton-notificaciones" onClick={onClose}>X</button>
         <div className="title_notification">
           <h2>Notificaciones</h2>
           <div className="tooltip">
@@ -128,6 +130,7 @@ NotificationModal.propTypes = {
   notifications: PropTypes.array.isRequired,
   deleteNotifications: PropTypes.func.isRequired,
   readNotifications: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default NotificationModal;
