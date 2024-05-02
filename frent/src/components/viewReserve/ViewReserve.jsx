@@ -165,10 +165,8 @@ export default function ViewReserve() {
     // Verificar si hay algún alquiler aceptado en la misma fecha y hora
     const hasAcceptedRentSameDateTime = listRent.some((rent) => {
       return (
-        rent.status === "Aceptado" &&
-        rent.fecha_cita === fecha_cita &&
-        rent.time === time
-      );
+        rent.status === "Aceptado" && rent.fecha_cita === fecha_cita && rent.time === time
+      );  
     });
 
     if (hasAcceptedRentSameDateTime) {
@@ -178,7 +176,7 @@ export default function ViewReserve() {
 
     // Filtrar alquileres pendientes para verificar conflictos
     const conflicts = listRent.filter((rent) => {
-      if (rent.rent_id === currentRentId || rent.status !== "Pendiente")
+      if (rent.rent_id === currentRentId || rent.status !== "Aceptado")
         return false; // Excluir el propio alquiler y alquileres no pendientes
 
       const rentStartTime = new Date(`2000-01-01T${rent.time}`);
