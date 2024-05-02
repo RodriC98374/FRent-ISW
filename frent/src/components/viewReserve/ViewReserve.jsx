@@ -25,6 +25,10 @@ export default function ViewReserve() {
   const [likes_user, setLikesUser] = useState([]);
   const [selectedRent, setSelectedRent] = useState(null);
   const [friendId, setFriendId] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalImage, setModalImage] = useState(null);
+
   const staticImage =
     "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
 
@@ -287,6 +291,16 @@ export default function ViewReserve() {
     return staticImage;
   };
 
+  const openModalPhoto = (image) => {
+    setSelectedImage(image);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeModalPhoto = () => {
+    setSelectedImage(null);
+    document.body.style.overflow = 'auto';
+  };
+
   const DetailsModal = ({ isOpen, closeModal, rent }) => {
     if (!isOpen || !rent) return null;
 
@@ -322,7 +336,7 @@ export default function ViewReserve() {
                   src={getImage(rent.image)}
                   className="fotoperfil"
                   alt="foto de perfil"
-                  onClick={() => openModal(getImage(rent.image))}
+                  onClick={() => openModalPhoto(getImage(rent.image))}
                 />
               </div>
               <div className="request-info1">
@@ -411,6 +425,24 @@ export default function ViewReserve() {
             </div>
           </div>
         </div>
+
+        {selectedImage && (
+          <div className="modalF">
+            <div className="modal-content">
+              <button className="close" onClick={closeModalPhoto}>
+                Cerrar
+              </button>
+              <img
+                src={selectedImage}
+                alt="imagen en tamaño grande"
+                height="500px"
+                width="500px"
+              />
+            </div>
+          </div>
+        )}
+        {selectedImage && <div className="modal-background"></div>}
+
       </>
     );
   };
@@ -442,7 +474,7 @@ export default function ViewReserve() {
                       src={getImage(rent.image)}
                       className="fotoperfil"
                       alt="foto de perfil"
-                      onClick={() => openModal(getImage(rent.image))}
+                      onClick={() => openModalPhoto(getImage(rent.image))}
                     />
                     <p className="time">
                       Hace {calculateTimePassed(rent.created)}
@@ -526,8 +558,28 @@ export default function ViewReserve() {
               </div>
             ))
           )}
+        </div >
+      </div >
+      {selectedImage && (
+        <div className="modalF">
+          <div className="modal-content">
+            <button className="close" onClick={closeModalPhoto}>
+              Cerrar
+            </button>
+            <img
+              src={selectedImage}
+              alt="imagen en tamaño grande"
+              height="500px"
+              width="500px"
+            />
+          </div>
         </div>
-      </div>
+      )}
+      {selectedImage && <div className="modal-background"></div>}
+
+
+
     </>
+
   );
 }
