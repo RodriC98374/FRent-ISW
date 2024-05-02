@@ -23,7 +23,8 @@ class NotiInViewSet(viewsets.ModelViewSet):
                     "friend_name": friend_name,
                     "message": message,
                     "created": created,
-                    "is_reading": is_reading
+                    "is_reading": is_reading,
+                    "image": notification.from_user.image
                 }
                 
                 notificationsResponse.append(respuesta)

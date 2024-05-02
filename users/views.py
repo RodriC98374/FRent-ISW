@@ -23,9 +23,9 @@ class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
     #permission_classes = [IsAuthenticated]
-    
     def create(self, request):
         serializer = self.get_serializer(data=request.data)
+        
         if serializer.is_valid():
             try:
                 new_client = Client.objects.create_user(**serializer.validated_data)
@@ -39,10 +39,14 @@ class FriendViewSet(viewsets.ModelViewSet):
     queryset = Friend.objects.all()
     serializer_class = FriendSerializer
     #permission_classes = [IsAuthenticated]
-    
+    # def get_queryset(self):
+    #   country = self.kwargs.get('country')
+    #   if country:
+    #       return Friend.objects.filter(country=country)
+    #   return Friend.objects.none()
+      
     def create(self, request):
         serializer = self.get_serializer(data=request.data)
-        print(request.data)
         
         if serializer.is_valid():
             try:
@@ -191,10 +195,11 @@ class CustomLoginView(APIView):
             return Response({
                 'token': token.key,
                 'user_id': user.pk,
-                #'full_name': user.get_full_name(),
                 'first_name': user.first_name,
                 'last_name': user.last_name,
-                'user_type': user_type
+                'user_type': user_type,
+                'country':user.country,
+                'image': user.image,
             })
         else:
             return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_400_BAD_REQUEST)
