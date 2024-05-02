@@ -26,7 +26,7 @@ const EventList = ({ date, events, onCloseModal }) => {
         <div>
           {filteredEvents.map((event, index) => (
             <div key={index}>
-              <h4>{event.eventType}</h4>
+              <h4>{event.title}</h4>
               <p>{dayjs(event.start).format("HH:mm")}-{dayjs(event.end).format("HH:mm")} / Duración: {event.duration}</p>
             </div>
           ))}

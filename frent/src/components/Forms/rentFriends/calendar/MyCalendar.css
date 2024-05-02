@@ -99,3 +99,17 @@
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 999;
 }
+
+
+.boton-calendar{
+  font-size: 50px;
+  color: #000;
+  margin: 20px;
+  
+}
+
+.boton-calendar:hover {
+  font-size: 55px;
+  color: var(--primary-color);
+  box-shadow: #3174ad;
+}

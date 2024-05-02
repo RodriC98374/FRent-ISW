@@ -58,3 +58,15 @@ cursor: pointer;
 .swal-button:hover {
 background-color: #0056b3; 
 }
+
+.viewReserv {
+  background-color: var(--tertiary-color);
+  color: #000;
+  padding: 10px;
+  border-radius: 10px;
+}
+.viewReserv:hover {
+  background-color: var(--quaternary-color);
+  color: #fff;
+  padding: 12px;
+}

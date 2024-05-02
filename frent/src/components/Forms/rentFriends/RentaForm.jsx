@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { NavLink, useParams } from "react-router-dom"; // Importar useParams
+import { NavLink, useParams, Navigate } from "react-router-dom"; // Importar useParams
 import { ButtonPrimary } from "../../Buttons/buttonPrimary";
 import { ButtonSecondary } from "../../Buttons/buttonSecondary";
 import { useForm } from "react-hook-form";
@@ -36,21 +36,26 @@ export default function RentFriendForm() {
   const { userData } = useContext(UserContext);
   const userId = userData.user_id;
   // eslint-disable-next-line
-  const [showModal, setShowModal] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
 
-  // eslint-disable-next-line
-  const handleCancel = () => {
-    setShowModal(true);
-  };
-  // eslint-disable-next-line
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-  // eslint-disable-next-line
-  const handleConfirmCancel = () => {
-    setShowModal(false);
-  };
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const resOutfit = await getOutfit();
+        const resEvent = await getEvent();
+        const resAvailability = await getAvailabilityFriend(friendId);
+        setOutfit(resOutfit.data);
+        setEvent(resEvent.data);
+        setAvailability(resAvailability.data);
+      } catch (error) {
+        console.log("Error fetching data:", error);
+      }
+    }
+
+    fetchData();
+  }, [friendId]);
+
 
   const onSubmit = handleSubmit(async (data) => {
     const frent = {
@@ -80,9 +85,10 @@ export default function RentFriendForm() {
       console.log(restRent);
       swal("Reserva exitosa", "", "success"); // Mostrar mensaje de reserva exitosa
       setTimeout(() => {
-        // Desaparecer el mensaje después de 1 segundo
         swal.close();
+        setIsRedirecting(true);
       }, 2000);
+
       reset();
     } catch (error) {
       console.log(error);
@@ -91,56 +97,28 @@ export default function RentFriendForm() {
 
   const confirmCancel = () => {
     swal({
-      title: "¿Está seguro de cancelar?",
+      title: "¿Estás seguro?",
+      text: "¿Deseas cancelar la reserva?",
       icon: "warning",
-      buttons: ["Cancelar", "Aceptar"],
+      buttons: ["Cancelar", "Confirmar"],
       dangerMode: true,
     }).then((willCancel) => {
       if (willCancel) {
-        swal("Se canceló la operación", {
-          icon: "success",
-        });
-        reset(); // Limpiar el formulario
-      } else {
-        swal.close();
-      }
+        swal("Se canceló la operación", { icon: "success" });
+        setTimeout(() => {
+          swal.close();
+          setIsRedirecting(true);
+        }, 2000);
+        
+      }else{}
+      swal.close();
     });
   };
+  
 
-  useEffect(() => {
-    async function loadOutfit() {
-      try {
-        const res = await getOutfit();
-        setOutfit(res.data);
-      } catch (error) {
-        console.log("Error al cargar las vestimentas: ", error);
-      }
-    }
-
-    loadOutfit();
-
-    async function loadEvent() {
-      try {
-        const res = await getEvent();
-        setEvent(res.data);
-      } catch (error) {
-        console.log("Error al cargar las vestimentas: ", error);
-      }
-    }
-
-    loadEvent();
-    async function loadAvailability() {
-      try {
-        const res = await getAvailabilityFriend(friendId);
-        setAvailability(res.data);
-        console.log(res.data);
-      } catch (error) {
-        console.log("Error al cargar las vestimentas: ", error);
-      }
-    }
-
-    loadAvailability();
-  }, [friendId]);
+  if (isRedirecting) {
+    return <Navigate to="/listfriend" />;
+  }
 
   const optionsHour = [
     { value: 1.0, label: "1 hora" },
@@ -367,12 +345,10 @@ switch (dayOfWeek.toLowerCase(dayOfWeek)) {
               type={"submit"}
               label={"Alquilar"}
             />
-            <NavLink to={`/calendarReservas/${friendId}`}>
+            <NavLink className="viewReserv" to={`/calendarReservas/${friendId}`}>
               Mostrar reservas
             </NavLink>
-            <NavLink to="/listfriend">
               <ButtonSecondary label={"Cancelar"} onClick={confirmCancel} />
-            </NavLink>
           </div>
         </form>
       </div>
