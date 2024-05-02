@@ -164,7 +164,7 @@ export default function ViewReserve() {
         rent.status === "Aceptado" &&
         rent.fecha_cita === fecha_cita &&
         rent.time === time
-      );
+      );  
     });
 
     if (hasAcceptedRentSameDateTime) {

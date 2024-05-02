@@ -128,7 +128,7 @@ export default function RentFriendForm() {
     { value: 5.0, label: "5 horas" },
   ];
 
-  const handleDateChange = (e) => {
+ /*  const handleDateChange = (e) => {
     setSelectedDate2(e.target.value); // Actualiza el estado con la nueva fecha seleccionada
   };
 
@@ -171,10 +171,10 @@ switch (dayOfWeek.toLowerCase(dayOfWeek)) {
     startTime = "00:00:00";
     endTime = "23:59:59";
     break;
-}
+} */
   // Convierte las horas a objetos Date para comparaciones
-  const startValidTime = new Date(`01/01/2000 ${startTime}`);
-  const endValidTime = new Date(`01/01/2000 ${endTime}`);
+  const startValidTime = new Date(`01/01/2000 06:00:00`);
+  const endValidTime = new Date(`01/01/2000 21:00:00`);
 
 
   return (
@@ -217,7 +217,7 @@ switch (dayOfWeek.toLowerCase(dayOfWeek)) {
                         return "La fecha propuesta excede el límite de 5 meses";
                     },
                   })}
-                  onChange={handleDateChange}
+                  
                   errors={errors}
                 />
               </div>
