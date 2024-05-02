@@ -99,7 +99,7 @@ const Photo = () => {
         personal_description: userData.personal_description,
         birth_date: userData.birth_date,
         image: imageBinary,
-      };
+      }; 
 
       const resFriend = await createRegisterClient(client);
 

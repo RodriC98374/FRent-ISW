@@ -14,7 +14,7 @@ export function CustomerForm() {
 
   const navigate = useNavigate();
 
-  const {
+  const { 
     register,
     handleSubmit,
     formState: { errors },
