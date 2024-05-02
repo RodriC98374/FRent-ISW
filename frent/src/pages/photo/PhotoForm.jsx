@@ -83,9 +83,14 @@ const Photo = () => {
   };
 
   const nextPage = async () => {
-    console.log("que peo we", file);
-    console.log("que peo Bionary", imageBinary);
-    console.log("que peo we userdara", userData.image);
+    
+    if(!file && !userData.image){
+      swal(
+        "Foto requerida",
+        "Debe seleccionar un foto de perfil",
+      );
+      return;
+    }
 
     if (userData.is_client) {
       const client = {
