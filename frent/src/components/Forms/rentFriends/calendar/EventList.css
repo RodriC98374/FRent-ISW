@@ -1,6 +1,4 @@
 .listaEvento {
-    position: relative; 
-    display: grid;
     background-color: #f2eafa;
     border-radius: 10px;
     width: 410px;
@@ -39,7 +37,7 @@
     border-radius: 8px;
     margin: 10px 20px 5px 20px;
     color: #0c0b0b;
-    padding: 50px;
+    padding: 0 50px;
   }
   
   .reserv-container h3 {
