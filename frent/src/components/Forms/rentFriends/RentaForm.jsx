@@ -148,8 +148,8 @@ switch (dayOfWeek.toLowerCase(dayOfWeek)) {
     endTime = "11:00:00";
     break;
   case 'miércoles':
-    startTime = "22:00:00";
-    endTime = "23:00:00";
+    startTime = "06:00:00";
+    endTime = "21:00:00";
     break;
   case 'jueves':
     startTime = "12:00:00";
@@ -236,8 +236,6 @@ switch (dayOfWeek.toLowerCase(dayOfWeek)) {
                       const selectedTime = new Date(`01/01/2000 ${value}`);
 
                       if (
-                        //console.log(selectedTime),   //para poder ver la hora que me deja alquilar
-                        //console.log(startValidTime),
                         selectedTime < startValidTime ||
                         selectedTime > endValidTime
                       ) {
