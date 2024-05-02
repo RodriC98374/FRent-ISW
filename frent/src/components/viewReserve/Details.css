@@ -9,134 +9,150 @@
   flex-direction: column;
   width: 527px;
   height: 80vh;
-  border: 3px solid black; /* borde */
-  z-index: 999; 
+  border: 3px solid black;
+  /* borde */
+  z-index: 999;
   overflow: auto;
   border-radius: 10px;
 }
 
 .modal1::-webkit-scrollbar {
-  width:7px;
-  height:2px;
-  
+  width: 7px;
+  height: 2px;
+
 }
 
-.modal1::-webkit-scrollbar-thumb{
+.modal1::-webkit-scrollbar-thumb {
   background-color: black;
   border-radius: 10px;
   height: 3px;
 }
 
 .modal-wrapper {
-  transition: opacity 0.3s ease; /* Efecto de transición para la opacidad */
-  opacity: 0; /* Inicialmente transparente */
+  transition: opacity 0.3s ease;
+  /* Efecto de transición para la opacidad */
+  opacity: 0;
+  /* Inicialmente transparente */
 }
 
 .modal-wrapper.active {
-  opacity: 1; /* Mostrar el modal con opacidad completa cuando esté activo */
+  opacity: 1;
+  /* Mostrar el modal con opacidad completa cuando esté activo */
 }
 
 
-  body {
-    font-family: "Alata", sans-serif;
-  }
-  .container1 {
-    display: flex;
-    padding: 10px;
-    height: 200px;
-    width: 500px;
-    flex-direction: row;
-    border-bottom: 3px solid black; 
-  }
-  
-  .container1 img {
-    object-fit: cover;
-    width: 150px;
-  }
+body {
+  font-family: "Alata", sans-serif;
+}
 
-  .detalle1 {
-    display: flex;
-    align-items: center; 
-    margin-bottom: 5px;
-  }
-  .verified-date1 {
-    display: flex;
-    margin-right: 40px;
-    align-items: center;
-  }
+.container1 {
+  display: flex;
+  padding: 10px;
+  height: 200px;
+  width: 500px;
+  flex-direction: row;
+  border-bottom: 3px solid black;
+}
 
-  .verified1{
-    display: flex;
-    margin-right: 62px;
-    align-items: center;
-  }
-  
-  .locationR1 {
-    display: flex;
-    justify-content: center;
-    color: black;
-    border-radius: 5px;
-    
-  }
-  .request-info1 {
-    display: flex;
-    flex-direction: column;
-    margin-left: 10px;
-    margin-bottom: 5px; /* Espacio entre cada detalle */
-    width: 100%;
-    }
-  
-  .modal-header1 {
-    align-items: center;
-    margin-bottom: 10px;
-    font-size: 20px;
-    text-align: center;
-    border-bottom: 3px solid black; 
-    display: flex;
-    justify-content: space-between;
-    padding: 0 10px;
-  }
-  
-  .modal-header1 .FaSeach1 {
-    margin-right: 5px;
-  }
-  
-  .modal1 .AiOutlineClose1 {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    align-items: right;
-  }
+.container1 img {
+  object-fit: cover;
+  width: 150px;
+}
 
-  .cuerpo1 {
-    margin-top: 2px;
-    font-size: 12; 
-    line-height: 0.5;
-    padding: 10px;
-  }
-  
-  .pie1 {
-    bottom: 0; /* Position at the bottom */
-    width: 500px;
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    border-top: 3px solid black;
-    margin-bottom: 10px;
-  }
-  
-  .pie1 span {
-    border: 2px solid black;
-    border-radius: 10px;
-    background-color: var(--primary-color);
-    padding: 10px;
-  }
+.detalle1 {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
 
-  .PrecioDetail{
-    display: flex;
-    justify-content: space-between;
-    padding: 0;
-    height: 21px;
-    margin-top: -18px;
-  }
+.verified-date1 {
+  display: flex;
+  margin-right: 40px;
+  align-items: center;
+}
+
+.verified1 {
+  display: flex;
+  margin-right: 62px;
+  align-items: center;
+}
+
+.locationR1 {
+  display: flex;
+  justify-content: center;
+  color: black;
+  border-radius: 5px;
+
+}
+
+.request-info1 {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  margin-bottom: 5px;
+  /* Espacio entre cada detalle */
+  width: 100%;
+}
+
+.modal-header1 {
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 20px;
+  text-align: center;
+  border-bottom: 3px solid black;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+.modal-header1 .FaSeach1 {
+  margin-right: 5px;
+}
+
+.modal1 .AiOutlineClose1 {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  align-items: right;
+}
+
+.cuerpo1 {
+  margin-top: 2px;
+  font-size: 12;
+  line-height: 0.5;
+  padding: 10px;
+}
+
+.pie1 {
+  bottom: 0;
+  /* Position at the bottom */
+  width: 500px;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-top: 3px solid black;
+  margin-bottom: 10px;
+}
+
+.pie1 span {
+  border: 2px solid black;
+  border-radius: 10px;
+  background-color: var(--primary-color);
+  padding: 10px;
+}
+
+.PrecioDetail {
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  height: 21px;
+  margin-top: -18px;
+}
+
+.fotoperfil {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  cursor: pointer;
+}
