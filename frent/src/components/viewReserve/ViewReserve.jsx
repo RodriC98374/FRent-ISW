@@ -349,7 +349,7 @@ export default function ViewReserve() {
               <h3>Precio</h3>
               <div className="PrecioDetail">
                 <p>
-                  {rent.price} Bs x {rent.duration}horas
+                  {rent.price/rent.duration} Bs x {rent.duration}horas
                 </p>
                 <p>{rent.price} Bs</p>
               </div>
@@ -365,12 +365,10 @@ export default function ViewReserve() {
               <p>
                 {rent.type_outfit ? rent.type_outfit : <i>No especificado</i>}
               </p>
-              <p>
-                <strong>Descripción:</strong>{" "}
-              </p>
-              <p>
+              <h3>Descripción:</h3>
+              <div className="descripcion"><p>
                 {rent.description ? rent.description : <i>No especificado</i>}
-              </p>
+              </p></div>
               <p>
                 <strong>Intereses:</strong>
               </p>
@@ -444,7 +442,7 @@ export default function ViewReserve() {
           ) : (
             listRent.map((rent, index) => (
               <div
-                key={rent.id}
+                key={rent.rent_id}
                 className="pending">
                 <div className="pending-info">
                   <div className="user-info">
