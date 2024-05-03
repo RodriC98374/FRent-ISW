@@ -121,13 +121,13 @@ body {
   margin-top: 10px;
   font-size: 15px; 
   line-height: 0.6;
-  padding: 10px;
+  padding: 0 36px 22px;
 }
 
 
 .descripcion {
   font-size: 15px; 
-  line-height: 1;
+  line-height: 1.5;
 }
 
 .pie1 {
