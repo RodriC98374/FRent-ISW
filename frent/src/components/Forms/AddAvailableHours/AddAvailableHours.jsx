@@ -148,52 +148,45 @@ export default function AddAvailableHours() {
     }
   };
 
+  const handleSelectTime = ({ isSelected, dayName, startTime, endTime }) => {
+    if (isSelected) {
+      registerFrom(dayName, startTime);
+      registerTo(dayName, endTime);
+    }
+  };
+
   return (
     <div className="body-add-AH">
       <div className="container container-available">
         <h2>Elija su disponibilidad de días y horarios</h2>
         <div className="days-to-week">
-          <DayItem
-            type="time"
+          <DayItem  
             dayName="Lunes"
-            onSelectTimeFrom={registerFrom}
-            onSelectTimeTo={registerTo}
+            onSelectTime={handleSelectTime}
           />
           <DayItem
-            type="time"
             dayName="Martes"
-            onSelectTimeFrom={registerFrom}
-            onSelectTimeTo={registerTo}
+            onSelectTime={handleSelectTime}
           />
           <DayItem
-            type="time"
             dayName="Miercoles"
-            onSelectTimeFrom={registerFrom}
-            onSelectTimeTo={registerTo}
+            onSelectTime={handleSelectTime}
           />
           <DayItem
-            type="time"
             dayName="Jueves"
-            onSelectTimeFrom={registerFrom}
-            onSelectTimeTo={registerTo}
+            onSelectTime={handleSelectTime}
           />
-          <DayItem
-            type="time"
+          <DayItem 
             dayName="Viernes"
-            onSelectTimeFrom={registerFrom}
-            onSelectTimeTo={registerTo}
+            onSelectTime={handleSelectTime}
           />
           <DayItem
-            type="time"
             dayName="Sabado"
-            onSelectTimeFrom={registerFrom}
-            onSelectTimeTo={registerTo}
+            onSelectTime={handleSelectTime}
           />
           <DayItem
-            type="time"
             dayName="Domingo"
-            onSelectTimeFrom={registerFrom}
-            onSelectTimeTo={registerTo}
+            onSelectTime={handleSelectTime}
           />
         </div>
 

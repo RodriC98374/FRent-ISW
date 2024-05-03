@@ -37,6 +37,12 @@
     text-align: center;
     color: #aaa;
 }
+ .available-day{
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    gap: 8px;
+ }
 .day > p{
     display: inline;
 }
@@ -45,6 +51,7 @@
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
+    justify-content: space-around;
     gap: 8px;
 }
 
@@ -61,5 +68,5 @@
 }
 
 .hours-selector{
-    width: 30%;
+    width: 160px;
 }
