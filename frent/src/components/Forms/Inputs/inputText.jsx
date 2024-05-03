@@ -1,5 +1,5 @@
 import React from "react";
-import "./inputText.css";
+import "./InputText.css";
 
 
 function InputText ({ label, 
