@@ -22,6 +22,8 @@
   .home-description {
     font-size: 18px;
     margin-bottom: 30px;
+    max-width: 50%;
+    display: grid;
   }
   
   .home-button {

@@ -66,8 +66,6 @@ export default function LoginForm() {
     
     try {
       const { data: responseData } = await validarLogin(requestData);
-      console.log('Respuesta del servidor:', responseData); 
-      console.log(responseData)
       
       setUserData({
         token: responseData.token,
@@ -82,9 +80,8 @@ export default function LoginForm() {
       
       setIsLoggedIn(true); 
     } catch (error) {
-      console.error("Error al enviar los datos:", error);
-      setLoginError("Correo electrónico o contraseña incorrectos");
-      
+      console.error("Error al enviar los datos:", error);      
+      setLoginError('Correo electrónico o contraseña incorrectos')
     }
   });
   

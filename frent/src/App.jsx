@@ -14,17 +14,19 @@ import LoginForm from './pages/Login/LoginForm'
 import MyCalendar from './components/Forms/rentFriends/calendar/MyCalendar';
 import Photo from './pages/photo/PhotoForm';
 import AddAvailableHours from './components/Forms/AddAvailableHours/AddAvailableHours'
+import { getUser } from './pages/Login/LoginForm';
 
 import { UserContext } from './pages/Login/UserProvider';
 
 function App() {
   const { userData } = useContext(UserContext);
+  const userData2 = getUser();
 
   return (
     <>
       <div className='body-app'>
         <BrowserRouter>
-          <NavBar user={userData} />
+          <NavBar user={userData2} />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<LoginForm />} />
@@ -35,7 +37,7 @@ function App() {
             <Route path="/photo" element={<Photo />} />
 
 
-            <Route element={<ProtectedRoute isAllowed={userData && userData.user_type === 'Cliente'} redirectTo="/login" />}>
+            <Route element={<ProtectedRoute isAllowed={userData2 && userData2.user_type === 'Cliente'} redirectTo="/login" />}>
               <Route path="/rentaForm/:id" element={<RentFriendForm />} />
               <Route path="/listRent" element={<ListFriend />} />
               <Route path='/calendarReservas/:id' element = {<MyCalendar/>}/>
@@ -43,7 +45,7 @@ function App() {
             </Route>
 
             <Route path="/rentalSectio" element={
-              <ProtectedRoute isAllowed={userData && userData.user_type === 'Amigo'}>
+              <ProtectedRoute isAllowed={userData2 && userData2.user_type === 'Amigo'}>
                 <ViewReserve />
               </ProtectedRoute>} />
 
