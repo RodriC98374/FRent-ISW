@@ -13,7 +13,7 @@
 }
 
 .upload-box {
-    width: 500px;
+    width: 400px;
     height: 300px;
     border: 2px dashed #ccc;
     margin: 40px auto;
@@ -74,12 +74,12 @@
     color: #fff;
     font-size: 20px;
     position: absolute;
-    top: -15px;
-    right: -15px;
+    top: -55vh;
+    right: 17vh;
     background-color: #ff0000;
     border: none;
     border-radius: 50%;
-    padding: 8px;
+    /* padding: 8px; */
     cursor: pointer;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
@@ -90,8 +90,11 @@
 }
 
 .preview-image {
-    width: 500px;
-    height: 500px;
+    width: 51%;
+    height: 400px;
+    position: absolute;
+    top: -55vh;
+    right: 26vh;
     
 }
 

@@ -76,11 +76,13 @@ export default function AddAvailableHours() {
         gender: data.gender,
         last_name: data.last_name,
         password: data.password,
+        confirmPassword: data.confirmarPassword,
         personal_description: data.personal_description,
         birth_date: data.birth_date,
         price: data.price,
         image: data.image,
         file: data.file,
+        is_client: data.is_client,
       }
     });
   }
