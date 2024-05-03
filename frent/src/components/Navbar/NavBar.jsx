@@ -7,15 +7,15 @@ import {
 } from "../../api/register.api";
 import "./Navbar.css";
 import NotificationModal from "./notifications";
-import { UserContext } from "../../pages/Login/UserProvider";
-import { signOut, getUser, getToken } from "../../pages/Login/LoginForm";
+import { signOut, getUser } from "../../pages/Login/LoginForm";
 import { FaUser } from "react-icons/fa";
 
 export default function NavBar() {
   const [modalVisible, setModalVisible] = useState(false);
   const [notifications, setNotifications] = useState([]);
-  const { userData } = useContext(UserContext);
-
+  /* const { userData} = useContext(UserContext); */
+  const userData = getUser();
+  
   const openModal = () => {
     if (modalVisible === false) {
       loadNotifications();
