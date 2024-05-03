@@ -29,6 +29,8 @@ export default function AddAvailableHours() {
   const [sundayFrom, setSundayFrom] = useState("");
   const [sundayTo, setSundayTo] = useState("");
 
+  const [isAtLeastOneDaySelected, setIsAtLeastOneDaySelected] = useState(false);
+
   const registerFrom = (dayName, time) => {
     if (dayName === "Lunes") {
       setMondayFrom(time);
@@ -88,6 +90,12 @@ export default function AddAvailableHours() {
 
   const submitDataFriend = async () => {
     try {
+      if (!isAtLeastOneDaySelected) {
+        // Si no hay ningún día seleccionado, muestra una advertencia
+        swal("Advertencia", "Debe seleccionar al menos un día de la semana", "warning");
+        return;
+      }
+
       //PETICION PARA REGISTRAR DATOS PERSONALES
       const data = friendData.friendDataNew;
 
@@ -150,8 +158,20 @@ export default function AddAvailableHours() {
 
   const handleSelectTime = ({ isSelected, dayName, startTime, endTime }) => {
     if (isSelected) {
+      setIsAtLeastOneDaySelected(true); // Marca que al menos un día está seleccionado
       registerFrom(dayName, startTime);
       registerTo(dayName, endTime);
+    } else {
+      // Si se deselecciona un día, verifica si aún queda algún día seleccionado
+      const isAnyDaySelected =
+        mondayFrom ||
+        tuesdayFrom ||
+        wednesdayFrom ||
+        thursdayFrom ||
+        fridayFrom ||
+        saturdayFrom ||
+        sundayFrom;
+      setIsAtLeastOneDaySelected(isAnyDaySelected);
     }
   };
 
@@ -160,33 +180,19 @@ export default function AddAvailableHours() {
       <div className="container container-available">
         <h2>Elija su disponibilidad de días y horarios</h2>
         <div className="days-to-week">
-          <DayItem  
-            dayName="Lunes"
-            onSelectTime={handleSelectTime}
+          <DayItem   dayName="Lunes"    onSelectTime={handleSelectTime}
           />
-          <DayItem
-            dayName="Martes"
-            onSelectTime={handleSelectTime}
+          <DayItem dayName="Martes"     onSelectTime={handleSelectTime}
           />
-          <DayItem
-            dayName="Miercoles"
-            onSelectTime={handleSelectTime}
+          <DayItem dayName="Miercoles"  onSelectTime={handleSelectTime}
           />
-          <DayItem
-            dayName="Jueves"
-            onSelectTime={handleSelectTime}
+          <DayItem dayName="Jueves"     onSelectTime={handleSelectTime}
           />
-          <DayItem 
-            dayName="Viernes"
-            onSelectTime={handleSelectTime}
+          <DayItem  dayName="Viernes"   onSelectTime={handleSelectTime}
           />
-          <DayItem
-            dayName="Sabado"
-            onSelectTime={handleSelectTime}
+          <DayItem dayName="Sabado"     onSelectTime={handleSelectTime}
           />
-          <DayItem
-            dayName="Domingo"
-            onSelectTime={handleSelectTime}
+          <DayItem dayName="Domingo"    onSelectTime={handleSelectTime}
           />
         </div>
 
