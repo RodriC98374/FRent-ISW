@@ -83,9 +83,6 @@ const Photo = () => {
   };
 
   const nextPage = async () => {
-    console.log("que peo we", file);
-    console.log("que peo Bionary", imageBinary);
-    console.log("que peo we userdara", userData.image);
 
     if (userData.is_client) {
       const client = {

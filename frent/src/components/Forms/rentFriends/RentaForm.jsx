@@ -31,8 +31,7 @@ export default function RentFriendForm() {
   const [selectedOutfit, setSelectedOutfit] = useState("");
   const [outfit, setOutfit] = useState([]);
   const [event, setEvent] = useState([]);
-  const [availability, setAvailability] = useState([]);
-  const [selectedDate2, setSelectedDate2] = useState(null); // Estado para la fecha seleccionada
+  const [availability, setAvailability] = useState([]); 
   const { userData } = useContext(UserContext);
   const userId = userData.user_id;
   // eslint-disable-next-line

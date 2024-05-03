@@ -1,40 +1,54 @@
+
 .home-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-image: url('https://drive.usercontent.google.com/download?id=1V9iDMZriYz3J0qO5oWsZgv_CgGbxC91y&authuser=1');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-  }
-  
-  .home-content {
-    text-align: center;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url('https://i.ibb.co/W53qYBX/sisi.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.home-content {
+  text-align: center;
+  color: #fff; 
+  padding: 20px;
+}
+
+.home-title {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.home-description {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  max-width: 50%;
+  margin: 0 auto; 
+}
+
+.home-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.home-button:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
   .home-title {
-    font-size: 36px;
-    margin-bottom: 20px;
+    font-size: 2.5rem;
   }
-  
   .home-description {
-    font-size: 18px;
-    margin-bottom: 30px;
+    font-size: 1rem;
+    max-width: 80%;
   }
-  
-  .home-button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .home-button:hover {
-    background-color: #0056b3;
-  }
-  
+}

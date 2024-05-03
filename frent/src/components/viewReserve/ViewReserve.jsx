@@ -4,7 +4,6 @@ import { FaUserFriends, FaCalendar, FaClock, FaSearch } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { UserContext } from "../../pages/Login/UserProvider";
-//import imgApp from "../../assets/imgApp";
 import swal from "sweetalert2";
 import "./ViewReserve.css";
 import "./Details.css";
@@ -18,26 +17,19 @@ import {
   update_pending_rent,
   getPendingRent,
 } from "../../api/register.api";
+import { getUser } from "../../pages/Login/LoginForm";
 
 export default function ViewReserve() {
   const { userData } = useContext(UserContext);
   const [listRent, setListRent] = useState([]);
   const [likes_user, setLikesUser] = useState([]);
   const [selectedRent, setSelectedRent] = useState(null);
-  const [friendId, setFriendId] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalImage, setModalImage] = useState(null);
+  const userData2 = getUser()
 
   const staticImage =
     "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
 
-  console.log(listRent);
-  useEffect(() => {
-    if (userData) {
-      setFriendId(userData.user_id);
-    }
-  }, [userData]);
 
   useEffect(() => {
     fetchData();
@@ -66,7 +58,7 @@ export default function ViewReserve() {
 
   const fetchData = async () => {
     try {
-      const resRent = await getPendingRent(userData.user_id); //Cuando exista una sesion pasar el id del amigo xd
+      const resRent = await getPendingRent(userData2.user_id); 
       if (resRent && resRent.data) {
         const sortedRent = resRent.data.sort((a, b) => {
           const dateA = new Date(a.created);
@@ -105,20 +97,9 @@ export default function ViewReserve() {
         confirmButtonText: "Sí",
         cancelButtonText: "No",
       });
-      console.log("Resultado de Swal:", result);
       if (result.isConfirmed) {
-        console.log("Confirmado para aceptar el alquiler");
         const hasConflict = checkTimeConflict(rentId);
-        console.log("¿Hay conflicto de horario?", hasConflict);
         if (hasConflict) {
-          console.log(
-            "Hay un conflicto de horario, mostrando mensaje de error"
-          );
-          swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "¡No puedes aceptar este alquiler debido a un conflicto de horario!",
-          });
           return;
         }
 
@@ -158,11 +139,9 @@ export default function ViewReserve() {
   
     const { time, duration, fecha_cita } = selectedRent;
   
-    // Calcular la hora de inicio y fin del alquiler actual
     const startTime = new Date(`2000-01-01T${time}`);
-    const endTime = new Date(startTime.getTime() + duration * 60 * 60 * 1000); // Sumar duración en milisegundos
+    const endTime = new Date(startTime.getTime() + duration * 60 * 60 * 1000); 
   
-    // Verificar si hay algún alquiler aceptado en la misma fecha y hora
     const hasAcceptedRentSameDateTime = listRent.some((rent) => {
       return (
         rent.status === "Aceptado" &&
@@ -172,26 +151,23 @@ export default function ViewReserve() {
     });
   
     if (hasAcceptedRentSameDateTime) {
-      // Si hay un alquiler aceptado en la misma fecha y hora, no se permite la aceptación
       return true;
     }
   
-    // Filtrar alquileres pendientes para verificar conflictos
     const conflicts = listRent.filter((rent) => {
       if (rent.rent_id === currentRentId || rent.status !== "Aceptado")
-        return false; // Excluir el propio alquiler y alquileres no pendientes
+        return false;
   
       const rentStartTime = new Date(`2000-01-01T${rent.time}`);
       const rentEndTime = new Date(
         rentStartTime.getTime() + rent.duration * 60 * 60 * 1000
       );
   
-      // Verificar si hay solapamiento de horarios, pero solo cuando las fechas coinciden
       if (
         fecha_cita === rent.fecha_cita &&
-        ((startTime >= rentStartTime && startTime < rentEndTime) || // Inicio dentro del rango
-          (endTime > rentStartTime && endTime <= rentEndTime) || // Fin dentro del rango
-          (startTime <= rentStartTime && endTime >= rentEndTime)) // Incluye completamente el rango
+        ((startTime >= rentStartTime && startTime < rentEndTime) ||
+          (endTime > rentStartTime && endTime <= rentEndTime) || 
+          (startTime <= rentStartTime && endTime >= rentEndTime)) 
       ) {
         return true;
       }
@@ -199,7 +175,8 @@ export default function ViewReserve() {
       return false;
     });
   
-    return conflicts.length > 0; // Si hay conflictos, devuelve true
+    return conflicts.length > 0;
+    
   };  const handleReject = async (rentId, rentClient, rentFriend) => {
     try {
       const rejected = window.confirm(
