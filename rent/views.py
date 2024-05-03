@@ -120,6 +120,9 @@ class RentDetailView(APIView):
             else:
               nvar='Rechazado'
             
+            outfit_type = rent.outfit.type_outfit if rent.outfit else 'No especificado'
+            event_type = rent.event.type_event if rent.event else 'No especificado'
+            
             rent_details.append({
                 'rent_id': rent.id,
                 'friend_id': rent.friend.id_user,
@@ -131,8 +134,8 @@ class RentDetailView(APIView):
                 'location': rent.location,
                 'description': rent.description,
                 'created': self.format_datetime_with_colon(localtime(rent.create)),
-                'type_outfit': rent.outfit.type_outfit,
-                'type_event': rent.event.type_event,
+                'type_outfit': outfit_type,
+                'type_event': event_type,
                 #'status':rent.status,
                 'status':nvar,
                 'price': rent.duration*(float(rent.friend.price)),
