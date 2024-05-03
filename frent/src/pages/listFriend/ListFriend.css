@@ -49,6 +49,7 @@
   border-radius: 50%;
   margin-bottom: 10px;
   z-index: 999;
+  object-fit: cover;
 }
 
 .card-texts {
@@ -118,6 +119,7 @@ margin-bottom: 0px !important;
   width: 500px;
   z-index: 999;
   transition: all 0.3s ease;
+  object-fit: cover;
 }
 
 .modal-background {
@@ -128,6 +130,7 @@ margin-bottom: 0px !important;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 998;
+  
 }
 
 .close {
@@ -142,6 +145,7 @@ margin-bottom: 0px !important;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  
 }
 
 .close:hover {
