@@ -3,7 +3,7 @@ import "./AddAvailableHours.css";
 import { ButtonSecondary } from "../../Buttons/buttonSecondary";
 import { ButtonPrimary } from "../../Buttons/buttonPrimary";
 import DayItem from "./DayItem";
-import { NavLink, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 import { createRegisterFriend } from "../../../api/register.api";
 import { createLikes, createAvailability } from "../../../api/register.api";
@@ -28,6 +28,8 @@ export default function AddAvailableHours() {
   const [saturdayTo, setSaturdayTo] = useState("");
   const [sundayFrom, setSundayFrom] = useState("");
   const [sundayTo, setSundayTo] = useState("");
+
+  const [isAtLeastOneDaySelected, setIsAtLeastOneDaySelected] = useState(false);
 
   const registerFrom = (dayName, time) => {
     if (dayName === "Lunes") {
@@ -88,6 +90,12 @@ export default function AddAvailableHours() {
 
   const submitDataFriend = async () => {
     try {
+      if (!isAtLeastOneDaySelected) {
+        // Si no hay ningún día seleccionado, muestra una advertencia
+        swal("Advertencia", "Debe seleccionar al menos un día de la semana", "warning");
+        return;
+      }
+
       //PETICION PARA REGISTRAR DATOS PERSONALES
       const data = friendData.friendDataNew;
 
@@ -148,52 +156,43 @@ export default function AddAvailableHours() {
     }
   };
 
+  const handleSelectTime = ({ isSelected, dayName, startTime, endTime }) => {
+    if (isSelected) {
+      setIsAtLeastOneDaySelected(true); // Marca que al menos un día está seleccionado
+      registerFrom(dayName, startTime);
+      registerTo(dayName, endTime);
+    } else {
+      // Si se deselecciona un día, verifica si aún queda algún día seleccionado
+      const isAnyDaySelected =
+        mondayFrom ||
+        tuesdayFrom ||
+        wednesdayFrom ||
+        thursdayFrom ||
+        fridayFrom ||
+        saturdayFrom ||
+        sundayFrom;
+      setIsAtLeastOneDaySelected(isAnyDaySelected);
+    }
+  };
+
   return (
     <div className="body-add-AH">
       <div className="container container-available">
         <h2>Elija su disponibilidad de días y horarios</h2>
         <div className="days-to-week">
-          <DayItem
-            type="time"
-            dayName="Lunes"
-            onSelectTimeFrom={registerFrom}
-            onSelectTimeTo={registerTo}
+          <DayItem   dayName="Lunes"    onSelectTime={handleSelectTime}
           />
-          <DayItem
-            type="time"
-            dayName="Martes"
-            onSelectTimeFrom={registerFrom}
-            onSelectTimeTo={registerTo}
+          <DayItem dayName="Martes"     onSelectTime={handleSelectTime}
           />
-          <DayItem
-            type="time"
-            dayName="Miercoles"
-            onSelectTimeFrom={registerFrom}
-            onSelectTimeTo={registerTo}
+          <DayItem dayName="Miercoles"  onSelectTime={handleSelectTime}
           />
-          <DayItem
-            type="time"
-            dayName="Jueves"
-            onSelectTimeFrom={registerFrom}
-            onSelectTimeTo={registerTo}
+          <DayItem dayName="Jueves"     onSelectTime={handleSelectTime}
           />
-          <DayItem
-            type="time"
-            dayName="Viernes"
-            onSelectTimeFrom={registerFrom}
-            onSelectTimeTo={registerTo}
+          <DayItem  dayName="Viernes"   onSelectTime={handleSelectTime}
           />
-          <DayItem
-            type="time"
-            dayName="Sabado"
-            onSelectTimeFrom={registerFrom}
-            onSelectTimeTo={registerTo}
+          <DayItem dayName="Sabado"     onSelectTime={handleSelectTime}
           />
-          <DayItem
-            type="time"
-            dayName="Domingo"
-            onSelectTimeFrom={registerFrom}
-            onSelectTimeTo={registerTo}
+          <DayItem dayName="Domingo"    onSelectTime={handleSelectTime}
           />
         </div>
 
