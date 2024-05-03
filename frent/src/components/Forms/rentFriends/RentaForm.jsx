@@ -10,6 +10,7 @@ import { getOutfit } from "../../../api/register.api";
 import { getEvent } from "../../../api/register.api";
 import { getAvailabilityFriend } from "../../../api/register.api";
 import swal from "sweetalert"; // Importar SweetAler
+import { getUser } from "../../../pages/Login/LoginForm.jsx";
 
 import "./RentaForm.css";
 import { UserContext } from "../../../pages/Login/UserProvider.jsx";
@@ -32,8 +33,7 @@ export default function RentFriendForm() {
   const [outfit, setOutfit] = useState([]);
   const [event, setEvent] = useState([]);
   const [availability, setAvailability] = useState([]); 
-  const { userData } = useContext(UserContext);
-  const userId = userData.user_id;
+  const userId = getUser()
   // eslint-disable-next-line
   const [isRedirecting, setIsRedirecting] = useState(false);
 
@@ -66,7 +66,7 @@ export default function RentFriendForm() {
       location: data.location,
       description: data.description,
       friend: friendId, // Asignar el ID del amigo
-      client: userId, // Suponiendo que el ID del cliente es 1 (puedes cambiarlo según tu lógica)
+      client: userId.user_id, // Suponiendo que el ID del cliente es 1 (puedes cambiarlo según tu lógica)
     };
 
 
