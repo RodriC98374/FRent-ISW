@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./PhotoFrom.css";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { ButtonSecondary } from "../../components/Buttons/buttonSecondary";
@@ -16,19 +16,12 @@ const Photo = () => {
   const location = useLocation();
   const userData = location.state;
 
-  // useEffect(() => {
-  //   const storedImageData = localStorage.getItem("imageData");
-  //   if (storedImageData) {
-  //     const { fileName, fileType, imageBinary } = JSON.parse(storedImageData);
-  //     const fileData = new File([base64ToArrayBuffer(imageBinary)], fileName, {
-  //       type: fileType,
-  //     });
-  //     setFile(fileData);
-  //     setImageBinary(imageBinary);
-  //     setPreviewUrl(`data:image/jpeg;base64,${imageBinary}`);
-  //     setError(""); // Reset error message
-  //   }
-  // }, []);
+  useEffect(() => {
+      if(userData.image){
+        setFile(userData.file);
+      setPreviewUrl(`data:image/jpeg;base64,${userData.image}`);
+      }
+  }, []);
 
   // useEffect(() => {
   //   if (file && imageBinary) {
@@ -126,12 +119,13 @@ const Photo = () => {
 
       navigate("/login");
     } else {
-      const friendDataNew = { ...userData, image: imageBinary? imageBinary : userData.image };
+      const friendDataNew = { ...userData, image: imageBinary? imageBinary : userData.image, file:file };
       navigate("/addAvailableHours", { state: { friendDataNew } });
     }
   };
 
   const handleRemoveFile = () => {
+    delete userData.file
     setFile(null);
     setPreviewUrl(null);
     setImageBinary("");
@@ -180,12 +174,12 @@ const Photo = () => {
         </label>
         {error && <p className="error-message">{error}</p>}
       </div>
-      {(previewUrl || userData.image) && (
+      {(previewUrl) && (
         <div className="preview-box">
           <button onClick={handleRemoveFile} className="remove-button">
             <i className="fas fa-times"></i>
           </button>
-          <img src={previewUrl? previewUrl : `data:image/png;base64,${userData.image}`} alt="Vista previa" className="preview-image" />
+          <img src={previewUrl} alt="Vista previa" className="preview-image" />
         </div>
       )}
       <div className="button-section">

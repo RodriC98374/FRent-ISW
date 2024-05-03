@@ -80,9 +80,9 @@ export default function AddAvailableHours() {
         birth_date: data.birth_date,
         price: data.price,
         image: data.image,
+        file: data.file,
       }
     });
-
   }
 
 
