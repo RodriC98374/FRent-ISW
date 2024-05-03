@@ -93,7 +93,7 @@ export default function LoginForm() {
   return (
     <div className="login-container">
       <div className="login-info">
-        <img src={logoImage} alt="Logo FREnt" className="login-logo" />
+        <img src='https://i.ibb.co/hZwZSSN/Logo-frent.png' alt="Logo FREnt" className="login-logo" />
         <h1>Inicia Sesión</h1>
         <Link to="/" className="login-link">Ir a FREnt</Link>
         <Link to="/form" className="register-link">¿No tienes una cuenta? ¡Regístrate!</Link>
