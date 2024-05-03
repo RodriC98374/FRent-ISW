@@ -3,7 +3,7 @@ import "./AddAvailableHours.css";
 import { ButtonSecondary } from "../../Buttons/buttonSecondary";
 import { ButtonPrimary } from "../../Buttons/buttonPrimary";
 import DayItem from "./DayItem";
-import { NavLink, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 import { createRegisterFriend } from "../../../api/register.api";
 import { createLikes, createAvailability } from "../../../api/register.api";

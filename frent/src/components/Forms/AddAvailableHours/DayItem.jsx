@@ -1,6 +1,26 @@
 import React, { useState, useEffect } from "react";
 //import InputText from "../Inputs/InputText.jsx";
-import SelectOptions from "../Selects/selectOptions.jsx";
+//import SelectOptions from "../Selects/selectOptions.jsx";
+import Select from 'react-select';
+
+const hours = [
+  {value: "06:00", label: "06:00" },
+  {value: "07:00", label: "07:00" },
+  {value: "08:00", label: "08:00" },
+  {value: "09:00", label: "09:00" },
+  {value: "10:00", label: "10:00" },
+  {value: "11:00", label: "11:00" },
+  {value: "12:00", label: "12:00" },
+  {value: "13:00", label: "13:00" },
+  {value: "14:00", label: "14:00" },
+  {value: "15:00", label: "15:00" },
+  {value: "16:00", label: "16:00" },
+  {value: "17:00", label: "17:00" },
+  {value: "18:00", label: "18:00" },
+  {value: "19:00", label: "19:00" },
+  {value: "20:00", label: "20:00" },
+  {value: "21:00", label: "21:00" },
+];
 
 export default function DayItem({
   type,
@@ -10,97 +30,92 @@ export default function DayItem({
   onSelectTimeTo,
 }) {
   const [icon, iconSelected] = useState(false);
-  const [selectedAMPM, setSelectedAMPM] = useState("AM");
-  const [selectedTimeFrom, setSelectedTimeFrom] = useState("06:00");
-  const [selectedTimeTo, setSelectedTimeTo] = useState("09:00");
-  const [endTimeOptions, setEndTimeOptions] = useState([
-    { value: "09:00", label: "09:00" },
-    { value: "10:00", label: "10:00" },
-    { value: "11:00", label: "11:00" },
-    { value: "12:00", label: "12:00" },
-  ]);
+  const [startTime, setStartTime] = useState(null);
+  const [endTimeDisabled, setEndTimeDisabled] = useState(true);
 
-  useEffect(() => {
-    onSelectTimeFrom(dayName, selectedTimeFrom);
-    onSelectTimeTo(dayName, selectedTimeTo);
-  }, [selectedTimeFrom, selectedTimeTo, dayName, onSelectTimeFrom, onSelectTimeTo]);
+  const endTimeOptions = hours.filter(option => {
+    if (startTime) {
+      return option.value > startTime.value; // Filtra solo opciones mayores a la hora de inicio seleccionada
+    }
+    return true; // Si no se ha seleccionado una hora de inicio, muestra todas las opciones
+  });
 
-  const ampmList = [
-    { value: "AM", label: "AM" },
-    { value: "PM", label: "PM" },
-  ];
 
-  const hoursAM = [
-    { value: "06:00", label: "06:00" },
-    { value: "07:00", label: "07:00" },
-    { value: "08:00", label: "08:00" },
-    { value: "09:00", label: "09:00" },
-    { value: "10:00", label: "10:00" },
-    { value: "11:00", label: "11:00" },
-    { value: "12:00", label: "12:00" },
-  ];
 
-  const hoursPM = [
-    { value: "13:00", label: "01:00" },
-    { value: "14:00", label: "02:00" },
-    { value: "15:00", label: "03:00" },
-    { value: "16:00", label: "04:00" },
-    { value: "17:00", label: "05:00" },
-    { value: "18:00", label: "06:00" },
-    { value: "19:00", label: "07:00" },
-    { value: "20:00", label: "08:00" },
-    { value: "21:00", label: "09:00" },
-  ];
+  // const [selectedAMPM, setSelectedAMPM] = useState("AM");
+  // const [selectedTimeFrom, setSelectedTimeFrom] = useState("06:00");
+  // const [selectedTimeTo, setSelectedTimeTo] = useState("09:00");
+  // const [endTimeOptions, setEndTimeOptions] = useState([
+  //   { value: "09:00", label: "09:00" },
+  //   { value: "10:00", label: "10:00" },
+  //   { value: "11:00", label: "11:00" },
+  //   { value: "12:00", label: "12:00" },
+  // ]);
+
+  // useEffect(() => {
+  //   onSelectTimeFrom(dayName, selectedTimeFrom);
+  //   onSelectTimeTo(dayName, selectedTimeTo);
+  // }, [selectedTimeFrom, selectedTimeTo, dayName, onSelectTimeFrom, onSelectTimeTo]);
+
+  // const hours = [
+  //   {value: "06", lable: ""},
+    
+  // ];
 
   const toggleIcon = () => {
     iconSelected(!icon);
-    setSelectedTimeFrom("");
-    setSelectedTimeTo("");
+    // setSelectedTimeFrom("");
+    // setSelectedTimeTo("");
   };
 
-  const handleAMPMChange = (selectedValue) => {
-    setSelectedAMPM(selectedValue);
+  const handleStartTimeChange = (selectedOption) => {
+    setStartTime(selectedOption); // Actualiza la hora de inicio seleccionada
+    setEndTimeDisabled(false); // Habilita el selector de hora final
   };
 
-  const handleTimeChangeFrom = (event) => {
-    const selectedValue = event.target.value;
-    if (selectedValue !== "21:00") {
-      setSelectedTimeFrom(selectedValue);
-      filterEndTimeOptions(selectedValue);
-    }
-    // Si se selecciona "12:00 AM", cambiar automáticamente el período de tiempo a "PM" en el selector de hora final
-    if (selectedValue === "12:00") {
-      setSelectedAMPM("PM");
-    }
+  // const handleAMPMChange = (selectedValue) => {
+  //   setSelectedAMPM(selectedValue);
+  // };
 
-    // Filtrar opciones para el selector de hora final
-    onSelectTimeFrom(dayName, selectedTimeFrom);
-  };
+  // const handleTimeChangeFrom = (event) => {
+  //   const selectedValue = event.target.value;
+  //   if (selectedValue !== "21:00") {
+  //     setSelectedTimeFrom(selectedValue);
+  //     filterEndTimeOptions(selectedValue);
+  //   }
+  //   // Si se selecciona "12:00 AM", cambiar automáticamente el período de tiempo a "PM" en el selector de hora final
+  //   if (selectedValue === "12:00") {
+  //     setSelectedAMPM("PM");
+  //   }
 
-  const handleTimeChangeTo = (event) => {
-    const selectedValue = event.target.value;
-    // Si el valor seleccionado en el segundo selector es menor o igual al valor seleccionado en el primer selector,
-    // actualiza el valor del segundo selector
-    if (selectedTimeFrom && selectedValue <= selectedTimeFrom) {
-      setSelectedTimeTo("");
-    } else {
-      setSelectedTimeTo(selectedValue);
-    }
-    onSelectTimeTo(dayName, selectedTimeTo);
-  };
+  //   // Filtrar opciones para el selector de hora final
+  //   onSelectTimeFrom(dayName, selectedTimeFrom);
+  // };
 
-  const filterEndTimeOptions = (selectedStartTime) => {
-    if (selectedStartTime) {
-      const filteredOptions =
-        selectedAMPM === "AM" && selectedStartTime !== "12:00"
-          ? hoursAM.filter((hour) => hour.value > selectedStartTime)
-          : hoursPM.filter((hour) => hour.value > selectedStartTime);
-      if (filteredOptions[0].value > selectedTimeTo) {
-        setEndTimeOptions(filteredOptions);
-        setSelectedTimeTo(filteredOptions[0]?.value || "");
-      }
-    }
-  };
+  // const handleTimeChangeTo = (event) => {
+  //   const selectedValue = event.target.value;
+  //   // Si el valor seleccionado en el segundo selector es menor o igual al valor seleccionado en el primer selector,
+  //   // actualiza el valor del segundo selector
+  //   if (selectedTimeFrom && selectedValue <= selectedTimeFrom) {
+  //     setSelectedTimeTo("");
+  //   } else {
+  //     setSelectedTimeTo(selectedValue);
+  //   }
+  //   onSelectTimeTo(dayName, selectedTimeTo);
+  // };
+
+  // const filterEndTimeOptions = (selectedStartTime) => {
+  //   if (selectedStartTime) {
+  //     const filteredOptions =
+  //       selectedAMPM === "AM" && selectedStartTime !== "12:00"
+  //         ? hoursAM.filter((hour) => hour.value > selectedStartTime)
+  //         : hoursPM.filter((hour) => hour.value > selectedStartTime);
+  //     if (filteredOptions[0].value > selectedTimeTo) {
+  //       setEndTimeOptions(filteredOptions);
+  //       setSelectedTimeTo(filteredOptions[0]?.value || "");
+  //     }
+  //   }
+  // };
 
   return (
     <div>
@@ -155,26 +170,21 @@ export default function DayItem({
           </svg>
           <p className="day-name">{dayName}</p>
           <p>De</p>
-          <SelectOptions
-            options={selectedAMPM === "AM" ? hoursAM : hoursPM}
-            value={selectedTimeFrom}
-            onChange={handleTimeChangeFrom}
-          />
-          <SelectOptions
-            options={ampmList}
-            placeholder={selectedAMPM}
-            onChange={(e) => handleAMPMChange(e.target.value)}
+          <Select
+            className="hours-selector"
+            options={hours}
+            placeholder="06:00"
+            onChange={(selectedOption) => setStartTime(selectedOption)}
           />
           <p>a</p>
-          <SelectOptions
+          <Select
+            className="hours-selector"
+            placeholder="09:00"
             options={endTimeOptions}
-            value={selectedTimeTo}
-            onChange={handleTimeChangeTo}
-          />
-          <SelectOptions
-            options={ampmList}
-            placeholder={selectedAMPM}
-            onChange={(e) => handleAMPMChange(e.target.value)}
+            isDisabled={!startTime}
+            onChange={(selectedHours) => {
+              console.log(selectedHours);
+            }}
           />
         </div>
       )}
