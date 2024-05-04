@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
 import { ButtonPrimary } from "../../Buttons/buttonPrimary";
 import { ButtonSecondary } from "../../Buttons/buttonSecondary";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import InputText from "../Inputs/InputText";
 import SelectOptions from "../Selects/selectOptions";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Country, State } from "country-state-city";
 
 import InterestModal from "../Interests/interestSection";
@@ -29,6 +29,8 @@ export function FriendForm() {
   const [errorLike, setErrorLike] = useState("");
 
   const [cityEnabled, setCityEnabled] = useState(false);
+  const location = useLocation();
+  let userData = location.state;
 
   const onSubmit = handleSubmit(async (data) => {
     if (selectedInterests.length < 2) {
@@ -45,6 +47,7 @@ export function FriendForm() {
         gender: data.Gender,
         last_name: data.Last_name,
         password: data.Password,
+        confirmPassword: data.confirmarPassword, 
         personal_description: data.Personal_description,
         birth_date: data.birth_date,
         price: data.price,
@@ -106,6 +109,7 @@ export function FriendForm() {
               <InputText
                 id={"First_name"}
                 label={"Nombre(s)"}
+                // value={userData? userData.first_name: undefined}
                 type={"text"}
                 required={true}
                 placeholder={"Ingrese su(s) nombre(s)"}
@@ -134,6 +138,7 @@ export function FriendForm() {
               <InputText
                 id={"Last_name"}
                 label={"Apellido(s)"}
+                // value={userData? userData.last_name: undefined}
                 type={"text"}
                 required={true}
                 placeholder={"Ingrese su(s) apellido(s)"}
@@ -163,6 +168,7 @@ export function FriendForm() {
                 id={"birth_date"}
                 label={"Fecha de nacimiento"}
                 type={"date"}
+                // value={userData? userData.birth_date: undefined}
                 required={true}
                 placeholder={"DD/MM/AA"}
                 register={register("birth_date", {
@@ -193,6 +199,7 @@ export function FriendForm() {
                 label={"Género"}
                 name={"genero"}
                 placeholder={"Elija su género"}
+                // value={selectedGender? selectedGender : userData? userData.gender: undefined}
                 value={selectedGender}
                 required={true}
                 options={optionsGender}
@@ -213,6 +220,7 @@ export function FriendForm() {
                 label={"País"}
                 name={"pais"}
                 placeholder={"Seleccione su pais"}
+                // value={selectedCountry? selectedCountry : userData? userData.country: undefined}
                 value={selectedCountry}
                 required={true}
                 onChange={handleCountryChange} // Manejador de cambio de selección
@@ -236,6 +244,7 @@ export function FriendForm() {
                 label={"Ciudad"}
                 name={"ciudad"}
                 placeholder={"Elija una ciudad"}
+                // value={selectedState? selectedState : userData? userData.gender: undefined}
                 value={selectedState}
                 required={true}
                 onChange={handleStateChange}
@@ -258,6 +267,7 @@ export function FriendForm() {
                 id={"Email"}
                 label={"Correo electrónico"}
                 type={"email"}
+                // value={userData? userData.email: undefined}
                 required={true}
                 placeholder={"Ingrese su correo electrónico"}
                 register={register("Email", {
@@ -280,6 +290,7 @@ export function FriendForm() {
               <InputText
                 id={"Password"}
                 label={"Contraseña"}
+                // value={userData? userData.password: undefined}
                 type={"password"}
                 required={true}
                 placeholder={"Ingrese su contraseña"}
@@ -306,6 +317,7 @@ export function FriendForm() {
               <InputText
                 id={"confirmarPassword"}
                 label={"Confirmar contraseña"}
+                // value={userData? userData.password: undefined}
                 type={"password"}
                 required={true}
                 placeholder={"Repita su contraseña"}
@@ -330,6 +342,7 @@ export function FriendForm() {
               <textarea
                 placeholder="Cuentanos sobre ti"
                 name="descripcion"
+                value={userData? userData.personal_description: undefined}
                 className="textAreaDescription"
                 {...register("Personal_description", {
                   maxLength: {
@@ -351,6 +364,7 @@ export function FriendForm() {
                 label={"Precio por hora"}
                 name={"precio"}
                 placeholder={"Elija una tarifa por hora"}
+                // value={selectedPrice? selectedPrice : userData? userData.price : undefined}
                 value={selectedPrice}
                 required={true}
                 onChange={(e) => setSelectedPrices(e.target.value)}

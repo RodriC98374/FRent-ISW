@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./PhotoFrom.css";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { ButtonSecondary } from "../../components/Buttons/buttonSecondary";
@@ -16,19 +16,12 @@ const Photo = () => {
   const location = useLocation();
   const userData = location.state;
 
-  // useEffect(() => {
-  //   const storedImageData = localStorage.getItem("imageData");
-  //   if (storedImageData) {
-  //     const { fileName, fileType, imageBinary } = JSON.parse(storedImageData);
-  //     const fileData = new File([base64ToArrayBuffer(imageBinary)], fileName, {
-  //       type: fileType,
-  //     });
-  //     setFile(fileData);
-  //     setImageBinary(imageBinary);
-  //     setPreviewUrl(`data:image/jpeg;base64,${imageBinary}`);
-  //     setError(""); // Reset error message
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (userData.image) {
+      setFile(userData.file);
+      setPreviewUrl(`data:image/jpeg;base64,${userData.image}`);
+    }
+  }, []);
 
   // useEffect(() => {
   //   if (file && imageBinary) {
@@ -41,7 +34,24 @@ const Photo = () => {
   //   }
   // }, [file, imageBinary]);
 
-  
+  const backPage = () => {
+    navigate("/friend", {
+      state: {
+        city: userData.city,
+        country: userData.country,
+        email: userData.email,
+        first_name: userData.first_name,
+        gender: userData.gender,
+        last_name: userData.last_name,
+        password: userData.password,
+        confirmPassword: userData.confirmarPassword,
+        personal_description: userData.personal_description,
+        birth_date: userData.birth_date,
+        price: userData.price,
+      },
+    });
+  };
+
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     if (!selectedFile) return;
@@ -83,6 +93,10 @@ const Photo = () => {
   };
 
   const nextPage = async () => {
+    if (!file && !userData.image) {
+      swal("Foto requerida", "Debe seleccionar un foto de perfil");
+      return;
+    }
 
     if (userData.is_client) {
       const client = {
@@ -93,10 +107,12 @@ const Photo = () => {
         gender: userData.gender,
         last_name: userData.last_name,
         password: userData.password,
+        confirmPassword: userData.confirmarPassword,
         personal_description: userData.personal_description,
         birth_date: userData.birth_date,
         image: imageBinary,
-      }; 
+        is_client: userData.is_client,
+      };
 
       const resFriend = await createRegisterClient(client);
 
@@ -118,12 +134,17 @@ const Photo = () => {
 
       navigate("/login");
     } else {
-      const friendDataNew = { ...userData, image: imageBinary? imageBinary : userData.image };
+      const friendDataNew = {
+        ...userData,
+        image: imageBinary ? imageBinary : userData.image,
+        file: file,
+      };
       navigate("/addAvailableHours", { state: { friendDataNew } });
     }
   };
 
   const handleRemoveFile = () => {
+    delete userData.file;
     setFile(null);
     setPreviewUrl(null);
     setImageBinary("");
@@ -172,21 +193,19 @@ const Photo = () => {
         </label>
         {error && <p className="error-message">{error}</p>}
       </div>
-      {(previewUrl || userData.image) && (
+      {previewUrl && (
         <div className="preview-box">
           <button onClick={handleRemoveFile} className="remove-button">
             <i className="fas fa-times"></i>
           </button>
-          <img src={previewUrl? previewUrl : `data:image/png;base64,${userData.image}`} alt="Vista previa" className="preview-image" />
+          <img src={previewUrl} alt="Vista previa" className="preview-image" />
         </div>
       )}
       <div className="button-section">
-        <NavLink to={userData.is_client? "/customer" : "/friend"}>
-          <ButtonSecondary label="Atras" />
-        </NavLink>
+        <ButtonSecondary onClick={backPage} label={"Atras"} />
         <ButtonPrimary
           onClick={nextPage}
-          label={userData.is_client? "Registrar" : "Siguiente"}
+          label={userData.is_client ? "Registrar" : "Siguiente"}
           disabled={!file || !userData.image}
         />
       </div>

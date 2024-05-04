@@ -38,7 +38,7 @@
 
 .home-content {
   text-align: center;
-  color: #fff; 
+  color: #ffffff; 
   padding: 20px;
   /*-webkit-text-stroke: 1px black;*/
 }
@@ -59,7 +59,7 @@
   display: inline-block;
   padding: 10px 20px;
   background-color: #007bff;
-  color: #fff;
+  color: #fffefe;
   text-decoration: none;
   border-radius: 5px;
   transition: background-color 0.3s ease;
