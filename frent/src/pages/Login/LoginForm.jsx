@@ -3,7 +3,7 @@ import { Link, Navigate} from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import InputText from '../../components/Forms/Inputs/InputText';
 import './LoginForm.css';
-import logoImage from '../../assets/img/Logo frent.png';
+//import logoImage from '../../assets/img/Logo frent.png';
 import { validarLogin } from '../../api/register.api';
 import { UserContext } from './UserProvider';
 

@@ -353,22 +353,18 @@ export default function ViewReserve() {
                 </p>
                 <p>{rent.price} Bs</p>
               </div>
-              <p>
-                <strong>Tipo de evento:</strong>
-              </p>
-              <p>
-                {rent.type_event ? rent.type_event : <i>No especificado</i>}
-              </p>
-              <p>
-                <strong>Vestimenta del evento:</strong>
-              </p>
-              <p>
-                {rent.type_outfit ? rent.type_outfit : <i>No especificado</i>}
-              </p>
+              <h3>Tipo de evento:</h3>
+              <div className="descripcion">
+                <p>{rent.type_event ? rent.type_event : <i>No especificado</i>}</p>
+              </div>
+              <h3>Vestimenta del evento:</h3>
+              <div className="descripcion">
+                  <p>{rent.type_outfit ? rent.type_outfit : <i>No especificado</i>}</p>  
+              </div>
               <h3>Descripción:</h3>
-              <div className="descripcion"><p>
-                {rent.description ? rent.description : <i>No especificado</i>}
-              </p></div>
+              <div className="descripcion">
+              <p>{rent.description ? rent.description : <i>No especificado</i>}</p>
+              </div>
               <p>
                 <strong>Intereses:</strong>
               </p>

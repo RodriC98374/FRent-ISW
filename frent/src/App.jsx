@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 import NavBar from './components/Navbar/NavBar';
 import Home from './pages/home/Home';
+import HomeClient from './pages/home/HomeClient'; // Nuevo componente
+import HomeFriend from './pages/home/HomeFriend'; // Nuevo componente
 import ListFriend from './pages/listFriend/ListFriends';
 import SelectionRegister from './pages/registros/SelectionRegister';
 import { CustomerForm } from './components/Forms/CustomerForm/CustomerForm';
@@ -28,14 +30,13 @@ function App() {
         <BrowserRouter>
           <NavBar user={userData2} />
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={userData2 && userData2.user_type === 'Cliente' ? <HomeClient /> : userData2 && userData2.user_type === 'Amigo' ? <HomeFriend /> : <Home />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/form" element={<SelectionRegister />} />
             <Route path="/customer" element={<CustomerForm />} />
             <Route path='/addAvailableHours' element={<AddAvailableHours/>}/>
             <Route path="/friend" element={<FriendForm />} />
             <Route path="/photo" element={<Photo />} />
-
 
             <Route element={<ProtectedRoute isAllowed={userData2 && userData2.user_type === 'Cliente'} redirectTo="/login" />}>
               <Route path="/rentaForm/:id" element={<RentFriendForm />} />
