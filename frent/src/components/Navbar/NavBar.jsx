@@ -74,7 +74,7 @@ export default function NavBar() {
               Inicio
             </NavLink>
           </li>
-          { getUser() !== null && getUser().user_type === "Cliente" && (
+          { userData && userData.user_type === "Cliente" && (
             <li onClick={closeModal}>
               <NavLink className="navbar-option" to="listfriend">
                 Amigos
@@ -89,7 +89,7 @@ export default function NavBar() {
               </NavLink>
             </li>
           )}
-          { getUser() !== null && getUser.user_type === "Amigo" && (
+          { userData && userData.user_type === "Amigo" && (
             <li onClick={closeModal}>
               <NavLink className="navbar-option" to="/rentalSectio">
                 Alquileres
@@ -122,7 +122,7 @@ export default function NavBar() {
               </button>
             </li>
           )}
-          {getUser() !== null && getUser().user_type === "Cliente" && (
+          {userData && userData.user_type === "Cliente" && (
             <li onClick={openModal}>
               <div className="navbar-option">
                 <svg

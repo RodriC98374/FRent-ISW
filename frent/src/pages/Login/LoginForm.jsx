@@ -18,7 +18,6 @@ export const saveToken = (token) => {
 
 export const getToken = () => {
   const res =  window.sessionStorage.getItem('authToken');
-  console.log("Este es el token",res)
   return res ? res : null;
 };
 
@@ -41,7 +40,6 @@ export default function LoginForm() {
 
     const checkLoggedIn = async () => {
       const authToken = getToken();
-      console.log("authToken:", authToken); 
       if (authToken) {
         try{
           const {data: usuario} = await validarLogin();
