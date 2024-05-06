@@ -98,13 +98,22 @@ class RentDetailView(APIView):
         rents = Rent.objects.filter(friend__id_user=friend_id).select_related('event', 'outfit')
         rent_details = []
         for rent in rents:
-            if rent.status=='pending':
-              nvar='Pendiente'
-            elif rent.status=='accepted':
-              nvar='Aceptado'
+            if rent.outfit is not None and rent.event is not None:
+                type_outfit = rent.outfit.type_outfit
+                type_event = rent.event.type_event
             else:
-              nvar='Rechazado'
+                type_outfit = 'No especificado'  
+                type_event = 'No especificado'   
             
+            if rent.status == 'pending':
+                status_str = 'Pendiente'
+            elif rent.status == 'accepted':
+                status_str = 'Aceptado'
+            else:
+                status_str = 'Rechazado'
+
+            price = rent.duration * float(rent.friend.price)
+
             rent_details.append({
                 'rent_id': rent.id,
                 'friend_id': rent.friend.id_user,
@@ -116,18 +125,18 @@ class RentDetailView(APIView):
                 'location': rent.location,
                 'description': rent.description,
                 'created': self.format_datetime_with_colon(localtime(rent.create)),
-                'type_outfit': rent.outfit.type_outfit,
-                'type_event': rent.event.type_event,
-                'status':nvar,
-                'price': rent.duration*(float(rent.friend.price)),
+                'type_outfit': type_outfit,
+                'type_event': type_event,
+                'status': status_str,
+                'price': price,
                 'image': rent.client.image
-            })  
-        
+            })
+                
         if not rent_details:
-            return Response({'mensaje': 'No hay alquileres encontrados para este amigo.'})
-        
+                    return Response({'mensaje': 'No hay alquileres encontrados para este amigo.'})
+                
         return Response(rent_details)
-      
+            
     def format_datetime_with_colon(self, datetime_obj):
       datetime_str = datetime_obj.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
       return datetime_str[:-2] + ':' + datetime_str[-2:]
