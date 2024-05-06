@@ -68,6 +68,7 @@ class PhotoViewSet(viewsets.ModelViewSet):
     serializer_class = PhotoSerializer
 
 class ProfileImageViewSet(viewsets.ModelViewSet):
+    serializer_class = ProfileImageSerializer
     def create(self, request):
         serializer = ProfileImageSerializer(data=request.data)
         if serializer.is_valid():
