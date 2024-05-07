@@ -27,8 +27,7 @@
   height: 3px;
 }
 
-.detalle1.AiOutlineClose {
-  display: static;
+.icon-location2 {
   font-size: 24px; /* Tamaño fijo para el icono */
 }
 .modal-wrapper {
