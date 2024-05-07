@@ -29,6 +29,7 @@
   .rbc-month-view {
     background-color: #f2eff5;
     border: none;
+    border: 1px solid #000;
     
   }
   .rbc-off-range-bg {
@@ -112,4 +113,23 @@
   font-size: 55px;
   color: var(--primary-color);
   box-shadow: #3174ad;
+}
+
+.rbc-month-header {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid #000;
+  border-radius: 10px;
+}
+
+.rbc-month-view {
+  position: relative;
+  border: 1px solid #000 !important;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0;
+  width: 100%;
+  user-select: none;
+  -webkit-user-select: none;
+  height: 100%;
 }
