@@ -48,7 +48,7 @@ function CalendarEdit() {
       const eventosTransformados = res.data.map((evento, index) => ({
         start: dayjs(evento.fecha_alquiler + "T" + evento.hora_inicio).toDate(),
         end: dayjs(evento.fecha_alquiler + "T" + evento.hora_fin).toDate(),
-        title: `${evento.tipo_evento} `,
+        title: `Ocupado`,
         duration: `${evento.duration} horas`,
       }));
       setEvents(eventosTransformados);

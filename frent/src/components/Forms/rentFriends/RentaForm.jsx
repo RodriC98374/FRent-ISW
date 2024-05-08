@@ -37,7 +37,7 @@ export default function RentFriendForm() {
   // eslint-disable-next-line
   const [isRedirecting, setIsRedirecting] = useState(false);
 
-
+  console.log(availability)
   useEffect(() => {
     async function fetchData() {
       try {
