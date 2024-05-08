@@ -334,8 +334,10 @@ export default function ViewReserve() {
                     <RiVerifiedBadgeFill className="icon" />
                     Verificado
                   </p>
-                  <p className="locationR1">
-                    <IoLocationSharp className="icon" />
+                  <div className="icon-location2">
+                  &nbsp;<IoLocationSharp className="icon" />
+                  </div>                 
+                  <p className="locationR1">                    
                     {rent.location}
                   </p>
                 </div>

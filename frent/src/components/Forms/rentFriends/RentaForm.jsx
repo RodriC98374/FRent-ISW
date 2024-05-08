@@ -225,6 +225,7 @@ switch (dayOfWeek.toLowerCase(dayOfWeek)) {
                   id={"time"}
                   label={"Hora de la cita"}
                   type={"time"}
+                  step={"3600"} // Cambiado a 3600 segundos (equivalente a 1 hora)
                   required={true}
                   register={register("time", {
                     required: {
@@ -235,10 +236,11 @@ switch (dayOfWeek.toLowerCase(dayOfWeek)) {
                       const selectedTime = new Date(`01/01/2000 ${value}`);
 
                       if (
-                        selectedTime < startValidTime ||
+                        selectedTime.getMinutes() !== 0 || // Si los minutos no son cero
+                        selectedTime < startValidTime ||    // O si está fuera del rango válido
                         selectedTime > endValidTime
                       ) {
-                        return "Debe selecionar el rango de horas disponible del cliente";
+                        return "Debe seleccionar una hora en punto dentro del rango disponible.";
                       }
                     },
                   })}
