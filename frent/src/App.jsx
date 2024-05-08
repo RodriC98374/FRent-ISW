@@ -15,10 +15,11 @@ import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
 import LoginForm from './pages/Login/LoginForm'
 import MyCalendar from './components/Forms/rentFriends/calendar/MyCalendar';
 import Photo from './pages/photo/PhotoForm';
-import AddAvailableHours from './components/Forms/AddAvailableHours/AddAvailableHours'
+import AddAvailableHours from './components/Forms/AddAvailableHours/AddAvailableHours';
 import { getUser } from './pages/Login/LoginForm';
 
 import { UserContext } from './pages/Login/UserProvider';
+import Chat from './components/Chat/Chat';
 
 function App() {
   const { userData } = useContext(UserContext);
@@ -34,14 +35,15 @@ function App() {
             <Route path="/login" element={<LoginForm />} />
             <Route path="/form" element={<SelectionRegister />} />
             <Route path="/customer" element={<CustomerForm />} />
-            <Route path='/addAvailableHours' element={<AddAvailableHours/>}/>
+            <Route path='/addAvailableHours' element={<AddAvailableHours />} />
             <Route path="/friend" element={<FriendForm />} />
             <Route path="/photo" element={<Photo />} />
+            <Route path="/chat" element={<Chat />} />
 
             <Route element={<ProtectedRoute isAllowed={userData2 && userData2.user_type === 'Cliente'} redirectTo="/login" />}>
               <Route path="/rentaForm/:id" element={<RentFriendForm />} />
               <Route path="/listRent" element={<ListFriend />} />
-              <Route path='/calendarReservas/:id' element = {<MyCalendar/>}/>
+              <Route path='/calendarReservas/:id' element={<MyCalendar />} />
               <Route path="/listFriend" element={<ListFriend />} />
             </Route>
 
