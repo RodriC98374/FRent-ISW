@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import './Chat.css'
 const Chat = () => {
     const [messages, setMessages] = useState([
         { text: 'Pasa viste ya por casa?', isIncoming: true, time: '9:42' },
