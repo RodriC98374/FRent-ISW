@@ -85,6 +85,7 @@ export default function AddAvailableHours() {
         image: data.image,
         file: data.file,
         is_client: data.is_client,
+        likes: data.likes,
       }
     });
   }

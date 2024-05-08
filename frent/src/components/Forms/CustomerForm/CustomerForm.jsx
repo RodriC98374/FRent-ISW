@@ -3,16 +3,17 @@ import { ButtonPrimary } from "../../Buttons/buttonPrimary";
 import { ButtonSecondary } from "../../Buttons/buttonSecondary";
 import InputText from "../Inputs/InputText";
 import SelectOptions from "../Selects/selectOptions";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Country, State } from "country-state-city";
 
 import "./customerForm.css";
 import InterestModal from "../Interests/interestSection";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 
 export function CustomerForm() {
-
   const navigate = useNavigate();
+  const location = useLocation();
+  let userData = location.state;
 
   const { 
     register,
@@ -31,6 +32,7 @@ export function CustomerForm() {
   const [cityEnabled, setCityEnabled] = useState(false);
   const [errorLike, setErrorLike] = useState("");
 
+  //SE LO DEBE USAR EN LA PARTE DEL REGISTRO
   const translateErrorMessage = (errorMessage) => {
     const errorTranslations = {
       "user with this email already exists.":
@@ -39,6 +41,26 @@ export function CustomerForm() {
 
     return errorTranslations[errorMessage] || errorMessage;
   };
+
+  useEffect(()=>{
+    if(userData){
+      const states = State.getStatesOfCountry(userData.country);
+      setStates(states)
+      setValue('First_name', userData.first_name);
+      setValue('Last_name', userData.last_name);
+      setValue('birth_date', userData.birth_date);
+      setSelectedGender(userData.gender)
+      setValue("Gender", userData.gender);
+      setSelectedCountry(userData.country);
+      setValue("Country", userData.country);
+      setSelectedState(userData.city);
+      setValue("City", userData.city);
+      setValue('Email', userData.email);
+      setValue('Password', userData.password);
+      setValue('confirmarPassword', userData.password);
+      setValue('Personal_description', userData.personal_description);
+    }
+  }, [])
 
   const onSubmit = handleSubmit(async (data) => {
     if (selectedInterests.length < 2) {
@@ -73,9 +95,9 @@ export function CustomerForm() {
     if (selectedInterests.length < 2) {
       setErrorLike("Debe seleccionar al menos 2 intereses.");
     } else {
-      setSelectedInterests(selectedInterests);
       setErrorLike(""); // Limpiar el mensaje de error si la validación pasa
     }
+    setSelectedInterests(selectedInterests);
   };
 
   const handleCountryChange = (e) => {
@@ -276,9 +298,7 @@ export function CustomerForm() {
                 })}
                 errors={errors}
               />
-              {errorMessage && (
-                <div className="error-message">{errorMessage}</div>
-              )}
+            
             </div>
             <div className="input-2c">
               <InputText
@@ -352,6 +372,7 @@ export function CustomerForm() {
               <InterestModal
                 onSaveInterests={handleSaveInterests}
                 errors={errors}
+                userDataLikes={userData? userData.likes : []}
               />
               <div className="error-message">{errorLike}</div>
             </div>
