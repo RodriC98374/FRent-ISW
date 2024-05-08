@@ -17,39 +17,39 @@ const Photo = () => {
   const userData = location.state;
 
   useEffect(() => {
+    console.log("los datos mandados por el form son: ", userData.likes);
     if (userData.image) {
       setFile(userData.file);
       setPreviewUrl(`data:image/jpeg;base64,${userData.image}`);
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (file && imageBinary) {
-  //     const imageData = {
-  //       fileName: file.name,
-  //       fileType: file.type,
-  //       imageBinary,
-  //     };
-  //     localStorage.setItem("imageData", JSON.stringify(imageData));
-  //   }
-  // }, [file, imageBinary]);
-
   const backPage = () => {
-    navigate("/friend", {
-      state: {
-        city: userData.city,
-        country: userData.country,
-        email: userData.email,
-        first_name: userData.first_name,
-        gender: userData.gender,
-        last_name: userData.last_name,
-        password: userData.password,
-        confirmPassword: userData.confirmarPassword,
-        personal_description: userData.personal_description,
-        birth_date: userData.birth_date,
-        price: userData.price,
-      },
-    });
+
+    const userDataDatas = {
+      city: userData.city,
+      country: userData.country,
+      email: userData.email,
+      first_name: userData.first_name,
+      gender: userData.gender,
+      last_name: userData.last_name,
+      password: userData.password,
+      confirmPassword: userData.confirmarPassword,
+      personal_description: userData.personal_description,
+      birth_date: userData.birth_date,
+      price: userData.price,
+      likes: userData.likes,
+    }
+
+    if (userData.is_client) {
+      navigate("/customer", {
+        state: userDataDatas,
+      });
+    } else {
+      navigate("/friend", {
+        state: userDataDatas,
+      });
+    }
   };
 
   const handleFileChange = (event) => {
@@ -145,6 +145,7 @@ const Photo = () => {
 
   const handleRemoveFile = () => {
     delete userData.file;
+    delete userData.image;
     setFile(null);
     setPreviewUrl(null);
     setImageBinary("");
