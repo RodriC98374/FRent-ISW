@@ -58,6 +58,10 @@ export default function NavBar() {
     }
   };
 
+  const clearLocalStorage = () => {
+    localStorage.clear();
+  }
+
   return (
     <>
       <nav className="navbar-body">
@@ -82,7 +86,7 @@ export default function NavBar() {
             </li>
           )}
           {!userData && (
-            <li onClick={closeModal}>
+            <li onClick={() => {closeModal(); clearLocalStorage();}}>
               <NavLink className="navbar-option" to="form">
                 {" "}
                 Registrarse

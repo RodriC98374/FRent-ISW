@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./PhotoFrom.css";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ButtonSecondary } from "../../components/Buttons/buttonSecondary";
 import { ButtonPrimary } from "../../components/Buttons/buttonPrimary";
 import { createRegisterClient } from "../../api/register.api";
@@ -23,33 +23,40 @@ const Photo = () => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (file && imageBinary) {
-  //     const imageData = {
-  //       fileName: file.name,
-  //       fileType: file.type,
-  //       imageBinary,
-  //     };
-  //     localStorage.setItem("imageData", JSON.stringify(imageData));
-  //   }
-  // }, [file, imageBinary]);
-
   const backPage = () => {
-    navigate("/friend", {
-      state: {
-        city: userData.city,
-        country: userData.country,
-        email: userData.email,
-        first_name: userData.first_name,
-        gender: userData.gender,
-        last_name: userData.last_name,
-        password: userData.password,
-        confirmPassword: userData.confirmarPassword,
-        personal_description: userData.personal_description,
-        birth_date: userData.birth_date,
-        price: userData.price,
-      },
-    });
+    const userDataDatas = {
+      city: userData.city,
+      country: userData.country,
+      email: userData.email,
+      first_name: userData.first_name,
+      gender: userData.gender,
+      last_name: userData.last_name,
+      password: userData.password,
+      confirmPassword: userData.confirmarPassword,
+      personal_description: userData.personal_description,
+      birth_date: userData.birth_date,
+      price: userData.price,
+      likes: userData.likes,
+      image: imageBinary? imageBinary : userData? userData.image : null,
+    }
+
+    if (userData.is_client) {
+      navigate("/customer", {
+        state: userDataDatas,
+      });
+    } else {
+      navigate("/friend", {
+        state: userDataDatas,
+      });
+    }
+  };
+
+  const translateErrorMessage = (errorMessage) => {
+    const errorTranslations = {
+      "user with this email already exists.":
+        "Ya existe un usuario con este correo electrónico.",
+    };
+    return errorTranslations[errorMessage] || errorMessage;
   };
 
   const handleFileChange = (event) => {
@@ -114,7 +121,8 @@ const Photo = () => {
         is_client: userData.is_client,
       };
 
-      const resFriend = await createRegisterClient(client);
+      try{
+        const resFriend = await createRegisterClient(client);
 
       //PETICION PARA REGISTRAR GUSTOS
       const user_likes = {
@@ -133,11 +141,20 @@ const Photo = () => {
       }, 1000);
 
       navigate("/login");
+      } catch (error){
+        console.error("Error al enviar los datos:", error);
+        if (error.response && error.response.data && error.response.data.email) {
+          const translatedErrorMessage = translateErrorMessage(
+            error.response.data.email[0]
+          );
+          swal(""+translatedErrorMessage);
+        }
+      }
+
     } else {
       const friendDataNew = {
         ...userData,
         image: imageBinary ? imageBinary : userData.image,
-        file: file,
       };
       navigate("/addAvailableHours", { state: { friendDataNew } });
     }
@@ -145,6 +162,7 @@ const Photo = () => {
 
   const handleRemoveFile = () => {
     delete userData.file;
+    delete userData.image;
     setFile(null);
     setPreviewUrl(null);
     setImageBinary("");
