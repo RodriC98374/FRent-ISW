@@ -101,10 +101,12 @@ a{
   gap: 24px;
   font-family: Alata;
   border-radius: 6px;
+  padding: 12px 8px;
+  font-size: 16px;
 }
 
 .name-card{
-  font-size: var(--pL-size);
+  font-size: 24px;
   font-weight: 600;
   display: inline;
 }

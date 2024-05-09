@@ -302,7 +302,7 @@ export default function ViewReserve() {
               <AiOutlineClose
                 className="icon1"
                 size={30}
-                color="#000"
+                color="#ff0000"
                 onClick={closeModal}
                 cursor={"pointer"}
               />
