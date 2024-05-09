@@ -73,6 +73,7 @@ export function FriendForm() {
         birth_date: data.birth_date,
         price: data.price,
         likes: selectedInterests,
+        image: userData? userData.image : null,
       }
     });
 

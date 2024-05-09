@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./PhotoFrom.css";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ButtonSecondary } from "../../components/Buttons/buttonSecondary";
 import { ButtonPrimary } from "../../components/Buttons/buttonPrimary";
 import { createRegisterClient } from "../../api/register.api";
@@ -17,7 +17,6 @@ const Photo = () => {
   const userData = location.state;
 
   useEffect(() => {
-    console.log("los datos mandados por el form son: ", userData.likes);
     if (userData.image) {
       setFile(userData.file);
       setPreviewUrl(`data:image/jpeg;base64,${userData.image}`);
@@ -25,7 +24,6 @@ const Photo = () => {
   }, []);
 
   const backPage = () => {
-
     const userDataDatas = {
       city: userData.city,
       country: userData.country,
@@ -39,6 +37,7 @@ const Photo = () => {
       birth_date: userData.birth_date,
       price: userData.price,
       likes: userData.likes,
+      image: imageBinary? imageBinary : userData? userData.image : null,
     }
 
     if (userData.is_client) {
@@ -50,6 +49,14 @@ const Photo = () => {
         state: userDataDatas,
       });
     }
+  };
+
+  const translateErrorMessage = (errorMessage) => {
+    const errorTranslations = {
+      "user with this email already exists.":
+        "Ya existe un usuario con este correo electrónico.",
+    };
+    return errorTranslations[errorMessage] || errorMessage;
   };
 
   const handleFileChange = (event) => {
@@ -114,7 +121,8 @@ const Photo = () => {
         is_client: userData.is_client,
       };
 
-      const resFriend = await createRegisterClient(client);
+      try{
+        const resFriend = await createRegisterClient(client);
 
       //PETICION PARA REGISTRAR GUSTOS
       const user_likes = {
@@ -133,11 +141,20 @@ const Photo = () => {
       }, 1000);
 
       navigate("/login");
+      } catch (error){
+        console.error("Error al enviar los datos:", error);
+        if (error.response && error.response.data && error.response.data.email) {
+          const translatedErrorMessage = translateErrorMessage(
+            error.response.data.email[0]
+          );
+          swal(""+translatedErrorMessage);
+        }
+      }
+
     } else {
       const friendDataNew = {
         ...userData,
         image: imageBinary ? imageBinary : userData.image,
-        file: file,
       };
       navigate("/addAvailableHours", { state: { friendDataNew } });
     }
