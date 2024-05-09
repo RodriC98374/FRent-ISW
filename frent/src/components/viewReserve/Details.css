@@ -27,6 +27,9 @@
   height: 3px;
 }
 
+.icon-location2 {
+  font-size: 24px; /* Tamaño fijo para el icono */
+}
 .modal-wrapper {
   transition: opacity 0.3s ease;
   /* Efecto de transición para la opacidad */
