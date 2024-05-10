@@ -9,17 +9,23 @@ const EventList = ({ date, events, onCloseModal }) => {
       dayjs(date).isSame(dayjs(event.start), "day") ||
       dayjs(date).isSame(dayjs(event.end), "day")
   );
+  function capitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
 
   return (
     <div className="listaEvento">
       <button className="closeButton" onClick={onCloseModal}>X</button>
-      <div className="title">
-        <h2>
-          Ver reservas
-          <IoCalendarOutline className="Icon1" />
-          {date.format("DD MMM")}
-        </h2>
+      <div className="titleE">
+        <h2>Ver reservas</h2>
+        <div className="date-title">
+          <IoCalendarOutline className="Icon2" />
+          {capitalizeFirstLetter(date.format("DD MMM"))}
+        </div>
       </div>
+      
+
       <div className="reserv-container">
         <h3>Reservas</h3>
         <p>Total Reservas: {filteredEvents.length}</p>

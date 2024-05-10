@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import {
   get_notifications_user,
   update_notifications_user,
@@ -15,6 +15,8 @@ export default function NavBar() {
   const [notifications, setNotifications] = useState([]);
   /* const { userData} = useContext(UserContext); */
   const userData = getUser();
+
+  const location = useLocation();
   
   const openModal = () => {
     if (modalVisible === false) {
@@ -83,7 +85,9 @@ export default function NavBar() {
           )}
           {!userData && (
             <li onClick={closeModal}>
-              <NavLink className="navbar-option" to="form">
+              <NavLink className={
+              location.pathname === "/form" ? "navbar-option active" : "navbar-option"
+            } to="form">
                 {" "}
                 Registrarse
               </NavLink>
@@ -91,7 +95,11 @@ export default function NavBar() {
           )}
           { userData && userData.user_type === "Amigo" && (
             <li onClick={closeModal}>
-              <NavLink className="navbar-option" to="/rentalSectio">
+              <NavLink className={
+              location.pathname === "/rentalSection"
+                ? "navbar-option active"
+                : "navbar-option"
+            } to="/rentalSectio">
                 Alquileres
               </NavLink>
             </li>

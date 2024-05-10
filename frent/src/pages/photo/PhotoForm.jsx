@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./PhotoFrom.css";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ButtonSecondary } from "../../components/Buttons/buttonSecondary";
 import { ButtonPrimary } from "../../components/Buttons/buttonPrimary";
 import { createRegisterClient } from "../../api/register.api";

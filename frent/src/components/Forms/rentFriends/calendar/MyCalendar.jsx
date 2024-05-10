@@ -100,7 +100,16 @@ function CalendarEdit() {
               event: ({ event }) => (
                 <button
                   onClick={() => handleAddEvent(dayjs(event.start))}
-                  style={{ backgroundColor: "#FBA834" }}>
+                  style={{
+                    backgroundColor: "#3174ad",
+                    borderRadius: "5px",
+                    color: "#fff",
+                    cursor: "pointer",
+                    width: "100%",
+                    height: "30px",
+                    textAlign: "left",
+                    padding: "0",
+                  }}>
                   {" "}
                   <div>{event.eventType}</div>
                 </button>

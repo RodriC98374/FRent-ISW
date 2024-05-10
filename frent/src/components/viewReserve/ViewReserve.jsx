@@ -100,6 +100,28 @@ export default function ViewReserve() {
       if (result.isConfirmed) {
         const hasConflict = checkTimeConflict(rentId);
         if (hasConflict) {
+          const conflictingRent = listRent.find(
+            (rent) => 
+              rent.status === "Aceptado" &&
+        rent.fecha_cita === fecha_cita &&
+        rent.time === time
+          );
+
+          const dataNotification = {
+            message: `No se puede aceptar el alquiler. Hay otro alquiler aceptado en la misma fecha y hora: ${conflictingRent.nombre_cliente}`,
+            from_user: rentFriend,
+            to_user: rentClient,
+            is_reading: false,
+          };
+
+          await create_notification(dataNotification);
+
+          swal.fire({
+            icon: "error",
+            title: "Choque de horario",
+            text: `No se puede aceptar el alquiler. Hay otro alquiler aceptado en la misma fecha y hora.`,
+          });
+          
           return;
         }
 
