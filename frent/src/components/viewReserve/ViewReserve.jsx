@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import { FaUserFriends, FaCalendar, FaClock, FaSearch } from "react-icons/fa";
+import { FaUserFriends, FaCalendar, FaClock, FaSearch, FaUserCircle } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
+
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { UserContext } from "../../pages/Login/UserProvider";
 import swal from "sweetalert2";
@@ -486,11 +487,16 @@ export default function ViewReserve() {
                           <FaSearch className="icon" />
                           Detalles
                         </button>
+                        <button className="details-button">
+                          <FaUserCircle className="icon" />
+                          Ver Perfil
+                        </button>
                       </div>
                     </div>
                   </div>
                 </div>
                 <hr></hr>
+
                 {rent.status !== "Aceptado" &&
                   rent.status !== "Rechazado" &&
                   (!checkTimeConflict(rent.rent_id) ? (
@@ -519,9 +525,11 @@ export default function ViewReserve() {
                       </button>
                     </div>
                   ) : (
-                    <p className="already-accepted">
-                      Ya existe un alquiler aceptado en esta fecha y hora
-                    </p>
+                    <>
+                      <p className="already-accepted">
+                        Ya existe un alquiler aceptado en esta fecha y hora                       
+                      </p>                     
+                    </>
                   ))}
                 {/* Renderiza el modal si se ha seleccionado un alquiler */}
                 <DetailsModal

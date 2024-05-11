@@ -21,6 +21,9 @@ import { getUser } from './pages/Login/LoginForm';
 import { UserContext } from './pages/Login/UserProvider';
 import Chat from './components/Chat/Chat';
 
+/*import para ver como queda perfil*/
+import ProfileFriend from './pages/profile/profileFriend';
+
 function App() {
   const { userData } = useContext(UserContext);
   const userData2 = getUser();
@@ -51,6 +54,8 @@ function App() {
               <ProtectedRoute isAllowed={userData2 && userData2.user_type === 'Amigo'}>
                 <ViewReserve />
               </ProtectedRoute>} />
+            
+            <Route path="/profil" element={<ProfileFriend />} /> 
 
             <Route path="/*" element={<h1 className='text-center'>404 Page Not Found</h1>}></Route>
           </Routes>
