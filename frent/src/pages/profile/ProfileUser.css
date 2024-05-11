@@ -1,0 +1,153 @@
+
+.body-page{
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 0px;
+}
+
+.form-body-container{
+  padding: 24px 48px;
+  margin-top: 24px;
+  max-width: 1000px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  font-size: var(--pL-size);
+}
+
+.form-body-container{
+  font-size: 20px;
+}
+
+.form-body-container p{
+  border-bottom: solid 1px rgb(0, 0, 0);
+}
+
+.profile-view{
+  display: flex;
+  max-width: 1000px;
+  margin: 20px;
+}
+
+.profile-image{
+  margin: 0px 20px 0px 20px;
+}
+
+.profile-image img{
+  border-radius: 50%;
+  width: 270px;
+  height: 270;
+  object-fit: cover;
+}
+
+.profile-description{
+  padding: 0px 20px 0px 20px;
+}
+
+.descripction{
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.descripction > textarea{
+  border: 3px solid #ccc;
+  border-radius: 8px;
+  padding: 12px 24px;
+}
+
+.location {
+  display: flex;
+  flex-flow: column wrap;
+  gap: 8px;
+}
+
+.location > textarea{
+  border: 3px solid #ccc;
+  border-radius: 8px;
+}
+
+.error-message{
+  font-size: var(--pM-size);
+  color: red;
+  margin-bottom: 8px;
+}
+
+
+.form-body-container > h3 {
+  font-size: var(--h3-size);
+  text-align: center;
+}
+
+.colums-inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Ajusta el ancho de las columnas según el contenido */
+  column-gap: 20px; /* Espacio entre elementos */
+}
+
+.input-1c,
+.input-2c,
+.input-4c {
+  width: 100%;
+}
+
+.pais-select{
+  width: 100%;
+}
+.input-1c {
+  grid-column: span 1; /* Ocupa una columna completa */
+}
+
+.input-2c {
+  grid-column: span 2; /* Ocupa dos columnas */
+}
+
+.input-4c {
+  resize: none;
+  grid-column: span 4; /* Ocupa cuatro columnas */
+}
+
+.textAreaDescription {
+  resize: none;
+  width: 93%;
+  height: 100px; /* Ajusta la altura según sea necesario */
+}
+
+.textArealocation {
+  width: 100%;
+  height: 100px;
+}
+
+.buttons-section {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 48px;
+}
+
+.select-component > select {
+  border-radius: 4px;
+  padding: 12px 24px;
+  color:#7b7676;
+  border: 2px solid #ccc;
+}
+
+@media (max-width: 900px) {
+  /* Estilos para dispositivos de tablet para abajo */
+  .input-1c {
+      grid-column: span 2; /* Ocupa una columna completa */
+  }
+
+  .input-2c {
+      grid-column: span 4; /* Ocupa dos columnas */
+  }
+}
+
+@media (max-width: 768px) {
+  .input-1c {
+      grid-column: span 4; /* Ocupa una columna completa */
+  }
+}
+
+
+

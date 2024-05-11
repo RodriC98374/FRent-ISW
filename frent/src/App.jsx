@@ -23,6 +23,7 @@ import Chat from './components/Chat/Chat';
 
 /*import para ver como queda perfil*/
 import ProfileFriend from './pages/profile/profileFriend';
+import ProfileUser from './pages/profile/ProfileUser';
 
 function App() {
   const { userData } = useContext(UserContext);
@@ -55,7 +56,9 @@ function App() {
                 <ViewReserve />
               </ProtectedRoute>} />
             
-            <Route path="/profil" element={<ProfileFriend />} /> 
+            <Route path="/profil" element={<ProfileFriend />} />
+            <Route path="/profileUser" element={<ProfileUser />} />
+
 
             <Route path="/*" element={<h1 className='text-center'>404 Page Not Found</h1>}></Route>
           </Routes>
