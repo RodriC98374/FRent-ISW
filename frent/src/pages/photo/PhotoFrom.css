@@ -75,8 +75,8 @@
     color: #fff;
     font-size: 20px;
     position: absolute;
-    top: -55vh;
-    right: 17vh;
+    top: -420px;
+    right: 120px;
     background-color: #ff0000;
     border: none;
     border-radius: 50%;
@@ -91,11 +91,10 @@
 }
 
 .preview-image {
-    width: 51%;
+    width: 420px;
     height: 400px;
     position: absolute;
-    top: -55vh;
-    right: 26vh;
+    top: -410px;
 }
 
 
