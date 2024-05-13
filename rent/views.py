@@ -148,6 +148,6 @@ class RentDetailView(APIView):
             
         return Response(rent_details)
       
-def format_datetime_with_colon(self, datetime_obj):
-    datetime_str = datetime_obj.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
-    return datetime_str[:-2] + ':' + datetime_str[-2:]
+    def format_datetime_with_colon(self, datetime_obj):
+        datetime_str = datetime_obj.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
+        return datetime_str[:-2] + ':' + datetime_str[-2:]
