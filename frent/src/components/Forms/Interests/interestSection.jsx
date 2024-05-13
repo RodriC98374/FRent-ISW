@@ -6,7 +6,6 @@ const InterestModal = ({ onSaveInterests, userDataLikes }) => {
   const [interests, setInterests] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [likes, setLikes] = useState([]);
-  const [selectedLikes, setSelectedLikes] = useState([]);
   const [idLikes, setIdLikes] = useState([]);
   const [warningMessage, setWarningMessage] = useState("");
 
@@ -20,38 +19,37 @@ const InterestModal = ({ onSaveInterests, userDataLikes }) => {
       }
     }
     loadInterests();
-
   }, []);
 
   useEffect(() => {
     function loadInterestsUserData() {
-        let likesBack = [];
-        for (let idLike of userDataLikes) {
-            let likeBack = likes.filter((like) => like.id === idLike);
-            likesBack.push(likeBack[0].name);
-        }
-        setWarningMessage("");
-        setIdLikes([...userDataLikes]);
-        setSelectedLikes([...userDataLikes]);
-        setInterests([...likesBack]);
-        onSaveInterests(idLikes);
+      let likesBack = [];
+      for (let idLike of userDataLikes) {
+        let likeBack = likes.filter((like) => like.id === idLike);
+        likesBack.push(likeBack[0].name);
+      }
+      setWarningMessage("");
+      setIdLikes([...userDataLikes]);
+      setInterests([...likesBack]);
+      onSaveInterests(idLikes);
     }
-    if(likes.length > 0 && userDataLikes.length > 0) loadInterestsUserData();
+    if (likes.length > 0 && userDataLikes.length > 0) loadInterestsUserData();
   }, [likes]);
 
   useEffect(() => {
     function saveInterests() {
-        onSaveInterests(idLikes);
+      onSaveInterests(idLikes);
     }
-    if(likes.length > 0) saveInterests();
+    if (likes.length > 0) saveInterests();
   }, [idLikes]);
 
   const handleRemoveInterest = (interestToRemove) => {
     setInterests(interests.filter((interest) => interest !== interestToRemove));
     setWarningMessage(""); // Limpiar el mensaje de advertencia al quitar un interés
-    const interestIndex = likes.filter((like) => like.name=== interestToRemove);
-    let newIdLikes = idLikes.filter((idLike) => idLike !== interestIndex[0].id); 
-
+    const interestIndex = likes.filter(
+      (like) => like.name === interestToRemove
+    );
+    let newIdLikes = idLikes.filter((idLike) => idLike !== interestIndex[0].id);
     setIdLikes(newIdLikes);
   };
 
@@ -61,7 +59,6 @@ const InterestModal = ({ onSaveInterests, userDataLikes }) => {
       if (interests.length < 10) {
         setInterests([...interests, interest.name]);
         setIdLikes([...idLikes, interest.id]);
-        setSelectedLikes([...selectedLikes, interest.id]);
       } else {
         setWarningMessage("No puedes seleccionar más de 10 intereses.");
       }
@@ -73,11 +70,6 @@ const InterestModal = ({ onSaveInterests, userDataLikes }) => {
       const updatedIdLikes = [...idLikes];
       updatedIdLikes.splice(interestIndex, 1);
       setIdLikes(updatedIdLikes);
-
-      const updatedSelectedLikes = selectedLikes.filter(
-        (id) => id !== interest.id
-      );
-      setSelectedLikes(updatedSelectedLikes);
     }
   };
 
@@ -100,7 +92,7 @@ const InterestModal = ({ onSaveInterests, userDataLikes }) => {
       <div className="interest-body">
         <div className="interest">
           <div className="col1">
-            <label htmlFor="newInterest">Gustos e Intereses</label>
+            <label htmlFor="newInterest">Gustos e Intereses{<span className="required">*</span>}</label>
           </div>
           <div className="col2">
             <button
@@ -162,7 +154,7 @@ const InterestModal = ({ onSaveInterests, userDataLikes }) => {
                 {likes.map((like, index) => (
                   <li
                     className={`customerInteres ${
-                      selectedLikes.includes(like.id) ? "selected-interest" : ""
+                      idLikes.includes(like.id) ? "selected-interest" : ""
                     }`}
                     key={index}
                     onClick={() => handleInterestSelect(like)}

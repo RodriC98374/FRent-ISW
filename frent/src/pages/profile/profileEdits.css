@@ -1,0 +1,64 @@
+.user-profile {
+  display: flex;
+  align-items: normal;
+  margin: 20px;
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.user-card {
+  margin-right: 10px;
+  border-radius: 10px;
+  background-color: white;
+  width: 30%;
+  align-items: center;
+  padding: 20px;
+}
+
+.user-avatar {
+  object-fit: cover;
+  width: 150px;
+}
+
+.user-name {
+  font-size: 1.5rem;
+  margin-top: 10px;
+}
+
+.user-details {
+  margin-top: 10px;
+  width: 65%;
+}
+
+.user-price {
+  font-size: 1.2rem; /* Tamaño del precio */
+  text-align: center; /* Centrar el texto del precio */
+}
+
+.user-description {
+  display: flex;
+  flex-direction: column;
+  margin-left: 15px;
+  margin-bottom: 5px;
+  /* Espacio entre cada detalle */
+  width: auto;
+}
+
+.user-interests {
+  width: auto;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
+.interest {
+  background-color: var(--tertiary-color);
+  color: white;
+  padding: 8px 11px;
+  border-radius: 10px;
+  margin-top: 7px;
+  margin: 5px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: 6px;
+}

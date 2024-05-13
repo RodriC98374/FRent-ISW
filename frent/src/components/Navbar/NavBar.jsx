@@ -60,6 +60,10 @@ export default function NavBar() {
     }
   };
 
+  const clearLocalStorage = () => {
+    localStorage.clear();
+  }
+
   return (
     <>
       <nav className="navbar-body">
@@ -84,7 +88,7 @@ export default function NavBar() {
             </li>
           )}
           {!userData && (
-            <li onClick={closeModal}>
+            <li onClick={() => {closeModal(); clearLocalStorage();}}>
               <NavLink className={
               location.pathname === "/form" ? "navbar-option active" : "navbar-option"
             } to="form">

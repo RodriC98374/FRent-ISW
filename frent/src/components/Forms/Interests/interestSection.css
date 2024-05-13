@@ -112,9 +112,6 @@ ul li {
     margin-right: 8px;
 }
     
-.selected-interest {
-    background-color: gray; /* Cambia el fondo del interés seleccionado a gris */
-}
 /* ul li:hover {
         background-color: red;
 }
@@ -134,6 +131,7 @@ ul li {
    .titleI{
     margin: 0;
    }
+   
 .selected-interest {
     background-color: var(--primary-color);
 }
@@ -144,5 +142,8 @@ ul li {
 }
 .col2I{
     display: grid;
-    
+}
+
+.required{
+    color: red;
 }

@@ -16,10 +16,12 @@ import LoginForm from './pages/Login/LoginForm'
 import MyCalendar from './components/Forms/rentFriends/calendar/MyCalendar';
 import Photo from './pages/photo/PhotoForm';
 import AddAvailableHours from './components/Forms/AddAvailableHours/AddAvailableHours';
+import ProfileFriend from './pages/profile/profileFriend';
 import { getUser } from './pages/Login/LoginForm';
 
 import { UserContext } from './pages/Login/UserProvider';
 import Chat from './components/Chat/Chat';
+
 
 function App() {
   const { userData } = useContext(UserContext);
@@ -42,6 +44,7 @@ function App() {
 
             <Route element={<ProtectedRoute isAllowed={userData2 && userData2.user_type === 'Cliente'} redirectTo="/login" />}>
               <Route path="/rentaForm/:id" element={<RentFriendForm />} />
+              <Route path="/profileFriend/:id" element = {<ProfileFriend/>}/>
               <Route path="/listRent" element={<ListFriend />} />
               <Route path='/calendarReservas/:id' element={<MyCalendar />} />
               <Route path="/listFriend" element={<ListFriend />} />

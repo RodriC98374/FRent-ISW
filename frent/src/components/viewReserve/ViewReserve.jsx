@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import { FaUserFriends, FaCalendar, FaClock, FaSearch } from "react-icons/fa";
+import { FaUserFriends, FaCalendar, FaClock, FaSearch, FaUserCircle } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
+
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { UserContext } from "../../pages/Login/UserProvider";
 import swal from "sweetalert2";
@@ -58,7 +59,7 @@ export default function ViewReserve() {
 
   const fetchData = async () => {
     try {
-      const resRent = await getPendingRent(userData2.user_id); 
+      const resRent = await getPendingRent(userData2.user_id);
       if (resRent && resRent.data) {
         const sortedRent = resRent.data.sort((a, b) => {
           const dateA = new Date(a.created);
@@ -100,19 +101,19 @@ export default function ViewReserve() {
       if (result.isConfirmed) {
         const hasConflict = checkTimeConflict(rentId);
         if (hasConflict) {
-          const conflictingRent = listRent.find(
+         /*const conflictingRent = listRent.find(
             (rent) => 
               rent.status === "Aceptado" &&
         rent.fecha_cita === fecha_cita &&
         rent.time === time
-          );
+          ); */
 
-          const dataNotification = {
+          /* const dataNotification = {
             message: `No se puede aceptar el alquiler. Hay otro alquiler aceptado en la misma fecha y hora: ${conflictingRent.nombre_cliente}`,
             from_user: rentFriend,
             to_user: rentClient,
             is_reading: false,
-          };
+          }; */
 
           await create_notification(dataNotification);
 
@@ -158,12 +159,12 @@ export default function ViewReserve() {
       (rent) => rent.rent_id === currentRentId
     );
     if (!selectedRent) return false;
-  
+
     const { time, duration, fecha_cita } = selectedRent;
-  
+
     const startTime = new Date(`2000-01-01T${time}`);
-    const endTime = new Date(startTime.getTime() + duration * 60 * 60 * 1000); 
-  
+    const endTime = new Date(startTime.getTime() + duration * 60 * 60 * 1000);
+
     const hasAcceptedRentSameDateTime = listRent.some((rent) => {
       return (
         rent.status === "Aceptado" &&
@@ -171,35 +172,35 @@ export default function ViewReserve() {
         rent.time === time
       );
     });
-  
+
     if (hasAcceptedRentSameDateTime) {
       return true;
     }
-  
+
     const conflicts = listRent.filter((rent) => {
       if (rent.rent_id === currentRentId || rent.status !== "Aceptado")
         return false;
-  
+
       const rentStartTime = new Date(`2000-01-01T${rent.time}`);
       const rentEndTime = new Date(
         rentStartTime.getTime() + rent.duration * 60 * 60 * 1000
       );
-  
+
       if (
         fecha_cita === rent.fecha_cita &&
         ((startTime >= rentStartTime && startTime < rentEndTime) ||
-          (endTime > rentStartTime && endTime <= rentEndTime) || 
-          (startTime <= rentStartTime && endTime >= rentEndTime)) 
+          (endTime > rentStartTime && endTime <= rentEndTime) ||
+          (startTime <= rentStartTime && endTime >= rentEndTime))
       ) {
         return true;
       }
-  
+
       return false;
     });
-  
+
     return conflicts.length > 0;
-    
-  };  const handleReject = async (rentId, rentClient, rentFriend) => {
+
+  }; const handleReject = async (rentId, rentClient, rentFriend) => {
     try {
       const rejected = window.confirm(
         "¿Estás seguro de que deseas rechazar ser amigo?"
@@ -233,7 +234,7 @@ export default function ViewReserve() {
       if (isApproved === 1) {
         combinedData = {
           email: clientEmail,
-          estado_solicitud: "Aprobo",
+          estado_solicitud: "Aceptó",
           first_name: firstt_name,
           last_name: lastt_name,
         };
@@ -242,7 +243,7 @@ export default function ViewReserve() {
       } else {
         combinedData = {
           email: clientEmail,
-          estado_solicitud: "Rechazo",
+          estado_solicitud: "Rechazó",
           first_name: firstt_name,
           last_name: lastt_name,
         };
@@ -324,7 +325,7 @@ export default function ViewReserve() {
               <AiOutlineClose
                 className="icon1"
                 size={30}
-                color="#000"
+                color="#ff0000"
                 onClick={closeModal}
                 cursor={"pointer"}
               />
@@ -357,9 +358,9 @@ export default function ViewReserve() {
                     Verificado
                   </p>
                   <div className="icon-location2">
-                  &nbsp;<IoLocationSharp className="icon" />
-                  </div>                 
-                  <p className="locationR1">                    
+                    &nbsp;<IoLocationSharp className="icon" />
+                  </div>
+                  <p className="locationR1">
                     {rent.location}
                   </p>
                 </div>
@@ -373,7 +374,7 @@ export default function ViewReserve() {
               <h3>Precio</h3>
               <div className="PrecioDetail">
                 <p>
-                  {rent.price/rent.duration} Bs x {rent.duration}horas
+                  {rent.price / rent.duration} Bs x {rent.duration}horas
                 </p>
                 <p>{rent.price} Bs</p>
               </div>
@@ -383,11 +384,11 @@ export default function ViewReserve() {
               </div>
               <h3>Vestimenta del evento:</h3>
               <div className="descripcion">
-                  <p>{rent.type_outfit ? rent.type_outfit : <i>No especificado</i>}</p>  
+                <p>{rent.type_outfit ? rent.type_outfit : <i>No especificado</i>}</p>
               </div>
               <h3>Descripción:</h3>
               <div className="descripcion">
-              <p>{rent.description ? rent.description : <i>No especificado</i>}</p>
+                <p>{rent.description ? rent.description : <i>No especificado</i>}</p>
               </div>
               <p>
                 <strong>Intereses:</strong>
@@ -508,11 +509,16 @@ export default function ViewReserve() {
                           <FaSearch className="icon" />
                           Detalles
                         </button>
+                        <button className="details-button">
+                          <FaUserCircle className="icon" />
+                          Ver Perfil
+                        </button>
                       </div>
                     </div>
                   </div>
                 </div>
                 <hr></hr>
+
                 {rent.status !== "Aceptado" &&
                   rent.status !== "Rechazado" &&
                   (!checkTimeConflict(rent.rent_id) ? (
@@ -541,9 +547,11 @@ export default function ViewReserve() {
                       </button>
                     </div>
                   ) : (
-                    <p className="already-accepted">
-                      Ya existe un alquiler aceptado en esta fecha y hora
-                    </p>
+                    <>
+                      <p className="already-accepted">
+                        Ya existe un alquiler aceptado en esta fecha y hora                       
+                      </p>                     
+                    </>
                   ))}
                 {/* Renderiza el modal si se ha seleccionado un alquiler */}
                 <DetailsModal

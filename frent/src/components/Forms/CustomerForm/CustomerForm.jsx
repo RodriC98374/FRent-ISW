@@ -33,14 +33,6 @@ export function CustomerForm() {
   const [errorLike, setErrorLike] = useState("");
 
   //SE LO DEBE USAR EN LA PARTE DEL REGISTRO
-  const translateErrorMessage = (errorMessage) => {
-    const errorTranslations = {
-      "user with this email already exists.":
-        "Ya existe un usuario con este correo electrónico.",
-    };
-
-    return errorTranslations[errorMessage] || errorMessage;
-  };
 
   useEffect(()=>{
     if(userData){
@@ -110,7 +102,6 @@ export function CustomerForm() {
     // Actualizar el valor en el formulario
     setValue("pais", selectedCountryIsoCode);
     setCityEnabled(true);
-    console.log(states);
   };
 
   const handleStateChange = (e) => {
