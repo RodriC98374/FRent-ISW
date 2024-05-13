@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Chat.css'
-import ChatList from '../componentsChat/list/chatList/ChatList';
+import ChatList from './chatList/ChatList';
 import { IoIosClose } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 

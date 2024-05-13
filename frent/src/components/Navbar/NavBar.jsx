@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import {
   get_notifications_user,
   update_notifications_user,
@@ -9,6 +9,9 @@ import "./Navbar.css";
 import NotificationModal from "./notifications";
 import { signOut, getUser } from "../../pages/Login/LoginForm";
 import { FaUser } from "react-icons/fa";
+import { BiSolidMessageDetail } from "react-icons/bi";
+
+
 
 export default function NavBar() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -136,6 +139,9 @@ export default function NavBar() {
               </button>
             </li>
           )}
+          <li>
+            <NavLink className="navbar-option" to="/chat2"><BiSolidMessageDetail /></NavLink>
+          </li>
           {userData && userData.user_type === "Cliente" && (
             <li onClick={openModal}>
               <div className="navbar-option">

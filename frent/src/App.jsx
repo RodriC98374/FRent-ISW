@@ -22,7 +22,7 @@ import { getUser } from './pages/Login/LoginForm';
 
 import { UserContext } from './pages/Login/UserProvider';
 import Chat from './components/Chat/Chat';
-import ChatManage from './components/componentsChat/ChatManage/ChatManage'
+
 
 
 function App() {
@@ -54,7 +54,6 @@ function App() {
             <Route path="/friend" element={<FriendForm />} />
             <Route path="/photo" element={<Photo />} />
             <Route path="/chat2" element={<Chat />} />
-            <Route path="/chat" element={<ChatManage/>} />
 
             <Route
               element={
