@@ -7,6 +7,7 @@ import { ButtonPrimary } from '../../components/Buttons/buttonPrimary';
 import { ButtonSecondary } from '../../components/Buttons/buttonSecondary';
 import { NavLink } from "react-router-dom";
 
+
 const ProfileFriend = () => {
   // Datos de ejemplo del usuario
   const user = {

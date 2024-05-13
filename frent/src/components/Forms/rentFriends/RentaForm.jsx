@@ -47,6 +47,7 @@ export default function RentFriendForm() {
         setOutfit(resOutfit.data);
         setEvent(resEvent.data);
         setAvailability(resAvailability.data);
+        console.log(resAvailability.data);
       } catch (error) {
         console.log("Error fetching data:", error);
       }

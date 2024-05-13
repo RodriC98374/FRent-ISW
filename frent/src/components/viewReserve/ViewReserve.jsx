@@ -1,7 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import { FaUserFriends, FaCalendar, FaClock, FaSearch, FaUserCircle } from "react-icons/fa";
+import {
+  FaUserFriends,
+  FaCalendar,
+  FaClock,
+  FaSearch,
+  FaUserCircle,
+} from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
+import { NavLink } from "react-router-dom";
 
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { UserContext } from "../../pages/Login/UserProvider";
@@ -26,11 +33,10 @@ export default function ViewReserve() {
   const [likes_user, setLikesUser] = useState([]);
   const [selectedRent, setSelectedRent] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const userData2 = getUser()
+  const userData2 = getUser();
 
   const staticImage =
     "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
-
 
   useEffect(() => {
     fetchData();
@@ -177,8 +183,8 @@ export default function ViewReserve() {
     });
 
     return conflicts.length > 0;
-
-  }; const handleReject = async (rentId, rentClient, rentFriend) => {
+  };
+  const handleReject = async (rentId, rentClient, rentFriend) => {
     try {
       const rejected = window.confirm(
         "¿Estás seguro de que deseas rechazar ser amigo?"
@@ -272,12 +278,12 @@ export default function ViewReserve() {
 
   const openModalPhoto = (image) => {
     setSelectedImage(image);
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
   };
 
   const closeModalPhoto = () => {
     setSelectedImage(null);
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = "auto";
   };
 
   const DetailsModal = ({ isOpen, closeModal, rent }) => {
@@ -288,9 +294,7 @@ export default function ViewReserve() {
 
     return (
       <>
-        <div
-          className={overlayClassName}
-          onClick={closeModal}>
+        <div className={overlayClassName} onClick={closeModal}>
           {" "}
         </div>
         <div className={modalClassName}>
@@ -336,11 +340,10 @@ export default function ViewReserve() {
                     Verificado
                   </p>
                   <div className="icon-location2">
-                    &nbsp;<IoLocationSharp className="icon" />
+                    &nbsp;
+                    <IoLocationSharp className="icon" />
                   </div>
-                  <p className="locationR1">
-                    {rent.location}
-                  </p>
+                  <p className="locationR1">{rent.location}</p>
                 </div>
               </div>
             </div>
@@ -358,29 +361,34 @@ export default function ViewReserve() {
               </div>
               <h3>Tipo de evento:</h3>
               <div className="descripcion">
-                <p>{rent.type_event ? rent.type_event : <i>No especificado</i>}</p>
+                <p>
+                  {rent.type_event ? rent.type_event : <i>No especificado</i>}
+                </p>
               </div>
               <h3>Vestimenta del evento:</h3>
               <div className="descripcion">
-                <p>{rent.type_outfit ? rent.type_outfit : <i>No especificado</i>}</p>
+                <p>
+                  {rent.type_outfit ? rent.type_outfit : <i>No especificado</i>}
+                </p>
               </div>
               <h3>Descripción:</h3>
               <div className="descripcion">
-                <p>{rent.description ? rent.description : <i>No especificado</i>}</p>
+                <p>
+                  {rent.description ? rent.description : <i>No especificado</i>}
+                </p>
               </div>
               <p>
                 <strong>Intereses:</strong>
               </p>
               {getClientLikes(rent.client_id).map((like) => (
-                <p
-                  key={like}
-                  className="descriptionLike">
+                <p key={like} className="descriptionLike">
                   <svg
                     className="tag-icon"
                     xmlns="http://www.w3.org/2000/svg"
                     width="1em"
                     height="1em"
-                    viewBox="0 0 24 24">
+                    viewBox="0 0 24 24"
+                  >
                     <path
                       fill="white"
                       d="M5.5 7A1.5 1.5 0 0 1 4 5.5A1.5 1.5 0 0 1 5.5 4A1.5 1.5 0 0 1 7 5.5A1.5 1.5 0 0 1 5.5 7m15.91 4.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.11 0-2 .89-2 2v7c0 .55.22 1.05.59 1.41l8.99 9c.37.36.87.59 1.42.59c.55 0 1.05-.23 1.41-.59l7-7c.37-.36.59-.86.59-1.41c0-.56-.23-1.06-.59-1.42"
@@ -417,7 +425,6 @@ export default function ViewReserve() {
           </div>
         )}
         {selectedImage && <div className="modal-background"></div>}
-
       </>
     );
   };
@@ -440,9 +447,7 @@ export default function ViewReserve() {
             </div>
           ) : (
             listRent.map((rent, index) => (
-              <div
-                key={rent.rent_id}
-                className="pending">
+              <div key={rent.rent_id} className="pending">
                 <div className="pending-info">
                   <div className="user-info">
                     <img
@@ -483,14 +488,17 @@ export default function ViewReserve() {
                         <p className="price">{rent.price}Bs</p>
                         <button
                           className="details-button"
-                          onClick={() => openModal(rent, rent.price)}>
+                          onClick={() => openModal(rent, rent.price)}
+                        >
                           <FaSearch className="icon" />
                           Detalles
                         </button>
-                        <button className="details-button">
-                          <FaUserCircle className="icon" />
-                          Ver Perfil
-                        </button>
+                        <NavLink className="" to={`/profileClient/${rent.client_id}`}>
+                          <button className="details-button">
+                            <FaUserCircle className="icon" />
+                            Ver Perfil
+                          </button>
+                        </NavLink>
                       </div>
                     </div>
                   </div>
@@ -509,7 +517,8 @@ export default function ViewReserve() {
                             rent.client_id,
                             rent.friend_id
                           )
-                        }>
+                        }
+                      >
                         Aceptar
                       </button>
                       <button
@@ -520,15 +529,16 @@ export default function ViewReserve() {
                             rent.client_id,
                             rent.friend_id
                           )
-                        }>
+                        }
+                      >
                         Rechazar
                       </button>
                     </div>
                   ) : (
                     <>
                       <p className="already-accepted">
-                        Ya existe un alquiler aceptado en esta fecha y hora                       
-                      </p>                     
+                        Ya existe un alquiler aceptado en esta fecha y hora
+                      </p>
                     </>
                   ))}
                 {/* Renderiza el modal si se ha seleccionado un alquiler */}
@@ -540,8 +550,8 @@ export default function ViewReserve() {
               </div>
             ))
           )}
-        </div >
-      </div >
+        </div>
+      </div>
       {selectedImage && (
         <div className="modalF">
           <div className="modal-content">
@@ -558,10 +568,6 @@ export default function ViewReserve() {
         </div>
       )}
       {selectedImage && <div className="modal-background"></div>}
-
-
-
     </>
-
   );
 }
