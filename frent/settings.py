@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'djoser',
     'rest_framework.authtoken',
     'notificacionesInterno',
+    
 ]
 
 MIDDLEWARE = [
@@ -109,7 +110,7 @@ DATABASES = {
 #         'PASSWORD': 'ZjaRIGkTybRuZyXpEIGexxCbxajQozoa',
 #         'HOST': 'viaduct.proxy.rlwy.net',
 #         'PORT':'45613',
-#     }
+#     } 
 # }
 
 # Password validation
