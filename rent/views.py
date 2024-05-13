@@ -113,16 +113,15 @@ class RentDetailView(APIView):
         rents = Rent.objects.filter(friend__id_user=friend_id).select_related('event', 'outfit')
         rent_details = []
         for rent in rents:
-            
-            type_outfit = rent.outfit.type_outfit if rent.outfit else "No especificado"
-            type_event = rent.event.type_event if rent.event else "No especificado"
-            
             if rent.status=='pending':
               nvar='Pendiente'
             elif rent.status=='accepted':
               nvar='Aceptado'
             else:
               nvar='Rechazado'
+            
+            outfit_type = rent.outfit.type_outfit if rent.outfit else 'No especificado'
+            event_type = rent.event.type_event if rent.event else 'No especificado'
             
             rent_details.append({
                 'rent_id': rent.id,
@@ -135,8 +134,8 @@ class RentDetailView(APIView):
                 'location': rent.location,
                 'description': rent.description,
                 'created': self.format_datetime_with_colon(localtime(rent.create)),
-                'type_outfit': type_outfit,
-                'type_event': type_event,
+                'type_outfit': outfit_type,
+                'type_event': event_type,
                 #'status':rent.status,
                 'status':nvar,
                 'price': rent.duration*(float(rent.friend.price)),
