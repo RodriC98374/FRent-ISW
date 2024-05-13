@@ -34,7 +34,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     country = models.CharField(null=True, max_length=30)
     city = models.CharField(null=True, max_length=30)
     email = models.EmailField(unique=True)
-    personal_description = models.CharField(max_length=150)
+    personal_description = models.CharField(max_length=150, null=True)
 
     # profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
 
