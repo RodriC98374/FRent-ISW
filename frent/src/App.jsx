@@ -20,6 +20,7 @@ import { getUser } from './pages/Login/LoginForm';
 
 import { UserContext } from './pages/Login/UserProvider';
 import Chat from './components/Chat/Chat';
+import ChatManage from './components/componentsChat/ChatManage/ChatManage';
 
 /*import para ver como queda perfil*/
 import ProfileFriend from './pages/profile/profileFriend';
@@ -41,7 +42,8 @@ function App() {
             <Route path='/addAvailableHours' element={<AddAvailableHours />} />
             <Route path="/friend" element={<FriendForm />} />
             <Route path="/photo" element={<Photo />} />
-            <Route path="/chat" element={<Chat />} />
+            <Route path="/chat2" element={<Chat />} />
+            <Route path="/chat" element={<ChatManage />} />
 
             <Route element={<ProtectedRoute isAllowed={userData2 && userData2.user_type === 'Cliente'} redirectTo="/login" />}>
               <Route path="/rentaForm/:id" element={<RentFriendForm />} />
@@ -54,8 +56,8 @@ function App() {
               <ProtectedRoute isAllowed={userData2 && userData2.user_type === 'Amigo'}>
                 <ViewReserve />
               </ProtectedRoute>} />
-            
-            <Route path="/profil" element={<ProfileFriend />} /> 
+
+            <Route path="/profil" element={<ProfileFriend />} />
 
             <Route path="/*" element={<h1 className='text-center'>404 Page Not Found</h1>}></Route>
           </Routes>
