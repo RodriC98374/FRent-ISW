@@ -20,7 +20,7 @@ import { getUser } from "./pages/Login/LoginForm";
 
 import { UserContext } from './pages/Login/UserProvider';
 import Chat from './components/Chat/Chat';
-
+import ChatManage from './components/componentsChat/ChatManage/ChatManage';
 /*import para ver como queda perfil*/
 import ProfileFriend from "./pages/profile/profileFriend";
 import ProfileUser from "./pages/profile/ProfileUser";
@@ -53,7 +53,8 @@ function App() {
             <Route path="/addAvailableHours" element={<AddAvailableHours />} />
             <Route path="/friend" element={<FriendForm />} />
             <Route path="/photo" element={<Photo />} />
-            <Route path="/chat" element={<Chat />} />
+            <Route path="/chat2" element={<Chat />} />
+            <Route path="/chat" element={<ChatManage />} />
 
             <Route
               element={
