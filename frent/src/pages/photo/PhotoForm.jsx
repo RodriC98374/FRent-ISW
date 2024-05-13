@@ -117,7 +117,7 @@ const Photo = () => {
         confirmPassword: userData.confirmarPassword,
         personal_description: userData.personal_description,
         birth_date: userData.birth_date,
-        image: imageBinary,
+        image: imageBinary? imageBinary : userData.image,
         is_client: userData.is_client,
       };
 
