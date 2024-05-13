@@ -34,7 +34,13 @@ function CalendarEdit() {
         dayjs(event.end).isSame(date, "day")
     );
     return hasEvent
-      ? { style: { backgroundColor: "#333A73", borderRadius: "10px",     border: "1px solid #000" } }
+      ? {
+          style: {
+            backgroundColor: "#333A73",
+            borderRadius: "10px",
+            border: "1px solid #000",
+          },
+        }
       : {};
   };
 
@@ -45,13 +51,18 @@ function CalendarEdit() {
   const cargarEventos = async () => {
     try {
       const res = await obtenerHorariosReservas(friendId);
-      const eventosTransformados = res.data.map((evento, index) => ({
-        start: dayjs(evento.fecha_alquiler + "T" + evento.hora_inicio).toDate(),
-        end: dayjs(evento.fecha_alquiler + "T" + evento.hora_fin).toDate(),
-        title: `Ocupado`,
-        duration: `${evento.duration} horas`,
-      }));
-      setEvents(eventosTransformados);
+      console.log("el res es", res);
+      if (Array.isArray(res.data)) {
+        const eventosTransformados = res.data.map((evento, index) => ({
+          start: dayjs(
+            evento.fecha_alquiler + "T" + evento.hora_inicio
+          ).toDate(),
+          end: dayjs(evento.fecha_alquiler + "T" + evento.hora_fin).toDate(),
+          title: `Ocupado`,
+          duration: `${evento.duration} horas`,
+        }));
+        setEvents(eventosTransformados);
+      }
     } catch (error) {
       console.error("Error al cargar eventos:", error);
     }
@@ -61,8 +72,6 @@ function CalendarEdit() {
     height: 500,
     backgroundColor: "#fff",
   };
-
-  
 
   const handleAddEvent = (date) => {
     setSelectedDate(date);
@@ -76,9 +85,7 @@ function CalendarEdit() {
 
   return (
     <>
-      <NavLink
-        className="boton-calendar"
-        to={`/rentaForm/${friendId}`}>
+      <NavLink className="boton-calendar" to={`/rentaForm/${friendId}`}>
         <IoArrowBackCircleSharp />
       </NavLink>
       <div className="calendar">

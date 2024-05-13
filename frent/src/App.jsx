@@ -17,10 +17,12 @@ import MyCalendar from './components/Forms/rentFriends/calendar/MyCalendar';
 import Photo from './pages/photo/PhotoForm';
 import AddAvailableHours from './components/Forms/AddAvailableHours/AddAvailableHours';
 import ProfileFriend from './pages/profile/profileFriend';
+import ProfileUser from './pages/profile/ProfileUser';
 import { getUser } from './pages/Login/LoginForm';
 
 import { UserContext } from './pages/Login/UserProvider';
 import Chat from './components/Chat/Chat';
+import ChatManage from './components/componentsChat/ChatManage/ChatManage'
 
 
 function App() {
@@ -29,25 +31,80 @@ function App() {
 
   return (
     <>
-      <div className='body-app'>
+      <div className="body-app">
         <BrowserRouter>
           <NavBar user={userData2} />
           <Routes>
-            <Route path="/" element={userData2 && userData2.user_type === 'Cliente' ? <HomeClient /> : userData2 && userData2.user_type === 'Amigo' ? <HomeFriend /> : <Home />} />
+            <Route
+              path="/"
+              element={
+                userData2 && userData2.user_type === "Cliente" ? (
+                  <HomeClient />
+                ) : userData2 && userData2.user_type === "Amigo" ? (
+                  <HomeFriend />
+                ) : (
+                  <Home />
+                )
+              }
+            />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/form" element={<SelectionRegister />} />
             <Route path="/customer" element={<CustomerForm />} />
-            <Route path='/addAvailableHours' element={<AddAvailableHours />} />
+            <Route path="/addAvailableHours" element={<AddAvailableHours />} />
             <Route path="/friend" element={<FriendForm />} />
             <Route path="/photo" element={<Photo />} />
-            <Route path="/chat" element={<Chat />} />
+            <Route path="/chat2" element={<Chat />} />
+            <Route path="/chat" element={<ChatManage/>} />
 
-            <Route element={<ProtectedRoute isAllowed={userData2 && userData2.user_type === 'Cliente'} redirectTo="/login" />}>
+            <Route
+              element={
+                <ProtectedRoute
+                  isAllowed={userData2 && userData2.user_type === "Cliente"}
+                  redirectTo="/login"
+                />
+              }
+            >
+
+              
+            </Route>
+
+            <Route
+              element={
+                <ProtectedRoute
+                  isAllowed={userData2 && userData2.user_type === "Cliente"}
+                  redirectTo="/login"
+                />
+              }
+            >
               <Route path="/rentaForm/:id" element={<RentFriendForm />} />
               <Route path="/profileFriend/:id" element = {<ProfileFriend/>}/>
               <Route path="/listRent" element={<ListFriend />} />
-              <Route path='/calendarReservas/:id' element={<MyCalendar />} />
+              <Route path="/calendarReservas/:id" element={<MyCalendar />} />
               <Route path="/listFriend" element={<ListFriend />} />
+
+            </Route>
+
+            <Route
+              element={
+                <ProtectedRoute
+                  isAllowed={userData2 && userData2.user_type === "Amigo"}
+                  redirectTo="/login"
+                />
+              }
+            >
+              <Route path="/rentalSectio" element={<ViewReserve />} />
+            </Route>
+
+            <Route
+              element={
+                <ProtectedRoute
+                  isAllowed={userData2 && (userData2.user_type === "Amigo" || userData2.user_type === "Cliente")}
+                  redirectTo="/login"
+                />
+              }
+            >
+              <Route path="/profileUser" element={<ProfileUser />} />
+
             </Route>
 
             <Route path="/rentalSectio" element={
@@ -55,7 +112,10 @@ function App() {
                 <ViewReserve />
               </ProtectedRoute>} />
 
-            <Route path="/*" element={<h1 className='text-center'>404 Page Not Found</h1>}></Route>
+            <Route
+              path="/*"
+              element={<h1 className="text-center">404 Page Not Found</h1>}
+            ></Route>
           </Routes>
         </BrowserRouter>
       </div>

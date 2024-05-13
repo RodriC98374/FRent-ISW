@@ -62,7 +62,7 @@ export default function NavBar() {
 
   const clearLocalStorage = () => {
     localStorage.clear();
-  }
+  };
 
   return (
     <>
@@ -80,7 +80,7 @@ export default function NavBar() {
               Inicio
             </NavLink>
           </li>
-          { userData && userData.user_type === "Cliente" && (
+          {userData && userData.user_type === "Cliente" && (
             <li onClick={closeModal}>
               <NavLink className="navbar-option" to="listfriend">
                 Amigos
@@ -97,7 +97,7 @@ export default function NavBar() {
               </NavLink>
             </li>
           )}
-          { userData && userData.user_type === "Amigo" && (
+          {userData && userData.user_type === "Amigo" && (
             <li onClick={closeModal}>
               <NavLink className={
               location.pathname === "/rentalSection"
@@ -120,10 +120,12 @@ export default function NavBar() {
             <li>
               <div className="user-sesion-container">
                 <div className="user-sesion">
-                  <span>{userData.first_name}</span>
-                  <span className="user">{userData.user_type}</span>
+                    <span>{userData.first_name}</span>
+                    <span className="user">{userData.user_type}</span>
                 </div>
-                <FaUser className="icon-sesion" />
+                <NavLink className="navbar-option" to="/profileUser">
+                  <FaUser className="icon-sesion" />
+                </NavLink>
               </div>
             </li>
           )}

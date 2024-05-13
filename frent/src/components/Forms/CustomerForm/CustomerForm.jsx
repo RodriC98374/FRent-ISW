@@ -73,6 +73,7 @@ export function CustomerForm() {
         birth_date: data.birth_date,
         likes: selectedInterests,
         is_client: true,
+        image: userData? userData.image : null,
       }
     });
   });

@@ -275,7 +275,7 @@ export default function ListFriend() {
             className="card">
             <div className="top-card"></div>
             <img
-              src={getImage(friend.image)}
+              src={`data:image/png;base64,${friend.image}`}
               alt="foto de perfil"
               onClick={() => openModal(getImage(friend.image))}
             />
