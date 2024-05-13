@@ -159,6 +159,7 @@ class AvailabilityViewSet(viewsets.ModelViewSet):
         user_id = request.data.get('user_id', None)
         disponibilidades = request.data.get('disponibilidades', [])
         
+        print(f"las disponibilidades sonL: {disponibilidades}")
         
         for dispo in disponibilidades:
                 if (dispo[1] != "") & (dispo[2] != ""):
@@ -167,12 +168,12 @@ class AvailabilityViewSet(viewsets.ModelViewSet):
                     "start": dispo[1],
                     "end": dispo[2],
                     "dia_semana": dispo[0],
-                }      
-                serializer = self.get_serializer(data=new_data)
-                if serializer.is_valid():
-                    self.perform_create(serializer)
-                else:
-                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                    }      
+                    serializer = AvailabilitySerializer(data=new_data)
+                    if serializer.is_valid():
+                        self.perform_create(serializer)
+                    else:
+                        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response({"message": "Disponibilidad Almacenado Correctamente"}, status=status.HTTP_201_CREATED)
             
                 
@@ -188,10 +189,20 @@ class CustomLoginView(APIView):
             token, _ = Token.objects.get_or_create(user=user)
             if hasattr(user, 'client'):
                 user_type = 'Cliente'
+                price = None
             elif hasattr(user, 'friend'):
                 user_type = 'Amigo'
+                dataFriend = Friend.objects.get(id_user=user.pk)
+                price = dataFriend.price
             else:
                 user_type = 'User'
+                
+            queryset = User_like.objects.filter(user_id=user.pk).select_related('like_id')
+            gustos_nombres = []
+            for usuario_gusto in queryset:
+                gusto_nombre = usuario_gusto.like_id.name  
+                gustos_nombres.append(gusto_nombre)
+                
             return Response({
                 'token': token.key,
                 'user_id': user.pk,
@@ -200,6 +211,14 @@ class CustomLoginView(APIView):
                 'user_type': user_type,
                 'country':user.country,
                 'image': user.image,
+                'personal_description': user.personal_description,
+                'gender': user.gender,
+                'country': user.country,
+                'city': user.city,
+                'email': user.email,
+                'price': price,
+                'birth_date': user.birth_date,
+                'likes': gustos_nombres,
             })
         else:
             return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_400_BAD_REQUEST)

@@ -35,19 +35,19 @@ class RentViewSet(viewsets.ModelViewSet):
             time_elapsed=ExpressionWrapper(now - F('create'), output_field=fields.DurationField()) 
         ).order_by('-fecha_cita')
 
-    def create(self, request, *args, **kwargs):
-      fecha_cita_str = request.data.get('fecha_cita')
-      time_str = request.data.get('time')
-      duration = float(request.data.get('duration'))
-      fecha_cita = date.fromisoformat(fecha_cita_str)
-      hora = time.fromisoformat(time_str)
-      datetime_ini = datetime.combine(fecha_cita, hora)
-      datetime_fin = datetime_ini+timedelta(hours=duration)
-      rents_superpuesta = Rent.objects.filter(
-          Q(fecha_cita=fecha_cita) & (Q(time__lte=datetime_fin.time(), time__gte=datetime_ini.time()) |Q(time__lt=datetime_ini.time(), time__gte=(datetime_ini - timedelta(hours=duration)).time())))
-      if rents_superpuesta.exists():
-          return Response({'error': 'La renta se superpone con otra renta existente.'},status=status.HTTP_400_BAD_REQUEST)
-      return super().create(request, *args, **kwargs)
+    # def create(self, request, *args, **kwargs):
+    #   fecha_cita_str = request.data.get('fecha_cita')
+    #   time_str = request.data.get('time')
+    #   duration = float(request.data.get('duration'))
+    #   fecha_cita = date.fromisoformat(fecha_cita_str)
+    #   hora = time.fromisoformat(time_str)
+    #   datetime_ini = datetime.combine(fecha_cita, hora)
+    #   datetime_fin = datetime_ini+timedelta(hours=duration)
+    #   rents_superpuesta = Rent.objects.filter(
+    #       Q(fecha_cita=fecha_cita) & (Q(time__lte=datetime_fin.time(), time__gte=datetime_ini.time()) |Q(time__lt=datetime_ini.time(), time__gte=(datetime_ini - timedelta(hours=duration)).time())))
+    #   if rents_superpuesta.exists():
+    #       return Response({'error': 'La renta se superpone con otra renta existente.'},status=status.HTTP_400_BAD_REQUEST)
+    #   return super().create(request, *args, **kwargs)
   
   
     @action(detail=True, methods=['GET'])
@@ -113,6 +113,10 @@ class RentDetailView(APIView):
         rents = Rent.objects.filter(friend__id_user=friend_id).select_related('event', 'outfit')
         rent_details = []
         for rent in rents:
+            
+            type_outfit = rent.outfit.type_outfit if rent.outfit else "No especificado"
+            type_event = rent.event.type_event if rent.event else "No especificado"
+            
             if rent.status=='pending':
               nvar='Pendiente'
             elif rent.status=='accepted':
@@ -131,8 +135,8 @@ class RentDetailView(APIView):
                 'location': rent.location,
                 'description': rent.description,
                 'created': self.format_datetime_with_colon(localtime(rent.create)),
-                'type_outfit': rent.outfit.type_outfit,
-                'type_event': rent.event.type_event,
+                'type_outfit': type_outfit,
+                'type_event': type_event,
                 #'status':rent.status,
                 'status':nvar,
                 'price': rent.duration*(float(rent.friend.price)),
