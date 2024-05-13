@@ -31,32 +31,32 @@ export function FriendForm() {
   const [errorMessage, setErrorMessage] = useState("");
   const [errorLike, setErrorLike] = useState("");
 
-  useEffect(()=>{
-    if(userData){
+  useEffect(() => {
+    if (userData) {
       const states = State.getStatesOfCountry(userData.country);
-      setStates(states)
-      setValue('First_name', userData.first_name);
-      setValue('Last_name', userData.last_name);
-      setValue('birth_date', userData.birth_date);
-      setSelectedGender(userData.gender)
+      setStates(states);
+      setValue("First_name", userData.first_name);
+      setValue("Last_name", userData.last_name);
+      setValue("birth_date", userData.birth_date);
+      setSelectedGender(userData.gender);
       setValue("Gender", userData.gender);
       setSelectedCountry(userData.country);
       setValue("Country", userData.country);
       setSelectedState(userData.city);
       setValue("City", userData.city);
-      setValue('Email', userData.email);
-      setValue('Password', userData.password);
-      setValue('confirmarPassword', userData.password);
-      setValue('Personal_description', userData.personal_description);
+      setValue("Email", userData.email);
+      setValue("Password", userData.password);
+      setValue("confirmarPassword", userData.password);
+      setValue("Personal_description", userData.personal_description);
       setSelectedPrices(userData.price);
       setValue("price", userData.price);
     }
-  }, [])
+  }, []);
 
   const onSubmit = handleSubmit(async (data) => {
     if (selectedInterests.length < 2) {
       setErrorMessage("Debe seleccionar al menos 2 intereses.");
-      return; 
+      return;
     }
 
     navigate("/photo", {
@@ -68,17 +68,16 @@ export function FriendForm() {
         gender: data.Gender,
         last_name: data.Last_name,
         password: data.Password,
-        confirmPassword: data.confirmarPassword, 
+        confirmPassword: data.confirmarPassword,
         personal_description: data.Personal_description,
         birth_date: data.birth_date,
         price: data.price,
         likes: selectedInterests,
-        image: userData? userData.image : null,
-      }
+        image: userData ? userData.image : null,
+      },
     });
-
   });
- 
+
   const optionsGender = [
     { value: "femenino", label: "Femenino" },
     { value: "masculino", label: "Masculino" },
@@ -104,18 +103,21 @@ export function FriendForm() {
 
   const handleCountryChange = (e) => {
     const selectedCountryIsoCode = e.target.value;
+    let countries = Country.getAllCountries();
+
     setSelectedCountry(selectedCountryIsoCode);
-    const states = State.getStatesOfCountry(selectedCountryIsoCode);
+    countries = countries.filter(
+      (country) => country.name === selectedCountryIsoCode
+    );
+
+    const states = State.getStatesOfCountry(countries[0].isoCode);
     setStates(states);
     setSelectedState("");
-    setValue("pais", selectedCountryIsoCode);
   };
 
   const handleStateChange = (e) => {
     const selectedStateIsoCode = e.target.value;
     setSelectedState(selectedStateIsoCode);
-    // Actualizar el valor en el formulario
-    setValue("estado", selectedStateIsoCode);
   };
 
   return (
@@ -137,8 +139,10 @@ export function FriendForm() {
                     message: "El nombre es requerido",
                   },
                   pattern: {
-                    value: /^[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+(?:\s[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+)*$/,
-                    message: "El nombre solo puede contener letras y caracteres españoles",
+                    value:
+                      /^[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+(?:\s[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+)*$/,
+                    message:
+                      "El nombre solo puede contener letras y caracteres españoles",
                   },
                   minLength: {
                     value: 2,
@@ -165,8 +169,10 @@ export function FriendForm() {
                     message: "El apellido es requerido",
                   },
                   pattern: {
-                    value: /^[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+(?:\s[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+)*$/,
-                    message: "El nombre solo puede contener letras y caracteres españoles",
+                    value:
+                      /^[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+(?:\s[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+)*$/,
+                    message:
+                      "El nombre solo puede contener letras y caracteres españoles",
                   },
                   minLength: {
                     value: 2,
@@ -239,7 +245,7 @@ export function FriendForm() {
                 required={true}
                 onChange={handleCountryChange} // Manejador de cambio de selección
                 options={Country.getAllCountries().map((country) => ({
-                  value: country.isoCode,
+                  value: country.name,
                   label: country.name,
                 }))}
                 register={register("Country", {
@@ -262,7 +268,7 @@ export function FriendForm() {
                 required={true}
                 onChange={handleStateChange}
                 options={states.map((state) => ({
-                  value: state.isoCode,
+                  value: state.name && state.name.replace(" Department", ""),
                   label: state.name && state.name.replace(" Department", ""),
                 }))}
                 register={register("City", {
@@ -294,7 +300,6 @@ export function FriendForm() {
                 })}
                 errors={errors}
               />
-        
             </div>
             <div className="input-2c">
               <InputText
@@ -388,7 +393,7 @@ export function FriendForm() {
               <InterestModal
                 onSaveInterests={handleSaveInterests}
                 errors={errors}
-                userDataLikes={userData? userData.likes : []}
+                userDataLikes={userData ? userData.likes : []}
               />
               <div className="error-message">{errorLike}</div>
             </div>

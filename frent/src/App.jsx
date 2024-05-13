@@ -23,6 +23,9 @@ import Chat from "./components/Chat/Chat";
 
 /*import para ver como queda perfil*/
 import ProfileFriend from "./pages/profile/profileFriend";
+import ProfileClient from "./pages/profile/profileClient";
+
+
 import ProfileUser from "./pages/profile/ProfileUser";
 
 function App() {
@@ -91,6 +94,7 @@ function App() {
               }
             >
               <Route path="/rentalSectio" element={<ViewReserve />} />
+              <Route path="/profileClient/:id" element={<ProfileClient />} />
             </Route>
 
             <Route
@@ -106,7 +110,8 @@ function App() {
             </Route>
 
 
-            <Route path="/profil" element={<ProfileFriend />} />
+            <Route path="/profil/:id" element={<ProfileFriend />} />
+      
 
             <Route
               path="/*"
