@@ -56,7 +56,7 @@ const ChatList = ({ onSelectUser }) => {
             avatar: './avatar.png',
             messages: [
                 { text: 'Buenos días!', isIncoming: true, time: '7:00' },
-                { text: '¿Cómo va todo?', isIncoming: false, time: '7:01' }
+                { text: '¿Cómo vahjjhdsjndsjdbdfbdnbj sd dhjdf  djhdsjjbdjbdb sdjdjhjs dsjh dsjdbds  todo?', isIncoming: false, time: '7:01' }
             ]
         },
         {
@@ -91,6 +91,13 @@ const ChatList = ({ onSelectUser }) => {
         setSearchText(event.target.value);
     };
 
+    const truncateMessage = (message, maxLength) => {
+        if (message.length > maxLength) {
+          return message.slice(0, maxLength) + "...";
+        }
+        return message;
+      };
+
     return (
         <div className="chatListContainer">
             <div className="chatListSearch">
@@ -111,10 +118,9 @@ const ChatList = ({ onSelectUser }) => {
                         <img className="chatListAvatarLarge" src={user.avatar} alt="" />
                         <div className="chatListItemTexts">
                             <span className="chatListItemName">{user.name}</span>
-                            {/* Mostrar el último mensaje del usuario */}
                             {user.messages.length > 0 && (
                                 <p className="chatListItemMessage">
-                                    {user.messages[user.messages.length - 1].text}
+                                {truncateMessage(user.messages[user.messages.length - 1].text, 45)}
                                 </p>
                             )}
                         </div>

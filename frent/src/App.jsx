@@ -94,7 +94,7 @@ function App() {
                 />
               }
             >
-              <Route path="/chat2" element={<Chat />} />
+              <Route path="/chat" element={<Chat />} />
               <Route path="/rentalSectio" element={<ViewReserve />} />
               <Route path="/profileClient/:id" element={<ProfileClient />} />
             </Route>

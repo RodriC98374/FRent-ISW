@@ -92,10 +92,23 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: var(--secondary-color);
     margin-right: 10px;
+    object-fit: cover;
 }
 
+.avatar-chat{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+.user-info{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
 .user-info h3 {
     margin: 0;
     font-size: 16px;
@@ -144,12 +157,31 @@
 .message-content {
     display: flex;
     align-items: center;
-    gap: 5px;
+    align-items: flex-start;
+    word-wrap: break-word;
+    flex-direction: column;
+}
+
+.message-text {
+    max-width: 100%;
+    border-radius: 20px;
+    margin-right: 20px;
+    background-color: #f0f0f0;
+    color: var(--secondary-color);
+  }
+
+.outgoing .message-text {
+  background-color: var(--quaternary-color);
+  color: #2c2929;
+  margin: 0;
+  align-self: flex-end;
 }
 
 .message-time {
     font-size: var(--pS-size);
-    color: #888;
+    color: #000;
+    margin-top: 4px;
+    align-self: flex-end;
 }
 
 .chat-input {
@@ -190,3 +222,4 @@
     cursor: pointer;
     font-size: 20px;
 }
+
