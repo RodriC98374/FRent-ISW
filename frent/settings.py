@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'notificacionesInterno',
     'chat',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -212,4 +213,18 @@ EMAIL_HOST_PASSWORD = 'jshvjzufpmdjoukt'  # Tu contraseña de correo electrónic
 
 # STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+
+
+
+ASGI_APPLICATION = 'myproject.asgi.application'
+
+
 # CSRF_TRUSTED_ORIGINS = ["http://*", "https://deploy-is-production.up.railway.app/"]
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 8000)],
+        },
+    },
+}
