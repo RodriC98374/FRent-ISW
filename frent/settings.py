@@ -27,7 +27,8 @@ SECRET_KEY = 'django-insecure-s-o6_879$-rbrk#6=3q)m^5c@pzylhn4u4krbaqnd!@b5ub8vk
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "deploy-is-production.up.railway.app", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost",
+                 "deploy-is-production.up.railway.app", "127.0.0.1"]
 
 
 # Application definition
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     'djoser',
     'rest_framework.authtoken',
     'notificacionesInterno',
+    'chat',
 ]
 
 MIDDLEWARE = [
@@ -82,6 +84,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'frent.wsgi.application'
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer'
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -89,9 +96,9 @@ WSGI_APPLICATION = 'frent.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'frent',
+        'NAME': 'frentP',
         'USER': 'postgres',
-        'PASSWORD': '12345',
+        'PASSWORD': '123',
         'HOST': 'localhost',
         'OPTIONS': {
             'client_encoding': 'UTF8',
@@ -174,13 +181,13 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
 
-        #'rest_framework.permissions.IsAuthenticated',
+        # 'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
     ),
-    
+
 }
 
 DJOSER = {
@@ -191,7 +198,7 @@ DJOSER = {
     },
     'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
     'ACTIVATION_URL': 'activate/{uid}/{token}',
-    'SEND_ACTIVATION_EMAIL': True, 
+    'SEND_ACTIVATION_EMAIL': True,
 }
 
 
@@ -206,4 +213,3 @@ EMAIL_HOST_PASSWORD = 'jshvjzufpmdjoukt'  # Tu contraseña de correo electrónic
 # STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # CSRF_TRUSTED_ORIGINS = ["http://*", "https://deploy-is-production.up.railway.app/"]
-
