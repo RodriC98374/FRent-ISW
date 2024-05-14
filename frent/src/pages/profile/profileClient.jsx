@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./profileEdits.css"; // Archivo de estilos CSS
-import profileImage from "../../assets/img/image.png";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { IoLocationSharp } from "react-icons/io5";
 import { ButtonPrimary } from "../../components/Buttons/buttonPrimary";
 import { NavLink, useParams } from "react-router-dom";
-import { get } from "react-hook-form";
 import { getClientID, get_likes_user } from "../../api/register.api";
 
 const ProfileClient = () => {
@@ -13,7 +11,6 @@ const ProfileClient = () => {
   const clientId = parseInt(id);
   const [client, setClient] = useState([]);
   const [interests, setInterest] = useState([]);
-
 
   useEffect(() => {
     async function loadClient() {
@@ -49,50 +46,58 @@ const ProfileClient = () => {
   };
 
   return (
-    <div className="user-profile">
-      <div className="user-card">
-        <img
-          src={`data:image/png;base64,${client.image}`}
-          alt="Profile"
-          className="user-avatar"
-        />
-        <h2 className="user-name">{`${client.first_name} ${client.last_name}`}</h2>
-        <div className="user-details">
-          <p>Edad: {calculateAge(client.birth_date)}</p>
-          <p>Género: {client.gender}</p>
-          <p>
-            <IoLocationSharp className="icon" /> {`${client.country} / ${client.city}`}
-          </p>
-          <p>
-            <RiVerifiedBadgeFill className="icon" /> Verificado
-          </p>
+    <div className="information-user">
+      <div className="user-profile">
+        <div className="user-card">
+          <div className="image-profile">
+            <img
+              src={`data:image/png;base64,${client.image}`}
+              alt="Profile"
+              className="user-avatar"
+            />
+          </div>
+          <h2 className="user-name">{`${client.first_name} ${client.last_name}`}</h2>
+          <div className="user-details">
+            <p>Edad: {calculateAge(client.birth_date)}</p>
+            <p>Género: {client.gender}</p>
+            <p>
+              <IoLocationSharp className="icon" />{" "}
+              {`${client.country} / ${client.city}`}
+            </p>
+            <p>
+              <RiVerifiedBadgeFill className="icon" /> Verificado
+            </p>
+          </div>
         </div>
-      </div>
-      <div className="user-description">
-        <p>{client.personal_description}</p>
-        <h3>Intereses:</h3>
-        <div className="user-interests">
-          {interests.map((interest, index) => (
-            <span key={index} className="interest">
-              <svg
-                className="tag-icon"
-                xmlns="http://www.w3.org/2000/svg"
-                width="1em"
-                height="1em"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="white"
-                  d="M5.5 7A1.5 1.5 0 0 1 4 5.5A1.5 1.5 0 0 1 5.5 4A1.5 1.5 0 0 1 7 5.5A1.5 1.5 0 0 1 5.5 7m15.91 4.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.11 0-2 .89-2 2v7c0 .55.22 1.05.59 1.41l8.99 9c.37.36.87.59 1.42.59c.55 0 1.05-.23 1.41-.59l7-7c.37-.36.59-.86.59-1.41c0-.56-.23-1.06-.59-1.42"
-                />
-              </svg>
-              {interest}
-            </span>
-          ))}
+        <div className="user-description">
+          <h2>Descripcion Personal:</h2>
+          <p>{client.personal_description}</p>
+          <h2>Intereses:</h2>
+          <div className="user-interests">
+            {interests.map((interest, index) => (
+              <span key={index} className="interest-selected">
+                <svg
+                  className="tag-icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1em"
+                  height="1em"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="white"
+                    d="M5.5 7A1.5 1.5 0 0 1 4 5.5A1.5 1.5 0 0 1 5.5 4A1.5 1.5 0 0 1 7 5.5A1.5 1.5 0 0 1 5.5 7m15.91 4.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.11 0-2 .89-2 2v7c0 .55.22 1.05.59 1.41l8.99 9c.37.36.87.59 1.42.59c.55 0 1.05-.23 1.41-.59l7-7c.37-.36.59-.86.59-1.41c0-.56-.23-1.06-.59-1.42"
+                  />
+                </svg>
+                {interest}
+              </span>
+            ))}
+          </div>
+          <div className="btn-back-reserve">
+            <NavLink to="/rentalSectio">
+              <ButtonPrimary label={"Back"} />
+            </NavLink>
+          </div>
         </div>
-        <NavLink to="/">
-          <ButtonPrimary label={"Back"} />
-        </NavLink>
       </div>
     </div>
   );

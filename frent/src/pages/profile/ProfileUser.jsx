@@ -4,6 +4,7 @@ import { IoArrowBackCircleSharp } from "react-icons/io5";
 import { getUser } from "../Login/LoginForm";
 import { useEffect, useState } from "react";
 import { getAvailabilityFriend } from "../../api/register.api";
+import { ButtonPrimary } from "../../components/Buttons/buttonPrimary";
 
 export default function ProfileUser() {
   const userData = getUser();
@@ -38,11 +39,11 @@ export default function ProfileUser() {
     <>
       {userData && (
         <div className="body-page-profile">
-          <div className="btn-back">
-            <NavLink className="btn-back-link" to={``}>
-              <IoArrowBackCircleSharp />
+          {/* <div className="btn-back">
+            <NavLink to="/">
+              <ButtonPrimary label={"Back"} />
             </NavLink>
-          </div>
+          </div> */}
 
           <div className="shape-background">
             <svg className="shape-a-profile" width="200" height="200">
@@ -114,7 +115,7 @@ export default function ProfileUser() {
 
               <div className="profile-interests">
                 {userData.likes.map((interest, index) => (
-                  <span key={index} className="interest">
+                  <span key={index} className="interest-selected">
                     <svg
                       className="tag-icon"
                       xmlns="http://www.w3.org/2000/svg"
