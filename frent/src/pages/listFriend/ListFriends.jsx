@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
 
 import { getFriends, getLikes } from "../../api/register.api";
+import InterestModal from "./InterestModal";
 
 export const calculateAge = (birthDate) => {
   const currentDate = new Date();
@@ -30,6 +31,10 @@ export default function ListFriend() {
   const [priceFilter, setPriceFilter] = useState("");
   const [interestFilter, setInterestFilter] = useState("");
   const [likes, setLikes] = useState([]);
+  const [interestFilters, setInterestFilters] = useState([]);
+  const [showInterestModal, setShowInterestModal] = useState(false);
+  const [selectedInterests, setSelectedInterests] = useState([]);
+
 
   const staticImage =
     "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
@@ -107,7 +112,8 @@ export default function ListFriend() {
       (!ageFilter || (friendAge >= ageFilter.min && friendAge <= ageFilter.max)) &&
       (priceFilter === "" ||
         parseFloat(friend.price) === parseFloat(priceFilter)) &&
-      (interestFilter === "" || (friend.interests && friend.interests.includes(interestFilter)))
+        (interestFilters.length === 0 || 
+        (friend.interests && interestFilters.every((interest) => friend.interests.includes(interest))))
     );
   });
 
@@ -154,7 +160,24 @@ export default function ListFriend() {
   };
 
   const handleInterestChange = (e) => {
-    setInterestFilter(e.target.value);
+    const selectedInterest = e.target.value;
+    if (interestFilters.includes(selectedInterest)) {
+      setInterestFilters(interestFilters.filter((interest) => interest !== selectedInterest));
+    } else {
+      setInterestFilters([...interestFilters, selectedInterest]);
+    }
+  };
+  
+  const handleToggleInterestModal = () => {
+    setShowInterestModal(!showInterestModal);
+  };
+
+  const handleInterestSave = (interest, isSelected) => {
+    if (isSelected) {
+      setSelectedInterests([...selectedInterests, interest]);
+    } else {
+      setSelectedInterests(selectedInterests.filter((item) => item !== interest));
+    }
   };
 
   const clearSearch = () => {
@@ -254,7 +277,8 @@ export default function ListFriend() {
             <select
               className="filter-select"
               value={interestFilter}
-              onChange={handleInterestChange}>
+              onChange={handleInterestChange}
+              >
               <option value="">Todos</option>
               {likes.map((likes) => (
                 <option
