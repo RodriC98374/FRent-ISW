@@ -5,6 +5,7 @@ import { IoLocationSharp } from "react-icons/io5";
 import { ButtonPrimary } from "../../components/Buttons/buttonPrimary";
 import { NavLink, useParams } from "react-router-dom";
 import { getClientID, get_likes_user } from "../../api/register.api";
+import { calculateAge } from "../listFriend/ListFriends";
 
 const ProfileClient = () => {
   const { id } = useParams();
@@ -31,20 +32,7 @@ const ProfileClient = () => {
     if (clientId) loadInterests();
   }, []);
 
-  const calculateAge = (birthDate) => {
-    const currentDate = new Date();
-    const dob = new Date(birthDate);
-    let age = currentDate.getFullYear() - dob.getFullYear();
-    const monthDiff = currentDate.getMonth() - dob.getMonth();
-    if (
-      monthDiff < 0 ||
-      (monthDiff === 0 && currentDate.getDate() < dob.getDate())
-    ) {
-      age--;
-    }
-    return age;
-  };
-
+ 
   return (
     <div className="information-user">
       <div className="user-profile">

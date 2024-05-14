@@ -31,14 +31,12 @@ export const getUser = () => {
 };
 
 export default function LoginForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-  const { setUserData } = useContext(UserContext); // Acceder al contexto
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {userData, setUserData } = useContext(UserContext); // Acceder al contexto
+  const [isLoggedIn, setIsLoggedIn] = useState(false);  
   const [loginError, setLoginError] = useState("");
+
+  console.log(userData)
 
   useEffect(() => {
     const checkLoggedIn = async () => {

@@ -12,7 +12,7 @@
   padding: 10px;
 }
 
-.image-profile{
+.image-profile {
   width: 100%;
   display: flex;
   align-items: center;
@@ -23,7 +23,6 @@
   margin-right: 10px;
   border-radius: 10px;
   background-color: white;
-  width: 30%;
   padding: 20px;
   box-shadow: 0px 4px 8px 5px rgba(0, 0, 0, 0.1);
 }
@@ -43,20 +42,21 @@
   width: 100%;
 }
 
-.user-details p{
+.user-details p {
   width: 100%;
 }
 
 .user-price {
   font-size: 1.2rem; /* Tamaño del precio */
   text-align: center; /* Centrar el texto del precio */
+  color: #000;
 }
 
 .user-description {
   width: 60%;
   display: flex;
   flex-direction: column;
-  margin-left: 15px;
+  margin-left: 7%;
   margin-bottom: 5px;
   /* Espacio entre cada detalle */
 }
@@ -79,9 +79,16 @@
   margin-bottom: 6px;
 }
 
-.btn-back-reserve{
+.btn-back-reserve {
   display: flex;
   width: 100%;
   justify-content: flex-end;
   margin-top: 50px;
+}
+
+.alquilar-perfil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 5%;
 }

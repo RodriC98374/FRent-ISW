@@ -1,32 +1,31 @@
-import React, { useContext } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "./App.css";
-import NavBar from "./components/Navbar/NavBar";
-import Home from "./pages/home/Home";
-import HomeClient from "./pages/home/HomeClient"; // Nuevo componente
-import HomeFriend from "./pages/home/HomeFriend"; // Nuevo componente
-import ListFriend from "./pages/listFriend/ListFriends";
-import SelectionRegister from "./pages/registros/SelectionRegister";
-import { CustomerForm } from "./components/Forms/CustomerForm/CustomerForm";
-import RentFriendForm from "./components/Forms/rentFriends/RentaForm";
-import { FriendForm } from "./components/Forms/FriendForm/FriendForm";
-import ViewReserve from "./components/viewReserve/ViewReserve";
-import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
-import LoginForm from "./pages/Login/LoginForm";
-import MyCalendar from "./components/Forms/rentFriends/calendar/MyCalendar";
-import Photo from "./pages/photo/PhotoForm";
-import AddAvailableHours from "./components/Forms/AddAvailableHours/AddAvailableHours";
-import { getUser } from "./pages/Login/LoginForm";
+import React, { useContext } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import './App.css';
+import NavBar from './components/Navbar/NavBar';
+import Home from './pages/home/Home';
+import HomeClient from './pages/home/HomeClient'; // Nuevo componente
+import HomeFriend from './pages/home/HomeFriend'; // Nuevo componente
+import ListFriend from './pages/listFriend/ListFriends';
+import SelectionRegister from './pages/registros/SelectionRegister';
+import { CustomerForm } from './components/Forms/CustomerForm/CustomerForm';
+import RentFriendForm from './components/Forms/rentFriends/RentaForm';
+import { FriendForm } from './components/Forms/FriendForm/FriendForm';
+import ViewReserve from './components/viewReserve/ViewReserve';
+import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
+import LoginForm from './pages/Login/LoginForm'
+import MyCalendar from './components/Forms/rentFriends/calendar/MyCalendar';
+import Photo from './pages/photo/PhotoForm';
+import AddAvailableHours from './components/Forms/AddAvailableHours/AddAvailableHours';
+import ProfileFriend from './pages/profile/profileFriend';
+import ProfileUser from './pages/profile/ProfileUser';
+import { getUser } from './pages/Login/LoginForm';
 
-import { UserContext } from "./pages/Login/UserProvider";
-import Chat from "./components/Chat/Chat";
+import { UserContext } from './pages/Login/UserProvider';
+import Chat from './components/Chat/Chat';
+
 
 /*import para ver como queda perfil*/
-import ProfileFriend from "./pages/profile/profileFriend";
 import ProfileClient from "./pages/profile/profileClient";
-
-
-import ProfileUser from "./pages/profile/ProfileUser";
 
 function App() {
   const { userData } = useContext(UserContext);
@@ -56,7 +55,7 @@ function App() {
             <Route path="/addAvailableHours" element={<AddAvailableHours />} />
             <Route path="/friend" element={<FriendForm />} />
             <Route path="/photo" element={<Photo />} />
-            <Route path="/chat" element={<Chat />} />            
+            
 
             <Route
               element={
@@ -79,9 +78,11 @@ function App() {
               }
             >
               <Route path="/rentaForm/:id" element={<RentFriendForm />} />
+              <Route path="/profileFriend/:id" element = {<ProfileFriend/>}/>
               <Route path="/listRent" element={<ListFriend />} />
               <Route path="/calendarReservas/:id" element={<MyCalendar />} />
               <Route path="/listFriend" element={<ListFriend />} />
+              <Route path="/chat2" element={<Chat />} />
 
             </Route>
 
@@ -93,10 +94,10 @@ function App() {
                 />
               }
             >
+              <Route path="/chat2" element={<Chat />} />
               <Route path="/rentalSectio" element={<ViewReserve />} />
               <Route path="/profileClient/:id" element={<ProfileClient />} />
             </Route>
-
             <Route
               element={
                 <ProtectedRoute
@@ -105,14 +106,9 @@ function App() {
                 />
               }
             >
-              <Route path="/profileUser" element={<ProfileUser />} />
-
+            <Route path="/profileUser" element={<ProfileUser />} />
             </Route>
-
-
             <Route path="/profil/:id" element={<ProfileFriend />} />
-      
-
             <Route
               path="/*"
               element={<h1 className="text-center">404 Page Not Found</h1>}

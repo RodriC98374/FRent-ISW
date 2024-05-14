@@ -133,21 +133,85 @@ margin-bottom: 0px !important;
   
 }
 
-.close {
+.icon-list-close {
   position: absolute;
-  bottom: 25px;
-  left: 60%;
-  transform: translateX(-50%);
-  font-size: 16px;
-  background-color: red;
-  color: white;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 5px;
+  right: 28%;
+  top: 14%;
+  transform: translateY(-50%);
   cursor: pointer;
-  
+  font: 50px;
 }
 
-.close:hover {
-  background-color: darkred;
+
+/* Estilo para el contenedor principal */
+.search-filters-container {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 20px;
 }
+
+/* Estilo para el campo de búsqueda */
+.search-input {
+  flex: 1; /* Toma el espacio restante */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+  font-size: 16px;
+  width: 45%;
+  margin-bottom: 20px;
+}
+
+.filteres-select{
+  border: 1px solid #ccc;
+  display: flex;
+  padding: 10px;
+  border-radius: 5px;
+}
+/* Estilo para los selectores */
+.filter-select {
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  display: flex;
+  width: 150px;
+  flex-direction: column;
+}
+
+/* Estilo para las etiquetas de filtro */
+.filter-label {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+/* Estilo específico para el selector de Edad */
+.age-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column ;
+  width: 80px;
+  font-size: 16px;
+}
+
+/* Estilo para el botón "Buscar" (opcional) */
+.search-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Estilo para las opciones dentro de los selectores */
+.filter-select option {
+  font-size: 16px;
+}
+
+
