@@ -223,3 +223,25 @@ class CustomLoginView(APIView):
             })
         else:
             return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+
+class FriendDetailView(APIView):
+    def get(self, request, pk):
+        try:
+            friend = Friend.objects.get(id_user=pk)
+        except Friend.DoesNotExist:
+            return Response({'error': 'Amigo no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+        queryset = User_like.objects.filter(user_id=pk).select_related('like_id')
+        gustos_nombres = []
+        for usuario_gusto in queryset:
+            gusto_nombre = usuario_gusto.like_id.name
+            gustos_nombres.append(gusto_nombre)
+        friend_serializer = FriendSerializer(friend)
+        gustos_serializer = GustosSerializer(data={'id_user': pk, 'gustos': gustos_nombres})
+        if gustos_serializer.is_valid():
+            friend_data = friend_serializer.data
+            friend_data['gustos'] = gustos_serializer.validated_data['gustos']
+            return Response(friend_data)
+        else:
+            return Response(gustos_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
