@@ -8,6 +8,7 @@ import { ButtonSecondary } from "../../components/Buttons/buttonSecondary";
 import { getFriendID, getLikes } from "../../api/register.api";
 import { calculateAge } from "../listFriend/ListFriends";
 
+
 const ProfileFriend = () => {
   const { id } = useParams();
   const friendId = parseInt(id);

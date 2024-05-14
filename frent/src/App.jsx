@@ -24,6 +24,8 @@ import { UserContext } from './pages/Login/UserProvider';
 import Chat from './components/Chat/Chat';
 
 
+/*import para ver como queda perfil*/
+import ProfileClient from "./pages/profile/profileClient";
 
 function App() {
   const { userData } = useContext(UserContext);
@@ -92,8 +94,8 @@ function App() {
               }
             >
               <Route path="/rentalSectio" element={<ViewReserve />} />
+              <Route path="/profileClient/:id" element={<ProfileClient />} />
             </Route>
-
             <Route
               element={
                 <ProtectedRoute
@@ -102,15 +104,9 @@ function App() {
                 />
               }
             >
-              <Route path="/profileUser" element={<ProfileUser />} />
-
+            <Route path="/profileUser" element={<ProfileUser />} />
             </Route>
-
-            <Route path="/rentalSectio" element={
-              <ProtectedRoute isAllowed={userData2 && userData2.user_type === 'Amigo'}>
-                <ViewReserve />
-              </ProtectedRoute>} />
-
+            <Route path="/profil/:id" element={<ProfileFriend />} />
             <Route
               path="/*"
               element={<h1 className="text-center">404 Page Not Found</h1>}

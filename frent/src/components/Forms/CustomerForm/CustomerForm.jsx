@@ -15,7 +15,7 @@ export function CustomerForm() {
   const location = useLocation();
   let userData = location.state;
 
-  const { 
+  const {
     register,
     handleSubmit,
     formState: { errors },
@@ -29,35 +29,34 @@ export function CustomerForm() {
   const [selectedGender, setSelectedGender] = useState("");
   const [selectedInterests, setSelectedInterests] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
-  const [cityEnabled, setCityEnabled] = useState(false);
   const [errorLike, setErrorLike] = useState("");
 
   //SE LO DEBE USAR EN LA PARTE DEL REGISTRO
 
-  useEffect(()=>{
-    if(userData){
+  useEffect(() => {
+    if (userData) {
       const states = State.getStatesOfCountry(userData.country);
-      setStates(states)
-      setValue('First_name', userData.first_name);
-      setValue('Last_name', userData.last_name);
-      setValue('birth_date', userData.birth_date);
-      setSelectedGender(userData.gender)
+      setStates(states);
+      setValue("First_name", userData.first_name);
+      setValue("Last_name", userData.last_name);
+      setValue("birth_date", userData.birth_date);
+      setSelectedGender(userData.gender);
       setValue("Gender", userData.gender);
       setSelectedCountry(userData.country);
       setValue("Country", userData.country);
       setSelectedState(userData.city);
       setValue("City", userData.city);
-      setValue('Email', userData.email);
-      setValue('Password', userData.password);
-      setValue('confirmarPassword', userData.password);
-      setValue('Personal_description', userData.personal_description);
+      setValue("Email", userData.email);
+      setValue("Password", userData.password);
+      setValue("confirmarPassword", userData.password);
+      setValue("Personal_description", userData.personal_description);
     }
-  }, [])
+  }, []);
 
   const onSubmit = handleSubmit(async (data) => {
     if (selectedInterests.length < 2) {
       setErrorMessage("Debe seleccionar al menos 2 intereses.");
-      return; 
+      return;
     }
 
     navigate("/photo", {
@@ -73,8 +72,8 @@ export function CustomerForm() {
         birth_date: data.birth_date,
         likes: selectedInterests,
         is_client: true,
-        image: userData? userData.image : null,
-      }
+        image: userData ? userData.image : null,
+      },
     });
   });
 
@@ -95,31 +94,28 @@ export function CustomerForm() {
 
   const handleCountryChange = (e) => {
     const selectedCountryIsoCode = e.target.value;
+    let countries = Country.getAllCountries();
+
     setSelectedCountry(selectedCountryIsoCode);
-    const states = State.getStatesOfCountry(selectedCountryIsoCode);
+    countries = countries.filter(
+      (country) => country.name === selectedCountryIsoCode
+    );
+
+    const states = State.getStatesOfCountry(countries[0].isoCode);
     setStates(states);
-    // Limpia el estado seleccionado cuando se cambia el país
     setSelectedState("");
-    // Actualizar el valor en el formulario
-    setValue("pais", selectedCountryIsoCode);
-    setCityEnabled(true);
   };
 
   const handleStateChange = (e) => {
     const selectedStateIsoCode = e.target.value;
     setSelectedState(selectedStateIsoCode);
-    // Actualizar el valor en el formulario
-    setValue("estado", selectedStateIsoCode);
   };
 
   return (
     <div className="body-page">
       <div className="form-body-container">
         <h3>Datos personales del cliente</h3>
-        <form
-          action=""
-          id="formulario-cliente"
-          onSubmit={onSubmit}>
+        <form action="" id="formulario-cliente" onSubmit={onSubmit}>
           <div className="colums-inputs">
             <div className="input-2c">
               <InputText
@@ -134,8 +130,10 @@ export function CustomerForm() {
                     message: "Este campo es obligatorio",
                   },
                   pattern: {
-                    value: /^[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+(?:\s[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+)*$/,
-                    message: "El nombre solo puede contener letras y caracteres españoles",
+                    value:
+                      /^[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+(?:\s[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+)*$/,
+                    message:
+                      "El nombre solo puede contener letras y caracteres españoles",
                   },
                   minLength: {
                     value: 2,
@@ -162,8 +160,10 @@ export function CustomerForm() {
                     message: "El apellido es requerido",
                   },
                   pattern: {
-                    value: /^[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+(?:\s[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+)*$/,
-                    message: "El nombre solo puede contener letras y caracteres españoles",
+                    value:
+                      /^[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+(?:\s[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+)*$/,
+                    message:
+                      "El nombre solo puede contener letras y caracteres españoles",
                   },
                   minLength: {
                     value: 2,
@@ -236,7 +236,7 @@ export function CustomerForm() {
                 required={true}
                 onChange={handleCountryChange} // Manejador de cambio de selección
                 options={Country.getAllCountries().map((country) => ({
-                  value: country.isoCode,
+                  value: country.name,
                   label: country.name,
                 }))}
                 register={register("Country", {
@@ -258,7 +258,7 @@ export function CustomerForm() {
                 required={true}
                 onChange={handleStateChange}
                 options={states.map((state) => ({
-                  value: state.isoCode,
+                  value: state.name && state.name.replace(" Department", ""),
                   label: state.name && state.name.replace(" Department", ""),
                 }))}
                 register={register("City", {
@@ -268,7 +268,7 @@ export function CustomerForm() {
                   },
                 })}
                 errors={errors}
-                disabled={!cityEnabled}
+                disabled={!selectedCountry}
               />
             </div>
             <div className="input-4c">
@@ -290,7 +290,6 @@ export function CustomerForm() {
                 })}
                 errors={errors}
               />
-            
             </div>
             <div className="input-2c">
               <InputText
@@ -344,7 +343,7 @@ export function CustomerForm() {
             <div className="input-4c descripction">
               <label htmlFor="descripcion">Descripción personal</label>
               <textarea
-              placeholder="Cuentanos sobre ti"
+                placeholder="Cuentanos sobre ti"
                 name="descripcion"
                 className="textAreaDescription"
                 {...register("Personal_description", {
@@ -352,7 +351,8 @@ export function CustomerForm() {
                     value: 150,
                     message: "Excedió el número máximo de caracteres (150)",
                   },
-                })}></textarea>
+                })}
+              ></textarea>
               {errors.Personal_description && (
                 <span className="error-message">
                   {errors.Personal_description.message}
@@ -364,7 +364,7 @@ export function CustomerForm() {
               <InterestModal
                 onSaveInterests={handleSaveInterests}
                 errors={errors}
-                userDataLikes={userData? userData.likes : []}
+                userDataLikes={userData ? userData.likes : []}
               />
               <div className="error-message">{errorLike}</div>
             </div>

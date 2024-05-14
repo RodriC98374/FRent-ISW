@@ -1,63 +1,101 @@
-import React from 'react';
-import './profileEdits.css'; // Archivo de estilos CSS
-import profileImage from '../../assets/img/image.png';
+import React, { useEffect, useState } from "react";
+import "./profileEdits.css"; // Archivo de estilos CSS
+import profileImage from "../../assets/img/image.png";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { IoLocationSharp } from "react-icons/io5";
-import {ButtonPrimary} from '../../components/Buttons/buttonPrimary';
-import { NavLink } from "react-router-dom";
+import { ButtonPrimary } from "../../components/Buttons/buttonPrimary";
+import { NavLink, useParams } from "react-router-dom";
+import { get } from "react-hook-form";
+import { getClientID, get_likes_user } from "../../api/register.api";
 
-const UserProfile = () => {
-  // Datos de ejemplo del usuario
-  const user = {
-    name: 'John Doe',
-    age: 30,
-    gender: 'Masculino',
-    location: 'New York',
-    verified: true,
-    description: 'Skibidi Sigma Pomni Digital Fortnite Chamba Free Gigachad Rizz Ohmygodfloo XXXTentacion Hotmail Lionel Ronaldo Junior Mewing Tercero Chiki Ibai Xocas',
-    interests: ['Coding', 'Traveling', 'Reading','Bombardear naciones','Recuperar el Litoral']
+const ProfileClient = () => {
+  const { id } = useParams();
+  const clientId = parseInt(id);
+  const [client, setClient] = useState([]);
+  const [interests, setInterest] = useState([]);
+
+
+  useEffect(() => {
+    async function loadClient() {
+      let res = await getClientID(clientId);
+      setClient(res.data);
+      console.log("los datos son: ", res.data);
+    }
+
+    async function loadInterests() {
+      const idClient = {
+        id_user: clientId,
+      };
+      const res = await get_likes_user(idClient);
+      setInterest(res.data.gustos);
+    }
+
+    if (clientId) loadClient();
+    if (clientId) loadInterests();
+  }, []);
+
+  const calculateAge = (birthDate) => {
+    const currentDate = new Date();
+    const dob = new Date(birthDate);
+    let age = currentDate.getFullYear() - dob.getFullYear();
+    const monthDiff = currentDate.getMonth() - dob.getMonth();
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && currentDate.getDate() < dob.getDate())
+    ) {
+      age--;
+    }
+    return age;
   };
 
   return (
     <div className="user-profile">
       <div className="user-card">
-        <img src={profileImage} alt="Profile" className="user-avatar" />
-        <h2 className="user-name">{user.name}</h2>
+        <img
+          src={`data:image/png;base64,${client.image}`}
+          alt="Profile"
+          className="user-avatar"
+        />
+        <h2 className="user-name">{`${client.first_name} ${client.last_name}`}</h2>
         <div className="user-details">
-          <p>Edad: {user.age}</p>
-          <p>Género: {user.gender}</p>
-          <p><IoLocationSharp className="icon" /> {user.location}</p>
-          <p><RiVerifiedBadgeFill className="icon" /> Verificado</p>
+          <p>Edad: {calculateAge(client.birth_date)}</p>
+          <p>Género: {client.gender}</p>
+          <p>
+            <IoLocationSharp className="icon" /> {`${client.country} / ${client.city}`}
+          </p>
+          <p>
+            <RiVerifiedBadgeFill className="icon" /> Verificado
+          </p>
         </div>
       </div>
       <div className="user-description">
-        <h3>Descripción personal:</h3>
-        <p>{user.description}</p>
+        <p>{client.personal_description}</p>
         <h3>Intereses:</h3>
         <div className="user-interests">
-          {user.interests.map((interest, index) => (
-            <span key={index} className="interest">              
-                <svg
-                    className="tag-icon"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="1em"
-                    height="1em"
-                    viewBox="0 0 24 24">
-                    <path
-                      fill="white"
-                      d="M5.5 7A1.5 1.5 0 0 1 4 5.5A1.5 1.5 0 0 1 5.5 4A1.5 1.5 0 0 1 7 5.5A1.5 1.5 0 0 1 5.5 7m15.91 4.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.11 0-2 .89-2 2v7c0 .55.22 1.05.59 1.41l8.99 9c.37.36.87.59 1.42.59c.55 0 1.05-.23 1.41-.59l7-7c.37-.36.59-.86.59-1.41c0-.56-.23-1.06-.59-1.42"
-                    />
-                </svg>
-            {interest}</span>
+          {interests.map((interest, index) => (
+            <span key={index} className="interest">
+              <svg
+                className="tag-icon"
+                xmlns="http://www.w3.org/2000/svg"
+                width="1em"
+                height="1em"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="white"
+                  d="M5.5 7A1.5 1.5 0 0 1 4 5.5A1.5 1.5 0 0 1 5.5 4A1.5 1.5 0 0 1 7 5.5A1.5 1.5 0 0 1 5.5 7m15.91 4.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.11 0-2 .89-2 2v7c0 .55.22 1.05.59 1.41l8.99 9c.37.36.87.59 1.42.59c.55 0 1.05-.23 1.41-.59l7-7c.37-.36.59-.86.59-1.41c0-.56-.23-1.06-.59-1.42"
+                />
+              </svg>
+              {interest}
+            </span>
           ))}
         </div>
         <NavLink to="/">
-              <ButtonPrimary label={"Back"} />
+          <ButtonPrimary label={"Back"} />
         </NavLink>
       </div>
-      
     </div>
   );
 };
 
-export default UserProfile;
+export default ProfileClient;
