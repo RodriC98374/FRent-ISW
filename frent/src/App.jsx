@@ -55,7 +55,7 @@ function App() {
             <Route path="/addAvailableHours" element={<AddAvailableHours />} />
             <Route path="/friend" element={<FriendForm />} />
             <Route path="/photo" element={<Photo />} />
-            <Route path="/chat2" element={<Chat />} />
+            
 
             <Route
               element={
@@ -82,6 +82,7 @@ function App() {
               <Route path="/listRent" element={<ListFriend />} />
               <Route path="/calendarReservas/:id" element={<MyCalendar />} />
               <Route path="/listFriend" element={<ListFriend />} />
+              <Route path="/chat2" element={<Chat />} />
 
             </Route>
 
@@ -93,6 +94,7 @@ function App() {
                 />
               }
             >
+              <Route path="/chat2" element={<Chat />} />
               <Route path="/rentalSectio" element={<ViewReserve />} />
               <Route path="/profileClient/:id" element={<ProfileClient />} />
             </Route>

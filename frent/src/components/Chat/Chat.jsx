@@ -11,14 +11,7 @@ const Chat = () => {
 
   const handleUserSelect = (user) => {
     setSelectedUser(user);
-    setMessages([
-      { text: "Hola!", isIncoming: true, time: "10:00" },
-      { text: "Hola, cómo estás?", isIncoming: false, time: "10:01" },
-      { text: "Pasa viste ya por casa?", isIncoming: true, time: "9:42" },
-      { text: "Por su casa yo pasá", isIncoming: false, time: "9:45" },
-      { text: "A su dueño no lo vi", isIncoming: true, time: "9:48" },
-      { text: "Andaba don Jose", isIncoming: false, time: "9:52" },
-    ]);
+    setMessages(user.messages);
     setIsChatVisible(true);
   };
 

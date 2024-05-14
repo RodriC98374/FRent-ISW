@@ -63,14 +63,14 @@
   .chat-placeholder  h3 {
     font-size: 24px;
     font-weight: bold;
-    color: #333; /* Color del texto */
-    margin-bottom: 10px; /* Espacio debajo del encabezado */
+    color: #333; 
+    margin-bottom: 10px; 
   }
   
   .chat-placeholder p {
     font-size: 16px;
-    color: #666; /* Color del texto */
-    margin-bottom: 10px; /* Espacio debajo del párrafo */
+    color: #666;
+    margin-bottom: 10px;
   }
 
 .chat-header {
