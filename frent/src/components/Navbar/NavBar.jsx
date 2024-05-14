@@ -11,8 +11,6 @@ import { signOut, getUser } from "../../pages/Login/LoginForm";
 import { FaUser } from "react-icons/fa";
 import { BiSolidMessageDetail } from "react-icons/bi";
 
-
-
 export default function NavBar() {
   const [modalVisible, setModalVisible] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -20,7 +18,7 @@ export default function NavBar() {
   const userData = getUser();
 
   const location = useLocation();
-  
+
   const openModal = () => {
     if (modalVisible === false) {
       loadNotifications();
@@ -91,10 +89,20 @@ export default function NavBar() {
             </li>
           )}
           {!userData && (
-            <li onClick={() => {closeModal(); clearLocalStorage();}}>
-              <NavLink className={
-              location.pathname === "/form" ? "navbar-option active" : "navbar-option"
-            } to="form">
+            <li
+              onClick={() => {
+                closeModal();
+                clearLocalStorage();
+              }}
+            >
+              <NavLink
+                className={
+                  location.pathname === "/form"
+                    ? "navbar-option active"
+                    : "navbar-option"
+                }
+                to="form"
+              >
                 {" "}
                 Registrarse
               </NavLink>
@@ -102,11 +110,14 @@ export default function NavBar() {
           )}
           {userData && userData.user_type === "Amigo" && (
             <li onClick={closeModal}>
-              <NavLink className={
-              location.pathname === "/rentalSection"
-                ? "navbar-option active"
-                : "navbar-option"
-            } to="/rentalSectio">
+              <NavLink
+                className={
+                  location.pathname === "/rentalSection"
+                    ? "navbar-option active"
+                    : "navbar-option"
+                }
+                to="/rentalSectio"
+              >
                 Alquileres
               </NavLink>
             </li>
@@ -123,8 +134,8 @@ export default function NavBar() {
             <li>
               <div className="user-sesion-container">
                 <div className="user-sesion">
-                    <span>{userData.first_name}</span>
-                    <span className="user">{userData.user_type}</span>
+                  <span>{userData.first_name}</span>
+                  <span className="user">{userData.user_type}</span>
                 </div>
                 <NavLink className="navbar-option" to="/profileUser">
                   <FaUser className="icon-sesion" />
@@ -132,18 +143,14 @@ export default function NavBar() {
               </div>
             </li>
           )}
-          {userData && (
+
+          {userData && userData.user_type === "Cliente" && (
             <li>
-              <button className="logout" onClick={signOut}>
-                Cerrar Sesión
-              </button>
+              <NavLink className="navbar-option" to="/chat2">
+                <BiSolidMessageDetail />
+              </NavLink>
             </li>
           )}
-          {userData && userData.user_type === "Cliente" && (
-          <li>
-            <NavLink className="navbar-option" to="/chat2"><BiSolidMessageDetail /></NavLink>
-          </li>
-        )}
           {userData && userData.user_type === "Cliente" && (
             <li onClick={openModal}>
               <div className="navbar-option">
@@ -160,6 +167,14 @@ export default function NavBar() {
                   <circle cx="19" cy="5" r="4" fill="red" />
                 </svg>
               </div>
+            </li>
+          )}
+
+          {userData && (
+            <li>
+              <button className="logout" onClick={signOut}>
+                Cerrar Sesión
+              </button>
             </li>
           )}
         </ul>

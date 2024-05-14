@@ -79,8 +79,7 @@
     color: #000;
 }
 
-button {
-    
+.user-charList button{
     color: #fff;
     border: none;
     border-radius: 8px;

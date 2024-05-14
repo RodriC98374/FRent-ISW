@@ -4,6 +4,10 @@ import { useState } from "react";
 const ChatList = ({ onSelectUser }) => {
 
     const [searchText, setSearchText] = useState('');
+
+    const staticImage =
+    "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
+
     const users = [
         {
             id: 1,
@@ -108,7 +112,7 @@ const ChatList = ({ onSelectUser }) => {
                         className="chatListItem"
                         onClick={() => handleUserClick(user)}
                     >
-                        <img className="chatListAvatarLarge" src={user.avatar} alt="" />
+                        <img className="chatListAvatarLarge" src={staticImage} alt="" />
                         <div className="chatListItemTexts">
                             <span className="chatListItemName">{user.name}</span>
                             {/* Mostrar el último mensaje del usuario */}
