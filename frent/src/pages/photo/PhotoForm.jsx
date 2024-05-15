@@ -5,14 +5,27 @@ import { ButtonSecondary } from "../../components/Buttons/buttonSecondary";
 import { ButtonPrimary } from "../../components/Buttons/buttonPrimary";
 import { createRegisterClient } from "../../api/register.api";
 import { createLikes } from "../../api/register.api";
-import swal from "sweetalert";
+import swal from "sweetalert";/* 
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { auth, db, storage } from "../../lib/firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import upload from "../../lib/upload"; */
+
+
 
 const Photo = () => {
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
+  const [backupPhotos, setBackupPhotos] = useState([]);
   const [error, setError] = useState("");
   const [previewUrl, setPreviewUrl] = useState(null);
   const [imageBinary, setImageBinary] = useState("");
+  const [avatar, setAvatar] = useState({
+    file: null,
+    url: "",
+  });
+
   const location = useLocation();
   const userData = location.state;
 
@@ -24,6 +37,7 @@ const Photo = () => {
   }, []);
 
   const backPage = () => {
+
     const userDataDatas = {
       city: userData.city,
       country: userData.country,
@@ -37,13 +51,16 @@ const Photo = () => {
       birth_date: userData.birth_date,
       price: userData.price,
       likes: userData.likes,
-      image: imageBinary? imageBinary : userData? userData.image : null,
+      image: imageBinary ? imageBinary : userData ? userData.image : null,
     }
+
+
 
     if (userData.is_client) {
       navigate("/customer", {
         state: userDataDatas,
       });
+
     } else {
       navigate("/friend", {
         state: userDataDatas,
@@ -61,6 +78,7 @@ const Photo = () => {
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
+    const fileURL = URL.createObjectURL(selectedFile);
     if (!selectedFile) return;
     const fileSize = selectedFile.size / 1024 / 1024;
     const fileType = selectedFile.type;
@@ -74,6 +92,11 @@ const Photo = () => {
       );
       return;
     }
+    /* setAvatar({
+      file: selectedFile,
+      url: fileURL,
+    }); */
+
     setFile(selectedFile);
     setError(""); // Reset error message
     setPreviewUrl(URL.createObjectURL(selectedFile));
@@ -105,6 +128,7 @@ const Photo = () => {
       return;
     }
 
+
     if (userData.is_client) {
       const client = {
         city: userData.city,
@@ -117,37 +141,58 @@ const Photo = () => {
         confirmPassword: userData.confirmarPassword,
         personal_description: userData.personal_description,
         birth_date: userData.birth_date,
-        image: imageBinary? imageBinary : userData.image,
+        image: imageBinary ? imageBinary : userData.image,
         is_client: userData.is_client,
       };
 
-      try{
+      /* const email = userData.email;
+      const password = userData.password;
+      const first_name = userData.first_name;
+      const last_name = userData.last_name;
+      const imagen1 = userData.image; */
+      try {
+
+        /* const res = await createUserWithEmailAndPassword(auth, email, password);
+        const imgUrl = await upload(avatar.file);
+
+        await setDoc(doc(db, "users", res.user.uid), {
+          first_name,
+          last_name,
+          email,
+          avatar: imgUrl,
+          id: res.user.uid,
+          blocked: [],
+        });
+
+        await setDoc(doc(db, "userchat", res.user.uid), {
+          chats: [],
+        }); */
         const resFriend = await createRegisterClient(client);
 
-      //PETICION PARA REGISTRAR GUSTOS
-      const user_likes = {
-        likes: userData.likes,
-        user_id: resFriend.data.id_user,
-      };
+        //PETICION PARA REGISTRAR GUSTOS
+        const user_likes = {
+          likes: userData.likes,
+          user_id: resFriend.data.id_user,
+        };
 
-      await createLikes(user_likes);
-      swal(
-        "Registro exitoso",
-        "El cliente se registró correctamente",
-        "success"
-      );
-      setTimeout(() => {
-        swal.close();
-      }, 1000);
+        await createLikes(user_likes);
+        swal(
+          "Registro exitoso",
+          "El cliente se registró correctamente",
+          "success"
+        );
+        setTimeout(() => {
+          swal.close();
+        }, 1000);
 
-      navigate("/login");
-      } catch (error){
+        navigate("/login");
+      } catch (error) {
         console.error("Error al enviar los datos:", error);
         if (error.response && error.response.data && error.response.data.email) {
           const translatedErrorMessage = translateErrorMessage(
             error.response.data.email[0]
           );
-          swal(""+translatedErrorMessage);
+          swal("" + translatedErrorMessage);
         }
       }
 

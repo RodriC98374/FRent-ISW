@@ -1,9 +1,18 @@
 import "./chatList.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../../lib/firebase";
+import Chat from '../Chat';
+import { getUser } from "../../../pages/Login/LoginForm";
 
 const ChatList = ({ onSelectUser }) => {
 
-    const [searchText, setSearchText] = useState('');
+    const datUser = getUser()
+
+    const [searchText, setSearchText] = useState("");
+    /* const [users, setUsers] = useState([]); */
+    const [selectedUser, setSelectedUser] = useState(null);
+    const currentUser = { id: 'currentUserId' };
     const users = [
         {
             id: 1,
@@ -77,16 +86,39 @@ const ChatList = ({ onSelectUser }) => {
                 { text: 'Let\'s catch up later.', isIncoming: false, time: '12:01' }
             ]
         }
-    ];
+    ]; 
+
+    /* useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const usersCollection = collection(db, "users");
+                const usersSnapshot = await getDocs(usersCollection);
+                const usersData = usersSnapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+                setUsers(usersData);
+            } catch (error) {
+                console.error("Error fetching users:", error);
+            }
+        };
+        fetchUsers();
+    }, []); */
 
     const handleUserClick = (user) => {
-        onSelectUser(user); 
+        setSelectedUser(user);
+        onSelectUser(user); // Notifica al componente padre sobre la selección
     };
+    
+
+    /* const filteredUsers = users.filter((user) =>
+        `${user.first_name} ${user.last_name}`.toLowerCase().includes(searchText.toLowerCase())
+    ); */
 
     const filteredUsers = users.filter((user) =>
         user.name.toLowerCase().includes(searchText.toLowerCase())
     );
-
+    
     const handleSearchChange = (event) => {
         setSearchText(event.target.value);
     };
@@ -103,13 +135,18 @@ const ChatList = ({ onSelectUser }) => {
             <div className="chatListSearch">
                 <div className="chatListSearchBar">
                     <i className="fas fa-search"></i>
-                    <input className="chatListSearchInput" type="text" placeholder="Search" value={searchText}
-                        onChange={handleSearchChange} />
+                    <input
+                        className="chatListSearchInput"
+                        type="text"
+                        placeholder="Search"
+                        value={searchText}
+                        onChange={handleSearchChange}
+                    />
                 </div>
             </div>
 
             <div className="user-chatList">
-            {filteredUsers.map((user) => (
+                {filteredUsers.map((user) => (
                     <button
                         key={user.id}
                         className="chatListItem"
