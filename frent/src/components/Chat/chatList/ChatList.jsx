@@ -4,6 +4,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../../lib/firebase";
 import Chat from '../Chat';
 import { getUser } from "../../../pages/Login/LoginForm";
+import { getClient } from "../../../api/register.api";
 
 const ChatList = ({ onSelectUser }) => {
 

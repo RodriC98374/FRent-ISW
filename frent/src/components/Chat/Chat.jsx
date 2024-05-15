@@ -1,13 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Chat.css";
 import ChatList from "./chatList/ChatList";
 import { IoIosClose, IoIosArrowBack } from "react-icons/io";
+import { getUser } from "../../pages/Login/LoginForm";
 
 const Chat = () => {
     const [messages, setMessages] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
     const [currentMessage, setCurrentMessage] = useState("");
-    const [isChatVisible, setIsChatVisible] = useState(true); // Estado para controlar la visibilidad del chat
+    const [isChatVisible, setIsChatVisible] = useState(true);
+    const dataUser = getUser();
+    console.log(dataUser)
+    const [socket, setSocket] = useState(null);
+    const roomName = dataUser.user_type;
+
+    useEffect(() => {
+        const connectWebSocket = () => {
+            const ws = new WebSocket(`ws://localhost:9000/ws/chat/${roomName}/`);
+
+            ws.onopen = () => {
+                console.log('Conexión WebSocket abierta');
+                const message = {
+                    sender: 'React Client',
+                    message: 'Hola desde el cliente React'
+                };
+                ws.send(JSON.stringify(message));
+            };
+
+            ws.onmessage = (e) => {
+                console.log('Mensaje recibido desde el servidor:', e.data);
+            };
+
+            ws.onerror = (error) => {
+                console.error('Error en la conexión WebSocket:', error);
+            };
+
+            ws.onclose = () => {
+                console.log('Conexión WebSocket cerrada');
+            };
+
+            setSocket(ws); // Guardar la instancia del WebSocket en el estado
+        };
+
+        if (roomName) {
+            connectWebSocket();
+        }
+
+        return () => {
+            if (socket) {
+                socket.close(); // Cerrar la conexión al desmontar el componente
+            }
+        };
+    }, [roomName]);
 
     const handleUserSelect = (user) => {
         setSelectedUser(user);
@@ -17,8 +61,8 @@ const Chat = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
-        if (currentMessage.trim() !== "") {
+    
+        if (currentMessage.trim() !== "" && socket) {
             const newMessage = {
                 id: messages.length + 1,
                 text: currentMessage,
@@ -28,10 +72,19 @@ const Chat = () => {
                     minute: "2-digit",
                 }),
             };
+    
             setMessages([...messages, newMessage]);
             setCurrentMessage("");
+    
+            const messagePayload = {
+                sender: dataUser.first_name,  // Usar el nombre del usuario como remitente
+                message: currentMessage 
+            };
+    
+            socket.send(JSON.stringify(messagePayload));
         }
     };
+    
 
     const handleBackButtonClick = () => {
         setSelectedUser(null);
@@ -113,7 +166,7 @@ const Chat = () => {
                         <h3>Inicia un chat con los amigos de FRent</h3>
 
                         <p>Envía o recibe mensajes </p>
-                        <p>Selecciona un amigo de la lista y comienza la conversación para cordinar un encuentro</p>
+                        <p>Selecciona un amigo de la lista y comienza la conversación para coordinar un encuentro</p>
                     </div>
                 )}
             </div>
