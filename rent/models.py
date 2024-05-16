@@ -29,3 +29,5 @@ class Rent(models.Model):
     create = models.DateTimeField(auto_now_add=True)
     status = models.CharField(default='pending', max_length=10) #Podria tener los estados de pending, accepted o rejeact
 
+    def get_client_id(self):
+        return self.client.id
