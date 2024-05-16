@@ -55,6 +55,7 @@ function App() {
             <Route path="/addAvailableHours" element={<AddAvailableHours />} />
             <Route path="/friend" element={<FriendForm />} />
             <Route path="/photo" element={<Photo />} />
+           
             
 
             <Route

@@ -61,7 +61,7 @@ const Chat = () => {
                   <IoIosArrowBack />
                 </button>
                 <div className="avatar">
-                  {/* Renderizar la imagen del avatar del amigo aquí */}
+                  { }
                 </div>
                 <div className="user-info">
                   <h3>{selectedUser.name}</h3>

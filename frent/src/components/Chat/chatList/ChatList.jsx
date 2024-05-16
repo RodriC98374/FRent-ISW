@@ -1,96 +1,82 @@
 import "./chatList.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getFriends, getLikes, getPendingRent, getRent, getFriendID } from "../../../api/register.api";
 
 const ChatList = ({ onSelectUser }) => {
-
+    const [listchat, setListChat] = useState([]);
+    const [friendsData, setFriendsData] = useState([]);
+    const userDataString = sessionStorage.getItem("userData");
+    const userData = JSON.parse(userDataString);
+    const me = userData.user_id;
     const [searchText, setSearchText] = useState('');
 
-    const staticImage =
-    "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
+    useEffect(() => {
+        buscarAmigosAceptados();
+    }, []);
 
-    const users = [
-        {
-            id: 1,
-            name: 'Jane Doe',
-            avatar: './avatar.png',
-            messages: [
-                { text: 'Hello!', isIncoming: true, time: '10:00' },
-                { text: 'How are you?', isIncoming: false, time: '10:01' }
-            ]
-        },
-        {
-            id: 2,
-            name: 'John Smith',
-            avatar: './avatar.png',
-            messages: [
-                { text: 'Hi there!', isIncoming: true, time: '11:00' },
-                { text: 'Nice to meet you.', isIncoming: false, time: '11:01' }
-            ]
-        },
-        {
-            id: 3,
-            name: 'Alice Johnson',
-            avatar: './../../../image.png',
-            messages: [
-                { text: 'Good morning', isIncoming: true, time: '9:00' },
-                { text: 'How was your day?', isIncoming: false, time: '9:01' }
-            ]
-        },
-        {
-            id: 4,
-            name: 'Armando Gaspar',
-            avatar: './avatar.png',
-            messages: [
-                { text: 'Buenos días', isIncoming: true, time: '8:30' },
-                { text: '¿Qué tal estás?', isIncoming: false, time: '8:31' }
-            ]
-        },
-        {
-            id: 5,
-            name: 'Jhoel Mamani',
-            avatar: './avatar.png',
-            messages: [
-                { text: 'Hola!', isIncoming: true, time: '10:30' },
-                { text: '¿Cómo estás?', isIncoming: false, time: '10:31' }
-            ]
-        },
-        {
-            id: 6,
-            name: 'Alfredo Torrico',
-            avatar: './avatar.png',
-            messages: [
-                { text: 'Buenos días!', isIncoming: true, time: '7:00' },
-                { text: '¿Cómo va todo?', isIncoming: false, time: '7:01' }
-            ]
-        },
-        {
-            id: 7,
-            name: 'John Henry',
-            avatar: './avatar.png',
-            messages: [
-                { text: 'Good morning', isIncoming: true, time: '8:00' },
-                { text: 'Have a great day!', isIncoming: false, time: '8:01' }
-            ]
-        },
-        {
-            id: 8,
-            name: 'Michael Padilla',
-            avatar: './avatar.png',
-            messages: [
-                { text: 'Hey!', isIncoming: true, time: '12:00' },
-                { text: 'Let\'s catch up later.', isIncoming: false, time: '12:01' }
-            ]
+    const obtenerDatosAmigo = async (amigoID) => {
+        try {
+            const friendResponse = await getFriendID(amigoID);
+            const id = friendResponse.data.id_user;
+            const name = friendResponse.data.last_name;
+            const avatar = friendResponse.data.image;
+            const im = getImage(avatar);
+            return {
+                id: id,
+                name: name,
+                avatar: im,
+                messages: [] // Puedes inicializar las conversaciones vacías si es necesario
+            };
+        } catch (error) {
+            console.error("Error al obtener datos del amigo:", error);
+            return null;
         }
-    ];
-
-    const handleUserClick = (user) => {
-        onSelectUser(user); 
     };
 
-    const filteredUsers = users.filter((user) =>
-        user.name.toLowerCase().includes(searchText.toLowerCase())
-    );
+    const getImage = (imageFriend) => {
+        if (imageFriend) {
+            return `data:image/png;base64,${imageFriend}`;
+        }
+        return staticImage;
+    };
+    
+    const obtenerDatosAmigos = async (amigosIDs) => {
+        try {
+            const amigosDataPromises = amigosIDs.map(async (amigoID) => {
+                return await obtenerDatosAmigo(amigoID);
+            });
 
+            return await Promise.all(amigosDataPromises);
+        } catch (error) {
+            console.error("Error al obtener datos de amigos:", error);
+            return [];
+        }
+    };
+
+    const buscarAmigosAceptados = async () => {
+        try {
+            const response = await getRent();
+            const chatList = response.data;
+
+            const amigosAceptados = chatList
+                .filter(registro => registro.client === me && registro.status === "accepted")
+                .map(registro => registro.friend);
+
+            setListChat(amigosAceptados);
+
+            const amigosData = await obtenerDatosAmigos(amigosAceptados);
+            setFriendsData(amigosData);
+        } catch (error) {
+            console.error("Error al buscar amigos aceptados:", error);
+        }
+    };
+
+    const staticImage =
+        "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
+
+    const handleUserClick = (user) => {
+        onSelectUser(user);
+    };
     const handleSearchChange = (event) => {
         setSearchText(event.target.value);
     };
@@ -106,19 +92,19 @@ const ChatList = ({ onSelectUser }) => {
             </div>
 
             <div className="user-chatList">
-            {filteredUsers.map((user) => (
+                {friendsData.map((friend) => (
                     <button
-                        key={user.id}
+                        key={friend.id}
                         className="chatListItem"
-                        onClick={() => handleUserClick(user)}
+                        onClick={() => handleUserClick(friend)}
                     >
-                        <img className="chatListAvatarLarge" src={staticImage} alt="" />
+                        <img className="chatListAvatarLarge" src={friend.avatar || staticImage} alt="" />
                         <div className="chatListItemTexts">
-                            <span className="chatListItemName">{user.name}</span>
+                            <span className="chatListItemName">{friend.name}</span>
                             {/* Mostrar el último mensaje del usuario */}
-                            {user.messages.length > 0 && (
+                            {friend.messages.length > 0 && (
                                 <p className="chatListItemMessage">
-                                    {user.messages[user.messages.length - 1].text}
+                                    {friend.messages[friend.messages.length - 1].text}
                                 </p>
                             )}
                         </div>
@@ -130,3 +116,151 @@ const ChatList = ({ onSelectUser }) => {
 };
 
 export default ChatList;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import "./chatList.css";
+// import { useState, useEffect } from "react";
+
+// import { getFriends, getLikes, getPendingRent, getRent, getFriendID } from "../../../api/register.api";
+// const ChatList = ({ onSelectUser }) => {
+
+//     const [users, setUsers] = useState([]); // Declarar el estado para users
+//     const [searchText, setSearchText] = useState(''); // Declarar
+
+//     const [listchat, setListChat] = useState([]);
+//     const [friendsData, setFriendsData] = useState([]);
+//     const userDataString = sessionStorage.getItem("userData");
+//     const userData = JSON.parse(userDataString);
+//     const me = userData.user_id;
+
+//     useEffect(() => {
+
+
+//         buscarAmigosAceptados();
+//     }, []);
+
+//     const obtenerDatosAmigo = async (amigoID) => {
+//         try {
+//             const friendResponse = await getFriendID(amigoID);
+//             const id = friendResponse.data.id_user;
+//             const name = friendResponse.data.last_name;
+//             const avatar = friendResponse.data.image;
+
+
+
+
+//             return {
+//                 id: id,
+//                 name: name,
+//                 avatar: avatar,
+//                 messages: [] // Puedes inicializar las conversaciones vacías si es necesario
+//             };
+//         } catch (error) {
+//             console.error("Error al obtener datos del amigo:", error);
+//             return null;
+//         }
+//     };
+
+//     const obtenerDatosAmigos = async (amigosIDs) => {
+
+
+//         try {
+//             const amigosDataPromises = amigosIDs.map(async (amigoID) => {
+//                 return await obtenerDatosAmigo(amigoID);
+//             });
+
+//             return await Promise.all(amigosDataPromises);
+//         } catch (error) {
+//             console.error("Error al obtener datos de amigos:", error);
+//             return [];
+//         }
+//     };
+
+//     const buscarAmigosAceptados = async () => {
+//         try {
+
+
+//             const response = await getRent();
+//             const chatList = response.data;
+
+//             const amigosAceptados = chatList
+//                 .filter(registro => registro.client === me && registro.status === "accepted")
+//                 .
+
+//                 map(registro => registro.friend);
+
+//             setListChat(amigosAceptados);
+
+//             const amigosData = await obtenerDatosAmigos(amigosAceptados);
+//             setFriendsData(amigosData);
+//         } catch (error) {
+//             console.error("Error al buscar amigos aceptados:", error);
+//         }
+//     };
+
+
+//     const staticImage =
+//         "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
+
+
+//     const handleUserClick = (user) => {
+//         onSelectUser(user);
+//     };
+
+//     const filteredUsers = users.filter((user) =>
+//         user.name.toLowerCase().includes(searchText.toLowerCase())
+//     );
+
+//     const handleSearchChange = (event) => {
+//         setSearchText(event.target.value);
+//     };
+
+//     return (
+//         <div className="chatListContainer">
+//             <div className="chatListSearch">
+//                 <div className="chatListSearchBar">
+//                     <i className="fas fa-search"></i>
+//                     <input className="chatListSearchInput" type="text" placeholder="Search" value={searchText}
+//                         onChange={handleSearchChange} />
+//                 </div>
+//             </div>
+
+//             <div className="user-chatList">
+//                 {filteredUsers.map((user) => (
+//                     <button
+//                         key={user.id}
+//                         className="chatListItem"
+//                         onClick={() => handleUserClick(user)}
+//                     >
+//                         <img className="chatListAvatarLarge" src={staticImage} alt="" />
+//                         <div className="chatListItemTexts">
+//                             <span className="chatListItemName">{user.name}</span>
+//                             {/* Mostrar el último mensaje del usuario */}
+//                             {user.messages.length > 0 && (
+//                                 <p className="chatListItemMessage">
+//                                     {user.messages[user.messages.length - 1].text}
+//                                 </p>
+//                             )}
+//                         </div>
+//                     </button>
+//                 ))}
+//             </div>
+//         </div>
+//     );
+// };
+
+// export default ChatList;
