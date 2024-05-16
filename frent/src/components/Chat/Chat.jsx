@@ -14,6 +14,8 @@ const Chat = () => {
     const [socket, setSocket] = useState(null);
     const roomName = dataUser.user_type;
 
+    console.log("Lista",selectedUser)
+
     useEffect(() => {
         const connectWebSocket = () => {
             const ws = new WebSocket(`ws://localhost:9000/ws/chat/${roomName}/`);
@@ -55,7 +57,11 @@ const Chat = () => {
 
     const handleUserSelect = (user) => {
         setSelectedUser(user);
-        setMessages(user.messages);
+        if (user && user.messages) {
+            setMessages(user.messages);
+        } else {
+            setMessages([]);
+        }
         setIsChatVisible(true);
     };
 
@@ -71,6 +77,7 @@ const Chat = () => {
                     hour: "2-digit",
                     minute: "2-digit",
                 }),
+                recipientId: selectedUser.client_id,
             };
     
             setMessages([...messages, newMessage]);
@@ -78,7 +85,8 @@ const Chat = () => {
     
             const messagePayload = {
                 sender: dataUser.first_name,  // Usar el nombre del usuario como remitente
-                message: currentMessage 
+                message: currentMessage,
+                recipientId: selectedUser.client_id, 
             };
     
             socket.send(JSON.stringify(messagePayload));
@@ -114,10 +122,10 @@ const Chat = () => {
                                     <IoIosArrowBack />
                                 </button>
                                 <div className="avatar">
-                                    <img className="avatar-chat" src={selectedUser.avatar} alt={selectedUser.name} />
+                                    <img className="avatar-chat" src={`data:image/png;base64,${selectedUser.image}`} alt={selectedUser.name} />
                                 </div>
                                 <div className="user-info">
-                                    <h3>{selectedUser.name}</h3>
+                                    <h3>{selectedUser.nombre_cliente}</h3>
                                     <p>Última vez activo...</p>
                                 </div>
                             </div>
@@ -131,7 +139,7 @@ const Chat = () => {
                                         className={`message ${message.isIncoming ? "incoming" : "outgoing"}`}
                                     >
                                         <div className="message-content">
-                                            <div className="message-text">{message.isIncoming ? selectedUser.name : "Tú"}: {message.text}</div>
+                                            <div className="message-text">{message.isIncoming ? selectedUser.nombre_cliente : "Tú"}: {message.text}</div>
                                             <span className="message-time">{message.time}</span>
                                         </div>
                                     </div>
