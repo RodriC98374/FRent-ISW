@@ -53,3 +53,4 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
             'message': message,
             'sender': sender
         }))
+        #estos cambios se debe hacer 
