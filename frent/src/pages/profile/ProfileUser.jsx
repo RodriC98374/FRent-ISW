@@ -140,11 +140,11 @@ export default function ProfileUser() {
                     <p>{userData.birth_date}</p>
                   </div>
                   <div className="input-2c-profile">
-                    <p className="label-information">Genero:</p>
+                    <p className="label-information">Género :</p>
                     <p>{userData.gender}</p>
                   </div>
                   <div className="input-1c-profile">
-                    <p className="label-information">Pais:</p>
+                    <p className="label-information">País :</p>
                     <p>{userData.country}</p>
                   </div>
                   <div className="input-2c-profile">
