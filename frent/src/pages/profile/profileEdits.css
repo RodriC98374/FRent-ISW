@@ -25,6 +25,7 @@
   background-color: white;
   padding: 20px;
   box-shadow: 0px 4px 8px 5px rgba(0, 0, 0, 0.1);
+  width: 90%;
 }
 
 .user-avatar {
@@ -47,8 +48,8 @@
 }
 
 .user-price {
-  font-size: 1.2rem; /* Tamaño del precio */
-  text-align: center; /* Centrar el texto del precio */
+  font-size: 1.2rem;
+  text-align: center;
   color: #000;
 }
 
@@ -58,7 +59,6 @@
   flex-direction: column;
   margin-left: 7%;
   margin-bottom: 5px;
-  /* Espacio entre cada detalle */
 }
 
 .user-interests {
@@ -81,14 +81,46 @@
 
 .btn-back-reserve {
   display: flex;
-  width: 100%;
+  width: 102% auto;
   justify-content: flex-end;
-  margin-top: 50px;
+  margin-top: 200px;
+  width: 100%;
 }
 
 .alquilar-perfil {
   display: flex;
-  flex-direction: column;
+  flex-direction: center;
   align-items: center;
   margin-left: 5%;
 }
+
+.btn-back-alquilar {
+  display: flex;
+  width: 102% auto;
+  justify-content: flex-end;
+  margin-top: 15px;
+  width: 90%;
+
+}
+.user-center-b {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+
+.verified-icon {
+  margin-right: 0.5rem;
+}
+
+.location-container {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.location-icon {
+  margin-right: 0.5rem;
+}
+
