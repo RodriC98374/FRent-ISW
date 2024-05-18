@@ -2,17 +2,17 @@ import React from "react";
 import "./InputText.css";
 
 
-function InputText ({ label, 
-                                id, 
-                                type, 
-                                placeholder, 
-                                value, 
-                                onChange, 
-                                errors, 
-                                register, 
-                                required,
-                                maxLength}) {
-    return( 
+function InputText({ label,
+    id,
+    type,
+    placeholder,
+    value,
+    onChange,
+    errors,
+    register,
+    required,
+    maxLength }) {
+    return (
         <div className="input-component">
             <label htmlFor={id} >
                 {label}
@@ -21,14 +21,14 @@ function InputText ({ label,
             <input
                 type={type}
                 placeholder={placeholder}
-                id={id} 
-                value={value} 
+                id={id}
+                value={value}
                 onChange={onChange}
-                maxLength={maxLength} 
+                maxLength={maxLength}
                 {...register}
             />
             {errors && errors[id] && <span className="error-message">{errors[id].message}</span>}
-        </div>  
+        </div>
     );
 }
 

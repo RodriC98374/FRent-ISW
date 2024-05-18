@@ -5,6 +5,7 @@ import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { IoLocationSharp } from "react-icons/io5";
 import { ButtonPrimary } from "../../components/Buttons/buttonPrimary";
 import { ButtonSecondary } from "../../components/Buttons/buttonSecondary";
+import { ButtonPersonal } from "../../components/Buttons/buttonPersonal";
 import { getFriendID2, getLikes } from "../../api/register.api";
 import { calculateAge } from "../listFriend/ListFriends";
 
@@ -37,38 +38,51 @@ const ProfileFriend = () => {
     return staticImage;
   };
 
+  function capitalizarPrimeraLetra(cadena) {
+    if (typeof cadena === 'string' && cadena.length > 0) {
+      return cadena.charAt(0).toUpperCase() + cadena.slice(1);
+    }
+    return '';
+  }
   return (
     <div className="information-user">
       <div className="user-profile">
         <div className="alquilar-perfil">
-          <div className="user-card">
-            <div className="image-profile">
-              <img
-                src={getImage(friend.image)}
-                alt="Profile"
-                className="user-avatar"
-              />
+          <div className="user-center-b">
+            <div className="user-card">
+              <div className="image-profile">
+                <img
+                  src={getImage(friend.image)}
+                  alt="Profile"
+                  className="user-avatar"
+                />
+              </div>
+              <h2 className="user-name">
+                {friend.first_name} {friend.last_name}
+              </h2>
+              <div className="user-details">
+                <p>Edad: {calculateAge(friend.birth_date)}</p>
+                <p>
+                  Género:{' '}
+                  {friend.gender ? capitalizarPrimeraLetra(friend.gender) : 'No especificado'}
+                </p>
+                <p className="location-container">
+                  <IoLocationSharp className="location-icon" />
+                  <span>{`${friend.country} / ${friend.city}`}</span>
+                </p>
+                <p className="verified-container">
+                  <RiVerifiedBadgeFill className="verified-icon" />
+                  <span className="verified-text">Verificado</span>
+                </p>
+                <p className="user-price">{friend.price} BOB/hora</p>
+              </div>
             </div>
-            <h2 className="user-name">
-              {friend.first_name} {friend.last_name}
-            </h2>
-            <div className="user-details">
-              <p>Edad: {calculateAge(friend.birth_date)}</p>
-              <p>Género: {friend.gender}</p>
-              <p>
-                <IoLocationSharp className="icon" />{" "}
-                {`${friend.country} / ${friend.city}`}
-              </p>
-              <p>
-                <RiVerifiedBadgeFill className="icon" /> Verificado
-              </p>
-
-              <p className="user-price">{friend.price} BOB/hora</p>
-            </div>
+            <NavLink to={`/rentaForm/${friendId}`}>
+              <div className="btn-back-alquilar">
+                <ButtonPersonal label={"Alquilar"} />
+              </div>
+            </NavLink>
           </div>
-          <NavLink to={`/rentaForm/${friendId}`}>
-            <ButtonSecondary label={"Alquilar"} />
-          </NavLink>
         </div>
         <div className="user-description">
           <h3>Descripción personal:</h3>
@@ -99,9 +113,10 @@ const ProfileFriend = () => {
           </div>
           <div className="btn-back-reserve">
             <NavLink to="/listFriend">
-              <ButtonPrimary label={"Back"} />
+              <ButtonPrimary label={"Atras"} />
             </NavLink>
           </div>
+
         </div>
       </div>
     </div>
