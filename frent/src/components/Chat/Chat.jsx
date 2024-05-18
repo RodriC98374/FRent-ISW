@@ -32,18 +32,22 @@ const Chat = () => {
                 ws.onmessage = (e) => {
                     const message = JSON.parse(e.data);
                     console.log('Mensaje recibido desde el servidor:', message);
-                    
-                    // Actualizar el estado de los mensajes en el componente
-                    setMessages(prevMessages => [...prevMessages, {
-                        id: prevMessages.length + 1,
-                        text: message.message,
-                        isIncoming: true, // Indica que es un mensaje entrante
-                        time: new Date().toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                        }),
-                        senderId: message.sender, // El remitente del mensaje
-                    }]);
+                
+                    const currentUserId = dataUser.user_id;
+                    // Verificar si el mensaje es para el usuario actual
+                    if (message.recipient === currentUserId) {
+                        // Actualizar el estado de los mensajes en el componente
+                        setMessages(prevMessages => [...prevMessages, {
+                            id: prevMessages.length + 1,
+                            text: message.message,
+                            isIncoming: true, // Indica que es un mensaje entrante
+                            time: new Date().toLocaleTimeString([], {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                            }),
+                            senderId: message.sender, // El remitente del mensaje
+                        }]);
+                    }
                 };
 
                 ws.onerror = (error) => {
@@ -85,55 +89,50 @@ const Chat = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         const recipientID = dataUser.user_type === "Cliente" ? selectedUser.id_user : selectedUser.client_id;
-        if(recipientID != dataUser.user_id){
-        if (currentMessage.trim() !== "" && socket) {
-            const newMessage = {
-                id: messages.length + 1,
-                text: currentMessage,
-                isIncoming: false,
-                time: new Date().toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                }),
-                recipientId:  recipientID
-            };
-
-            setMessages([...messages, newMessage]);
-            setCurrentMessage("");
-
-            let senderId, recipientId, senderName, recipientName;
-
-            if (dataUser.user_type === "Amigo") {
-                senderId = dataUser.user_id;
-                recipientId = selectedUser.client_id;
-                senderName = dataUser.first_name;
-                recipientName = selectedUser.nombre_cliente;
-            } else {
-                senderId = dataUser.user_id;
-                recipientId = selectedUser.id_user;
-                senderName = dataUser.first_name;
-                recipientName = selectedUser.first_name;
+        if (recipientID !== dataUser.user_id) {
+            if (currentMessage.trim() !== "" && socket) {
+                const newMessage = {
+                    id: messages.length + 1,
+                    text: currentMessage,
+                    isIncoming: false,
+                    time: new Date().toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                    }),
+                    recipientId: recipientID // Agrega el ID del usuario destinatario
+                };
+    
+                setMessages([...messages, newMessage]);
+                setCurrentMessage("");
+    
+                let senderId, recipientId, senderName, recipientName;
+    
+                if (dataUser.user_type === "Amigo") {
+                    senderId = dataUser.user_id;
+                    recipientId = selectedUser.client_id;
+                    senderName = dataUser.first_name;
+                    recipientName = selectedUser.nombre_cliente;
+                } else {
+                    senderId = dataUser.user_id;
+                    recipientId = selectedUser.id_user;
+                    senderName = dataUser.first_name;
+                    recipientName = selectedUser.first_name;
+                }
+    
+                const messagePayload = {
+                    sender: senderId,
+                    recipient: recipientId,
+                    message: currentMessage,
+                    senderName: senderName,
+                    recipientName: recipientName
+                };
+    
+                console.log('messagePayload:', messagePayload);
+                socket.send(JSON.stringify(messagePayload));
             }
-
-            const messagePayload = {
-                sender: senderId,
-                recipient: recipientId,
-                message: currentMessage,
-                senderName: senderName,
-                recipientName: recipientName
-            };
-
-            console.log('messagePayload:', messagePayload);
-            socket.send(JSON.stringify(messagePayload));
-        }else{
-            console.log("no")
         }
-    }else{
-        console.log("hoasl")
-    }
-        
     };
-
+    
     const handleBackButtonClick = () => {
         setSelectedUser(null);
         setIsChatVisible(false);

@@ -21,7 +21,7 @@ export default function ProfileUser() {
       }
     }
     fetchData();
-  }, []);
+  }, [userData.user_id]);
 
   const obtenerRangos = (dia) => {
     const rango = availability.find(
@@ -39,12 +39,6 @@ export default function ProfileUser() {
     <>
       {userData && (
         <div className="body-page-profile">
-          {/* <div className="btn-back">
-            <NavLink to="/">
-              <ButtonPrimary label={"Back"} />
-            </NavLink>
-          </div> */}
-
           <div className="shape-background">
             <svg className="shape-a-profile" width="200" height="200">
               <circle cx={100} cy={100} r={100} />
@@ -114,7 +108,7 @@ export default function ProfileUser() {
               <p>{userData.personal_description}</p>
 
               <div className="profile-interests">
-                {userData.likes.map((interest, index) => (
+                {userData.likes && userData.likes.map((interest, index) => (
                   <span key={index} className="interest-selected">
                     <svg
                       className="tag-icon"
