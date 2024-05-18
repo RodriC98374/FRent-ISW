@@ -57,7 +57,7 @@
     width: 451px;
     height: auto;
 
-    filter: brightness(0.9) blur(4px) opacity(0.6);
+    filter: brightness(-1.1) blur(4px) opacity(0.6);
     position: relative;
     top: 10px;
     z-index: 1;

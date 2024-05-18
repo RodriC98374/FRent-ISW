@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Chat.css";
 import ChatList from "./chatList/ChatList";
-import { IoIosClose, IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowBack } from "react-icons/io";
 import { getUser } from "../../pages/Login/LoginForm";
 
 const Chat = () => {
@@ -15,30 +15,49 @@ const Chat = () => {
 
     useEffect(() => {
         const connectWebSocket = () => {
-            const ws = new WebSocket(`ws://localhost:9000/ws/chat/${roomName}/`);
-
-            ws.onopen = () => {
-                console.log('Conexión WebSocket abierta');
-                const message = {
-                    sender: 'React Client',
-                    message: 'Hola desde el cliente React'
+            if (selectedUser) {
+                const IdReceptor = dataUser.user_type === "Amigo" ? selectedUser.client_id : selectedUser.id_user;
+                const ws = new WebSocket(`ws://localhost:9000/ws/chat/${dataUser.user_id}/${IdReceptor}/`);
+                console.log("HOla s", IdReceptor)
+                
+                ws.onopen = () => {
+                    console.log('Conexión WebSocket abierta');
+                    const message = {
+                        sender: 'React Client',
+                        message: 'Hola desde el cliente React'
+                    };
+                    ws.send(JSON.stringify(message));
                 };
-                ws.send(JSON.stringify(message));
-            };
 
-            ws.onmessage = (e) => {
-                console.log('Mensaje recibido desde el servidor:', e.data);
-            };
+                ws.onmessage = (e) => {
+                    const message = JSON.parse(e.data);
+                    console.log('Mensaje recibido desde el servidor:', message);
+                    
+                    // Actualizar el estado de los mensajes en el componente
+                    setMessages(prevMessages => [...prevMessages, {
+                        id: prevMessages.length + 1,
+                        text: message.message,
+                        isIncoming: true, // Indica que es un mensaje entrante
+                        time: new Date().toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                        }),
+                        senderId: message.sender, // El remitente del mensaje
+                    }]);
+                };
 
-            ws.onerror = (error) => {
-                console.error('Error en la conexión WebSocket:', error);
-            };
+                ws.onerror = (error) => {
+                    console.error('Error en la conexión WebSocket:', error);
+                };
 
-            ws.onclose = () => {
-                console.log('Conexión WebSocket cerrada');
-            };
+                ws.onclose = () => {
+                    console.log('Conexión WebSocket cerrada');
+                };
 
-            setSocket(ws); // Guardar la instancia del WebSocket en el estado
+                setSocket(ws); // Guardar la instancia del WebSocket en el estado
+            } else {
+                console.log('No hay usuario seleccionado para chatear');
+            }
         };
 
         if (roomName) {
@@ -50,7 +69,8 @@ const Chat = () => {
                 socket.close(); // Cerrar la conexión al desmontar el componente
             }
         };
-    }, [roomName]);
+    }, [roomName, selectedUser]);
+
 
     const handleUserSelect = (user) => {
         setSelectedUser(user);
@@ -64,7 +84,8 @@ const Chat = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
+        const recipientID = dataUser.user_type === "Cliente" ? selectedUser.id_user : selectedUser.client_id;
+        if(recipientID != dataUser.user_id){
         if (currentMessage.trim() !== "" && socket) {
             const newMessage = {
                 id: messages.length + 1,
@@ -74,20 +95,43 @@ const Chat = () => {
                     hour: "2-digit",
                     minute: "2-digit",
                 }),
-                recipientId: selectedUser.client_id,
+                recipientId:  recipientID
             };
 
             setMessages([...messages, newMessage]);
             setCurrentMessage("");
 
+            let senderId, recipientId, senderName, recipientName;
+
+            if (dataUser.user_type === "Amigo") {
+                senderId = dataUser.user_id;
+                recipientId = selectedUser.client_id;
+                senderName = dataUser.first_name;
+                recipientName = selectedUser.nombre_cliente;
+            } else {
+                senderId = dataUser.user_id;
+                recipientId = selectedUser.id_user;
+                senderName = dataUser.first_name;
+                recipientName = selectedUser.first_name;
+            }
+
             const messagePayload = {
-                sender: dataUser.first_name,
+                sender: senderId,
+                recipient: recipientId,
                 message: currentMessage,
-                recipientId: selectedUser.client_id,
+                senderName: senderName,
+                recipientName: recipientName
             };
 
+            console.log('messagePayload:', messagePayload);
             socket.send(JSON.stringify(messagePayload));
+        }else{
+            console.log("no")
         }
+    }else{
+        console.log("hoasl")
+    }
+        
     };
 
     const handleBackButtonClick = () => {
@@ -97,10 +141,6 @@ const Chat = () => {
 
     const handleChange = (event) => {
         setCurrentMessage(event.target.value);
-    };
-
-    const handleChatToggle = () => {
-        setIsChatVisible(!isChatVisible);
     };
 
     return (
@@ -121,7 +161,7 @@ const Chat = () => {
                                     <img className="avatar-chat" src={`data:image/png;base64,${selectedUser.image}`} alt={selectedUser.name} />
                                 </div>
                                 <div className="user-info">
-                                    <h3>{selectedUser.nombre_cliente}</h3>
+                                    <h3>{selectedUser.nombre_cliente} {selectedUser.first_name} {selectedUser.last_name}</h3>
                                     <p>Última vez activo...</p>
                                 </div>
                             </div>
@@ -129,17 +169,19 @@ const Chat = () => {
 
                         <div className="chat-body">
                             <div className="chat-messages">
-                                {messages.map((message, index) => (
-                                    <div
-                                        key={index}
-                                        className={`message ${message.isIncoming ? "incoming" : "outgoing"}`}
-                                    >
-                                        <div className="message-content">
-                                            <div className="message-text">{message.isIncoming ? selectedUser.nombre_cliente : "Tú"}: {message.text}</div>
-                                            <span className="message-time">{message.time}</span>
+                                <div className="chat-messages">
+                                    {messages.map((message, index) => (
+                                        <div
+                                            key={index}
+                                            className={`message ${message.isIncoming ? "incoming" : "outgoing"}`}
+                                        >
+                                            <div className="message-content">
+                                                <div className="message-text">{message.isIncoming ? selectedUser.nombre_cliente : (message.isSent ? "Tú" : "Yo")}: {message.text}</div>
+                                                <span className="message-time">{message.time}</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))}
+                                </div>
                             </div>
                         </div>
 
