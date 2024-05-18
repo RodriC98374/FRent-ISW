@@ -13,8 +13,6 @@ const ChatList = ({ onSelectUser }) => {
     const userData = getUser()
     const [searchText, setSearchText] = useState('');
 
-    console.log("CLiente", usersClient)
-    console.log("Amigo", friendsData)
 
     useEffect(() => {
        if (userData.user_type === "Amigo"){
