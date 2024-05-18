@@ -1,56 +1,65 @@
 import json
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
+
 class ChatConsumer(AsyncJsonWebsocketConsumer):
     async def connect(self):
-        # Obtiene el nombre de la sala del URL
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_group_name = f'chat_{self.room_name}'
-        
-        # Une al grupo de la sala
+        self.room_name = self.scope['url_route']['kwargs']['user_id1'] + '_' + self.scope['url_route']['kwargs']['user_id2']
+        self.room_group_name = 'chat_%s' % self.room_name
+
+        # Join room group
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
         )
-        
-        # Acepta la conexión WebSocket
+
         await self.accept()
-        
+
     async def disconnect(self, close_code):
-        # Sale del grupo de la sala cuando se desconecta
+        # Leave room group
         await self.channel_layer.group_discard(
             self.room_group_name,
             self.channel_name
         )
-        
-    async def receive(self, text_data=None, bytes_data=None):
-        print('Datos recibidos:', text_data)  # Imprimir los datos recibidos
 
-        if text_data:
-            text_data_json = json.loads(text_data)  # Intenta decodificar los datos JSON
+    # Receive message from WebSocket
+    async def receive(self, text_data):
+        print("conexiion")
+        try:
+            text_data_json = json.loads(text_data)
+            sender_id = text_data_json['sender']
+            recipient_id = text_data_json['recipient']
             message = text_data_json['message']
-            sender = text_data_json['sender']  # Identifica al remitente del mensaje
+            print("llego", text_data_json)
+        except KeyError as ex:
+            # Manejar la excepción cuando falta una clave en el JSON
+            print(f"Error: Falta la clave {ex} en el JSON recibido.")
+            return  # Retorna para evitar enviar un mensaje con datos faltantes
 
-            # Envía el mensaje al grupo de la sala
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    'type': 'chat_message',
-                    'message': message,
-                    'sender': sender
-                }
-            )
-
-
-    
-    async def chat_message(self, event):
-        # Maneja los mensajes enviados al grupo de la sala
-        message = event['message']
-        sender = event['sender']
+        # Save message in database or perform other operations as needed
         
-        # Envía el mensaje al cliente WebSocket
-        await self.send(text_data=json.dumps({
-            'message': message,
-            'sender': sender
-        }))
-        #estos cambios se debe hacer 
+        # Verificar si el destinatario es diferente del remitente actual
+        # Send message to room group
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                'type': 'chat_message',
+                'message': message,
+                'sender': sender_id,
+                'recipient': recipient_id
+            }
+        )
+    # Receive message from room group
+    async def chat_message(self, event):
+        message = event['message']
+        sender_id = event['sender']
+        recipient_id = event['recipient']
+
+        # Verificar si el destinatario es diferente del remitente actual
+        if recipient_id != sender_id:
+            # Send message to WebSocket
+            await self.send(text_data=json.dumps({
+                'message': message,
+                'sender': sender_id,
+                'recipient': recipient_id
+            }))
