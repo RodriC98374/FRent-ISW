@@ -40,17 +40,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'rest_framework',
     'channels',
-    'chat',
-    'users',
-    'rent',
-    'notificaciones_api',
+    
+    'rest_framework',
     'coreapi',
     'djoser',
     'rest_framework.authtoken',
+    'users',
     'notificacionesInterno',
-    
+    'rent',
+    'notificaciones_api',
+    'chat',
 ]
 
 MIDDLEWARE = [
@@ -98,11 +98,11 @@ CHANNEL_LAYERS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'frent_back',
+        'NAME': 'frent',
         #(example, fill the user bellow) 'USER': 'postgres',
-        'USER': 'gaspar',
+        'USER': 'postgres',
         #(example, fill the passwprd bellow) 'PASSWORD': 'passwordRANDOM123',
-        'PASSWORD': 'armando1gaspar',
+        'PASSWORD': '123',
         'HOST': 'localhost',
         'OPTIONS': {
             'client_encoding': 'UTF8',
@@ -174,7 +174,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'http://localhost:9000',
-    'http://localhost:8000'
+    'http://localhost:8000',
 ]
 
 CORS_ALLOW_CREDENTIALS = True

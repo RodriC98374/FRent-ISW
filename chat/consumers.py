@@ -1,6 +1,12 @@
 import json
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
+
+from . models import Chat
+from users.models import User  # Importa el modelo Chat
+from asgiref.sync import sync_to_async
 
 class ChatConsumer(AsyncJsonWebsocketConsumer):
     async def connect(self):
@@ -24,7 +30,6 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
 
     # Receive message from WebSocket
     async def receive(self, text_data):
-        print("conexiion")
         try:
             text_data_json = json.loads(text_data)
             sender_id = text_data_json['sender']
@@ -40,6 +45,22 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         
         # Verificar si el destinatario es diferente del remitente actual
         # Send message to room group
+        
+        try:
+            sender = await sync_to_async(User.objects.get)(id_user=sender_id)
+            receiver = await sync_to_async(User.objects.get)(id_user=recipient_id)
+        except User.DoesNotExist:
+            print("Error: Usuario no encontrado.")
+            return
+
+        # Crear y guardar el mensaje en la base de datos
+        chat_message = await sync_to_async(Chat.objects.create)(
+            user=sender, 
+            sender=sender, 
+            receiver=receiver, 
+            message=message
+        )
+        
         await self.channel_layer.group_send(
             self.room_group_name,
             {
