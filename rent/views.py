@@ -33,7 +33,22 @@ class RentViewSet(viewsets.ModelViewSet):
         return Rent.objects.annotate(
             time_elapsed=ExpressionWrapper(now - F('create'), output_field=fields.DurationField()) 
         ).order_by('-fecha_cita')
-        
+
+    # def create(self, request, *args, **kwargs):
+    #   fecha_cita_str = request.data.get('fecha_cita')
+    #   time_str = request.data.get('time')
+    #   duration = float(request.data.get('duration'))
+    #   fecha_cita = date.fromisoformat(fecha_cita_str)
+    #   hora = time.fromisoformat(time_str)
+    #   datetime_ini = datetime.combine(fecha_cita, hora)
+    #   datetime_fin = datetime_ini+timedelta(hours=duration)
+    #   rents_superpuesta = Rent.objects.filter(
+    #       Q(fecha_cita=fecha_cita) & (Q(time__lte=datetime_fin.time(), time__gte=datetime_ini.time()) |Q(time__lt=datetime_ini.time(), time__gte=(datetime_ini - timedelta(hours=duration)).time())))
+    #   if rents_superpuesta.exists():
+    #       return Response({'error': 'La renta se superpone con otra renta existente.'},status=status.HTTP_400_BAD_REQUEST)
+    #   return super().create(request, *args, **kwargs)
+  
+  
     @action(detail=True, methods=['GET'])
     def get_pendings_rents(self, request, pk=None):
         rents = Rent.objects.filter(status="pending", friend__id_user=pk)
@@ -133,10 +148,10 @@ class RentDetailView(APIView):
             })
                 
         if not rent_details:
-                    return Response({'mensaje': 'No hay alquileres encontrados para este amigo.'})
-                
+            return Response({'mensaje': 'No hay alquileres encontrados para este amigo.'})
+            
         return Response(rent_details)
             
     def format_datetime_with_colon(self, datetime_obj):
-      datetime_str = datetime_obj.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
-      return datetime_str[:-2] + ':' + datetime_str[-2:]
+        datetime_str = datetime_obj.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
+        return datetime_str[:-2] + ':' + datetime_str[-2:]
