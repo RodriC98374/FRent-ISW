@@ -17,13 +17,7 @@ const Chat = () => {
   const [socket, setSocket] = useState(null);
   const [bandera, setBandera] = useState(1);
 
-  //   const [receptor, setReceptor] = useState(null);
-
   const roomName = dataUser.user_type;
-
-  //SENDER = FRIEND y RECIEVE = CLIENT
-  //1  2
-  //
 
   useEffect(() => {
     if (dataUser && selectedUser) fetchData();
@@ -96,7 +90,6 @@ const Chat = () => {
 
           setBandera(bandera * -1);
 
-          // Actualizar el estado de los mensajes en el componente
           setMessages((prevMessages) => [
             ...prevMessages,
             {
