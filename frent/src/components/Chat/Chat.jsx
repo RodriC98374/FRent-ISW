@@ -8,8 +8,7 @@ import { getMessagesUser } from "../../api/register.api";
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [messages2, setMessages2] = useState([]);
-  const [messageHistory2, setMessageHistory2] = useState([])
-
+  const [messageHistory2, setMessageHistory2] = useState([]);
 
   const [selectedUser, setSelectedUser] = useState(null);
   const [currentMessage, setCurrentMessage] = useState("");
@@ -17,8 +16,8 @@ const Chat = () => {
   const dataUser = getUser();
   const [socket, setSocket] = useState(null);
   const [bandera, setBandera] = useState(1);
-  
-//   const [receptor, setReceptor] = useState(null);
+
+  //   const [receptor, setReceptor] = useState(null);
 
   const roomName = dataUser.user_type;
 
@@ -27,12 +26,12 @@ const Chat = () => {
   //
 
   useEffect(() => {
-    if(dataUser && selectedUser) fetchData();
+    if (dataUser && selectedUser) fetchData();
   }, [selectedUser]);
 
   useEffect(() => {
-    if(messages2) {
-      setMessages2((prev) => prev.concat(messageHistory2))
+    if (messages2 || messageHistory2) {
+      setMessages2((prev) => prev.concat(messageHistory2));
     }
   }, [messageHistory2]);
 
@@ -41,36 +40,42 @@ const Chat = () => {
       dataUser.user_type === "Amigo"
         ? selectedUser.client_id
         : selectedUser.id_user;
-      let informacion = {}
-      if (dataUser.user_type === "Cliente") {
-        informacion = {
-          sender: dataUser.user_id,
-          receiver: idOther,
-        };
-      } else {
-        informacion = {
-            sender: idOther,
-            receiver: dataUser.user_id,
-          };
-      }
+    let informacion = {};
+    if (dataUser.user_type === "Cliente") {
+      informacion = {
+        sender: dataUser.user_id,
+        receiver: idOther,
+      };
+    } else {
+      informacion = {
+        sender: idOther,
+        receiver: dataUser.user_id,
+      };
+    }
 
-      const res = await getMessagesUser(informacion);
-      console.log("el mensaje es", res.data);
-      setMessages2(res.data);
-  }
-
+    const res = await getMessagesUser(informacion);
+    console.log("el mensaje es", res.data);
+    setMessages2(res.data);
+  };
 
   useEffect(() => {
     const connectWebSocket = () => {
       if (selectedUser) {
-        const IdReceptor =
+        const idOther =
           dataUser.user_type === "Amigo"
             ? selectedUser.client_id
             : selectedUser.id_user;
-        const ws = new WebSocket(
-          `ws://localhost:9000/ws/chat/1/2/`
-        );
-        console.log("HOla s", IdReceptor);
+
+        let ws;
+        if (dataUser.user_type === "Cliente") {
+          ws = new WebSocket(
+            `ws://localhost:9000/ws/chat/${dataUser.user_id}/${idOther}/`
+          );
+        } else {
+          ws = new WebSocket(
+            `ws://localhost:9000/ws/chat/${idOther}/${dataUser.user_id}/`
+          );
+        }
 
         ws.onopen = () => {
           console.log("Conexión WebSocket abierta");
@@ -85,12 +90,12 @@ const Chat = () => {
           const message = JSON.parse(e.data);
           console.log("Mensaje recibido desde el servidor:", message);
 
-          if(bandera > 0){
+          if (bandera > 0) {
             setMessageHistory2(message);
           }
 
-          setBandera(bandera*-1)
-          
+          setBandera(bandera * -1);
+
           // Actualizar el estado de los mensajes en el componente
           setMessages((prevMessages) => [
             ...prevMessages,
