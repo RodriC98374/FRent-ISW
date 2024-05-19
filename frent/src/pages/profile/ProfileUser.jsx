@@ -1,6 +1,5 @@
 import "./ProfileUser.css";
 import { NavLink } from "react-router-dom";
-import { IoArrowBackCircleSharp } from "react-icons/io5";
 import { getUser } from "../Login/LoginForm";
 import { useEffect, useState } from "react";
 import { getAvailabilityFriend } from "../../api/register.api";

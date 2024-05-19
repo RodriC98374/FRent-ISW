@@ -15,7 +15,6 @@ const Chat = () => {
   const [isChatVisible, setIsChatVisible] = useState(true);
   const dataUser = getUser();
   const [socket, setSocket] = useState(null);
-  const [bandera, setBandera] = useState(1);
 
   const roomName = dataUser.user_type;
 
@@ -48,12 +47,14 @@ const Chat = () => {
     }
 
     const res = await getMessagesUser(informacion);
-    console.log("el mensaje es", res.data);
     setMessages2(res.data);
   };
 
   useEffect(() => {
     const connectWebSocket = () => {
+      
+      if(socket) socket.close();
+      
       if (selectedUser) {
         const idOther =
           dataUser.user_type === "Amigo"
@@ -65,10 +66,16 @@ const Chat = () => {
           ws = new WebSocket(
             `ws://localhost:9000/ws/chat/${dataUser.user_id}/${idOther}/`
           );
+          // ws = new WebSocket(
+          //   `wss://deploy-is-production.up.railway.app/ws/chat/${dataUser.user_id}/${idOther}/`
+          // );
         } else {
           ws = new WebSocket(
             `ws://localhost:9000/ws/chat/${idOther}/${dataUser.user_id}/`
           );
+          // ws = new WebSocket(
+          //   `wss://deploy-is-production.up.railway.app/ws/chat/${idOther}/${dataUser.user_id}/`
+          // );
         }
 
         ws.onopen = () => {
@@ -84,11 +91,9 @@ const Chat = () => {
           const message = JSON.parse(e.data);
           console.log("Mensaje recibido desde el servidor:", message);
 
-          if (bandera > 0) {
-            setMessageHistory2(message);
-          }
+          console.log("el mensaje es: ", message);
+           setMessageHistory2(message);
 
-          setBandera(bandera * -1);
 
           setMessages((prevMessages) => [
             ...prevMessages,
@@ -122,12 +127,6 @@ const Chat = () => {
     if (roomName) {
       connectWebSocket();
     }
-
-    return () => {
-      if (socket) {
-        socket.close(); // Cerrar la conexión al desmontar el componente
-      }
-    };
   }, [roomName, selectedUser]);
 
   const handleUserSelect = (user) => {
