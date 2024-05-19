@@ -3,17 +3,23 @@ from rest_framework import viewsets
 from decimal import Decimal
 from django.utils import timezone
 from django.db.models import F, ExpressionWrapper, fields
-from .models import OutFit, Event, Rent
-from users.models import Friend
+from .models import OutFit, Event, Rent,ClientComent
+from users.models import Friend, Client
 from .serializers import OutFitSerializer, EventSerializer, RentSerializer, RentPriceSerializer
 from rest_framework.response import Response
+from django.http import JsonResponse,HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import action
 from datetime import datetime, timedelta
 from django.utils.timezone import now
-from rest_framework.views import APIView
+from rest_framework.views import APIView, View
 from rest_framework import status
 from django.utils.timezone import localtime
+
+from django.utils.decorators import method_decorator
+import json
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404
 
 
 class OutFitViewSet(viewsets.ModelViewSet):
@@ -155,3 +161,100 @@ class RentDetailView(APIView):
     def format_datetime_with_colon(self, datetime_obj):
         datetime_str = datetime_obj.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
         return datetime_str[:-2] + ':' + datetime_str[-2:]
+    
+
+
+class AcceptedRentsView(APIView):
+    def get(self, request, client_id):
+        rents = Rent.objects.filter(client_id=client_id, status='accepted')
+        data = []
+
+        for rent in rents:
+            rent_end_time = self.calculate_rent_end_time(rent)
+            now = datetime.now()
+
+            if now >= rent_end_time:
+                friend = get_object_or_404(Friend, id_user=rent.friend.id_user)
+                rent_done_duration = self.calculate_duration(rent_end_time, now)
+                data.append({
+                    'friend_id': friend.id_user,
+                    'client_id': client_id,
+                    'rent_id': rent.id,
+                    'friend_full_name': friend.get_full_name(),
+                    'friend_description': friend.personal_description,
+                    #'friend_photo': friend.image,
+                    'rent_done': rent_done_duration,
+                })
+
+        return JsonResponse(data, safe=False)
+
+    def calculate_rent_end_time(self, rent):
+        rent_start_time = datetime.combine(rent.fecha_cita, rent.time)
+        rent_duration = timedelta(hours=rent.duration)
+        return rent_start_time + rent_duration
+
+    def calculate_duration(self, rent_end_time, now):
+        duration = now - rent_end_time
+        days = duration.days
+        seconds = duration.seconds
+        hours = seconds // 3600
+        minutes = (seconds % 3600) // 60
+
+        if days > 0:
+            return f"{days} days"
+        elif hours > 0:
+            return f"{hours} hours"
+        else:
+            return f"{minutes} minutes"
+    
+
+class SaveCommentView(APIView):
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            rent_id = data['rent_id']
+            friend_id = data['friend_id']
+            client_id = data['client_id']
+            comment = data['comment']
+
+            rent = get_object_or_404(Rent, id=rent_id)
+            friend = get_object_or_404(Friend, id_user=friend_id)
+            client = get_object_or_404(Client, id_user=client_id)
+
+            client_comment = ClientComent(
+                rent=rent,
+                friend=friend,
+                client=client,
+                comment=comment
+            )
+            client_comment.save()
+
+            response = {
+                'id_comment': client_comment.id_comment,
+                'rent_id': rent_id,
+                'friend_id': friend_id,
+                'client_id': client_id,
+                'comment': comment,
+            }
+            return JsonResponse({'mensaje': 'Comentario guardado correctamente'}, status=201)
+
+        except KeyError:
+            return HttpResponseBadRequest('Faltan datos requeridos.')
+        except json.JSONDecodeError:
+            return HttpResponseBadRequest('Formato de JSON inválido.')
+        
+
+class GetFriendCommentsView(APIView):
+    def get(self, request, friend_id):
+        friend = get_object_or_404(Friend, id_user=friend_id)
+        comments = ClientComent.objects.filter(friend=friend)
+        data = []
+
+        for comment in comments:
+            client = comment.client
+            data.append({
+                'comment': comment.comment,
+                'client_full_name': client.get_full_name()
+            })
+
+        return JsonResponse(data, safe=False)

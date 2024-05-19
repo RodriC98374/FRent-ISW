@@ -31,3 +31,11 @@ class Rent(models.Model):
 
     def get_client_id(self):
         return self.client.id
+
+
+class ClientComent(models.Model):
+    id_comment=models.AutoField(primary_key=True)
+    rent=models.ForeignKey(Rent, on_delete=models.CASCADE)
+    friend=models.ForeignKey(Friend, on_delete=models.CASCADE)
+    client=models.ForeignKey(Client, on_delete=models.CASCADE, null=True)
+    comment=models.CharField(max_length=200)
