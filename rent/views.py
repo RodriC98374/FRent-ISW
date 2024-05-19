@@ -182,7 +182,7 @@ class AcceptedRentsView(APIView):
                     'rent_id': rent.id,
                     'friend_full_name': friend.get_full_name(),
                     'friend_description': friend.personal_description,
-                    #'friend_photo': friend.image,
+                    'friend_photo': friend.image,
                     'rent_done': rent_done_duration,
                 })
 
@@ -201,11 +201,11 @@ class AcceptedRentsView(APIView):
         minutes = (seconds % 3600) // 60
 
         if days > 0:
-            return f"{days} days"
+            return f"{days} dias"
         elif hours > 0:
-            return f"{hours} hours"
+            return f"{hours} horas"
         else:
-            return f"{minutes} minutes"
+            return f"{minutes} minutos"
     
 
 class SaveCommentView(APIView):
