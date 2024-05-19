@@ -6,7 +6,8 @@ import "./LoginForm.css";
 //import logoImage from '../../assets/img/Logo frent.png';
 import { validarLogin } from "../../api/register.api";
 import { UserContext } from "./UserProvider";
-
+/* import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../../lib/firebase"; */
 export const signOut = () => {
   window.sessionStorage.clear();
   window.location.reload();
@@ -35,6 +36,7 @@ export default function LoginForm() {
   const {userData, setUserData } = useContext(UserContext); // Acceder al contexto
   const [isLoggedIn, setIsLoggedIn] = useState(false);  
   const [loginError, setLoginError] = useState("");
+  const [loading, setLoading] = useState(false)
 
   console.log(userData)
 
@@ -61,10 +63,13 @@ export default function LoginForm() {
 
   const onSubmit = handleSubmit(async (data) => {
     const { email, password } = data;
+
     const requestData = { email, password };
+
 
     try {
       const { data: responseData } = await validarLogin(requestData);
+      /* await signInWithEmailAndPassword(auth, email, password); */
 
       setUserData({
         token: responseData.token,

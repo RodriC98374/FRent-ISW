@@ -1,126 +1,159 @@
 import "./chatList.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import {
+    getPendingRent,
+    getRent,
+    getFriendID,
+} from "../../../api/register.api";
+import { getUser } from "../../../pages/Login/LoginForm";
 
 const ChatList = ({ onSelectUser }) => {
-
+    const [usersClient, setUsersClient] = useState([]);
+    const [friendsData, setFriendsData] = useState([]);
+    const userData = getUser()
     const [searchText, setSearchText] = useState('');
 
-    const staticImage =
-    "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
 
-    const users = [
-        {
-            id: 1,
-            name: 'Jane Doe',
-            avatar: './avatar.png',
-            messages: [
-                { text: 'Hello!', isIncoming: true, time: '10:00' },
-                { text: 'How are you?', isIncoming: false, time: '10:01' }
-            ]
-        },
-        {
-            id: 2,
-            name: 'John Smith',
-            avatar: './avatar.png',
-            messages: [
-                { text: 'Hi there!', isIncoming: true, time: '11:00' },
-                { text: 'Nice to meet you.', isIncoming: false, time: '11:01' }
-            ]
-        },
-        {
-            id: 3,
-            name: 'Alice Johnson',
-            avatar: './../../../image.png',
-            messages: [
-                { text: 'Good morning', isIncoming: true, time: '9:00' },
-                { text: 'How was your day?', isIncoming: false, time: '9:01' }
-            ]
-        },
-        {
-            id: 4,
-            name: 'Armando Gaspar',
-            avatar: './avatar.png',
-            messages: [
-                { text: 'Buenos días', isIncoming: true, time: '8:30' },
-                { text: '¿Qué tal estás?', isIncoming: false, time: '8:31' }
-            ]
-        },
-        {
-            id: 5,
-            name: 'Jhoel Mamani',
-            avatar: './avatar.png',
-            messages: [
-                { text: 'Hola!', isIncoming: true, time: '10:30' },
-                { text: '¿Cómo estás?', isIncoming: false, time: '10:31' }
-            ]
-        },
-        {
-            id: 6,
-            name: 'Alfredo Torrico',
-            avatar: './avatar.png',
-            messages: [
-                { text: 'Buenos días!', isIncoming: true, time: '7:00' },
-                { text: '¿Cómo va todo?', isIncoming: false, time: '7:01' }
-            ]
-        },
-        {
-            id: 7,
-            name: 'John Henry',
-            avatar: './avatar.png',
-            messages: [
-                { text: 'Good morning', isIncoming: true, time: '8:00' },
-                { text: 'Have a great day!', isIncoming: false, time: '8:01' }
-            ]
-        },
-        {
-            id: 8,
-            name: 'Michael Padilla',
-            avatar: './avatar.png',
-            messages: [
-                { text: 'Hey!', isIncoming: true, time: '12:00' },
-                { text: 'Let\'s catch up later.', isIncoming: false, time: '12:01' }
-            ]
+    useEffect(() => {
+       if (userData.user_type === "Amigo"){
+            fetchData();
+       } else{
+        obtenerDatosAmigosAceptados();
+       }
+    }, []);
+    const obtenerDatosAmigosAceptados = async () => {
+        try {
+            const response = await getRent();
+            const chatList = response.data;
+            
+            const amigosAceptados = chatList
+                .filter(registro => registro.client === userData.user_id && registro.status === "accepted")
+                .map(registro => registro.friend);
+    
+            const amigosDataPromises = amigosAceptados.map(async (amigoID) => {
+                try {
+                    const friendResponse = await getFriendID(amigoID);
+                    return friendResponse.data;
+                } catch (error) {
+                    console.error("Error al obtener datos del amigo:", error);
+                    return null;
+                }
+            });
+    
+            const nuevosAmigosDataArray = await Promise.all(amigosDataPromises);
+    
+            // Filtrar amigos duplicados
+            const amigosDataUnicos = nuevosAmigosDataArray.filter(nuevoAmigo => {
+                return !friendsData.some(amigoExistente => amigoExistente.id_user === nuevoAmigo.id_user);
+            });
+    
+
+            const amigosDataActualizados = [...friendsData, ...amigosDataUnicos];
+    
+            setFriendsData(amigosDataActualizados);
+        } catch (error) {
+            console.error("Error al buscar amigos aceptados:", error);
         }
-    ];
+    };
+    
+    
 
-    const handleUserClick = (user) => {
-        onSelectUser(user); 
+    const fetchData = async () => {
+        try {
+            const resRent = await getPendingRent(userData.user_id); 
+            setUsersClient(resRent.data);
+            console.log(resRent.data)
+        } catch (error) {
+            console.error("Error al obtener datos:", error);
+        }
     };
 
-    const filteredUsers = users.filter((user) =>
-        user.name.toLowerCase().includes(searchText.toLowerCase())
-    );
-
+    
+        const getUniqueUsers = (users) => {
+            const uniqueUsers = new Set();
+            const filteredUsers = [];
+    
+            users.forEach((user) => {
+                if (!uniqueUsers.has(user.rent_id)) {
+                    uniqueUsers.add(user.rent_id);
+                    filteredUsers.push(user);
+                }
+            });
+    
+            return filteredUsers;
+        };
+    
+        const filteredUsers = getUniqueUsers(usersClient).filter((user) =>
+            user &&
+            (user.first_name || user.nombre_cliente || user.description || user.image) &&
+            (user.status === "Aceptado") &&
+            (
+                (user.first_name && user.first_name.toLowerCase().includes(searchText.toLowerCase())) ||
+                (user.nombre_cliente && user.nombre_cliente.toLowerCase().includes(searchText.toLowerCase()))
+            )
+        );
+    
     const handleSearchChange = (event) => {
         setSearchText(event.target.value);
     };
+
+    const handleUserClick = (user) => {
+        onSelectUser(user);
+    };
+
+    const truncateMessage = (message, maxLength) => {
+        if (message && message.length > maxLength) {
+            return message.slice(0, maxLength) + "...";
+        }
+        return message || "";
+    };
+
+    
 
     return (
         <div className="chatListContainer">
             <div className="chatListSearch">
                 <div className="chatListSearchBar">
                     <i className="fas fa-search"></i>
-                    <input className="chatListSearchInput" type="text" placeholder="Search" value={searchText}
-                        onChange={handleSearchChange} />
+                    <input
+                        className="chatListSearchInput"
+                        type="text"
+                        placeholder="Search"
+                        value={searchText}
+                        onChange={handleSearchChange}
+                    />
                 </div>
             </div>
 
             <div className="user-chatList">
-            {filteredUsers.map((user) => (
+                {friendsData.map((friend) => (
                     <button
-                        key={user.id}
+                        key={friend.id_user}
+                        className="chatListItem"
+                        onClick={() => handleUserClick(friend)}
+                    >
+                        <img className="chatListAvatarLarge" src={`data:image/png;base64,${friend.image}`} alt="" />
+                        <div className="chatListItemTexts">
+                            <span className="chatListItemName">{friend.first_name} {friend.last_name}</span>
+                            <p className="chatListItemMessage">
+                                {truncateMessage(friend.personal_description, 45)}
+                            </p>
+                        </div>
+                    </button>
+                ))}
+
+                {filteredUsers.map((user) => (
+                    <button
+                        key={user.rent_id}
                         className="chatListItem"
                         onClick={() => handleUserClick(user)}
                     >
-                        <img className="chatListAvatarLarge" src={staticImage} alt="" />
+                        <img className="chatListAvatarLarge" src={`data:image/png;base64,${user.image}`} alt="" />
                         <div className="chatListItemTexts">
-                            <span className="chatListItemName">{user.name}</span>
-                            {/* Mostrar el último mensaje del usuario */}
-                            {user.messages.length > 0 && (
-                                <p className="chatListItemMessage">
-                                    {user.messages[user.messages.length - 1].text}
-                                </p>
-                            )}
+                            <span className="chatListItemName">{user.nombre_cliente}</span>
+                            <p className="chatListItemMessage">
+                                {truncateMessage(user.description, 45)}
+                            </p>
                         </div>
                     </button>
                 ))}

@@ -81,5 +81,6 @@ export const obtenerHorariosReservas = (id) => registersApi.get(`/rents/friend-c
 
 export const getPendingRent = (id) => registersApi.get(`/rents/rent_detail/${id}/`)
 
+export const getMessagesUser = (data) => registersApi.post(`/chat/api/v1/canal/get_chats_user/`, data)
 
 /* export const getTime = (id) => registersApi.get(`/rents/time_elapsed/${id}/`) */
