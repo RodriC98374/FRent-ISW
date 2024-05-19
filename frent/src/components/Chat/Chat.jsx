@@ -238,9 +238,6 @@ const Chat = () => {
     setIsChatVisible(false);
   };
 
-  const handleChange = (event) => {
-    setCurrentMessage(event.target.value);
-  };
 
   const formatMessageTime = (isoString) => {
     const date = new Date(isoString);
@@ -272,6 +269,19 @@ const Chat = () => {
     acc[dateLabel].push(message);
     return acc;
   }, {});
+
+  const MAX_MESSAGE_LENGTH = 150; // Definir la longitud máxima del mensaje
+
+const [messageLength, setMessageLength] = useState(0); // Estado para almacenar la longitud actual del mensaje
+
+const handleChangeMessage = (event) => {
+  const message = event.target.value;
+  if (message.length <= MAX_MESSAGE_LENGTH) {
+    setCurrentMessage(message); // Actualizar el estado del mensaje actual
+    setMessageLength(message.length); // Actualizar la longitud del mensaje
+  }
+};
+
 
   return (
     <div className="containerChat-list">
@@ -332,10 +342,13 @@ const Chat = () => {
                 <input
                   type="text"
                   value={currentMessage}
-                  onChange={handleChange}
+                  onChange={handleChangeMessage}
                   placeholder="Escribir un mensaje..."
                   rows={4}
                 />
+                <div className="char-counter-container">
+                  <span className="char-counter">{messageLength}/{MAX_MESSAGE_LENGTH}</span>
+                </div>
                 <button type="submit">
                   <i className="fa fa-paper-plane"></i>
                 </button>
