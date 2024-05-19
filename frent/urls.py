@@ -15,6 +15,7 @@ urlpatterns = [
     path('notificaciones/', include('notificaciones_api.urls')),
     #ruta de la documentacion de la API
     path('notificacionesInterno/', include('notificacionesInterno.urls')),
+    path('chat/', include('chat.urls')),
     #ruta de la documentacion de la API
     path('documentation/', include_docs_urls(title=" Documentacion API FRENT")),
     path('auth/', include('djoser.urls')),
