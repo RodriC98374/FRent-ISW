@@ -160,6 +160,12 @@ export default function NavBar() {
               </NavLink>
             </li>
           )}
+
+          {userData && userData.user_type === "Amigo" && (
+            <li>
+              <NavLink className="navbar-option" to="/chat"><BiSolidMessageDetail /></NavLink>
+            </li>
+          )}
           {userData && userData.user_type === "Cliente" && (
             <li onClick={openModal}>
               <div className="navbar-option">
