@@ -24,9 +24,6 @@ import { UserContext } from './pages/Login/UserProvider';
 import Chat from './components/Chat/Chat';
 /*import para ver como queda perfil*/
 import ProfileClient from "./pages/profile/profileClient";
-
-
-import ProfileUser from "./pages/profile/ProfileUser";
 /* import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./lib/firebase";
 import useUserStore from "./lib/userStore"; */
