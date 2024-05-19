@@ -1,14 +1,7 @@
 import React, { useState } from 'react';
 
-const CommentSection = () => {
+  const CommentSection = ({ comments }) => {
   const [currentCommentIndex, setCurrentCommentIndex] = useState(0);
-
-  // Datos de prueba para comentarios estáticos
-  const comments = [
-    'World Wrestling Entertainment es una empresa estadounidense de medios y entretenimiento, ​​ integrada principalmente por el área.',
-    'BUENA PERSONA!!!',
-    'Comentario adicional de prueba.',
-  ];
 
   const handlePrevClick = () => {
     setCurrentCommentIndex((prevIndex) => (prevIndex === 0 ? comments.length - 1 : prevIndex - 1));
@@ -20,10 +13,16 @@ const CommentSection = () => {
 
   return (
     <div className="comment-section">
-        {/* <h3>Pedro Picapiedra</h3> */}
-      <div className="comment-text">
-        <h4>Pedro Picapiedra:</h4><span>{comments[currentCommentIndex]}</span>
-      </div>
+      {comments.length > 0 ? (
+        <div className="comment-text">
+          <h4>{comments[currentCommentIndex]?.client_full_name}:</h4>
+          <span>{comments[currentCommentIndex]?.comment}</span>
+        </div>
+      ) : (
+        <div className="no-comments-message">
+          <p>No hay comentarios de otros Usuarios</p>
+        </div>
+      )}
       <div className="comment-navigation">
         <button className="comment-button" onClick={handlePrevClick}>Anterior</button>
         <button className="comment-button" onClick={handleNextClick}>Siguiente</button>
