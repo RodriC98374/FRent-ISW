@@ -1,4 +1,4 @@
-import React, { useState, useEffect , useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Chat.css";
 import ChatList from "./chatList/ChatList";
 import { IoIosArrowBack } from "react-icons/io";
@@ -33,7 +33,7 @@ const Chat = () => {
     }
   }, [messages2]);
 
-  
+
   useEffect(() => {
     if (dataUser && selectedUser) fetchData();
   }, [selectedUser]);
@@ -61,10 +61,13 @@ const Chat = () => {
         receiver: dataUser.user_id,
       };
     }
-
-    const res = await getMessagesUser(informacion);
-    console.log("el mensaje es", res.data);
-    setMessages2(res.data);
+    try {
+      const res = await getMessagesUser(informacion);
+      console.log("el mensaje es", res.data);
+      setMessages2(res.data);
+    } catch (error) {
+      console.error("Error al obtener los mensajes del usuario:", error);
+    }
   };
 
   useEffect(() => {
@@ -96,38 +99,42 @@ const Chat = () => {
         };
 
         ws.onmessage = (e) => {
-          const message = JSON.parse(e.data);
-          console.log("Mensaje recibido desde el servidor:", message);
+          try {
+            const message = JSON.parse(e.data);
+            console.log("Mensaje recibido desde el servidor:", message);
 
-          if (bandera > 0) {
-            setMessageHistory2(message);
+            if (bandera > 0) {
+              setMessageHistory2(message);
+            }
+
+            setBandera(bandera * -1);
+
+            setMessages((prevMessages) => {
+              const newMessages = [
+
+                ...prevMessages,
+                {
+                  id: prevMessages.length + 1,
+                  text: message.message,
+                  isIncoming: true, // Indica que es un mensaje entrante
+                  time: new Date().toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  }),
+                  senderId: message.sender, // El remitente del mensaje
+                },
+              ];
+              if (newMessages.length > 0) {
+                const latestMessage = newMessages[newMessages.length - 1];
+                setLastMessage(latestMessage.text);
+                setTimeSinceLastMessage(calculateTimePassed(latestMessage.time));
+              }
+
+              return newMessages;
+            });
+          } catch (error) {
+            console.error("Error al procesar el mensaje recibido:", error);
           }
-
-          setBandera(bandera * -1);
-
-          setMessages((prevMessages) => {
-            const newMessages = [
-
-            ...prevMessages,
-            {
-              id: prevMessages.length + 1,
-              text: message.message,
-              isIncoming: true, // Indica que es un mensaje entrante
-              time: new Date().toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              }),
-              senderId: message.sender, // El remitente del mensaje
-            },
-          ];
-          if (newMessages.length > 0) {
-            const latestMessage = newMessages[newMessages.length - 1];
-            setLastMessage(latestMessage.text);
-            setTimeSinceLastMessage(calculateTimePassed(latestMessage.time));
-          }
-      
-          return newMessages;
-        });
         };
 
         ws.onerror = (error) => {
@@ -160,7 +167,7 @@ const Chat = () => {
       chatEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages2]);
-  
+
 
   const handleUserSelect = (user) => {
     setSelectedUser(user);
@@ -297,27 +304,26 @@ const Chat = () => {
 
             <div className="chat-body">
               <div className="chat-messages">
-              {Object.keys(groupedMessages).map((dateLabel, index) => (
-                <div className="chat-messages" key={index}>
-                <span className="date-chat">{dateLabel}</span>
-                  {groupedMessages[dateLabel].map((message, index) => (
-                    <div
-                      key={index}
-                      className={`message ${
-                        message.sender === dataUser.user_id
-                          ? "outgoing"
-                          : "incoming"
-                      }`}
-                    >
-                      <div className="message-content">
-                        <div className="message-text">{message.message}</div>
-                        <span className="message-time">{formatMessageTime(message.date)}</span>
+                {Object.keys(groupedMessages).map((dateLabel, index) => (
+                  <div className="chat-messages" key={index}>
+                    <span className="date-chat">{dateLabel}</span>
+                    {groupedMessages[dateLabel].map((message, index) => (
+                      <div
+                        key={index}
+                        className={`message ${message.sender === dataUser.user_id
+                            ? "outgoing"
+                            : "incoming"
+                          }`}
+                      >
+                        <div className="message-content">
+                          <div className="message-text">{message.message}</div>
+                          <span className="message-time">{formatMessageTime(message.date)}</span>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                  <div ref={chatEndRef} />
-                </div>
-                  ))}
+                    ))}
+                    <div ref={chatEndRef} />
+                  </div>
+                ))}
               </div>
             </div>
 
