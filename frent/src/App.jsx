@@ -17,8 +17,9 @@ import MyCalendar from "./components/Forms/rentFriends/calendar/MyCalendar";
 import Photo from "./pages/photo/PhotoForm";
 import AddAvailableHours from "./components/Forms/AddAvailableHours/AddAvailableHours";
 import ProfileFriend from './pages/profile/profileFriend';
-import { getUser } from "./pages/Login/LoginForm";
-
+import ProfileUser from './pages/profile/ProfileUser';
+import { getUser } from './pages/Login/LoginForm';
+import MisAmigos from './pages/rentalSection/MisAmigos'; 
 import { UserContext } from './pages/Login/UserProvider';
 import Chat from './components/Chat/Chat';
 /*import para ver como queda perfil*/
@@ -107,7 +108,7 @@ function App() {
               <Route path="/calendarReservas/:id" element={<MyCalendar />} />
               <Route path="/listFriend" element={<ListFriend />} />
               <Route path="/chat2" element={<Chat />} />
-
+              <Route path="/historialRentas" element={<MisAmigos />}/>
             </Route>
 
             <Route

@@ -6,14 +6,19 @@ import { IoLocationSharp } from "react-icons/io5";
 import { ButtonPrimary } from "../../components/Buttons/buttonPrimary";
 import { ButtonSecondary } from "../../components/Buttons/buttonSecondary";
 import { ButtonPersonal } from "../../components/Buttons/buttonPersonal";
-import { getFriendID2, getLikes } from "../../api/register.api";
+import { getFriendID2, getLikes, get_friend_comments } from "../../api/register.api";
 import { calculateAge } from "../listFriend/ListFriends";
+import CommentSection from './CommentSection';
+import { getUser } from "../../pages/Login/LoginForm";
 
 const ProfileFriend = () => {
   const { id } = useParams();
   const friendId = parseInt(id);
   const [friend, setFriend] = useState([]); // Utiliza un único amigo en lugar de una lista de amigos
   const [likes, setLikes] = useState([]);
+  const dataUser = getUser();
+  const [comments, setComments] = useState([]);
+
 
   useEffect(() => {
     const loadFriend = async () => {
@@ -25,7 +30,17 @@ const ProfileFriend = () => {
         console.error("Error al cargar la información del amigo:", error);
       }
     };
+    const loadComments = async () => {
+      try {
+        const response = await get_friend_comments(friendId);
+        setComments(response.data);
+        console.log('com',response.data);
+      } catch (error) {
+        console.error("Error al cargar los comentarios:", error);
+      }
+    };
     loadFriend();
+    loadComments();
   }, [friendId]);
 
   const staticImage =
@@ -111,16 +126,20 @@ const ProfileFriend = () => {
               <p>No tiene intereses</p>
             )}
           </div>
+          <h3>Comentarios:</h3>
+          <div className="comment-section-container">
+            <CommentSection comments={comments} clientName={friend.client_full_name} />
+          </div>
           <div className="btn-back-reserve">
             <NavLink to="/listFriend">
               <ButtonPrimary label={"Atras"} />
             </NavLink>
           </div>
-
         </div>
       </div>
     </div>
+    
   );
-};
+};  
 
 export default ProfileFriend;
