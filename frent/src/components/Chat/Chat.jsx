@@ -52,9 +52,7 @@ const Chat = () => {
 
   useEffect(() => {
     const connectWebSocket = () => {
-      
       if(socket) socket.close();
-      
       if (selectedUser) {
         const idOther =
           dataUser.user_type === "Amigo"
