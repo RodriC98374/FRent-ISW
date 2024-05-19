@@ -35,6 +35,8 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
             sender_id = text_data_json['sender']
             recipient_id = text_data_json['recipient']
             message = text_data_json['message']
+            recipient_Name = text_data_json['recipientName']
+            sender_Name = text_data_json['senderName']
             print("llego", text_data_json)
         except KeyError as ex:
             # Manejar la excepción cuando falta una clave en el JSON
@@ -67,14 +69,18 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
                 'type': 'chat_message',
                 'message': message,
                 'sender': sender_id,
-                'recipient': recipient_id
+                'recipient': recipient_id,
+                'recipient_Name': recipient_Name,
+                'sender_Name': sender_Name
             }
         )
     # Receive message from room group
     async def chat_message(self, event):
         message = event['message']
         sender_id = event['sender']
-        recipient_id = event['recipient']
+        recipient_id = event['recipient'],
+        recipient_Name = event['recipient_Name'],
+        sender_Name = event['sender_Name']
 
         # Verificar si el destinatario es diferente del remitente actual
         if recipient_id != sender_id:
@@ -82,5 +88,7 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
             await self.send(text_data=json.dumps({
                 'message': message,
                 'sender': sender_id,
-                'recipient': recipient_id
+                'recipient': recipient_id,
+                'recipient_Name': recipient_Name,
+                'sender_Name': sender_Name
             }))
