@@ -10,6 +10,12 @@ const MisAmigos = () => {
   const [selectedAmigo, setSelectedAmigo] = useState(null);
   const [comment, setComment] = useState('');
   const dataUser = getUser();
+  const getImage = (imageFriend) => {
+    if (imageFriend) {
+      return `data:image/png;base64,${imageFriend}`;
+    }
+    //return staticImage;
+  };
   useEffect(() => {
     const fetchAmigos = async () => {
       try {
@@ -58,7 +64,7 @@ const MisAmigos = () => {
       {amigos.map((amigo) => (
         <div key={amigo.friend_id} className="amigo-card">
           <div className="amigo-info">
-            <div className="amigo-avatar"></div>
+            <img src={getImage(amigo.friend_photo)} alt="" />
             <div className="amigo-details">
               <strong>{amigo.friend_full_name}</strong>
               <p>{amigo.friend_description}</p>
