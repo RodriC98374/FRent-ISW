@@ -1,27 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { get_acepted_friends } from "../../api/register.api";
+import { save_comment } from "../../api/register.api";
+import { getUser } from "../../pages/Login/LoginForm";
 import './MisAmigos.css';
 
-const amigos = [
-  {
-    nombre: 'Esteban Dido',
-    descripcion: 'Esta es mi descripcion',
-    alquiler: 'Alquiler hace 5 min'
-  },
-  {
-    nombre: 'Jon Leclere',
-    descripcion: 'Esta es mi descripcion',
-    alquiler: 'Alquiler hace 1 mes'
-  },
-  {
-    nombre: 'Jon Leclere',
-    descripcion: 'Esta es mi descripcion',
-    alquiler: 'Alquiler hace 1 mes'
-  }
-];
-
 const MisAmigos = () => {
+  const [amigos, setAmigos] = useState([]);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [selectedAmigo, setSelectedAmigo] = useState(null);
+  const [comment, setComment] = useState('');
+  const dataUser = getUser();
+  useEffect(() => {
+    const fetchAmigos = async () => {
+      try {
+        const response = await get_acepted_friends(dataUser.user_id);
+        setAmigos(response.data);
+        console.log(response)
+      } catch (error) {
+        console.error('Error fetching friends:', error);
+      }
+    };
+
+    fetchAmigos();
+  }, [dataUser.id_user]);
 
   const showForm = (amigo) => {
     setSelectedAmigo(amigo);
@@ -31,28 +32,40 @@ const MisAmigos = () => {
   const hideForm = () => {
     setIsFormVisible(false);
     setSelectedAmigo(null);
+    setComment('');
   };
 
-  const handleCommentSubmit = (e) => {
+  const handleCommentSubmit = async (e) => {
     e.preventDefault();
-    // Aquí puedes manejar el comentario enviado
-    hideForm();
+    const commentData = {
+      rent_id: selectedAmigo.rent_id,
+      friend_id: selectedAmigo.friend_id,
+      client_id: dataUser.user_id,
+      comment: comment,
+    };
+
+    try {
+      await save_comment(commentData);
+      hideForm();
+    } catch (error) {
+      console.error('Error posting comment:', error);
+    }
   };
 
   return (
     <div className="mis-amigos">
-      <h1>Mis Amigos</h1>
-      {amigos.map((amigo, index) => (
-        <div key={index} className="amigo-card">
+      <h1>Mi Historial de Amigos</h1>
+      {amigos.map((amigo) => (
+        <div key={amigo.friend_id} className="amigo-card">
           <div className="amigo-info">
             <div className="amigo-avatar"></div>
             <div className="amigo-details">
-              <strong>{amigo.nombre}</strong>
-              <p>{amigo.descripcion}</p>
+              <strong>{amigo.friend_full_name}</strong>
+              <p>{amigo.friend_description}</p>
             </div>
           </div>
           <div className="amigo-action">
-            <span>{amigo.alquiler}</span>
+            <span>Alquiler hace {amigo.rent_done}</span>
             <button onClick={() => showForm(amigo)}>Dejar Comentario</button>
           </div>
         </div>
@@ -60,9 +73,14 @@ const MisAmigos = () => {
       {isFormVisible && (
         <div className="comment-form-overlay">
           <div className="comment-form">
-            <h2>Dejar Comentario para {selectedAmigo?.nombre}</h2>
+            <h2>Dejar Comentario para {selectedAmigo?.friend_full_name}</h2>
             <form onSubmit={handleCommentSubmit}>
-              <textarea required placeholder="Escribe tu comentario aquí"></textarea>
+              <textarea
+                required
+                placeholder="Escribe tu comentario aquí"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              ></textarea>
               <div className="form-buttons">
                 <button type="submit">Enviar</button>
                 <button type="button" onClick={hideForm}>Cancelar</button>
