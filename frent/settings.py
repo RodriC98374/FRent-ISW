@@ -92,6 +92,15 @@ CHANNEL_LAYERS = {
     }
 }
 
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             'hosts': [os.environ.get('REDIS_URL')],
+#         },
+#     },
+# }
+
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -115,10 +124,10 @@ DATABASES = {
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME':'railway',
 #         'USER':'postgres',
-#         'PASSWORD': 'ZjaRIGkTybRuZyXpEIGexxCbxajQozoa',
-#         'HOST': 'viaduct.proxy.rlwy.net',
-#         'PORT':'45613',
-#     } 
+#         'PASSWORD': 'gBpRqKNzrbUDEhBDpgZiKlNPHQKBldUc',
+#         'HOST': 'monorail.proxy.rlwy.net',
+#         'PORT':'52497',
+#     }
 # }
 
 # Password validation

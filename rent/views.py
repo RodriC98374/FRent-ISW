@@ -133,10 +133,10 @@ class RentDetailView(APIView):
             })
                 
         if not rent_details:
-                    return Response({'mensaje': 'No hay alquileres encontrados para este amigo.'})
+            return Response({'mensaje': 'No hay alquileres encontrados para este amigo.'})
                 
         return Response(rent_details)
             
     def format_datetime_with_colon(self, datetime_obj):
-      datetime_str = datetime_obj.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
-      return datetime_str[:-2] + ':' + datetime_str[-2:]
+        datetime_str = datetime_obj.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
+        return datetime_str[:-2] + ':' + datetime_str[-2:]
