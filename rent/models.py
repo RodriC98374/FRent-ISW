@@ -29,3 +29,10 @@ class Rent(models.Model):
     create = models.DateTimeField(auto_now_add=True)
     status = models.CharField(default='pending', max_length=10) #Podria tener los estados de pending, accepted o rejeact
 
+
+class ClientComent(models.Model):
+    id_comment=models.AutoField(primary_key=True)
+    rent=models.ForeignKey(Rent, on_delete=models.CASCADE)
+    friend=models.ForeignKey(Friend, on_delete=models.CASCADE)
+    client=models.ForeignKey(Client, on_delete=models.CASCADE, null=True)
+    comment=models.CharField(max_length=200)
