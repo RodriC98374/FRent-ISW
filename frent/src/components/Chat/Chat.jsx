@@ -17,12 +17,23 @@ const Chat = () => {
   const dataUser = getUser();
   const [socket, setSocket] = useState(null);
   const [bandera, setBandera] = useState(1);
+  const [lastMessage, setLastMessage] = useState(null);
+  const [timeSinceLastMessage, setTimeSinceLastMessage] = useState("");
 
   const roomName = dataUser.user_type;
 
   const chatEndRef = useRef(null);
 
 
+  useEffect(() => {
+    if (messages2.length > 0) {
+      const latestMessage = messages2[messages2.length - 1];
+      setLastMessage(latestMessage.message);
+      setTimeSinceLastMessage(calculateTimePassed(latestMessage.date));
+    }
+  }, [messages2]);
+
+  
   useEffect(() => {
     if (dataUser && selectedUser) fetchData();
   }, [selectedUser]);
@@ -94,7 +105,9 @@ const Chat = () => {
 
           setBandera(bandera * -1);
 
-          setMessages((prevMessages) => [
+          setMessages((prevMessages) => {
+            const newMessages = [
+
             ...prevMessages,
             {
               id: prevMessages.length + 1,
@@ -106,7 +119,15 @@ const Chat = () => {
               }),
               senderId: message.sender, // El remitente del mensaje
             },
-          ]);
+          ];
+          if (newMessages.length > 0) {
+            const latestMessage = newMessages[newMessages.length - 1];
+            setLastMessage(latestMessage.text);
+            setTimeSinceLastMessage(calculateTimePassed(latestMessage.time));
+          }
+      
+          return newMessages;
+        });
         };
 
         ws.onerror = (error) => {
@@ -269,7 +290,7 @@ const Chat = () => {
                     {selectedUser.nombre_cliente} {selectedUser.first_name}{" "}
                     {selectedUser.last_name}
                   </h3>
-                  <p>Última vez activo...</p>
+                  <p>Última vez activo: {timeSinceLastMessage}</p>
                 </div>
               </div>
             </div>
@@ -296,7 +317,7 @@ const Chat = () => {
                   ))}
                   <div ref={chatEndRef} />
                 </div>
-              ))}
+                  ))}
               </div>
             </div>
 
