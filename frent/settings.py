@@ -98,11 +98,11 @@ CHANNEL_LAYERS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'frent_back',
+        'NAME': 'frent',
         #(example, fill the user bellow) 'USER': 'postgres',
-        'USER': 'gaspar',
+        'USER': 'alfredo',
         #(example, fill the passwprd bellow) 'PASSWORD': 'passwordRANDOM123',
-        'PASSWORD': 'armando1gaspar',
+        'PASSWORD': 'notebok456',
         'HOST': 'localhost',
         'OPTIONS': {
             'client_encoding': 'UTF8',
