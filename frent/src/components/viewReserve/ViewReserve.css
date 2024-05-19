@@ -254,4 +254,11 @@ body {
   cursor: pointer;
 }
 
+.user-info2{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #000;
+}
 /*for modal*/
