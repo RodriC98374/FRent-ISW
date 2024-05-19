@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect , useRef } from "react";
 import "./Chat.css";
 import ChatList from "./chatList/ChatList";
 import { IoIosArrowBack } from "react-icons/io";
 import { getUser } from "../../pages/Login/LoginForm";
 import { getMessagesUser } from "../../api/register.api";
+import { calculateTimePassed } from "../viewReserve/ViewReserve";
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -17,6 +18,9 @@ const Chat = () => {
   const [socket, setSocket] = useState(null);
 
   const roomName = dataUser.user_type;
+
+  const chatEndRef = useRef(null);
+
 
   useEffect(() => {
     if (dataUser && selectedUser) fetchData();
@@ -127,6 +131,13 @@ const Chat = () => {
     }
   }, [roomName, selectedUser]);
 
+  useEffect(() => {
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages2]);
+  
+
   const handleUserSelect = (user) => {
     setSelectedUser(user);
     if (user && user.messages) {
@@ -200,6 +211,37 @@ const Chat = () => {
     setCurrentMessage(event.target.value);
   };
 
+  const formatMessageTime = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
+  const formatDateLabel = (isoString) => {
+    const date = new Date(isoString);
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    const options = { weekday: 'short', day: '2-digit', month: '2-digit' };
+
+    if (date.toDateString() === today.toDateString()) {
+      return '--Hoy--';
+    } else if (date.toDateString() === yesterday.toDateString()) {
+      return '--Ayer--';
+    } else {
+      return date.toLocaleDateString('es-ES', options);
+    }
+  };
+
+  const groupedMessages = messages2.reduce((acc, message) => {
+    const dateLabel = formatDateLabel(message.date);
+    if (!acc[dateLabel]) {
+      acc[dateLabel] = [];
+    }
+    acc[dateLabel].push(message);
+    return acc;
+  }, {});
+
   return (
     <div className="containerChat-list">
       <h1>Chats</h1>
@@ -231,8 +273,10 @@ const Chat = () => {
 
             <div className="chat-body">
               <div className="chat-messages">
-                <div className="chat-messages">
-                  {messages2.map((message, index) => (
+              {Object.keys(groupedMessages).map((dateLabel, index) => (
+                <div className="chat-messages" key={index}>
+                <span className="date-chat">{dateLabel}</span>
+                  {groupedMessages[dateLabel].map((message, index) => (
                     <div
                       key={index}
                       className={`message ${
@@ -243,11 +287,13 @@ const Chat = () => {
                     >
                       <div className="message-content">
                         <div className="message-text">{message.message}</div>
-                        <span className="message-time">{"20:00"}</span>
+                        <span className="message-time">{formatMessageTime(message.date)}</span>
                       </div>
                     </div>
                   ))}
+                  <div ref={chatEndRef} />
                 </div>
+              ))}
               </div>
             </div>
 

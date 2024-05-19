@@ -27,6 +27,22 @@ import {
 } from "../../api/register.api";
 import { getUser } from "../../pages/Login/LoginForm";
 
+export const calculateTimePassed = (createdAt) => {
+  const currentTime = new Date();
+  const createdAtDate = new Date(createdAt);
+  const difference = currentTime.getTime() - createdAtDate.getTime();
+  const secondsPassed = Math.floor(difference / 1000);
+  if (secondsPassed < 60) {
+    return `${secondsPassed} seg`;
+  } else if (secondsPassed < 3600) {
+    return `${Math.floor(secondsPassed / 60)} min`;
+  } else if (secondsPassed < 86400) {
+    return `${Math.floor(secondsPassed / 3600)} horas`;
+  } else {
+    return `${Math.floor(secondsPassed / 86400)} días`;
+  }
+};
+
 export default function ViewReserve() {
   const { userData } = useContext(UserContext);
   const [listRent, setListRent] = useState([]);
@@ -79,21 +95,7 @@ export default function ViewReserve() {
     }
   };
 
-  const calculateTimePassed = (createdAt) => {
-    const currentTime = new Date();
-    const createdAtDate = new Date(createdAt);
-    const difference = currentTime.getTime() - createdAtDate.getTime();
-    const secondsPassed = Math.floor(difference / 1000);
-    if (secondsPassed < 60) {
-      return `${secondsPassed} seg`;
-    } else if (secondsPassed < 3600) {
-      return `${Math.floor(secondsPassed / 60)} min`;
-    } else if (secondsPassed < 86400) {
-      return `${Math.floor(secondsPassed / 3600)} horas`;
-    } else {
-      return `${Math.floor(secondsPassed / 86400)} días`;
-    }
-  };
+  
 
   const handleAccept = async (rentId, rentClient, rentFriend) => {
     try {
@@ -471,7 +473,7 @@ export default function ViewReserve() {
             listRent.map((rent, index) => (
               <div key={rent.rent_id} className="pending">
                 <div className="pending-info">
-                  <div className="user-info">
+                  <div className="user-info2">
                     <img
                       src={getImage(rent.image)}
                       className="fotoperfil"

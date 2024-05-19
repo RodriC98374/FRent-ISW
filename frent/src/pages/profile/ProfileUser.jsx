@@ -3,7 +3,6 @@ import { NavLink } from "react-router-dom";
 import { getUser } from "../Login/LoginForm";
 import { useEffect, useState } from "react";
 import { getAvailabilityFriend } from "../../api/register.api";
-import { ButtonPrimary } from "../../components/Buttons/buttonPrimary";
 
 export default function ProfileUser() {
   const userData = getUser();
@@ -13,14 +12,14 @@ export default function ProfileUser() {
     async function fetchData() {
       try {
         const resAvailability = await getAvailabilityFriend(userData.user_id);
-        setAvailability(resAvailability.data);
         console.log(resAvailability.data);
+        setAvailability(Array.isArray(resAvailability.data) ? resAvailability.data : []);
       } catch (error) {
         console.log("Error fetching data:", error);
       }
     }
     fetchData();
-  }, []);
+  }, [userData.user_id]);
 
   const obtenerRangos = (dia) => {
     const rango = availability.find(
@@ -38,12 +37,6 @@ export default function ProfileUser() {
     <>
       {userData && (
         <div className="body-page-profile">
-          {/* <div className="btn-back">
-            <NavLink to="/">
-              <ButtonPrimary label={"Back"} />
-            </NavLink>
-          </div> */}
-
           <div className="shape-background">
             <svg className="shape-a-profile" width="200" height="200">
               <circle cx={100} cy={100} r={100} />
@@ -113,7 +106,7 @@ export default function ProfileUser() {
               <p>{userData.personal_description}</p>
 
               <div className="profile-interests">
-                {userData.likes.map((interest, index) => (
+                {userData.likes && userData.likes.map((interest, index) => (
                   <span key={index} className="interest-selected">
                     <svg
                       className="tag-icon"
