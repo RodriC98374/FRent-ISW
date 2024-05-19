@@ -6,12 +6,15 @@ import {
     getFriendID,
 } from "../../../api/register.api";
 import { getUser } from "../../../pages/Login/LoginForm";
+import { calculateTimePassed } from "../../viewReserve/ViewReserve";
 
 const ChatList = ({ onSelectUser }) => {
     const [usersClient, setUsersClient] = useState([]);
     const [friendsData, setFriendsData] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null);
     const userData = getUser()
     const [searchText, setSearchText] = useState('');
+    
 
 
     useEffect(() => {
@@ -21,6 +24,7 @@ const ChatList = ({ onSelectUser }) => {
         obtenerDatosAmigosAceptados();
        }
     }, []);
+
     const obtenerDatosAmigosAceptados = async () => {
         try {
             const response = await getRent();
@@ -43,61 +47,61 @@ const ChatList = ({ onSelectUser }) => {
             const nuevosAmigosDataArray = await Promise.all(amigosDataPromises);
     
             // Filtrar amigos duplicados
-            const amigosDataUnicos = nuevosAmigosDataArray.filter(nuevoAmigo => {
-                return !friendsData.some(amigoExistente => amigoExistente.id_user === nuevoAmigo.id_user);
-            });
+            const amigosDataUnicos = nuevosAmigosDataArray.filter((nuevoAmigo, index, self) =>
+                index === self.findIndex((amigo) => amigo.id_user === nuevoAmigo.id_user)
+            );
     
 
-            const amigosDataActualizados = [...friendsData, ...amigosDataUnicos];
-    
-            setFriendsData(amigosDataActualizados);
+            setFriendsData(amigosDataUnicos);
         } catch (error) {
             console.error("Error al buscar amigos aceptados:", error);
         }
     };
-    
-    
 
     const fetchData = async () => {
         try {
-            const resRent = await getPendingRent(userData.user_id); 
-            setUsersClient(resRent.data);
-            console.log(resRent.data)
+            const resRent = await getPendingRent(userData.user_id);
+            const usersData = resRent.data;
+
+            // Filtrar clientes duplicados y mantener los que han sido aceptados al menos una vez
+            const clientesDataUnicos = usersData.filter((nuevoCliente, index, self) =>
+                index === self.findIndex((cliente) => cliente.client_id === nuevoCliente.client_id) &&
+                usersData.some(cliente => cliente.client_id === nuevoCliente.client_id && cliente.status === "Aceptado")
+            );
+
+            setUsersClient(clientesDataUnicos);
+            console.log("Filtrado de usuarios", clientesDataUnicos);
         } catch (error) {
             console.error("Error al obtener datos:", error);
         }
     };
 
-    
-        const getUniqueUsers = (users) => {
-            const uniqueUsers = new Set();
-            const filteredUsers = [];
-    
-            users.forEach((user) => {
-                if (!uniqueUsers.has(user.rent_id)) {
-                    uniqueUsers.add(user.rent_id);
-                    filteredUsers.push(user);
-                }
-            });
-    
-            return filteredUsers;
-        };
-    
-        const filteredUsers = getUniqueUsers(usersClient).filter((user) =>
-            user &&
-            (user.first_name || user.nombre_cliente || user.description || user.image) &&
-            (user.status === "Aceptado") &&
-            (
-                (user.first_name && user.first_name.toLowerCase().includes(searchText.toLowerCase())) ||
-                (user.nombre_cliente && user.nombre_cliente.toLowerCase().includes(searchText.toLowerCase()))
-            )
-        );
+    const filteredFriends = friendsData.filter((friend) =>
+        friend &&
+        (
+            (friend.first_name && friend.first_name.toLowerCase().includes(searchText.toLowerCase())) ||
+            (friend.last_name && friend.last_name.toLowerCase().includes(searchText.toLowerCase())) ||
+            (friend.personal_description && friend.personal_description.toLowerCase().includes(searchText.toLowerCase()))
+        )
+    );
+
+
+    const filteredUsers = usersClient.filter((user) =>
+        user &&
+        (user.first_name || user.nombre_cliente || user.description || user.image) &&
+       //(user.status === "Aceptado") &&
+        (
+            (user.first_name && user.first_name.toLowerCase().includes(searchText.toLowerCase())) ||
+            (user.nombre_cliente && user.nombre_cliente.toLowerCase().includes(searchText.toLowerCase()))
+        )
+    );
     
     const handleSearchChange = (event) => {
         setSearchText(event.target.value);
     };
 
     const handleUserClick = (user) => {
+        setSelectedUser(user); // Al hacer clic en un usuario, lo establecemos como el usuario seleccionado
         onSelectUser(user);
     };
 
@@ -113,7 +117,21 @@ const ChatList = ({ onSelectUser }) => {
     return (
         <div className="chatListContainer">
             <div className="chatListSearch">
-                <div className="chatListSearchBar">
+            <div className="avatar">
+                  <img
+                    className="avatar-chat"
+                    src={`data:image/png;base64,${userData.image}`}
+                    alt={userData.name}
+                  />
+                </div>
+                <div className="user-info-personal">
+                  <h3>
+                    {userData.nombre_cliente} {userData.first_name}{" "}
+                    {userData.last_name}
+                  </h3>
+                </div>
+            </div>
+            <div className="chatListSearchBar">
                     <i className="fas fa-search"></i>
                     <input
                         className="chatListSearchInput"
@@ -123,13 +141,12 @@ const ChatList = ({ onSelectUser }) => {
                         onChange={handleSearchChange}
                     />
                 </div>
-            </div>
 
             <div className="user-chatList">
-                {friendsData.map((friend) => (
+                {filteredFriends.map((friend) => (
                     <button
                         key={friend.id_user}
-                        className="chatListItem"
+                        className={`chatListItem ${selectedUser === friend ? "selected" : ""}`} // Aplica la clase "selected" si es el usuario seleccionado
                         onClick={() => handleUserClick(friend)}
                     >
                         <img className="chatListAvatarLarge" src={`data:image/png;base64,${friend.image}`} alt="" />
@@ -145,7 +162,7 @@ const ChatList = ({ onSelectUser }) => {
                 {filteredUsers.map((user) => (
                     <button
                         key={user.rent_id}
-                        className="chatListItem"
+                        className={`chatListItem ${selectedUser === user ? "selected" : ""}`} // Aplica la clase "selected" si es el usuario seleccionado
                         onClick={() => handleUserClick(user)}
                     >
                         <img className="chatListAvatarLarge" src={`data:image/png;base64,${user.image}`} alt="" />
@@ -155,6 +172,7 @@ const ChatList = ({ onSelectUser }) => {
                                 {truncateMessage(user.description, 45)}
                             </p>
                         </div>
+                        <div className="last-time"><span className="last-message">Hace 5 min</span></div>
                     </button>
                 ))}
             </div>
