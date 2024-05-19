@@ -8,6 +8,8 @@ import { ButtonSecondary } from "../../components/Buttons/buttonSecondary";
 import { ButtonPersonal } from "../../components/Buttons/buttonPersonal";
 import { getFriendID2, getLikes } from "../../api/register.api";
 import { calculateAge } from "../listFriend/ListFriends";
+import CommentSection from './CommentSection';
+
 
 const ProfileFriend = () => {
   const { id } = useParams();
@@ -111,16 +113,20 @@ const ProfileFriend = () => {
               <p>No tiene intereses</p>
             )}
           </div>
+          <h3>Comentarios:</h3>
+          <div className="comment-section-container">
+            <CommentSection />
+          </div>
           <div className="btn-back-reserve">
             <NavLink to="/listFriend">
               <ButtonPrimary label={"Atras"} />
             </NavLink>
           </div>
-
         </div>
       </div>
     </div>
+    
   );
-};
+};  
 
 export default ProfileFriend;

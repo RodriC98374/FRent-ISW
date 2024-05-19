@@ -19,7 +19,7 @@ import AddAvailableHours from './components/Forms/AddAvailableHours/AddAvailable
 import ProfileFriend from './pages/profile/profileFriend';
 import ProfileUser from './pages/profile/ProfileUser';
 import { getUser } from './pages/Login/LoginForm';
-
+import MisAmigos from './pages/rentalSection/MisAmigos'; 
 import { UserContext } from './pages/Login/UserProvider';
 import Chat from './components/Chat/Chat';
 
@@ -83,7 +83,7 @@ function App() {
               <Route path="/calendarReservas/:id" element={<MyCalendar />} />
               <Route path="/listFriend" element={<ListFriend />} />
               <Route path="/chat2" element={<Chat />} />
-
+              <Route path="/historialRentas" element={<MisAmigos />}/>
             </Route>
 
             <Route
