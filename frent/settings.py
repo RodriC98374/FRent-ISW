@@ -40,14 +40,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'channels',
+    
     'rest_framework',
-    'users',
-    'rent',
-    'notificaciones_api',
     'coreapi',
     'djoser',
     'rest_framework.authtoken',
+    'users',
     'notificacionesInterno',
+    'rent',
+    'notificaciones_api',
+    'chat',
 ]
 
 MIDDLEWARE = [
@@ -81,7 +84,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'frent.wsgi.application'
+ASGI_APPLICATION = 'frent.asgi.application'
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -89,9 +98,11 @@ WSGI_APPLICATION = 'frent.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'frent',
-        'USER': 'postgres',
-        'PASSWORD': '12345',
+        'NAME': 'frent_back',
+        #(example, fill the user bellow) 'USER': 'postgres',
+        'USER': 'gaspar',
+        #(example, fill the passwprd bellow) 'PASSWORD': 'passwordRANDOM123',
+        'PASSWORD': 'armando1gaspar',
         'HOST': 'localhost',
         'OPTIONS': {
             'client_encoding': 'UTF8',
@@ -107,7 +118,7 @@ DATABASES = {
 #         'PASSWORD': 'ZjaRIGkTybRuZyXpEIGexxCbxajQozoa',
 #         'HOST': 'viaduct.proxy.rlwy.net',
 #         'PORT':'45613',
-#     }
+#     } 
 # }
 
 # Password validation
@@ -162,6 +173,8 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
+    'http://localhost:9000',
+    'http://localhost:8000',
 ]
 
 CORS_ALLOW_CREDENTIALS = True

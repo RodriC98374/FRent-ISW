@@ -9,13 +9,12 @@ from .serializers import OutFitSerializer, EventSerializer, RentSerializer, Rent
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import action
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
 from django.utils.timezone import now
 from rest_framework.views import APIView
 from rest_framework import status
 from django.utils.timezone import localtime
-from django.db.models import Q
-from datetime import date, datetime, timedelta, time
+
 
 class OutFitViewSet(viewsets.ModelViewSet):
     queryset = OutFit.objects.all()
@@ -62,7 +61,8 @@ class RentViewSet(viewsets.ModelViewSet):
         rents_serializer = RentSerializer(rents, many=True)
         return Response(rents_serializer.data)
 
-
+        
+  
 class RentPriceViewSet(viewsets.ModelViewSet):
     queryset = Rent.objects.all().order_by('-create')  
     serializer_class = RentPriceSerializer
@@ -113,16 +113,22 @@ class RentDetailView(APIView):
         rents = Rent.objects.filter(friend__id_user=friend_id).select_related('event', 'outfit')
         rent_details = []
         for rent in rents:
-            if rent.status=='pending':
-              nvar='Pendiente'
-            elif rent.status=='accepted':
-              nvar='Aceptado'
+            if rent.outfit is not None and rent.event is not None:
+                type_outfit = rent.outfit.type_outfit
+                type_event = rent.event.type_event
             else:
-              nvar='Rechazado'
+                type_outfit = 'No especificado'  
+                type_event = 'No especificado'  
             
-            outfit_type = rent.outfit.type_outfit if rent.outfit else 'No especificado'
-            event_type = rent.event.type_event if rent.event else 'No especificado'
-            
+            if rent.status == 'pending':
+                status_str = 'Pendiente'
+            elif rent.status == 'accepted':
+                status_str = 'Aceptado'
+            else:
+                status_str = 'Rechazado'
+
+            price = rent.duration * float(rent.friend.price)
+
             rent_details.append({
                 'rent_id': rent.id,
                 'friend_id': rent.friend.id_user,
@@ -134,19 +140,18 @@ class RentDetailView(APIView):
                 'location': rent.location,
                 'description': rent.description,
                 'created': self.format_datetime_with_colon(localtime(rent.create)),
-                'type_outfit': outfit_type,
-                'type_event': event_type,
-                #'status':rent.status,
-                'status':nvar,
-                'price': rent.duration*(float(rent.friend.price)),
-                'image': rent.client.image,
+                'type_outfit': type_outfit,
+                'type_event': type_event,
+                'status': status_str,
+                'price': price,
+                'image': rent.client.image
             })
-        
+                
         if not rent_details:
             return Response({'mensaje': 'No hay alquileres encontrados para este amigo.'})
             
         return Response(rent_details)
-      
+            
     def format_datetime_with_colon(self, datetime_obj):
         datetime_str = datetime_obj.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
         return datetime_str[:-2] + ':' + datetime_str[-2:]

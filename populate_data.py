@@ -9,7 +9,6 @@ django.setup()
 from users.models import Like
 from rent.models import OutFit, Event
 
-
 def populate_data():
     gustos = [
         'Jugar videojuegos',
@@ -44,7 +43,7 @@ def populate_data():
         instancia_gusto = Like(name=gusto)
         instancia_gusto.save()
         
-        
+
     outfits = [
         'Casual',
         'Formal',
@@ -99,3 +98,4 @@ if __name__ == '__main__':
     print("Poblando la base de datos con datos iniciales...")
     populate_data()
     print("¡Datos iniciales poblados exitosamente!")
+    
