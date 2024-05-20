@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { get_acepted_friends, save_comment } from "../../api/register.api";
+import { get_acepted_friends, save_comment, likes_friend_post } from "../../api/register.api";
 import { getUser } from "../../pages/Login/LoginForm";
 import './MisAmigos.css';
 import { Link } from "react-router-dom";
@@ -61,11 +61,16 @@ const MisAmigos = () => {
     }
   };
 
-  const toggleLike = (friendId) => {
-    setLikes((prevLikes) => ({
-      ...prevLikes,
-      [friendId]: !prevLikes[friendId],
-    }));
+  const toggleLikeHandler = async (friendId) => {
+    try {
+      await likes_friend_post(friendId, !likes[friendId]);
+      setLikes((prevLikes) => ({
+        ...prevLikes,
+        [friendId]: !prevLikes[friendId],
+      }));
+    } catch (error) {
+      console.error('Error toggling like:', error);
+    }
   };
 
   return (
@@ -87,7 +92,7 @@ const MisAmigos = () => {
               <span>Alquiler hace {amigo.rent_done}</span>
               <div className="action-buttons">
                 <button onClick={() => showForm(amigo)} className="comment-button">Dejar Comentario</button>
-                <button onClick={() => toggleLike(amigo.friend_id)} className="like-button">
+                <button onClick={() => toggleLikeHandler(amigo.friend_id)} className="like-button">
                   {likes[amigo.friend_id] ? <FaHeart color="black" /> : <FaRegHeart />}
                 </button>
               </div>
