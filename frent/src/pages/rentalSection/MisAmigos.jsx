@@ -3,6 +3,7 @@ import { get_acepted_friends } from "../../api/register.api";
 import { save_comment } from "../../api/register.api";
 import { getUser } from "../../pages/Login/LoginForm";
 import './MisAmigos.css';
+import { Link } from "react-router-dom";
 
 const MisAmigos = () => {
   const [amigos, setAmigos] = useState([]);
@@ -64,7 +65,7 @@ const MisAmigos = () => {
     <div className="mis-amigos">
       <h1>Mi Historial de Amigos</h1>
       {amigos.length === 0 ? (
-        <p>Aun no tienes amigos en Frent ve y Alquila uno</p>
+        <p>Aun no tienes amigos en Frent o no tienes ningun Alquiler concluido, ve y <Link to="/listfriend" className="link-list-friend">Alquila</Link> uno</p>
       ) : (
         amigos.map((amigo) => (
           <div key={amigo.friend_id} className="amigo-card">
