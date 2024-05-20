@@ -1,4 +1,4 @@
-  import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
   import { NavLink, useParams, Navigate } from "react-router-dom"; // Importar useParams
   import { ButtonPrimary } from "../../Buttons/buttonPrimary";
   import { ButtonSecondary } from "../../Buttons/buttonSecondary";
@@ -318,7 +318,6 @@
                   register={register("location", {
                     required: {
                       value: true,
-                      message: "Este campo es obligatorio.",
                       message: "Este campo es obligatorio.",
                     },
                     maxLength: {

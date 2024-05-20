@@ -1,10 +1,9 @@
-import React, { useState, useEffect , useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Chat.css";
 import ChatList from "./chatList/ChatList";
 import { IoIosArrowBack } from "react-icons/io";
 import { getUser } from "../../pages/Login/LoginForm";
 import { getMessagesUser } from "../../api/register.api";
-import { calculateTimePassed } from "../viewReserve/ViewReserve";
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -20,7 +19,6 @@ const Chat = () => {
   const roomName = dataUser.user_type;
 
   const chatEndRef = useRef(null);
-
 
   useEffect(() => {
     if (dataUser && selectedUser) fetchData();
@@ -56,7 +54,7 @@ const Chat = () => {
 
   useEffect(() => {
     const connectWebSocket = () => {
-      if(socket) socket.close();
+      if (socket) socket.close();
       if (selectedUser) {
         const idOther =
           dataUser.user_type === "Amigo"
@@ -94,8 +92,7 @@ const Chat = () => {
           console.log("Mensaje recibido desde el servidor:", message);
 
           console.log("el mensaje es: ", message);
-           setMessageHistory2(message);
-
+          setMessageHistory2(message);
 
           setMessages((prevMessages) => [
             ...prevMessages,
@@ -136,7 +133,6 @@ const Chat = () => {
       chatEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages2]);
-  
 
   const handleUserSelect = (user) => {
     setSelectedUser(user);
@@ -213,7 +209,7 @@ const Chat = () => {
 
   const formatMessageTime = (isoString) => {
     const date = new Date(isoString);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
 
   const formatDateLabel = (isoString) => {
@@ -222,14 +218,14 @@ const Chat = () => {
     const yesterday = new Date(today);
     yesterday.setDate(today.getDate() - 1);
 
-    const options = { weekday: 'short', day: '2-digit', month: '2-digit' };
+    const options = { weekday: "short", day: "2-digit", month: "2-digit" };
 
     if (date.toDateString() === today.toDateString()) {
-      return '--Hoy--';
+      return "--Hoy--";
     } else if (date.toDateString() === yesterday.toDateString()) {
-      return '--Ayer--';
+      return "--Ayer--";
     } else {
-      return date.toLocaleDateString('es-ES', options);
+      return date.toLocaleDateString("es-ES", options);
     }
   };
 
@@ -273,27 +269,29 @@ const Chat = () => {
 
             <div className="chat-body">
               <div className="chat-messages">
-              {Object.keys(groupedMessages).map((dateLabel, index) => (
-                <div className="chat-messages" key={index}>
-                <span className="date-chat">{dateLabel}</span>
-                  {groupedMessages[dateLabel].map((message, index) => (
-                    <div
-                      key={index}
-                      className={`message ${
-                        message.sender === dataUser.user_id
-                          ? "outgoing"
-                          : "incoming"
-                      }`}
-                    >
-                      <div className="message-content">
-                        <div className="message-text">{message.message}</div>
-                        <span className="message-time">{formatMessageTime(message.date)}</span>
+                {Object.keys(groupedMessages).map((dateLabel, index) => (
+                  <div className="chat-messages" key={index}>
+                    <span className="date-chat">{dateLabel}</span>
+                    {groupedMessages[dateLabel].map((message, index) => (
+                      <div
+                        key={index}
+                        className={`message ${
+                          message.sender === dataUser.user_id
+                            ? "outgoing"
+                            : "incoming"
+                        }`}
+                      >
+                        <div className="message-content">
+                          <div className="message-text">{message.message}</div>
+                          <span className="message-time">
+                            {formatMessageTime(message.date)}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                  <div ref={chatEndRef} />
-                </div>
-              ))}
+                    ))}
+                    <div ref={chatEndRef} />
+                  </div>
+                ))}
               </div>
             </div>
 

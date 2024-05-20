@@ -77,7 +77,7 @@ export default function NavBar() {
         </NavLink>
         <ul className="navbar-options-list">
           <li onClick={closeModal}>
-            <NavLink className="navbar-option" to="/">
+            <NavLink className="navbar-option" to="/home">
               Inicio
             </NavLink>
           </li>
@@ -88,6 +88,15 @@ export default function NavBar() {
               </NavLink>
             </li>
           )}
+
+          {userData && userData.user_type === "Cliente" && (
+            <li onClick={closeModal}>
+              <NavLink className="navbar-option" to="historialRentas">
+                Historial
+              </NavLink>
+            </li>
+          )}
+
           {!userData && (
             <li
               onClick={() => {
@@ -137,7 +146,7 @@ export default function NavBar() {
                   <span>{userData.first_name}</span>
                   <span className="user">{userData.user_type}</span>
                 </div>
-                <NavLink className="navbar-option" to="/profileUser">
+                <NavLink className="navbar-option" to={`/profileUser${location.pathname}`}>
                   <FaUser className="icon-sesion" />
                 </NavLink>
               </div>
@@ -149,6 +158,12 @@ export default function NavBar() {
               <NavLink className="navbar-option" to="/chat2">
                 <BiSolidMessageDetail />
               </NavLink>
+            </li>
+          )}
+
+          {userData && userData.user_type === "Amigo" && (
+            <li>
+              <NavLink className="navbar-option" to="/chat"><BiSolidMessageDetail /></NavLink>
             </li>
           )}
           {userData && userData.user_type === "Cliente" && (
