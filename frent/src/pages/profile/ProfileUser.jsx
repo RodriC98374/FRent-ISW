@@ -41,6 +41,11 @@ export default function ProfileUser() {
 
   const definePathBack = () => {
     let newPath;
+    
+    if(!path_back){
+      return '/';
+    }
+    
     if(id){
       newPath = `/${path_back}/${id}`
       return newPath;

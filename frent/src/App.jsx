@@ -59,7 +59,7 @@ function App() {
           <NavBar user={userData2} />
           <Routes>
             <Route
-              path="/home"
+              path="/"
               element={
                 userData2 && userData2.user_type === "Cliente" ? (
                   <HomeClient />
@@ -128,6 +128,7 @@ function App() {
                 />
               }
             >
+              <Route path="/profileUser/" element={<ProfileUser />} />
               <Route path="/profileUser/:path_back" element={<ProfileUser />} />
               <Route path="/profileUser/:path_back/:id" element={<ProfileUser />} />
             </Route>

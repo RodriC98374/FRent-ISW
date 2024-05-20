@@ -77,7 +77,7 @@ export default function NavBar() {
         </NavLink>
         <ul className="navbar-options-list">
           <li onClick={closeModal}>
-            <NavLink className="navbar-option" to="/home">
+            <NavLink className="navbar-option" to="/">
               Inicio
             </NavLink>
           </li>
