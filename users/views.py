@@ -12,6 +12,8 @@ from rest_framework.response import Response
 from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer
 from .models import Availability, User, Client, Friend, Like, Photo, User_like
 from .serializers import AvailabilitySerializer, GustosSerializer, UserSerializer, ClientSerializer, FriendSerializer, LikeSerializer, PhotoSerializer, UserLikeSerializer, ProfileImageSerializer
+from rest_framework.decorators import api_view
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -245,3 +247,21 @@ class FriendDetailView(APIView):
             return Response(friend_data)
         else:
             return Response(gustos_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+
+
+@api_view(['POST'])
+def likes_friend(request, pk):
+    try:
+        friend = Friend.objects.get(id_user=pk)
+        if request.data.get('like'):
+            friend.like_count += 1
+        else:
+            friend.like_count -= 1
+            if friend.like_count < 0:
+                friend.like_count = 0
+        friend.save()
+        return Response({'like_count': friend.like_count})
+    except Friend.DoesNotExist:
+        return Response(status=404)
+    

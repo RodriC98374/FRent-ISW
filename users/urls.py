@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import UserViewSet, ClientViewSet, FriendViewSet, TasteViewSet, PhotoViewSet, UserLikeViewSet, AvailabilityViewSet
-from .views import CustomLoginView, ProfileImageViewSet,FriendDetailView
+from .views import CustomLoginView, ProfileImageViewSet,FriendDetailView, likes_friend
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -19,5 +19,6 @@ urlpatterns = [
         'get': 'list',
     })),
     path('friends/detail/<int:pk>/', FriendDetailView.as_view(), name='friend-detail'),
+    path('likes_friend/<int:pk>/', likes_friend, name='likes_friend'),
 
 ]

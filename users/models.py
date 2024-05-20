@@ -63,7 +63,7 @@ class Client(User):
 
 class Friend(User):
     price = models.DecimalField(max_digits=5, decimal_places=2)
-
+    like_count = models.PositiveIntegerField(default=0)
 
 class Like(models.Model):
     name = models.CharField(max_length=51)
