@@ -2,6 +2,9 @@ import "./ProfileUser.css";
 import { getUser } from "../Login/LoginForm";
 import { useEffect, useState } from "react";
 import { getAvailabilityFriend } from "../../api/register.api";
+import { ButtonPrimary } from "../../components/Buttons/buttonPrimary";
+import CommentSection from './CommentSection';
+
 
 export default function ProfileUser() {
   const userData = getUser();
@@ -159,6 +162,8 @@ export default function ProfileUser() {
           </div>
         </div>
       )}
-    </>
+    
+  </>
+
   );
 }

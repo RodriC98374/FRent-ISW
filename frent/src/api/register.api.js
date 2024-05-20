@@ -81,6 +81,11 @@ export const obtenerHorariosReservas = (id) => registersApi.get(`/rents/friend-c
 
 export const getPendingRent = (id) => registersApi.get(`/rents/rent_detail/${id}/`)
 
+export const get_acepted_friends = (id) => registersApi.get(`/rents/accepted_rents/${id}/`)
+
+export const save_comment = (commentData) => registersApi.post('rents/save_comment/', commentData);
+
+export const get_friend_comments = (friendId) => registersApi.get(`rents/get_friend_comments/${friendId}/`);
 export const getMessagesUser = (data) => registersApi.post(`/chat/api/v1/canal/get_chats_user/`, data)
 
 /* export const getTime = (id) => registersApi.get(`/rents/time_elapsed/${id}/`) */
