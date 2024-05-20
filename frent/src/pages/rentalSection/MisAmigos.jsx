@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { get_acepted_friends } from "../../api/register.api";
-import { save_comment } from "../../api/register.api";
+import { get_acepted_friends, save_comment, likes_friend_post } from "../../api/register.api";
 import { getUser } from "../../pages/Login/LoginForm";
 import './MisAmigos.css';
 import { Link } from "react-router-dom";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 const MisAmigos = () => {
   const [amigos, setAmigos] = useState([]);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [selectedAmigo, setSelectedAmigo] = useState(null);
   const [comment, setComment] = useState('');
+  const [likes, setLikes] = useState({});
   const dataUser = getUser();
   
   const getImage = (imageFriend) => {
@@ -24,7 +25,6 @@ const MisAmigos = () => {
       try {
         const response = await get_acepted_friends(dataUser.user_id);
         setAmigos(response.data);
-        console.log(response);
       } catch (error) {
         console.error('Error fetching friends:', error);
       }
@@ -61,6 +61,18 @@ const MisAmigos = () => {
     }
   };
 
+  const toggleLikeHandler = async (friendId) => {
+    try {
+      await likes_friend_post(friendId, !likes[friendId]);
+      setLikes((prevLikes) => ({
+        ...prevLikes,
+        [friendId]: !prevLikes[friendId],
+      }));
+    } catch (error) {
+      console.error('Error toggling like:', error);
+    }
+  };
+
   return (
     <div className="mis-amigos">
       <h1>Mi Historial de Amigos</h1>
@@ -78,7 +90,12 @@ const MisAmigos = () => {
             </div>
             <div className="amigo-action">
               <span>Alquiler hace {amigo.rent_done}</span>
-              <button onClick={() => showForm(amigo)}>Dejar Comentario</button>
+              <div className="action-buttons">
+                <button onClick={() => showForm(amigo)} className="comment-button">Dejar Comentario</button>
+                <button onClick={() => toggleLikeHandler(amigo.friend_id)} className="like-button">
+                  {likes[amigo.friend_id] ? <FaHeart color="black" /> : <FaRegHeart />}
+                </button>
+              </div>
             </div>
           </div>
         ))
