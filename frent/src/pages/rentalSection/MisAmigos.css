@@ -2,15 +2,15 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centra los elementos horizontalmente */
+  align-items: center; 
 }
 
 .mis-amigos h1 {
-  font-size: 1.5em;
-  color: black;
+  font-size: 2em;
+  color: #000000;
   margin-bottom: 20px;
-  width: 60%; /* Ajusta el ancho para que coincida con las tarjetas */
-  text-align: left; /* Alinea el texto a la izquierda */
+  width: 60%; 
+  text-align: left; 
 }
 
 .amigo-card {
@@ -30,6 +30,11 @@
   display: flex;
   align-items: center;
 }
+
+.link-list-friend{
+  color: #007bff;
+}
+
 
 .amigo-info img {
   width: 70px; 
@@ -81,7 +86,6 @@
   background-color: var(--primary-color);
 }
 
-/* Estilos para el formulario de comentarios */
 .comment-form-overlay {
   position: fixed;
   top: 0;
@@ -92,7 +96,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999; /* Asegura que el formulario esté por encima de otros elementos */
+  z-index: 999; 
 }
 
 .comment-form {
@@ -102,7 +106,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 80%;
   max-width: 500px;
-  position: relative; /* Asegura que el formulario no se desplace con la página */
+  position: relative; 
 }
 
 .comment-form h2 {
@@ -111,7 +115,7 @@
 
 .comment-form textarea {
   width: 96%;
-  height: 100px; /* Altura fija */
+  height: 100px;
   margin-bottom: 10px;
   padding: 10px;
   border: 1px solid #ccc;

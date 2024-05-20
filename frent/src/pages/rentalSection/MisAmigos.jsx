@@ -3,6 +3,7 @@ import { get_acepted_friends } from "../../api/register.api";
 import { save_comment } from "../../api/register.api";
 import { getUser } from "../../pages/Login/LoginForm";
 import './MisAmigos.css';
+import { Link } from "react-router-dom";
 
 const MisAmigos = () => {
   const [amigos, setAmigos] = useState([]);
@@ -10,25 +11,27 @@ const MisAmigos = () => {
   const [selectedAmigo, setSelectedAmigo] = useState(null);
   const [comment, setComment] = useState('');
   const dataUser = getUser();
+  
   const getImage = (imageFriend) => {
     if (imageFriend) {
       return `data:image/png;base64,${imageFriend}`;
     }
     //return staticImage;
   };
+  
   useEffect(() => {
     const fetchAmigos = async () => {
       try {
         const response = await get_acepted_friends(dataUser.user_id);
         setAmigos(response.data);
-        console.log(response)
+        console.log(response);
       } catch (error) {
         console.error('Error fetching friends:', error);
       }
     };
 
     fetchAmigos();
-  }, [dataUser.id_user]);
+  }, [dataUser.user_id]);
 
   const showForm = (amigo) => {
     setSelectedAmigo(amigo);
@@ -61,21 +64,25 @@ const MisAmigos = () => {
   return (
     <div className="mis-amigos">
       <h1>Mi Historial de Amigos</h1>
-      {amigos.map((amigo) => (
-        <div key={amigo.friend_id} className="amigo-card">
-          <div className="amigo-info">
-            <img src={getImage(amigo.friend_photo)} alt="" />
-            <div className="amigo-details">
-              <strong>{amigo.friend_full_name}</strong>
-              <p>{amigo.friend_description}</p>
+      {amigos.length === 0 ? (
+        <p>Aun no tienes amigos en Frent o no tienes ningun Alquiler concluido, ve y <Link to="/listfriend" className="link-list-friend">Alquila</Link> uno</p>
+      ) : (
+        amigos.map((amigo) => (
+          <div key={amigo.friend_id} className="amigo-card">
+            <div className="amigo-info">
+              <img src={getImage(amigo.friend_photo)} alt="" />
+              <div className="amigo-details">
+                <strong>{amigo.friend_full_name}</strong>
+                <p>{amigo.friend_description}</p>
+              </div>
+            </div>
+            <div className="amigo-action">
+              <span>Alquiler hace {amigo.rent_done}</span>
+              <button onClick={() => showForm(amigo)}>Dejar Comentario</button>
             </div>
           </div>
-          <div className="amigo-action">
-            <span>Alquiler hace {amigo.rent_done}</span>
-            <button onClick={() => showForm(amigo)}>Dejar Comentario</button>
-          </div>
-        </div>
-      ))}
+        ))
+      )}
       {isFormVisible && (
         <div className="comment-form-overlay">
           <div className="comment-form">
