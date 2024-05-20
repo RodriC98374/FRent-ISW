@@ -19,6 +19,9 @@ const Chat = () => {
   const [bandera, setBandera] = useState(1);
   const [lastMessage, setLastMessage] = useState(null);
   const [timeSinceLastMessage, setTimeSinceLastMessage] = useState("");
+  const [messageLength, setMessageLength] = useState(0); 
+  const [isMessageEmpty, setIsMessageEmpty] = useState(true);
+
 
   const roomName = dataUser.user_type;
 
@@ -200,6 +203,7 @@ const Chat = () => {
 
         setMessages([...messages, newMessage]);
         setCurrentMessage("");
+        setMessageLength(0);
 
         let senderId, recipientId, senderName, recipientName;
 
@@ -270,17 +274,20 @@ const Chat = () => {
     return acc;
   }, {});
 
-  const MAX_MESSAGE_LENGTH = 150; // Definir la longitud máxima del mensaje
+  const MAX_MESSAGE_LENGTH = 150; 
 
-const [messageLength, setMessageLength] = useState(0); // Estado para almacenar la longitud actual del mensaje
 
 const handleChangeMessage = (event) => {
   const message = event.target.value;
   if (message.length <= MAX_MESSAGE_LENGTH) {
-    setCurrentMessage(message); // Actualizar el estado del mensaje actual
-    setMessageLength(message.length); // Actualizar la longitud del mensaje
+    setCurrentMessage(message); 
+    setMessageLength(message.length); 
   }
 };
+
+useEffect(() => {
+  setIsMessageEmpty(currentMessage.trim() === "");
+}, [currentMessage]);
 
 
   return (
@@ -343,13 +350,13 @@ const handleChangeMessage = (event) => {
                   type="text"
                   value={currentMessage}
                   onChange={handleChangeMessage}
-                  placeholder="Escribir un mensaje..."
+                  placeholder="Escribe tu mensaje aquí..."
                   rows={4}
                 />
                 <div className="char-counter-container">
                   <span className="char-counter">{messageLength}/{MAX_MESSAGE_LENGTH}</span>
                 </div>
-                <button type="submit">
+                <button className={isMessageEmpty ? "submit-button disabled" : "submit-button"} type="submit" disabled={isMessageEmpty}>
                   <i className="fa fa-paper-plane"></i>
                 </button>
               </form>

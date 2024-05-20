@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./Navbar.css";
+import { Link } from "react-router-dom";
 
 function NotificationModal({
   isVisible,
@@ -106,6 +107,7 @@ function NotificationModal({
               <div className="card-text">
                 <p className="name-card">{notification.friend_name}</p>
                 <p>{notification.message}</p>
+                <Link to="chat2">Comienza a chatear</Link>
                 <div className="footer_notification">
                   <p className="timePassed">
                     Hace {calculateTimePassed(notification.created)}

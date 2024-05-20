@@ -9,7 +9,7 @@ import {
 } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { NavLink } from "react-router-dom";
-
+import { BiSolidMessageDetail } from "react-icons/bi";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { UserContext } from "../../pages/Login/UserProvider";
 import swal from "sweetalert2";
@@ -525,6 +525,13 @@ export default function ViewReserve() {
                         </NavLink>
                       </div>
                     </div>
+                    {rent.status === "Aceptado" && (
+                          <NavLink className="" to={`/chat`}>
+                            <button className="details-button">
+                            <BiSolidMessageDetail className="icon"/>¿Quieres ir a chatear?
+                            </button>
+                          </NavLink>
+                        )}
                   </div>
                 </div>
                 <hr></hr>
