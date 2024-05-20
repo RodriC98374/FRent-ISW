@@ -86,6 +86,9 @@ export const get_acepted_friends = (id) => registersApi.get(`/rents/accepted_ren
 export const save_comment = (commentData) => registersApi.post('rents/save_comment/', commentData);
 
 export const get_friend_comments = (friendId) => registersApi.get(`rents/get_friend_comments/${friendId}/`);
+
 export const getMessagesUser = (data) => registersApi.post(`/chat/api/v1/canal/get_chats_user/`, data)
+
+export const likes_friend_post = (friendId, like) => registersApi.post(`/users/likes_friend/${friendId}/`, { like });
 
 /* export const getTime = (id) => registersApi.get(`/rents/time_elapsed/${id}/`) */
