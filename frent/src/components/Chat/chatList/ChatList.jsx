@@ -4,6 +4,7 @@ import {
     getPendingRent,
     getRent,
     getFriendID,
+    getMessagesLast
 } from "../../../api/register.api";
 import { getUser } from "../../../pages/Login/LoginForm";
 import { calculateTimePassed } from "../../viewReserve/ViewReserve";
@@ -14,9 +15,40 @@ const ChatList = ({ onSelectUser }) => {
     const [selectedUser, setSelectedUser] = useState(null);
     const userData = getUser()
     const [searchText, setSearchText] = useState('');
+    const [message2, setMessages2] = useState([]);
 
-
-
+    const fetchData2 = async () => {
+        const idOther = userData.user_type === "Amigo" ? usersClient.client_id : friendsData.id_user;
+        let informacion = {};
+        if (userData.user_type === "Cliente") {
+            informacion = {
+                sender: userData.user_id,
+                receiver: idOther,
+            };
+        } else {
+            informacion = {
+                sender: idOther,
+                receiver: userData.user_id,
+            };
+        }
+        try {
+            const res = await getMessagesLast(informacion);
+            console.log("el mensaje puede ser", res.data);
+            setMessages2(res.data);
+        } catch (error) {
+            console.error("Error al obtener los mensajes del usuario:", error);
+        }
+    };
+    
+    useEffect(() => {
+        if (userData.user_type === "Amigo") {
+            fetchData();
+            fetchData2();
+        } else {
+            obtenerDatosAmigosAceptados();
+        }
+    }, []);
+    
     useEffect(() => {
         if (userData.user_type === "Amigo") {
             fetchData();
