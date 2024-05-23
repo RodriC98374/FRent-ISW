@@ -72,7 +72,6 @@
   color: white;
   padding: 8px 11px;
   border-radius: 10px;
-  margin-top: 7px;
   margin: 5px;
   width: auto;
   display: inline-block;
@@ -96,11 +95,10 @@
 
 .btn-back-alquilar {
   display: flex;
-  width: 102% auto;
   justify-content: flex-end;
   margin-top: 15px;
-  width: 90%;
-
+  width: 140%;
+  margin-left: -64%;
 }
 .user-center-b {
   display: flex;
@@ -112,16 +110,19 @@
 
 .verified-icon {
   margin-right: 0.5rem;
+  margin-bottom: -0.1rem;
 }
 
 .location-container {
   display: flex;
   align-items: center;
   justify-content: start;
+  padding-bottom: -100%;
 }
 
 .location-icon {
   margin-right: 0.5rem;
+  margin-bottom: -0.1rem;
 }
 /* .comment-section-container {
   width: 80%;
