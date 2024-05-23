@@ -92,7 +92,7 @@ const ProfileFriend = () => {
               <div className="btn-back-alquilar">
                 <ButtonPersonal label={"Alquilar"} />
               </div>
-            </NavLink>
+            </NavLink>  
           </div>
         </div>
         <div className="user-description">
@@ -106,9 +106,9 @@ const ProfileFriend = () => {
                   <svg
                     className="tag-icon"
                     xmlns="http://www.w3.org/2000/svg"
-                    width="1em"
-                    height="1em"
-                    viewBox="0 0 24 24"
+                    width="0.8em"
+                    height="0.8em"
+                    viewBox="0 0 20 20"
                   >
                     <path
                       fill="white"
@@ -128,7 +128,7 @@ const ProfileFriend = () => {
           </div>
           <div className="btn-back-reserve">
             <NavLink to="/listFriend">
-              <ButtonPrimary label={"Atras"} />
+              <ButtonPrimary label={"Atrás"} />
             </NavLink>
           </div>
         </div>
