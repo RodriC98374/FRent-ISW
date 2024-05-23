@@ -2,7 +2,7 @@
 
 .chatListContainer {
     flex: 1;
-    width: 40%;
+    width: 900px;
     border-left: 1px solid #000;
     border-radius: 8px 0px 0px 8px;
     overflow: hidden;
