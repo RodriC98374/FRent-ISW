@@ -38,8 +38,6 @@ export default function NavBar() {
 
   async function loadNotifications() {
     try {
-      console.log("la id esss", userData.user_id);
-
       const res = await get_notifications_user(userData.user_id);
       setNotifications(res.data);
     } catch (error) {

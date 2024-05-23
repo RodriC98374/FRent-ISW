@@ -2,7 +2,7 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center; 
+  align-items: center;
 }
 
 .mis-amigos h1 {
@@ -31,16 +31,15 @@
   align-items: center;
 }
 
-.link-list-friend{
+.link-list-friend {
   color: #007bff;
 }
 
-
 .amigo-info img {
-  width: 70px; 
-  height: 70px; 
-  border-radius: 50%; 
-  margin-right: 30px; 
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  margin-right: 30px;
 }
 
 .amigo-details {
@@ -72,18 +71,16 @@
   margin-bottom: 10px;
 }
 
-.amigo-action button {
-  padding: 8px 16px;
-  background-color: var(--secondary-color);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.amigo-action .action-buttons {
+  display: flex;
+  align-items: center;
 }
 
-.amigo-action button:hover {
-  background-color: var(--primary-color);
+.amigo-action .like-button {
+  background: none; /* Eliminar el fondo */
+  border: none;
+  cursor: pointer;
+  font-size: 1.5em;
 }
 
 .comment-form-overlay {
@@ -96,7 +93,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999; 
+  z-index: 999;
 }
 
 .comment-form {
@@ -106,7 +103,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 80%;
   max-width: 500px;
-  position: relative; 
+  position: relative;
 }
 
 .comment-form h2 {

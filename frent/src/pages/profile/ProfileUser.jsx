@@ -15,14 +15,12 @@ export default function ProfileUser() {
     async function fetchData() {
       try {
         const resAvailability = await getAvailabilityFriend(userData.user_id);
-        console.log(resAvailability.data);
         setAvailability(
           Array.isArray(resAvailability.data) ? resAvailability.data : []
         );
       } catch (error) {
         console.log("Error fetching data:", error);
       }
-      console.log(path_back);
     }
     fetchData();
   }, [userData.user_id]);
