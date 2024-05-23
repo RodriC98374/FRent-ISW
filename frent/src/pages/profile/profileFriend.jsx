@@ -132,7 +132,7 @@ const ProfileFriend = () => {
           </div>
           <div className="btn-back-reserve">
             <NavLink to="/listFriend">
-              <ButtonPrimary label={"Atras"} />
+              <ButtonPrimary label={"Atrás"} />
             </NavLink>
           </div>
         </div>
