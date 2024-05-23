@@ -110,16 +110,19 @@
 
 .verified-icon {
   margin-right: 0.5rem;
+  margin-bottom: -0.1rem;
 }
 
 .location-container {
   display: flex;
   align-items: center;
   justify-content: start;
+  padding-bottom: -100%;
 }
 
 .location-icon {
   margin-right: 0.5rem;
+  margin-bottom: -0.1rem;
 }
 /* .comment-section-container {
   width: 80%;
