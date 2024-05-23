@@ -97,6 +97,14 @@ export default function NavBar() {
             </li>
           )}
 
+          {userData && userData.user_type === "Cliente" && (
+            <li onClick={closeModal}>
+              <NavLink className="navbar-option" to="rankingFriends">
+                Ranking
+              </NavLink>
+            </li>
+          )}
+
           {!userData && (
             <li
               onClick={() => {
