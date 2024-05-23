@@ -96,11 +96,10 @@
 
 .btn-back-alquilar {
   display: flex;
-  width: 102% auto;
   justify-content: flex-end;
   margin-top: 15px;
-  width: 90%;
-
+  width: 140%;
+  margin-left: -64%;
 }
 .user-center-b {
   display: flex;

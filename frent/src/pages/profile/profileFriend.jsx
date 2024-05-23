@@ -96,7 +96,7 @@ const ProfileFriend = () => {
               <div className="btn-back-alquilar">
                 <ButtonPersonal label={"Alquilar"} />
               </div>
-            </NavLink>
+            </NavLink>  
           </div>
         </div>
         <div className="user-description">
