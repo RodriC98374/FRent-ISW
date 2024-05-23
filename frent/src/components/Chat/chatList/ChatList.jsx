@@ -1,4 +1,5 @@
 import "./chatList.css";
+import { AiOutlineClose } from "react-icons/ai";
 import { useState, useEffect } from "react";
 import {
     getPendingRent,
@@ -14,7 +15,9 @@ const ChatList = ({ onSelectUser }) => {
     const [selectedUser, setSelectedUser] = useState(null);
     const userData = getUser()
     const [searchText, setSearchText] = useState('');
-
+    const clearSearch = () => {
+        setSearchText('');
+      };
 
 
     useEffect(() => {
@@ -136,9 +139,16 @@ const ChatList = ({ onSelectUser }) => {
                 <input
                     className="chatListSearchInput"
                     type="text"
-                    placeholder="Search"
+                    placeholder="Buscar"
                     value={searchText}
                     onChange={handleSearchChange}
+                />
+                <AiOutlineClose
+                className="icon1"
+                size={16}
+                color="black"
+                onClick={clearSearch}
+                cursor={"pointer"}
                 />
             </div>
 
