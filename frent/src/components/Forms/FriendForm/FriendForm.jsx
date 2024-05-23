@@ -172,7 +172,7 @@ export function FriendForm() {
                     value:
                       /^[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+(?:\s[a-zA-ZáéíóúÁÉÍÓÚüñÑ]+)*$/,
                     message:
-                      "El nombre solo puede contener letras y caracteres españoles",
+                      "El apellido solo puede contener letras y caracteres españoles",
                   },
                   minLength: {
                     value: 2,
