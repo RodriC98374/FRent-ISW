@@ -15,7 +15,7 @@ class ClientSerializer(serializers.ModelSerializer):
 class FriendSerializer(serializers.ModelSerializer):
     class Meta:
         model = Friend
-        fields = ['id_user', 'first_name', 'last_name', 'email', 'personal_description', 'gender','country','password', 'birth_date','city', 'price', 'image']
+        fields = ['id_user', 'first_name', 'last_name', 'email', 'personal_description', 'gender','country','password', 'birth_date','city', 'price', 'like_count', 'image']
 
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -44,7 +44,7 @@ class AvailabilitySerializer(serializers.ModelSerializer):
 class ProfileImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id_user', 'profile_image')
+        fields = ('id_user', 'image')
 
     def update(self, instance, validated_data):
         instance.profile_image = validated_data.get('profile_image', instance.profile_image)
