@@ -44,7 +44,7 @@ class AvailabilitySerializer(serializers.ModelSerializer):
 class ProfileImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id_user', 'profile_image')
+        fields = ('id_user', 'image')
 
     def update(self, instance, validated_data):
         instance.profile_image = validated_data.get('profile_image', instance.profile_image)
