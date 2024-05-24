@@ -17,7 +17,7 @@ const ChatList = ({ onSelectUser }) => {
     const [searchText, setSearchText] = useState('');
     const clearSearch = () => {
         setSearchText('');
-      };
+    };
 
 
     useEffect(() => {
@@ -109,6 +109,7 @@ const ChatList = ({ onSelectUser }) => {
     };
 
     const truncateMessage = (message, maxLength) => {
+
         if (message && message.length > maxLength) {
             return message.slice(0, maxLength) + "...";
         }
@@ -142,11 +143,11 @@ const ChatList = ({ onSelectUser }) => {
                     onChange={handleSearchChange}
                 />
                 <AiOutlineClose
-                className="icon1"
-                size={16}
-                color="black"
-                onClick={clearSearch}
-                cursor={"pointer"}
+                    className="icon1"
+                    size={16}
+                    color="black"
+                    onClick={clearSearch}
+                    cursor={"pointer"}
                 />
             </div>
 
@@ -167,7 +168,7 @@ const ChatList = ({ onSelectUser }) => {
                                 <div className="chatListItemTexts">
                                     <span className="chatListItemName">{friend.first_name} {friend.last_name}</span>
                                     <p className="chatListItemMessage">
-                                        {truncateMessage(friend.personal_description, 45)}
+                                        {truncateMessage("Aceptó ser tu amigo de alquiler! Comienza a...", 45)}
                                     </p>
                                 </div>
                                 <div className="last-time"><span className="last-message">Hace 5 min</span></div>
@@ -184,7 +185,7 @@ const ChatList = ({ onSelectUser }) => {
                                 <div className="chatListItemTexts">
                                     <span className="chatListItemName">{user.nombre_cliente}</span>
                                     <p className="chatListItemMessage">
-                                        {truncateMessage(user.description, 45)}
+                                        {truncateMessage("Aceptaste ser su amigo de alquiler! Comienza a...", 45)}
                                     </p>
                                 </div>
                                 <div className="last-time"><span className="last-message">Hace 5 min</span></div>
