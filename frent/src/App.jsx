@@ -130,7 +130,9 @@ function App() {
                 />
               }
             >
-              <Route path="/profileUser" element={<ProfileUser />} />
+              <Route path="/profileUser/" element={<ProfileUser />} />
+              <Route path="/profileUser/:path_back" element={<ProfileUser />} />
+              <Route path="/profileUser/:path_back/:id" element={<ProfileUser />} />
             </Route>
             <Route path="/profil/:id" element={<ProfileFriend />} />
             <Route

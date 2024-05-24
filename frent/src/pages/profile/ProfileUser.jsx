@@ -3,19 +3,21 @@ import { getUser } from "../Login/LoginForm";
 import { useEffect, useState } from "react";
 import { getAvailabilityFriend } from "../../api/register.api";
 import { ButtonPrimary } from "../../components/Buttons/buttonPrimary";
-import CommentSection from './CommentSection';
-
+import { NavLink, useParams } from "react-router-dom";
 
 export default function ProfileUser() {
   const userData = getUser();
+  const { path_back } = useParams();
+  const { id }= useParams();
   const [availability, setAvailability] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
       try {
         const resAvailability = await getAvailabilityFriend(userData.user_id);
-        console.log(resAvailability.data);
-        setAvailability(Array.isArray(resAvailability.data) ? resAvailability.data : []);
+        setAvailability(
+          Array.isArray(resAvailability.data) ? resAvailability.data : []
+        );
       } catch (error) {
         console.log("Error fetching data:", error);
       }
@@ -35,10 +37,29 @@ export default function ProfileUser() {
     }
   };
 
+  const definePathBack = () => {
+    let newPath;
+    
+    if(!path_back){
+      return '/';
+    }
+    
+    if(id){
+      newPath = `/${path_back}/${id}`
+      return newPath;
+    }
+    return "/"+path_back;
+  }
+
   return (
     <>
       {userData && (
         <div className="body-page-profile">
+          <div className="btn-back">
+            <NavLink to={definePathBack()}>
+              <ButtonPrimary label={"Regresar"} />
+            </NavLink>
+          </div>
           <div className="shape-background">
             <svg className="shape-a-profile" width="200" height="200">
               <circle cx={100} cy={100} r={100} />
@@ -61,7 +82,7 @@ export default function ProfileUser() {
 
               {userData.user_type === "Amigo" && (
                 <div className="availability-profile">
-                  <h3>Disponibilidades: </h3>
+                  <h2>Disponibilidades: </h2>
                   <div className="colums-availability-profile">
                     <div className="input-1c-profile">
                       <p className="label-information">Lunes:</p>
@@ -107,25 +128,30 @@ export default function ProfileUser() {
 
               <p>{userData.personal_description}</p>
 
+              <h2>Intereses: </h2>
+
               <div className="profile-interests">
-                {userData.likes && userData.likes.map((interest, index) => (
-                  <span key={index} className="interest-selected">
-                    <svg
-                      className="tag-icon"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="1em"
-                      height="1em"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        fill="white"
-                        d="M5.5 7A1.5 1.5 0 0 1 4 5.5A1.5 1.5 0 0 1 5.5 4A1.5 1.5 0 0 1 7 5.5A1.5 1.5 0 0 1 5.5 7m15.91 4.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.11 0-2 .89-2 2v7c0 .55.22 1.05.59 1.41l8.99 9c.37.36.87.59 1.42.59c.55 0 1.05-.23 1.41-.59l7-7c.37-.36.59-.86.59-1.41c0-.56-.23-1.06-.59-1.42"
-                      />
-                    </svg>
-                    {interest}
-                  </span>
-                ))}
+                {userData.likes &&
+                  userData.likes.map((interest, index) => (
+                    <span key={index} className="interest-selected">
+                      <svg
+                        className="tag-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="1em"
+                        height="1em"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="white"
+                          d="M5.5 7A1.5 1.5 0 0 1 4 5.5A1.5 1.5 0 0 1 5.5 4A1.5 1.5 0 0 1 7 5.5A1.5 1.5 0 0 1 5.5 7m15.91 4.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.11 0-2 .89-2 2v7c0 .55.22 1.05.59 1.41l8.99 9c.37.36.87.59 1.42.59c.55 0 1.05-.23 1.41-.59l7-7c.37-.36.59-.86.59-1.41c0-.56-.23-1.06-.59-1.42"
+                        />
+                      </svg>
+                      {interest}
+                    </span>
+                  ))}
               </div>
+
+              <h2>Datos personales: </h2>
 
               <div className="profile-personal-information">
                 <div className="colums-inputs-profile">
@@ -162,8 +188,6 @@ export default function ProfileUser() {
           </div>
         </div>
       )}
-    
-  </>
-
+    </>
   );
 }
