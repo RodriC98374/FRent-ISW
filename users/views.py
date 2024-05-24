@@ -3,8 +3,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
@@ -19,7 +17,6 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     #permission_classes = [IsAuthenticated]
-
 
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
@@ -46,7 +43,7 @@ class FriendViewSet(viewsets.ModelViewSet):
     #   if country:
     #       return Friend.objects.filter(country=country)
     #   return Friend.objects.none()
-      
+
     def create(self, request):
         serializer = self.get_serializer(data=request.data)
         
@@ -178,8 +175,6 @@ class AvailabilityViewSet(viewsets.ModelViewSet):
                     else:
                         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response({"message": "Disponibilidad Almacenado Correctamente"}, status=status.HTTP_201_CREATED)
-            
-                
 
 class CustomLoginView(APIView):
     renderer_classes = [JSONRenderer, BrowsableAPIRenderer]
@@ -225,8 +220,6 @@ class CustomLoginView(APIView):
             })
         else:
             return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_400_BAD_REQUEST)
-        
-
 
 class FriendDetailView(APIView):
     def get(self, request, pk):
@@ -247,8 +240,6 @@ class FriendDetailView(APIView):
             return Response(friend_data)
         else:
             return Response(gustos_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-
 
 @api_view(['POST'])
 def likes_friend(request, pk):
