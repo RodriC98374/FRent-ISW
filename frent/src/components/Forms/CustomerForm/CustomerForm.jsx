@@ -35,7 +35,11 @@ export function CustomerForm() {
 
   useEffect(() => {
     if (userData) {
-      const states = State.getStatesOfCountry(userData.country);
+      let countries = Country.getAllCountries();
+      countries = countries.filter(
+        (country) => country.name === userData.country
+      );
+      const states = State.getStatesOfCountry(countries[0].isoCode);
       setStates(states);
       setValue("First_name", userData.first_name);
       setValue("Last_name", userData.last_name);

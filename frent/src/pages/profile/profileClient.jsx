@@ -17,7 +17,6 @@ const ProfileClient = () => {
     async function loadClient() {
       let res = await getClientID(clientId);
       setClient(res.data);
-      console.log("los datos son: ", res.data);
     }
 
     async function loadInterests() {

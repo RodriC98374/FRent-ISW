@@ -36,9 +36,7 @@ export default function LoginForm() {
   const {userData, setUserData } = useContext(UserContext); // Acceder al contexto
   const [isLoggedIn, setIsLoggedIn] = useState(false);  
   const [loginError, setLoginError] = useState("");
-  const [loading, setLoading] = useState(false)
 
-  console.log(userData)
 
   useEffect(() => {
     const checkLoggedIn = async () => {

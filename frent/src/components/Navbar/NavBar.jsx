@@ -38,8 +38,6 @@ export default function NavBar() {
 
   async function loadNotifications() {
     try {
-      console.log("la id esss", userData.user_id);
-
       const res = await get_notifications_user(userData.user_id);
       setNotifications(res.data);
     } catch (error) {
@@ -146,7 +144,7 @@ export default function NavBar() {
                   <span>{userData.first_name}</span>
                   <span className="user">{userData.user_type}</span>
                 </div>
-                <NavLink className="navbar-option" to="/profileUser">
+                <NavLink className="navbar-option" to={`/profileUser${location.pathname}`}>
                   <FaUser className="icon-sesion" />
                 </NavLink>
               </div>
