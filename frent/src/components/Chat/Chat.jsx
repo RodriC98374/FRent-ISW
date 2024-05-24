@@ -19,7 +19,7 @@ const Chat = () => {
   const [bandera, setBandera] = useState(1);
   const [lastMessage, setLastMessage] = useState(null);
   const [timeSinceLastMessage, setTimeSinceLastMessage] = useState("");
-  const [messageLength, setMessageLength] = useState(0); 
+  const [messageLength, setMessageLength] = useState(0);
   const [isMessageEmpty, setIsMessageEmpty] = useState(true);
 
 
@@ -243,12 +243,48 @@ const Chat = () => {
   };
 
 
+
+
   const formatMessageTime = (isoString) => {
-    const date = new Date(isoString);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    if (!isoString) {
+      //console.error("Invalid date string:", isoString);
+      return currentFormattedDate2;
+    }
+
+    try {
+      // console.log("Attempting to parse date:", isoString);
+      const date = new Date(isoString);
+      if (isNaN(date.getTime())) {
+        // console.error("Date conversion failed for string:", isoString);
+        return "Invalid Date";
+      }
+      // console.log("Successfully parsed date:", date);
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    } catch (error) {
+      // console.error("Error formatting date:", error, isoString);
+      return "Invalid Date";
+    }
+  };
+
+  const getCurrentFormattedDate = () => {
+    const now = new Date();
+    return now.toLocaleString([], {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   };
 
   const formatDateLabel = (isoString) => {
+    const currentFormattedDate = getCurrentFormattedDate();
+    if (!isoString) {
+      //console.error("Invalid date string:", isoString);
+      return currentFormattedDate;
+    }
+
     const date = new Date(isoString);
     const today = new Date();
     const yesterday = new Date(today);
@@ -274,21 +310,30 @@ const Chat = () => {
     return acc;
   }, {});
 
-  const MAX_MESSAGE_LENGTH = 150; 
+  const MAX_MESSAGE_LENGTH = 150;
 
 
-const handleChangeMessage = (event) => {
-  const message = event.target.value;
-  if (message.length <= MAX_MESSAGE_LENGTH) {
-    setCurrentMessage(message); 
-    setMessageLength(message.length); 
-  }
-};
+  const handleChangeMessage = (event) => {
+    const message = event.target.value;
+    if (message.length <= MAX_MESSAGE_LENGTH) {
+      setCurrentMessage(message);
+      setMessageLength(message.length);
+    }
+  };
 
-useEffect(() => {
-  setIsMessageEmpty(currentMessage.trim() === "");
-}, [currentMessage]);
+  useEffect(() => {
+    setIsMessageEmpty(currentMessage.trim() === "");
+  }, [currentMessage]);
 
+  const getCurrentFormattedDate2 = () => {
+    const now = new Date();
+    return now.toLocaleString([], {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  const currentFormattedDate2 = getCurrentFormattedDate2();
 
   return (
     <div className="containerChat-list">
@@ -328,13 +373,16 @@ useEffect(() => {
                       <div
                         key={index}
                         className={`message ${message.sender === dataUser.user_id
-                            ? "outgoing"
-                            : "incoming"
+                          ? "outgoing"
+                          : "incoming"
                           }`}
                       >
                         <div className="message-content">
-                          <div className="message-text">{message.message}</div>
+                          <div className="">{message.message}</div>
+
+                          {/* <span className="message-time">{formatMessageTime(message.date)}</span> */}
                           <span className="message-time">{formatMessageTime(message.date)}</span>
+
                         </div>
                       </div>
                     ))}
