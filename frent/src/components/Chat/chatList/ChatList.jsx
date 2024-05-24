@@ -115,8 +115,6 @@ const ChatList = ({ onSelectUser }) => {
         return message || "";
     };
 
-
-
     return (
         <div className="chatListContainer">
             <div className="chatListSearch">

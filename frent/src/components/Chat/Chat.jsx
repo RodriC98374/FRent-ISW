@@ -79,19 +79,19 @@ const Chat = () => {
 
         let ws;
         if (dataUser.user_type === "Cliente") {
-          // ws = new WebSocket(
-          //   `ws://localhost:9000/ws/chat/${dataUser.user_id}/${idOther}/`
-          // );
           ws = new WebSocket(
-            `wss://deploy-is-production.up.railway.app/ws/chat/${dataUser.user_id}/${idOther}/`
+            `ws://localhost:9000/ws/chat/${dataUser.user_id}/${idOther}/`
           );
+          // ws = new WebSocket(
+          //   `wss://deploy-is-production.up.railway.app/ws/chat/${dataUser.user_id}/${idOther}/`
+          // );
         } else {
-          // ws = new WebSocket(
-          //   `ws://localhost:9000/ws/chat/${idOther}/${dataUser.user_id}/`
-          // );
           ws = new WebSocket(
-            `wss://deploy-is-production.up.railway.app/ws/chat/${idOther}/${dataUser.user_id}/`
+            `ws://localhost:9000/ws/chat/${idOther}/${dataUser.user_id}/`
           );
+          // ws = new WebSocket(
+          //   `wss://deploy-is-production.up.railway.app/ws/chat/${idOther}/${dataUser.user_id}/`
+          // );
         }
 
         ws.onopen = () => {
@@ -108,7 +108,13 @@ const Chat = () => {
             const message = JSON.parse(e.data);
             // console.log("Mensaje recibido desde el servidor:", message);
 
-              setMessageHistory2(message);
+            let time = new Date().toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })
+
+            message['date'] = time;
+            setMessageHistory2(message);
 
             setMessages((prevMessages) => {
               const newMessages = [
@@ -199,17 +205,10 @@ const Chat = () => {
 
         let senderId, recipientId, senderName, recipientName;
 
-        if (dataUser.user_type === "Amigo") {
-          senderId = dataUser.user_id;
-          recipientId = selectedUser.client_id;
-          senderName = dataUser.first_name;
-          recipientName = selectedUser.nombre_cliente;
-        } else {
-          senderId = dataUser.user_id;
-          recipientId = selectedUser.id_user;
-          senderName = dataUser.first_name;
-          recipientName = selectedUser.first_name;
-        }
+        senderId = dataUser.user_id;
+        senderName = dataUser.first_name;
+        recipientName = dataUser.user_type === "Amigo"? selectedUser.nombre_cliente : selectedUser.first_name;
+        recipientId = dataUser.user_type === "Amigo"? selectedUser.client_id : selectedUser.id_user 
 
         const messagePayload = {
           sender: senderId,
@@ -234,11 +233,13 @@ const Chat = () => {
   };
 
   const formatMessageTime = (isoString) => {
-    const date = new Date(isoString);
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    if(isoString.length === 5) return isoString;
+      const date = new Date(isoString);
+      return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
 
   const formatDateLabel = (isoString) => {
+    if(isoString.length === 5) return "--Nuevos mensajes--";
     const date = new Date(isoString);
     const today = new Date();
     const yesterday = new Date(today);
