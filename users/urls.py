@@ -20,5 +20,4 @@ urlpatterns = [
     })),
     path('friends/detail/<int:pk>/', FriendDetailView.as_view(), name='friend-detail'),
     path('likes_friend/<int:pk>/', likes_friend, name='likes_friend'),
-
 ]

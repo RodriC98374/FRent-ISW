@@ -91,5 +91,3 @@ class Availability(models.Model):
         ('Domingo', 'Domingo'),
     ])
     
-    
-    
