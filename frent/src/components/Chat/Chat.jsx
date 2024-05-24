@@ -16,17 +16,14 @@ const Chat = () => {
   const [isChatVisible, setIsChatVisible] = useState(true);
   const dataUser = getUser();
   const [socket, setSocket] = useState(null);
-  const [bandera, setBandera] = useState(1);
   const [lastMessage, setLastMessage] = useState(null);
   const [timeSinceLastMessage, setTimeSinceLastMessage] = useState("");
-  const [messageLength, setMessageLength] = useState(0); 
+  const [messageLength, setMessageLength] = useState(0);
   const [isMessageEmpty, setIsMessageEmpty] = useState(true);
-
 
   const roomName = dataUser.user_type;
 
   const chatEndRef = useRef(null);
-
 
   useEffect(() => {
     if (messages2.length > 0) {
@@ -35,7 +32,6 @@ const Chat = () => {
       setTimeSinceLastMessage(calculateTimePassed(latestMessage.date));
     }
   }, [messages2]);
-
 
   useEffect(() => {
     if (dataUser && selectedUser) fetchData();
@@ -66,7 +62,6 @@ const Chat = () => {
     }
     try {
       const res = await getMessagesUser(informacion);
-      console.log("el mensaje es", res.data);
       setMessages2(res.data);
     } catch (error) {
       console.error("Error al obtener los mensajes del usuario:", error);
@@ -75,6 +70,7 @@ const Chat = () => {
 
   useEffect(() => {
     const connectWebSocket = () => {
+      if (socket) socket.close();
       if (selectedUser) {
         const idOther =
           dataUser.user_type === "Amigo"
@@ -86,14 +82,20 @@ const Chat = () => {
           ws = new WebSocket(
             `ws://localhost:9000/ws/chat/${dataUser.user_id}/${idOther}/`
           );
+          // ws = new WebSocket(
+          //   `wss://deploy-is-production.up.railway.app/ws/chat/${dataUser.user_id}/${idOther}/`
+          // );
         } else {
           ws = new WebSocket(
             `ws://localhost:9000/ws/chat/${idOther}/${dataUser.user_id}/`
           );
+          // ws = new WebSocket(
+          //   `wss://deploy-is-production.up.railway.app/ws/chat/${idOther}/${dataUser.user_id}/`
+          // );
         }
 
         ws.onopen = () => {
-          console.log("Conexión WebSocket abierta");
+          // console.log("Conexión WebSocket abierta");
           const message = {
             sender: "React Client",
             message: "Hola desde el cliente React",
@@ -104,17 +106,18 @@ const Chat = () => {
         ws.onmessage = (e) => {
           try {
             const message = JSON.parse(e.data);
-            console.log("Mensaje recibido desde el servidor:", message);
+            // console.log("Mensaje recibido desde el servidor:", message);
 
-            if (bandera > 0) {
-              setMessageHistory2(message);
-            }
+            let time = new Date().toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })
 
-            setBandera(bandera * -1);
+            message['date'] = time;
+            setMessageHistory2(message);
 
             setMessages((prevMessages) => {
               const newMessages = [
-
                 ...prevMessages,
                 {
                   id: prevMessages.length + 1,
@@ -130,7 +133,9 @@ const Chat = () => {
               if (newMessages.length > 0) {
                 const latestMessage = newMessages[newMessages.length - 1];
                 setLastMessage(latestMessage.text);
-                setTimeSinceLastMessage(calculateTimePassed(latestMessage.time));
+                setTimeSinceLastMessage(
+                  calculateTimePassed(latestMessage.time)
+                );
               }
 
               return newMessages;
@@ -145,7 +150,7 @@ const Chat = () => {
         };
 
         ws.onclose = () => {
-          console.log("Conexión WebSocket cerrada");
+          // console.log("Conexión WebSocket cerrada");
         };
 
         setSocket(ws); // Guardar la instancia del WebSocket en el estado
@@ -157,12 +162,6 @@ const Chat = () => {
     if (roomName) {
       connectWebSocket();
     }
-
-    return () => {
-      if (socket) {
-        socket.close(); // Cerrar la conexión al desmontar el componente
-      }
-    };
   }, [roomName, selectedUser]);
 
   useEffect(() => {
@@ -170,7 +169,6 @@ const Chat = () => {
       chatEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages2]);
-
 
   const handleUserSelect = (user) => {
     setSelectedUser(user);
@@ -207,17 +205,10 @@ const Chat = () => {
 
         let senderId, recipientId, senderName, recipientName;
 
-        if (dataUser.user_type === "Amigo") {
-          senderId = dataUser.user_id;
-          recipientId = selectedUser.client_id;
-          senderName = dataUser.first_name;
-          recipientName = selectedUser.nombre_cliente;
-        } else {
-          senderId = dataUser.user_id;
-          recipientId = selectedUser.id_user;
-          senderName = dataUser.first_name;
-          recipientName = selectedUser.first_name;
-        }
+        senderId = dataUser.user_id;
+        senderName = dataUser.first_name;
+        recipientName = dataUser.user_type === "Amigo"? selectedUser.nombre_cliente : selectedUser.first_name;
+        recipientId = dataUser.user_type === "Amigo"? selectedUser.client_id : selectedUser.id_user 
 
         const messagePayload = {
           sender: senderId,
@@ -227,7 +218,6 @@ const Chat = () => {
           recipientName: recipientName,
         };
 
-        console.log("messagePayload:", messagePayload);
         socket.send(JSON.stringify(messagePayload));
       } else {
         console.log("no");
@@ -242,26 +232,27 @@ const Chat = () => {
     setIsChatVisible(false);
   };
 
-
   const formatMessageTime = (isoString) => {
-    const date = new Date(isoString);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    if(isoString.length === 5) return isoString;
+      const date = new Date(isoString);
+      return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
 
   const formatDateLabel = (isoString) => {
+    if(isoString.length === 5) return "--Nuevos mensajes--";
     const date = new Date(isoString);
     const today = new Date();
     const yesterday = new Date(today);
     yesterday.setDate(today.getDate() - 1);
 
-    const options = { weekday: 'short', day: '2-digit', month: '2-digit' };
+    const options = { weekday: "short", day: "2-digit", month: "2-digit" };
 
     if (date.toDateString() === today.toDateString()) {
-      return '--Hoy--';
+      return "--Hoy--";
     } else if (date.toDateString() === yesterday.toDateString()) {
-      return '--Ayer--';
+      return "--Ayer--";
     } else {
-      return date.toLocaleDateString('es-ES', options);
+      return date.toLocaleDateString("es-ES", options);
     }
   };
 
@@ -274,21 +265,19 @@ const Chat = () => {
     return acc;
   }, {});
 
-  const MAX_MESSAGE_LENGTH = 150; 
+  const MAX_MESSAGE_LENGTH = 150;
 
+  const handleChangeMessage = (event) => {
+    const message = event.target.value;
+    if (message.length <= MAX_MESSAGE_LENGTH) {
+      setCurrentMessage(message);
+      setMessageLength(message.length);
+    }
+  };
 
-const handleChangeMessage = (event) => {
-  const message = event.target.value;
-  if (message.length <= MAX_MESSAGE_LENGTH) {
-    setCurrentMessage(message); 
-    setMessageLength(message.length); 
-  }
-};
-
-useEffect(() => {
-  setIsMessageEmpty(currentMessage.trim() === "");
-}, [currentMessage]);
-
+  useEffect(() => {
+    setIsMessageEmpty(currentMessage.trim() === "");
+  }, [currentMessage]);
 
   return (
     <div className="containerChat-list">
@@ -327,14 +316,17 @@ useEffect(() => {
                     {groupedMessages[dateLabel].map((message, index) => (
                       <div
                         key={index}
-                        className={`message ${message.sender === dataUser.user_id
+                        className={`message ${
+                          message.sender === dataUser.user_id
                             ? "outgoing"
                             : "incoming"
-                          }`}
+                        }`}
                       >
                         <div className="message-content">
                           <div className="message-text">{message.message}</div>
-                          <span className="message-time">{formatMessageTime(message.date)}</span>
+                          <span className="message-time">
+                            {formatMessageTime(message.date)}
+                          </span>
                         </div>
                       </div>
                     ))}
@@ -354,9 +346,17 @@ useEffect(() => {
                   rows={4}
                 />
                 <div className="char-counter-container">
-                  <span className="char-counter">{messageLength}/{MAX_MESSAGE_LENGTH}</span>
+                  <span className="char-counter">
+                    {messageLength}/{MAX_MESSAGE_LENGTH}
+                  </span>
                 </div>
-                <button className={isMessageEmpty ? "submit-button disabled" : "submit-button"} type="submit" disabled={isMessageEmpty}>
+                <button
+                  className={
+                    isMessageEmpty ? "submit-button disabled" : "submit-button"
+                  }
+                  type="submit"
+                  disabled={isMessageEmpty}
+                >
                   <i className="fa fa-paper-plane"></i>
                 </button>
               </form>
