@@ -5,13 +5,13 @@ export default function FriendsList({friends}) {
     <div>
         <div className="friend-list">
         {friends.map(friend => (
-            <div key={friend.id} className="friend-item">
+            <div key={friend.id_user} className="friend-item">
             <div className="profile-picture">
-                <img src={friend.profile_picture} alt={`${friend.name}'s profile`} />
+                <img src={`data:image/png;base64,${friend.image}`} alt={`${friend.first_name}'s profile`} />
             </div>
             <div className="friend-info">
-                <div className="friend-name">{friend.name}</div>
-                <div className="friend-likes">{friend.likes} <span role="img" aria-label="heart">❤️</span></div>
+                <div className="friend-name">{friend.first_name} {friend.last_name}</div>
+                <div className="friend-likes">{friend.like_count} <span role="img" aria-label="heart">❤️</span></div>
             </div>
             </div>
         ))}

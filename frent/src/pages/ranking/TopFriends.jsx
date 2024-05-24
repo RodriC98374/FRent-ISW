@@ -2,15 +2,15 @@ import React from 'react'
 
 export default function TopFriends({friends}) {
   return (
-    <div>
+    <div className='top-friends-section'>
         <div className="top-friends">
         {friends.map((friend, index) => (
-            <div key={friend.id} className={`top-friend rank-${index + 1}`}>
+            <div key={friend.id_user} className={`top-friend rank-${index + 1}`}>
               <div className="profile-picture">
-                  <img src={friend.profile_picture} alt={`${friend.name}'s profile`} />
+                  <img src={`data:image/png;base64,${friend.image}`} alt={`${friend.first_name}'s profile`} />
               </div>
               <div className="rank">{index + 1}</div>
-              <div className="likes">{friend.likes} <span role="img" aria-label="heart">❤️</span></div>
+              <div className="likes">{friend.like_count} <span role="img" aria-label="heart">❤️</span></div>
             </div>
         ))}
         </div>

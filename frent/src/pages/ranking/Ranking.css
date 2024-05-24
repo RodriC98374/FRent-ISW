@@ -16,56 +16,27 @@
     text-align: center;
   }
 
+
   .top-friend.rank-2{
     order: 1;
   }
 
   .top-friend.rank-1{
     order: 2;
-    position: relative;
   }
 
   .top-friend.rank-3{
     order: 3;
   }
-
-  .top-friend.rank-1 .profile-picture img {
+  
+  .top-friend.rank-1 .profile-picture img{
     width: 150px;
     height: 150px;
     border-radius: 50%;
-    border: 5px solid gold;
+    border: 3px solid gold;
+    order: 3;
   }
 
-  
-  .top-friend.rank-1::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 150px;
-    height: 150px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 50%;
-    animation: highlight 2s infinite;
-    z-index: -1;
-  }
-  
-  @keyframes highlight {
-    0% {
-      transform: translate(-50%, -50%) scale(0.5);
-      opacity: 0.6;
-    }
-    50% {
-      transform: translate(-50%, -50%) scale(1.2);
-      opacity: 0;
-    }
-    100% {
-      transform: translate(-50%, -50%) scale(0.5);
-      opacity: 0.6;
-    }
-  }
-  
-  
   .top-friend.rank-2 .profile-picture img{
     width: 100px;
     height: 100px;
