@@ -87,7 +87,10 @@ export const save_comment = (commentData) => registersApi.post('rents/save_comme
 
 export const get_friend_comments = (friendId) => registersApi.get(`rents/get_friend_comments/${friendId}/`);
 
+
 export const getMessagesUser = (data) => registersApi.post(`/chat/api/v1/canal/get_chats_user/`, data)
+
+export const likes_friend_post = (friendId, like) => registersApi.post(`/users/likes_friend/${friendId}/`, { like });
 
 export const getMessagesLast = (data) => registersApi.post(`/chat/api/v1/canal/get_message/`, data)
 

@@ -97,6 +97,8 @@ export default function ListFriend() {
     setCityFilter("");
   };
 
+  
+
   const filteredFriends = friends.filter((friend) => {
     const fullName = `${friend.first_name} ${friend.last_name}`.toLowerCase();
     const searchQuery = search.toLowerCase();
