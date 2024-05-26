@@ -31,10 +31,17 @@ const ProfileClient = () => {
     if (clientId) loadInterests();
   }, []);
 
+  function capitalizarPrimeraLetra(cadena) {
+    if (typeof cadena === 'string' && cadena.length > 0) {
+      return cadena.charAt(0).toUpperCase() + cadena.slice(1);
+    }
+    return '';
+  }
  
   return (
     <div className="information-user">
       <div className="user-profile">
+        <div className="prev-perfil">
         <div className="user-card">
           <div className="image-profile">
             <img
@@ -46,7 +53,8 @@ const ProfileClient = () => {
           <h2 className="user-name">{`${client.first_name} ${client.last_name}`}</h2>
           <div className="user-details">
             <p>Edad: {calculateAge(client.birth_date)}</p>
-            <p>Género: {client.gender}</p>
+            <p>Género: {' '}
+                  {client.gender ? capitalizarPrimeraLetra(client.gender) : 'No especificado'}</p>
             <p className="location-container">
               <IoLocationSharp className="icon" />{" "}
               {`${client.country} / ${client.city}`}
@@ -54,10 +62,11 @@ const ProfileClient = () => {
             <p >
               <RiVerifiedBadgeFill className="icon" /> Verificado
             </p>
+            </div>
+          </div>          
           </div>
-        </div>
         <div className="user-description">
-          <h2>Descripcion Personal:</h2>
+          <h2>Descripción Personal:</h2>
           <p>{client.personal_description}</p>
           <h2>Intereses:</h2>
           <div className="user-interests">
