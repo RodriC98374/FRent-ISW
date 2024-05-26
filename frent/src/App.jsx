@@ -24,6 +24,7 @@ import { UserContext } from './pages/Login/UserProvider';
 import Chat from './components/Chat/Chat';
 /*import para ver como queda perfil*/
 import ProfileClient from "./pages/profile/profileClient";
+import Ranking from "./pages/ranking/Ranking";
 /* import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./lib/firebase";
 import useUserStore from "./lib/userStore"; */
@@ -106,6 +107,7 @@ function App() {
               <Route path="/listFriend" element={<ListFriend />} />
               <Route path="/chat2" element={<Chat />} />
               <Route path="/historialRentas" element={<MisAmigos />}/>
+              <Route path="/rankingFriends" element={<Ranking/>}/>
             </Route>
 
             <Route
@@ -128,7 +130,9 @@ function App() {
                 />
               }
             >
-              <Route path="/profileUser" element={<ProfileUser />} />
+              <Route path="/profileUser/" element={<ProfileUser />} />
+              <Route path="/profileUser/:path_back" element={<ProfileUser />} />
+              <Route path="/profileUser/:path_back/:id" element={<ProfileUser />} />
             </Route>
             <Route path="/profil/:id" element={<ProfileFriend />} />
             <Route

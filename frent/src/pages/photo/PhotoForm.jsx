@@ -54,7 +54,7 @@ const Photo = () => {
       image: imageBinary ? imageBinary : userData ? userData.image : null,
     }
 
-
+    console.log("la ciudad es: ", userData.city);
 
     if (userData.is_client) {
       navigate("/customer", {

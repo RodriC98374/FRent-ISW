@@ -90,7 +90,6 @@ export default function ListFriend() {
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
   };
-  console.log(friends);
 
   const handleCountryChange = (e) => {
     setCountryFilter(e.target.value);
