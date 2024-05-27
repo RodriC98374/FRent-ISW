@@ -213,6 +213,13 @@
   margin-bottom: 5px;
 }
 
+.prev-perfil {
+  display: flex;
+  flex-direction: center;
+  align-items: center;
+  margin-left: 5%;
+  width: 50%;
+}
 .viewReserv {
   background-color: var(--tertiary-color);
   color: #000;
