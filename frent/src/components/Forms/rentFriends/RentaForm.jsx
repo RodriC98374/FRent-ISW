@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
   import { NavLink, useParams, Navigate } from "react-router-dom"; // Importar useParams
   import { ButtonPrimary } from "../../Buttons/buttonPrimary";
   import { ButtonSecondary } from "../../Buttons/buttonSecondary";
@@ -13,7 +13,6 @@ import React, { useEffect, useState, useContext } from "react";
   import { getUser } from "../../../pages/Login/LoginForm.jsx";
 
   import "./RentaForm.css";
-  import { UserContext } from "../../../pages/Login/UserProvider.jsx";
   import "./RentaForm.css";
 
   export default function RentFriendForm() {
@@ -36,8 +35,6 @@ import React, { useEffect, useState, useContext } from "react";
     const [startValidTime, setStartValidTime] = useState(new Date(`01/01/2000 00:00:00`));
     const [endValidTime, setEndValidTime] = useState(new Date(`01/01/2000 23:59:59`));
 
-    console.log ("Esta el inico de la hora ", startValidTime)
-    console.log("Este es el fin de la hora",endValidTime)
     const userId = getUser()
     // eslint-disable-next-line
     const [isRedirecting, setIsRedirecting] = useState(false);
@@ -352,9 +349,7 @@ import React, { useEffect, useState, useContext } from "react";
                 type={"submit"}
                 label={"Alquilar"}
               />
-              <NavLink className="viewReserv" to={`/calendarReservas/${friendId}`}>
-                Mostrar reservas
-              </NavLink>
+              
                 <ButtonSecondary label={"Cancelar"} onClick={confirmCancel} />
             </div>
           </form>

@@ -38,8 +38,6 @@ export default function NavBar() {
 
   async function loadNotifications() {
     try {
-      console.log("la id esss", userData.user_id);
-
       const res = await get_notifications_user(userData.user_id);
       setNotifications(res.data);
     } catch (error) {
@@ -68,32 +66,40 @@ export default function NavBar() {
   return (
     <>
       <nav className="navbar-body">
-        <NavLink to="/">
+        <Link to="/">
           <img
             className="logo-img"
             src="https://i.ibb.co/hZwZSSN/Logo-frent.png"
             alt="Logo-frent"
           />
-        </NavLink>
+        </Link>
         <ul className="navbar-options-list">
           <li onClick={closeModal}>
-            <NavLink className="navbar-option" to="/">
+            <Link className="navbar-option" to="/">
               Inicio
-            </NavLink>
+            </Link>
           </li>
           {userData && userData.user_type === "Cliente" && (
             <li onClick={closeModal}>
-              <NavLink className="navbar-option" to="listfriend">
+              <Link className="navbar-option" to="listfriend">
                 Amigos
-              </NavLink>
+              </Link>
             </li>
           )}
 
           {userData && userData.user_type === "Cliente" && (
             <li onClick={closeModal}>
-              <NavLink className="navbar-option" to="historialRentas">
+              <Link className="navbar-option" to="historialRentas">
                 Historial
-              </NavLink>
+              </Link>
+            </li>
+          )}
+
+          {userData && userData.user_type === "Cliente" && (
+            <li onClick={closeModal}>
+              <Link className="navbar-option" to="rankingFriends">
+                Ranking
+              </Link>
             </li>
           )}
 
@@ -104,7 +110,7 @@ export default function NavBar() {
                 clearLocalStorage();
               }}
             >
-              <NavLink
+              <Link
                 className={
                   location.pathname === "/form"
                     ? "navbar-option active"
@@ -114,12 +120,12 @@ export default function NavBar() {
               >
                 {" "}
                 Registrarse
-              </NavLink>
+              </Link>
             </li>
           )}
           {userData && userData.user_type === "Amigo" && (
             <li onClick={closeModal}>
-              <NavLink
+              <Link
                 className={
                   location.pathname === "/rentalSection"
                     ? "navbar-option active"
@@ -128,14 +134,14 @@ export default function NavBar() {
                 to="/rentalSectio"
               >
                 Alquileres
-              </NavLink>
+              </Link>
             </li>
           )}
           {!userData && (
             <li>
-              <NavLink className="navbar-option" to="/login">
+              <Link className="navbar-option" to="/login">
                 Iniciar Sesión
-              </NavLink>
+              </Link>
             </li>
           )}
 
@@ -146,24 +152,24 @@ export default function NavBar() {
                   <span>{userData.first_name}</span>
                   <span className="user">{userData.user_type}</span>
                 </div>
-                <NavLink className="navbar-option" to="/profileUser">
+                <Link className="navbar-option" to={`/profileUser${location.pathname}`}>
                   <FaUser className="icon-sesion" />
-                </NavLink>
+                </Link>
               </div>
             </li>
           )}
 
           {userData && userData.user_type === "Cliente" && (
             <li>
-              <NavLink className="navbar-option" to="/chat2">
+              <Link className="navbar-option" to="/chat2">
                 <BiSolidMessageDetail />
-              </NavLink>
+              </Link>
             </li>
           )}
 
           {userData && userData.user_type === "Amigo" && (
             <li>
-              <NavLink className="navbar-option" to="/chat"><BiSolidMessageDetail /></NavLink>
+              <Link className="navbar-option" to="/chat"><BiSolidMessageDetail /></Link>
             </li>
           )}
           {userData && userData.user_type === "Cliente" && (

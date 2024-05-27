@@ -89,6 +89,10 @@
   background-color: #ffffff;
 }
 
+.profile-description h2{
+  margin: 0px 0px;
+}
+
 .profile-image-availability{
   display: flex;
   flex-direction: column;
@@ -207,4 +211,20 @@
 .comments-list .comment p:first-child {
   font-weight: bold;
   margin-bottom: 5px;
+}
+
+.viewReserv {
+  background-color: var(--tertiary-color);
+  color: #000;
+    padding: var(--high-button) var(--broad-button);
+    border-radius: 8px;
+    margin-right: 40%;
+    border: none;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.08);
+    width: 19em;
+}
+.viewReserv:hover {
+  background-color: var(--quaternary-color);
+  color: #fff;
+  
 }

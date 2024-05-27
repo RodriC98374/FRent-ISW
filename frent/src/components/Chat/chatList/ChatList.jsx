@@ -1,4 +1,5 @@
 import "./chatList.css";
+import { AiOutlineClose } from "react-icons/ai";
 import { useState, useEffect } from "react";
 import {
     getPendingRent,
@@ -8,6 +9,7 @@ import {
 } from "../../../api/register.api";
 import { getUser } from "../../../pages/Login/LoginForm";
 import { calculateTimePassed } from "../../viewReserve/ViewReserve";
+import { Link } from "react-router-dom";
 
 const ChatList = ({ onSelectUser }) => {
     const [usersClient, setUsersClient] = useState([]);
@@ -15,6 +17,11 @@ const ChatList = ({ onSelectUser }) => {
     const [selectedUser, setSelectedUser] = useState(null);
     const userData = getUser()
     const [searchText, setSearchText] = useState('');
+    const clearSearch = () => {
+        setSearchText('');
+    };
+
+
     const [message2, setMessages2] = useState([]);
 
     const fetchData2 = async () => {
@@ -138,23 +145,23 @@ const ChatList = ({ onSelectUser }) => {
     };
 
     const truncateMessage = (message, maxLength) => {
+
         if (message && message.length > maxLength) {
             return message.slice(0, maxLength) + "...";
         }
         return message || "";
     };
 
-
-
     return (
         <div className="chatListContainer">
             <div className="chatListSearch">
                 <div className="avatar">
+                    <Link to="/profileUser">
                     <img
                         className="avatar-chat"
                         src={`data:image/png;base64,${userData.image}`}
                         alt={userData.name}
-                    />
+                    /></Link>
                 </div>
                 <div className="user-info-personal">
                     <h3>
@@ -168,9 +175,16 @@ const ChatList = ({ onSelectUser }) => {
                 <input
                     className="chatListSearchInput"
                     type="text"
-                    placeholder="Search"
+                    placeholder="Buscar"
                     value={searchText}
                     onChange={handleSearchChange}
+                />
+                <AiOutlineClose
+                    className="icon1"
+                    size={16}
+                    color="black"
+                    onClick={clearSearch}
+                    cursor={"pointer"}
                 />
             </div>
 
@@ -191,7 +205,7 @@ const ChatList = ({ onSelectUser }) => {
                                 <div className="chatListItemTexts">
                                     <span className="chatListItemName">{friend.first_name} {friend.last_name}</span>
                                     <p className="chatListItemMessage">
-                                        {truncateMessage(friend.personal_description, 45)}
+                                        {truncateMessage("Aceptó ser tu amigo de alquiler! Comienza a...", 45)}
                                     </p>
                                 </div>
                                 <div className="last-time"><span className="last-message">Hace 5 min</span></div>
@@ -208,7 +222,7 @@ const ChatList = ({ onSelectUser }) => {
                                 <div className="chatListItemTexts">
                                     <span className="chatListItemName">{user.nombre_cliente}</span>
                                     <p className="chatListItemMessage">
-                                        {truncateMessage(user.description, 45)}
+                                        {truncateMessage("Aceptaste ser su amigo de alquiler! Comienza a...", 45)}
                                     </p>
                                 </div>
                                 <div className="last-time"><span className="last-message">Hace 5 min</span></div>

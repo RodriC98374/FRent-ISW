@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-  const CommentSection = ({ comments }) => {
+const CommentSection = ({ comments }) => {
   const [currentCommentIndex, setCurrentCommentIndex] = useState(0);
 
   const handlePrevClick = () => {
@@ -23,10 +23,22 @@ import React, { useState } from 'react';
           <p>No hay comentarios de otros Usuarios</p>
         </div>
       )}
-      <div className="comment-navigation">
-        <button className="comment-button" onClick={handlePrevClick}>Anterior</button>
-        <button className="comment-button" onClick={handleNextClick}>Siguiente</button>
-      </div>
+      {comments.length > 0 && (
+        <div className="comment-navigation">
+          <button
+            className="comment-button"
+            onClick={handlePrevClick}
+          >
+            Anterior
+          </button>
+          <button
+            className="comment-button"
+            onClick={handleNextClick}
+          >
+            Siguiente
+          </button>
+        </div>
+      )}
     </div>
   );
 };

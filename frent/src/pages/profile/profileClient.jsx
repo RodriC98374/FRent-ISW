@@ -17,7 +17,6 @@ const ProfileClient = () => {
     async function loadClient() {
       let res = await getClientID(clientId);
       setClient(res.data);
-      console.log("los datos son: ", res.data);
     }
 
     async function loadInterests() {
@@ -48,11 +47,11 @@ const ProfileClient = () => {
           <div className="user-details">
             <p>Edad: {calculateAge(client.birth_date)}</p>
             <p>Género: {client.gender}</p>
-            <p>
+            <p className="location-container">
               <IoLocationSharp className="icon" />{" "}
               {`${client.country} / ${client.city}`}
             </p>
-            <p>
+            <p >
               <RiVerifiedBadgeFill className="icon" /> Verificado
             </p>
           </div>
@@ -67,9 +66,9 @@ const ProfileClient = () => {
                 <svg
                   className="tag-icon"
                   xmlns="http://www.w3.org/2000/svg"
-                  width="1em"
-                  height="1em"
-                  viewBox="0 0 24 24"
+                  width="0.8em"
+                    height="0.8em"
+                    viewBox="0 0 20 20"
                 >
                   <path
                     fill="white"
@@ -82,7 +81,7 @@ const ProfileClient = () => {
           </div>
           <div className="btn-back-reserve">
             <NavLink to="/rentalSectio">
-              <ButtonPrimary label={"Back"} />
+              <ButtonPrimary label={"Atrás"} />
             </NavLink>
           </div>
         </div>

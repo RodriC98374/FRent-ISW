@@ -5,6 +5,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { getUser } from "../../pages/Login/LoginForm";
 import { getMessagesUser } from "../../api/register.api";
 import { calculateTimePassed } from "../viewReserve/ViewReserve";
+import { Link } from "react-router-dom";
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -19,7 +20,7 @@ const Chat = () => {
   const [bandera, setBandera] = useState(1);
   const [lastMessage, setLastMessage] = useState(null);
   const [timeSinceLastMessage, setTimeSinceLastMessage] = useState("");
-  const [messageLength, setMessageLength] = useState(0); 
+  const [messageLength, setMessageLength] = useState(0);
   const [isMessageEmpty, setIsMessageEmpty] = useState(true);
 
 
@@ -243,12 +244,48 @@ const Chat = () => {
   };
 
 
+
+
   const formatMessageTime = (isoString) => {
-    const date = new Date(isoString);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    if (!isoString) {
+      //console.error("Invalid date string:", isoString);
+      return currentFormattedDate2;
+    }
+
+    try {
+      // console.log("Attempting to parse date:", isoString);
+      const date = new Date(isoString);
+      if (isNaN(date.getTime())) {
+        // console.error("Date conversion failed for string:", isoString);
+        return "Invalid Date";
+      }
+      // console.log("Successfully parsed date:", date);
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    } catch (error) {
+      // console.error("Error formatting date:", error, isoString);
+      return "Invalid Date";
+    }
+  };
+
+  const getCurrentFormattedDate = () => {
+    const now = new Date();
+    return now.toLocaleString([], {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   };
 
   const formatDateLabel = (isoString) => {
+    const currentFormattedDate = getCurrentFormattedDate();
+    if (!isoString) {
+      //console.error("Invalid date string:", isoString);
+      return currentFormattedDate;
+    }
+
     const date = new Date(isoString);
     const today = new Date();
     const yesterday = new Date(today);
@@ -274,22 +311,32 @@ const Chat = () => {
     return acc;
   }, {});
 
-  const MAX_MESSAGE_LENGTH = 150; 
+  const MAX_MESSAGE_LENGTH = 150;
 
 
-const handleChangeMessage = (event) => {
-  const message = event.target.value;
-  if (message.length <= MAX_MESSAGE_LENGTH) {
-    setCurrentMessage(message); 
-    setMessageLength(message.length); 
-  }
-};
+  const handleChangeMessage = (event) => {
+    const message = event.target.value;
+    if (message.length <= MAX_MESSAGE_LENGTH) {
+      setCurrentMessage(message);
+      setMessageLength(message.length);
+    }
+  };
 
-useEffect(() => {
-  setIsMessageEmpty(currentMessage.trim() === "");
-}, [currentMessage]);
+  useEffect(() => {
+    setIsMessageEmpty(currentMessage.trim() === "");
+  }, [currentMessage]);
 
+  const getCurrentFormattedDate2 = () => {
+    const now = new Date();
+    return now.toLocaleString([], {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+  console.log("como lohago ", selectedUser)
+  const currentFormattedDate2 = getCurrentFormattedDate2();
 
+  console.log("Ajaja", dataUser)
   return (
     <div className="containerChat-list">
       <h1>Chats</h1>
@@ -303,11 +350,15 @@ useEffect(() => {
                   <IoIosArrowBack />
                 </button>
                 <div className="avatar">
-                  <img
-                    className="avatar-chat"
-                    src={`data:image/png;base64,${selectedUser.image}`}
-                    alt={selectedUser.name}
-                  />
+                  <Link to={dataUser.user_type === 'Amigo'
+                    ? `/profileClient/${selectedUser.client_id}`
+                    : `/profileFriend/${selectedUser.id_user}`}>
+                    <img
+                      className="avatar-chat"
+                      src={`data:image/png;base64,${selectedUser.image}`}
+                      alt={selectedUser.name}
+                    />
+                  </Link>
                 </div>
                 <div className="user-info">
                   <h3>
@@ -318,69 +369,83 @@ useEffect(() => {
                 </div>
               </div>
             </div>
-
-            <div className="chat-body">
-              <div className="chat-messages">
-                {Object.keys(groupedMessages).map((dateLabel, index) => (
-                  <div className="chat-messages" key={index}>
-                    <span className="date-chat">{dateLabel}</span>
-                    {groupedMessages[dateLabel].map((message, index) => (
-                      <div
-                        key={index}
-                        className={`message ${message.sender === dataUser.user_id
-                            ? "outgoing"
-                            : "incoming"
-                          }`}
-                      >
-                        <div className="message-content">
-                          <div className="message-text">{message.message}</div>
-                          <span className="message-time">{formatMessageTime(message.date)}</span>
-                        </div>
-                      </div>
-                    ))}
-                    <div ref={chatEndRef} />
-                  </div>
-                ))}
+            {Object.keys(groupedMessages).length === 0 ? (
+              <div className="chat-placeholder-one">
+                {/* <img
+                  src="https://i.ibb.co/hZwZSSN/Logo-frent.png"
+                  alt="Logo FREnt"
+                  className="login-logo-chat"
+                /> */}
+                <h3>No tienes ninguna aun una conversación</h3>
+                <p>Empieza a hablar con para cordinar una cita</p>
               </div>
-            </div>
+            ) : (
+                  <div className="chat-body">
+                    <div className="chat-messages">
 
-            <div className="chat-input">
-              <form className="new-message" onSubmit={handleSubmit}>
-                <input
-                  type="text"
-                  value={currentMessage}
-                  onChange={handleChangeMessage}
-                  placeholder="Escribe tu mensaje aquí..."
-                  rows={4}
-                />
-                <div className="char-counter-container">
-                  <span className="char-counter">{messageLength}/{MAX_MESSAGE_LENGTH}</span>
+                      {Object.keys(groupedMessages).map((dateLabel, index) => (
+                        <div className="chat-messages" key={index}>
+                          <span className="date-chat">{dateLabel}</span>
+                          {groupedMessages[dateLabel].map((message, index) => (
+                            <div
+                              key={index}
+                              className={`message ${message.sender === dataUser.user_id
+                                ? "outgoing"
+                                : "incoming"
+                                }`}
+                            >
+                              <div className="message-content">
+                                <div className="message-text">{message.message}</div>
+
+                                {/* <span className="message-time">{formatMessageTime(message.date)}</span> */}
+                                <span className="message-time">{formatMessageTime(message.date)}</span>
+
+                              </div>
+                            </div>
+                          ))}
+                          <div ref={chatEndRef} />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  )}
+                  <div className="chat-input">
+                    <form className="new-message" onSubmit={handleSubmit}>
+                      <input
+                        type="text"
+                        value={currentMessage}
+                        onChange={handleChangeMessage}
+                        placeholder="Escribe tu mensaje aquí..."
+                        rows={4}
+                      />
+                      <div className="char-counter-container">
+                        <span className="char-counter">{messageLength}/{MAX_MESSAGE_LENGTH}</span>
+                      </div>
+                      <button className={isMessageEmpty ? "submit-button disabled" : "submit-button"} type="submit" disabled={isMessageEmpty}>
+                        <i className="fa fa-paper-plane"></i>
+                      </button>
+                    </form>
+                  </div>
                 </div>
-                <button className={isMessageEmpty ? "submit-button disabled" : "submit-button"} type="submit" disabled={isMessageEmpty}>
-                  <i className="fa fa-paper-plane"></i>
-                </button>
-              </form>
-            </div>
-          </div>
-        ) : (
-          <div className="chat-placeholder">
-            <img
-              src="https://i.ibb.co/hZwZSSN/Logo-frent.png"
-              alt="Logo FREnt"
-              className="login-logo-chat"
-            />
-            <h3>Inicia un chat con los amigos de FRent</h3>
+                ) : (
+                <div className="chat-placeholder">
+                  <img
+                    src="https://i.ibb.co/hZwZSSN/Logo-frent.png"
+                    alt="Logo FREnt"
+                    className="login-logo-chat"
+                  />
+                  <h3>Inicia un chat con los amigos de FRent</h3>
 
-            <p>Envía o recibe mensajes</p>
-            <p>
-              Selecciona un amigo de la lista y comienza la conversación para
-              coordinar un encuentro
-            </p>
-          </div>
+                  <p>Envía o recibe mensajes</p>
+                  <p>
+                    Selecciona un amigo de la lista y comienza la conversación para
+                    coordinar un encuentro
+                  </p>
+                </div>
         )}
-      </div>
+              </div>
     </div>
-  );
+        );
 };
 
-export default Chat;
+        export default Chat;

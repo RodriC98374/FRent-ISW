@@ -8,6 +8,7 @@ import "dayjs/locale/es";
 import "./MyCalendar.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { IoArrowBackCircleSharp } from "react-icons/io5";
+import AvailabilityModal from "./avability/AvailabilityModal";
 
 dayjs.locale("es");
 
@@ -15,10 +16,10 @@ function CalendarEdit() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [events, setEvents] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [availabilityModalOpen, setAvailabilityModalOpen] = useState(false);
   const { id } = useParams();
   const friendId = parseInt(id);
 
-  console.log(events);
   const localizer = dayjsLocalizer(dayjs, {
     messages: {
       today: "Hoy",
@@ -51,9 +52,8 @@ function CalendarEdit() {
   const cargarEventos = async () => {
     try {
       const res = await obtenerHorariosReservas(friendId);
-      console.log("el res es", res);
       if (Array.isArray(res.data)) {
-        const eventosTransformados = res.data.map((evento, index) => ({
+        const eventosTransformados = res.data.map((evento) => ({
           start: dayjs(
             evento.fecha_alquiler + "T" + evento.hora_inicio
           ).toDate(),
@@ -69,25 +69,37 @@ function CalendarEdit() {
   };
 
   const calendarStyle = {
-    height: 500,
+    height: 630, // Aumenta la altura del calendario
+    width: '130%', // Aumenta el ancho del calendario
     backgroundColor: "#fff",
   };
 
   const handleAddEvent = (date) => {
-    setSelectedDate(date);
+    setSelectedDate(dayjs(date));
     setModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setSelectedDate(null);
-    setModalOpen(true);
+    setModalOpen(false);
+  };
+
+  const handleShowAvailability = () => {
+    setAvailabilityModalOpen(true);
+  };
+
+  const handleCloseAvailabilityModal = () => {
+    setAvailabilityModalOpen(false);
   };
 
   return (
     <>
-      <NavLink className="boton-calendar" to={`/rentaForm/${friendId}`}>
-        <IoArrowBackCircleSharp />
-      </NavLink>
+      <div className="botones-calendario">
+        <NavLink className="boton-calendar" to={`/profileFriend/${friendId}`}>
+          <IoArrowBackCircleSharp />
+        </NavLink>
+        <button onClick={handleShowAvailability}>Mostrar Disponibilidad</button>
+      </div>
       <div className="calendar">
         <div className="calendarList">
           <Calendar
@@ -96,46 +108,63 @@ function CalendarEdit() {
               previous: "Mes anterior",
               today: "Este mes",
             }}
-          localizer={localizer}
-          events={events}
-          views={["month"]}
-          toolbar={true}
-          style={calendarStyle}
-          components=
-          {{
-            day: {
+            localizer={localizer}
+            events={events}
+            views={["month"]}
+            toolbar={true}
+            style={calendarStyle}
+            components={{
               event: ({ event }) => (
                 <button
-                  onClick={() => handleAddEvent(dayjs(event.start))}
+                  onClick={() => handleAddEvent(event.start)}
                   style={{
                     backgroundColor: "#3174ad",
                     borderRadius: "5px",
                     color: "#fff",
+                    border: "none",
                     cursor: "pointer",
                     width: "100%",
                     height: "30px",
                     textAlign: "left",
                     padding: "0",
-                  }}>
-                  {" "}
-                  <div>{event.eventType}</div>
+                  }}
+                >
+                  <div
+                    style={{
+                      backgroundColor: "#3174ad",
+                      borderRadius: "5px",
+                      color: "#fff",
+                      cursor: "pointer",
+                      border: "none",
+                      width: "100%",
+                      height: "30px",
+                      textAlign: "left",
+                      padding: "0",
+                    }}
+                  >
+                    {event.title}
+                  </div>
                 </button>
               ),
-            },
-          }}
-          dayPropGetter={dayStyleGetter}
-          selectable={true}
-          onSelectSlot={(slotInfo) => handleAddEvent(dayjs(slotInfo.start))}
+            }}
+            dayPropGetter={dayStyleGetter}
+            selectable={true}
+            onSelectSlot={(slotInfo) => handleAddEvent(slotInfo.start)}
           />
-          {selectedDate && (
+          {modalOpen && selectedDate && (
             <div className="modalBackground">
               <EventList
                 date={selectedDate}
                 events={events}
-                onAddEvent={handleAddEvent}
                 onCloseModal={handleCloseModal}
               />
             </div>
+          )}
+          {availabilityModalOpen && (
+            <AvailabilityModal
+              friendId={friendId}
+              onClose={handleCloseAvailabilityModal}
+            />
           )}
         </div>
       </div>

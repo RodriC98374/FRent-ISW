@@ -4,7 +4,6 @@ import "./profileEdits.css";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { IoLocationSharp } from "react-icons/io5";
 import { ButtonPrimary } from "../../components/Buttons/buttonPrimary";
-import { ButtonSecondary } from "../../components/Buttons/buttonSecondary";
 import { ButtonPersonal } from "../../components/Buttons/buttonPersonal";
 import { getFriendID2, getLikes, get_friend_comments } from "../../api/register.api";
 import { calculateAge } from "../listFriend/ListFriends";
@@ -15,7 +14,6 @@ const ProfileFriend = () => {
   const { id } = useParams();
   const friendId = parseInt(id);
   const [friend, setFriend] = useState([]); // Utiliza un único amigo en lugar de una lista de amigos
-  const [likes, setLikes] = useState([]);
   const dataUser = getUser();
   const [comments, setComments] = useState([]);
 
@@ -24,7 +22,6 @@ const ProfileFriend = () => {
     const loadFriend = async () => {
       try {
         const res = await getFriendID2(friendId);
-        console.log("res", res.data); // Verifica la estructura de los datos recibidos
         setFriend(res.data); // Establece el amigo individual obtenido
       } catch (error) {
         console.error("Error al cargar la información del amigo:", error);
@@ -34,7 +31,6 @@ const ProfileFriend = () => {
       try {
         const response = await get_friend_comments(friendId);
         setComments(response.data);
-        console.log('com',response.data);
       } catch (error) {
         console.error("Error al cargar los comentarios:", error);
       }
@@ -97,7 +93,9 @@ const ProfileFriend = () => {
                 <ButtonPersonal label={"Alquilar"} />
               </div>
             </NavLink>
+             
           </div>
+          
         </div>
         <div className="user-description">
           <h3>Descripción personal:</h3>
@@ -110,9 +108,9 @@ const ProfileFriend = () => {
                   <svg
                     className="tag-icon"
                     xmlns="http://www.w3.org/2000/svg"
-                    width="1em"
-                    height="1em"
-                    viewBox="0 0 24 24"
+                    width="0.8em"
+                    height="0.8em"
+                    viewBox="0 0 20 20"
                   >
                     <path
                       fill="white"
@@ -131,9 +129,13 @@ const ProfileFriend = () => {
             <CommentSection comments={comments} clientName={friend.client_full_name} />
           </div>
           <div className="btn-back-reserve">
+          <NavLink className="viewReserv" to={`/calendarReservas/${friendId}`}>
+                Mostrar reservas
+              </NavLink> 
             <NavLink to="/listFriend">
-              <ButtonPrimary label={"Atras"} />
+              <ButtonPrimary label={"Atrás"} />
             </NavLink>
+           
           </div>
         </div>
       </div>
