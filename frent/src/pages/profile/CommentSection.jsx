@@ -23,7 +23,7 @@ const CommentSection = ({ comments }) => {
           <p>No hay comentarios de otros Usuarios</p>
         </div>
       )}
-      {comments.length > 0 && (
+      {comments.length > 1 && (
         <div className="comment-navigation">
           <button
             className="comment-button"

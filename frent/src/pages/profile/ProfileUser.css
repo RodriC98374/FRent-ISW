@@ -212,3 +212,11 @@
   font-weight: bold;
   margin-bottom: 5px;
 }
+
+.prev-perfil {
+  display: flex;
+  flex-direction: center;
+  align-items: center;
+  margin-left: 5%;
+  width: 50%;
+}
