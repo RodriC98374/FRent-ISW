@@ -101,7 +101,7 @@
     overflow-y: scroll;
     height: 496px;
     margin: 18px -15px 0px 0px;
-
+    overflow-y: auto;
 }
 
 .user-chatList::-webkit-scrollbar {
