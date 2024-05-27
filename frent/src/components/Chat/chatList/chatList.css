@@ -75,8 +75,9 @@
 }
 
 .chatListItemName {
-    font-weight: 500;
     color: var(--secondary-color);
+    font-weight: 800;
+    margin-bottom: -10px;
 }
 
 .chatListItemMessage {
