@@ -1,7 +1,7 @@
 .selection-register-container{
     display: grid;
     place-items: center;
-    margin: 0px 40px;
+    margin: 50px 40px;
     font-family: Alata;
 }
 .selection-register-container h1 {

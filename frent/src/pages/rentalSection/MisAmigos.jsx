@@ -4,6 +4,7 @@ import { getUser } from "../../pages/Login/LoginForm";
 import './MisAmigos.css';
 import { Link } from "react-router-dom";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import Footer from '../../components/footer/Footer';
 
 const MisAmigos = () => {
   const [amigos, setAmigos] = useState([]);

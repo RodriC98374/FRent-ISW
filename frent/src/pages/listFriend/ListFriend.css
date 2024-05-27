@@ -1,7 +1,23 @@
-/* ListFriend.css */
+ .list-friend  {
+  overflow: auto;
+  margin-bottom: 30px;
+
+}
+
+.list-friend::-webkit-scrollbar {
+  width: 1px;
+  height: 1px;
+}
+
+.list-friend::-webkit-scrollbar-thumb {
+  background-color: grey;
+  border-radius: 10px;
+  height: 1px;
+}
 
 .list-friend > h1 {
   text-align: center;
+
 }
 
 .lista {

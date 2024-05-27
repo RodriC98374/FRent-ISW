@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./ListFriend.css";
 import { Country, State } from "country-state-city";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
 
 import { getFriends, getLikes } from "../../api/register.api";
@@ -95,6 +95,8 @@ export default function ListFriend() {
     setCountryFilter(e.target.value);
     setCityFilter("");
   };
+
+  
 
   const filteredFriends = friends.filter((friend) => {
     const fullName = `${friend.first_name} ${friend.last_name}`.toLowerCase();
@@ -320,9 +322,9 @@ export default function ListFriend() {
               to={`/rentaForm/${friend.id_user}`}>
               Alquilar
             </NavLink> */}
-            <NavLink className="button-card" to={`/profileFriend/${friend.id_user}`}>
+            <Link className="button-card" to={`/profileFriend/${friend.id_user}`}>
               Ver perfil
-            </NavLink>
+            </Link>
           </div>
         ))}
       </div>
