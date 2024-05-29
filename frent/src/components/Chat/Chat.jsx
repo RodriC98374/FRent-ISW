@@ -16,7 +16,6 @@ const Chat = () => {
   const [isChatVisible, setIsChatVisible] = useState(true);
   const dataUser = getUser();
   const [socket, setSocket] = useState(null);
-  const [bandera, setBandera] = useState(1);
   const [lastMessage, setLastMessage] = useState(null);
   const [timeSinceLastMessage, setTimeSinceLastMessage] = useState("");
   const [messageLength, setMessageLength] = useState(0);
@@ -73,6 +72,10 @@ const Chat = () => {
     }
   };
 
+  //CUANDO HAGAN PULL Y EXISTA CONFLICTOS, NO SIMPLEMENTE ACEPTEN SUS
+  //CAMBIOS Y DESCARTEN LAS DEL REPO, POR ALGO ESTAN AHI
+  //YA ES LA TERCERA VEZ QUE APARECE CODIGOS ANTIGUOS CON BUGS
+
   useEffect(() => {
     const connectWebSocket = () => {
       if (selectedUser) {
@@ -83,12 +86,18 @@ const Chat = () => {
 
         let ws;
         if (dataUser.user_type === "Cliente") {
+          // ws = new WebSocket(
+          //   `ws://localhost:9000/ws/chat/${dataUser.user_id}/${idOther}/`
+          // );
           ws = new WebSocket(
-            `ws://localhost:9000/ws/chat/${dataUser.user_id}/${idOther}/`
+            `wss://deploy-is-production.up.railway.app/ws/chat/${dataUser.user_id}/${idOther}/`
           );
         } else {
+          // ws = new WebSocket(
+          //   `ws://localhost:9000/ws/chat/${idOther}/${dataUser.user_id}/`
+          // );
           ws = new WebSocket(
-            `ws://localhost:9000/ws/chat/${idOther}/${dataUser.user_id}/`
+            `wss://deploy-is-production.up.railway.app/ws/chat/${idOther}/${dataUser.user_id}/`
           );
         }
 
@@ -106,12 +115,8 @@ const Chat = () => {
             const message = JSON.parse(e.data);
             console.log("Mensaje recibido desde el servidor:", message);
 
-            if (bandera > 0) {
-              setMessageHistory2(message);
-            }
-
-            setBandera(bandera * -1);
-
+            setMessageHistory2(message);
+            
             setMessages((prevMessages) => {
               const newMessages = [
 
@@ -241,9 +246,6 @@ const Chat = () => {
     setSelectedUser(null);
     setIsChatVisible(false);
   };
-
-
-
 
   const formatMessageTime = (isoString) => {
     if (!isoString) {
