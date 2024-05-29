@@ -349,9 +349,7 @@ import React, { useEffect, useState } from "react";
                 type={"submit"}
                 label={"Alquilar"}
               />
-              <NavLink className="viewReserv" to={`/calendarReservas/${friendId}`}>
-                Mostrar reservas
-              </NavLink>
+              
                 <ButtonSecondary label={"Cancelar"} onClick={confirmCancel} />
             </div>
           </form>

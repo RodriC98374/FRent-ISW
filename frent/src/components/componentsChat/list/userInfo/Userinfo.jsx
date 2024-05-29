@@ -27,9 +27,7 @@ const Userinfo = () => {
                 <i className="fas fa-edit"></i>
             </div>
         </div>
-    )
-
-
+    );
 }
 
-export default Userinfo;
+export default Userinfo; 

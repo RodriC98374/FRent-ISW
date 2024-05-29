@@ -32,6 +32,7 @@
     height: 100%;
     background: radial-gradient(ellipse at bottom, #fdc980 0%, #5f3501 100%);
     overflow-y: auto;
+    color: #fff;
 }
 
 .message-chat {
@@ -53,6 +54,19 @@
     border-radius: 0px 4px 4px 0px;
     overflow: hidden;
     background: linear-gradient(to right, #FBA834, #f7bd0f);
+}
+
+.chat-placeholder-one {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 464px;
+    height: 76%;
+    border-radius: 0px 4px 4px 0px;
+    overflow: hidden;
+    background: linear-gradient(to right, #f7f7f7, #c7b172);
 }
 
 .login-logo-chat {
@@ -98,6 +112,7 @@
     height: 40px;
     border-radius: 50%;
     margin-right: 10px;
+    margin-left: 10px;
     object-fit: cover;
 }
 
@@ -262,4 +277,5 @@
     background-color: #cccccc;
     color: #666666; 
   }
+  
   

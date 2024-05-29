@@ -212,3 +212,26 @@
   font-weight: bold;
   margin-bottom: 5px;
 }
+
+.prev-perfil {
+  display: flex;
+  flex-direction: center;
+  align-items: center;
+  margin-left: 5%;
+  width: 50%;
+}
+.viewReserv {
+  background-color: var(--tertiary-color);
+  color: #000;
+    padding: var(--high-button) var(--broad-button);
+    border-radius: 8px;
+    margin-right: 40%;
+    border: none;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.08);
+    width: 19em;
+}
+.viewReserv:hover {
+  background-color: var(--quaternary-color);
+  color: #fff;
+  
+}

@@ -25,6 +25,7 @@ import Chat from './components/Chat/Chat';
 /*import para ver como queda perfil*/
 import ProfileClient from "./pages/profile/profileClient";
 import Ranking from "./pages/ranking/Ranking";
+import Footer from "./components/footer/Footer";
 /* import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./lib/firebase";
 import useUserStore from "./lib/userStore"; */
@@ -142,6 +143,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </div>
+      <Footer></Footer>
     </>
   );
 }

@@ -92,8 +92,10 @@ const ProfileFriend = () => {
               <div className="btn-back-alquilar">
                 <ButtonPersonal label={"Alquilar"} />
               </div>
-            </NavLink>  
+            </NavLink>
+             
           </div>
+          
         </div>
         <div className="user-description">
           <h3>Descripción personal:</h3>
@@ -127,9 +129,13 @@ const ProfileFriend = () => {
             <CommentSection comments={comments} clientName={friend.client_full_name} />
           </div>
           <div className="btn-back-reserve">
+          <NavLink className="viewReserv" to={`/calendarReservas/${friendId}`}>
+                Mostrar reservas
+              </NavLink> 
             <NavLink to="/listFriend">
               <ButtonPrimary label={"Atrás"} />
             </NavLink>
+           
           </div>
         </div>
       </div>

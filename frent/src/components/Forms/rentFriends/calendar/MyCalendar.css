@@ -1,15 +1,12 @@
-
 .calendar {
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 90vh;
-  width: 70%;
+  width: 90%; /* Aumenta el ancho del contenedor del calendario */
   margin: 0 auto;
   padding: 20px;
-  background-color: #ffffff; /* Fondo blanco */
-  border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sutil sombra */
+  background-color: #ffffff; 
 }
 
 .rbc-calendar {
@@ -25,7 +22,8 @@
 }
 
 .rbc-month-view {
-  background-color: #ffffff;
+  background-color: #4457df80;
+  border-radius: 10px;
 }
 
 .rbc-header {
@@ -55,121 +53,11 @@
   margin-bottom: 5px;
   padding: 5px 10px;
   font-size: 14px; /* Tamaño de la fuente de los eventos */
-  width: 80%;
+  width: 100%; /* Asegúrate de que los eventos no sobresalgan de los contenedores */
   text-align: left;
 }
 
 /* Estilos para el botón de retroceso */
-.boton-calendar {
-  font-size: 24px; /* Tamaño del icono de retroceso */
-  color: #000000;
-  margin: 20px;
-}
-
-.boton-calendar:hover {
-  font-size: 28px; /* Aumenta el tamaño al pasar el mouse */
-  color: #fba834; /* Color de acento al pasar el mouse */
-}
-
-/* Estilos para el fondo modal */
-.modalBackground {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semi-transparente */
-  z-index: 999;
-}
-
-  
-  .rbc-calendar {
-    background-color: #f0e4e4 !important;
-    border-radius: 10px; 
-    color: #0000;
-    
-  }
-  
-  .rbc-toolbar .rbc-toolbar-label {
-    text-align: center;
-    color: #000;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  }
-  
-  .rbc-month-view{
-    border: none !important;
-    border-radius: 10px !important;
-  }
-  .rbc-month-view {
-    background-color: #a5bfe6 !important;
-  }
-  
-  .rbc-month-view {
-    background-color: #f2eff5;
-    border: none;
-    border: 1px solid #000;
-    
-  }
-  .rbc-off-range-bg {
-    background: #fcf9f9 !important;
-    border-radius: 2px;
-  }
-   .rbc-header {
-    color: #000;
-   }
-  
-   .rbc-date-cell {
-    display: flex;
-    padding: 10px 0px 0px 10px;
-    color: #0e0a0a;
-   }
-   .rbc-row-segment {
-    padding: 0 1px 1px 1px;
-    margin: 0 3px 109px 10px;
-}
-   .rbc-today {
-    background-color: #FBA834 !important;
-    border-radius: 6px;
-    border: 2px solid #000;
-  }
-  
-  
-  .rbc-day-bg + .rbc-day-bg {
-    border-left: none !important; 
-  }
-  .rbc-month-row + .rbc-month-row {
-    border-top:none !important ;
-    margin: 3px; 
-  }
-  
-  .rbc-header + .rbc-header {
-    border-left: none !important;
-  }
-  .rbc-header {
-     border-bottom: none !important;
-     margin: 5px 0 10px 0 ;
-  }
-  .calendarList {
-    display: flex;
-    flex-direction: column;
-    top: 80%;
-    /* justify-content: center;  */
-  /* align-items: center; */
-  }
-
-
-
-.modalBackground {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-}
-
-
 .boton-calendar{
   font-size: 50px;
   color: #000;
@@ -182,87 +70,24 @@
   color: var(--primary-color);
   box-shadow: #3174ad;
 }
-
-.rbc-month-header {
+.botones-calendario{
   display: flex;
-  flex-direction: row;
-  border: 1px solid #000;
-  border-radius: 10px;
+  justify-content: space-between;
 }
 
-.rbc-month-view {
-  position: relative;
-  border: 1px solid #000 !important;
-  display: flex;
-  flex-direction: column;
-  flex: 1 0;
-  width: 100%;
-  user-select: none;
-  -webkit-user-select: none;
-  height: 100%;
+.botones-calendario button {
+  border: none;
+  color: #000;
+  background-color: var(--tertiary-color);
+  padding: 21px 22px 37px 22px;
+  height: 23px;
+  margin-top: 21px;
+  margin-right: 40%;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #FFF;
 }
-
-.rbc-date-cell {
-  display: flex;
-  padding: 10px 0px 0px 10px;
-  color: #0e0a0a;
-  margin-bottom: 10px; /* Añade espacio inferior entre las fechas */
-}
-
-
-/* -------------- */
-
-
-/* Estilos para el calendario */
-
-.rbc-calendar {
-  background-color: #ffffff;
-  color: #000000; /* Texto negro */
-}
-
-.rbc-toolbar .rbc-toolbar-label {
-  text-align: center;
-  color: #000000;
-  font-family: "Alata", sans-serif;
-  font-size: 18px; /* Tamaño del texto del encabezado */
-}
-
-.rbc-month-view {
-  background-color: #ffffff;
-}
-
-.rbc-header {
-  color: #000000;
-}
-
-.rbc-date-cell {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  color: #000000;
-}
-
-.rbc-today {
-  background-color: #fba834 !important; /* Color de fondo para el día actual */
-  border-radius: 6px;
-}
-
-/* Estilos para los eventos */
-.rbc-event,
-.rbc-day-slot .rbc-background-event {
-  background-color: #3174ad;
-  color: #ffffff; /* Texto blanco */
-  border-radius: 5px;
-  cursor: pointer;
-  margin-bottom: 5px;
-  padding: 5px 10px;
-  font-size: 14px; /* Tamaño de la fuente de los eventos */
-  width: 80%;
-  text-align: left;
-}
-
-
 
 /* Estilos para el fondo modal */
 .modalBackground {

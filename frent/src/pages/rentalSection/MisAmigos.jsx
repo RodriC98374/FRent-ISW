@@ -4,6 +4,7 @@ import { getUser } from "../../pages/Login/LoginForm";
 import './MisAmigos.css';
 import { Link } from "react-router-dom";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import Footer from '../../components/footer/Footer';
 
 const MisAmigos = () => {
   const [amigos, setAmigos] = useState([]);
@@ -12,7 +13,8 @@ const MisAmigos = () => {
   const [comment, setComment] = useState('');
   const [likes, setLikes] = useState({});
   const dataUser = getUser();
-  
+  const MAX_COMMENT_LENGTH = 150; // Limite de caracteres
+
   const getImage = (imageFriend) => {
     if (imageFriend) {
       return `data:image/png;base64,${imageFriend}`;
@@ -107,12 +109,18 @@ const MisAmigos = () => {
             <form onSubmit={handleCommentSubmit}>
               <textarea
                 required
-                placeholder="Escribe tu comentario aquí"
+                placeholder="Escribe tu comentario aquí (0/150)"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
+                maxLength={MAX_COMMENT_LENGTH} // Límite de caracteres
               ></textarea>
+              {comment.length >= MAX_COMMENT_LENGTH ? (
+                <p style={{ color: 'red' }}>HAS SUPERADO EL LÍMITE DE CARACTERES</p>
+              ) : (
+                <p></p>
+              )}
               <div className="form-buttons">
-                <button type="submit">Enviar</button>
+                <button type="submit" disabled={comment.length > MAX_COMMENT_LENGTH}>Enviar</button>
                 <button type="button" onClick={hideForm}>Cancelar</button>
               </div>
             </form>
