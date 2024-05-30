@@ -75,9 +75,9 @@
 }
 
 .chatListItemName {
+    font-weight: 700;
     color: var(--secondary-color);
-    font-weight: 800;
-    margin-bottom: -10px;
+    
 }
 
 .chatListItemMessage {
@@ -99,9 +99,9 @@
 
 .user-chatList {
     overflow-y: scroll;
-    height: 496px;
-    margin: 18px -15px 0px 0px;
-    overflow-y: auto;
+    height: 470px;
+    margin: 34px 1px -25px 0px;
+
 }
 
 .user-chatList::-webkit-scrollbar {

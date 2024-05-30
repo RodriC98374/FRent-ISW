@@ -32,7 +32,6 @@
     height: 100%;
     background: radial-gradient(ellipse at bottom, #fdc980 0%, #5f3501 100%);
     overflow-y: auto;
-    color: #fff;
 }
 
 .message-chat {
@@ -66,7 +65,7 @@
     height: 76%;
     border-radius: 0px 4px 4px 0px;
     overflow: hidden;
-    background: linear-gradient(to right, #f7f7f7, #c7b172);
+    background: linear-gradient(to right, #f7f7f7, #ecebe8);
 }
 
 .login-logo-chat {
