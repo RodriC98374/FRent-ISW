@@ -96,7 +96,12 @@ export default function ListFriend() {
     setCityFilter("");
   };
 
-  
+  const getCountryCode = (countryName) => {
+    const country = Country.getAllCountries().find(
+      (country) => country.name === countryName
+    );
+    return country ? country.isoCode : "";
+  };
 
   const filteredFriends = friends.filter((friend) => {
     const fullName = `${friend.first_name} ${friend.last_name}`.toLowerCase();
@@ -124,14 +129,17 @@ export default function ListFriend() {
     label: country.name,
   }));
 
-  const cityOptions = State.getStatesOfCountry(countryFilter).map((state) => ({
-    value: state.name,
+  
+  const cityOptions = State.getStatesOfCountry(getCountryCode(countryFilter)).map((state) => ({
+    value: state.name && state.name.replace(" Department", ""),
     label: state.name && state.name.replace(" Department", ""),
   }));
+
 
   const handleCityChange = (e) => {
     setCityFilter(e.target.value);
   };
+
 
   const handleGenderChange = (e) => {
     setGenderFilter(e.target.value);
@@ -294,7 +302,8 @@ export default function ListFriend() {
       </div>
 
       <div className="lista">
-        {filteredFriends.map((friend) => (
+      {filteredFriends.length > 0 ? (
+        filteredFriends.map((friend) => (
           <div
             key={friend.id_user}
             className="card">
@@ -326,7 +335,14 @@ export default function ListFriend() {
               Ver perfil
             </Link>
           </div>
-        ))}
+        ))
+        
+      ): (
+        <div className="no-friends-message">
+            No se encontraron amigos con esas características😟.
+          </div>
+      )}
+        
       </div>
       {selectedImage && (
         <div className="modalF">

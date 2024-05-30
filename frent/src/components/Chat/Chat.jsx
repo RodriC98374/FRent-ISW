@@ -17,17 +17,14 @@ const Chat = () => {
   const [isChatVisible, setIsChatVisible] = useState(true);
   const dataUser = getUser();
   const [socket, setSocket] = useState(null);
-  const [bandera, setBandera] = useState(1);
   const [lastMessage, setLastMessage] = useState(null);
   const [timeSinceLastMessage, setTimeSinceLastMessage] = useState("");
   const [messageLength, setMessageLength] = useState(0);
   const [isMessageEmpty, setIsMessageEmpty] = useState(true);
 
-
   const roomName = dataUser.user_type;
 
   const chatEndRef = useRef(null);
-
 
   useEffect(() => {
     if (messages2.length > 0) {
@@ -36,7 +33,6 @@ const Chat = () => {
       setTimeSinceLastMessage(calculateTimePassed(latestMessage.date));
     }
   }, [messages2]);
-
 
   useEffect(() => {
     if (dataUser && selectedUser) fetchData();
@@ -74,6 +70,10 @@ const Chat = () => {
     }
   };
 
+  //CUANDO HAGAN PULL Y EXISTA CONFLICTOS, NO SIMPLEMENTE ACEPTEN SUS
+  //CAMBIOS Y DESCARTEN LAS DEL REPO, POR ALGO ESTAN AHI
+  //YA ES LA TERCERA VEZ QUE APARECE CODIGOS ANTIGUOS CON BUGS
+
   useEffect(() => {
     const connectWebSocket = () => {
       if (selectedUser) {
@@ -87,10 +87,16 @@ const Chat = () => {
           ws = new WebSocket(
             `ws://localhost:9000/ws/chat/${dataUser.user_id}/${idOther}/`
           );
+          // ws = new WebSocket(
+          //   `wss://deploy-is-production.up.railway.app/ws/chat/${dataUser.user_id}/${idOther}/`
+          // );
         } else {
           ws = new WebSocket(
             `ws://localhost:9000/ws/chat/${idOther}/${dataUser.user_id}/`
           );
+          // ws = new WebSocket(
+          //   `wss://deploy-is-production.up.railway.app/ws/chat/${idOther}/${dataUser.user_id}/`
+          // );
         }
 
         ws.onopen = () => {
@@ -107,15 +113,10 @@ const Chat = () => {
             const message = JSON.parse(e.data);
             console.log("Mensaje recibido desde el servidor:", message);
 
-            if (bandera > 0) {
-              setMessageHistory2(message);
-            }
-
-            setBandera(bandera * -1);
+            setMessageHistory2(message);
 
             setMessages((prevMessages) => {
               const newMessages = [
-
                 ...prevMessages,
                 {
                   id: prevMessages.length + 1,
@@ -131,7 +132,9 @@ const Chat = () => {
               if (newMessages.length > 0) {
                 const latestMessage = newMessages[newMessages.length - 1];
                 setLastMessage(latestMessage.text);
-                setTimeSinceLastMessage(calculateTimePassed(latestMessage.time));
+                setTimeSinceLastMessage(
+                  calculateTimePassed(latestMessage.time)
+                );
               }
 
               return newMessages;
@@ -158,12 +161,6 @@ const Chat = () => {
     if (roomName) {
       connectWebSocket();
     }
-
-    return () => {
-      if (socket) {
-        socket.close(); // Cerrar la conexión al desmontar el componente
-      }
-    };
   }, [roomName, selectedUser]);
 
   useEffect(() => {
@@ -171,7 +168,6 @@ const Chat = () => {
       chatEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages2]);
-
 
   const handleUserSelect = (user) => {
     setSelectedUser(user);
@@ -243,9 +239,6 @@ const Chat = () => {
     setIsChatVisible(false);
   };
 
-
-
-
   const formatMessageTime = (isoString) => {
     if (!isoString) {
       //console.error("Invalid date string:", isoString);
@@ -260,7 +253,10 @@ const Chat = () => {
         return "Invalid Date";
       }
       // console.log("Successfully parsed date:", date);
-      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      return date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
     } catch (error) {
       // console.error("Error formatting date:", error, isoString);
       return "Invalid Date";
@@ -270,12 +266,12 @@ const Chat = () => {
   const getCurrentFormattedDate = () => {
     const now = new Date();
     return now.toLocaleString([], {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -291,14 +287,14 @@ const Chat = () => {
     const yesterday = new Date(today);
     yesterday.setDate(today.getDate() - 1);
 
-    const options = { weekday: 'short', day: '2-digit', month: '2-digit' };
+    const options = { weekday: "short", day: "2-digit", month: "2-digit" };
 
     if (date.toDateString() === today.toDateString()) {
-      return '--Hoy--';
+      return "--Hoy--";
     } else if (date.toDateString() === yesterday.toDateString()) {
-      return '--Ayer--';
+      return "--Ayer--";
     } else {
-      return date.toLocaleDateString('es-ES', options);
+      return date.toLocaleDateString("es-ES", options);
     }
   };
 
@@ -312,7 +308,6 @@ const Chat = () => {
   }, {});
 
   const MAX_MESSAGE_LENGTH = 150;
-
 
   const handleChangeMessage = (event) => {
     const message = event.target.value;
@@ -329,14 +324,14 @@ const Chat = () => {
   const getCurrentFormattedDate2 = () => {
     const now = new Date();
     return now.toLocaleString([], {
-      hour: '2-digit',
-      minute: '2-digit'
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
-  console.log("como lohago ", selectedUser)
+  console.log("como lohago ", selectedUser);
   const currentFormattedDate2 = getCurrentFormattedDate2();
 
-  console.log("Ajaja", dataUser)
+  console.log("Ajaja", dataUser);
   return (
     <div className="containerChat-list">
       <h1>Chats</h1>
@@ -350,9 +345,13 @@ const Chat = () => {
                   <IoIosArrowBack />
                 </button>
                 <div className="avatar">
-                  <Link to={dataUser.user_type === 'Amigo'
-                    ? `/profileClient/${selectedUser.client_id}`
-                    : `/profileFriend/${selectedUser.id_user}`}>
+                  <Link
+                    to={
+                      dataUser.user_type === "Amigo"
+                        ? `/profileClient/${selectedUser.client_id}`
+                        : `/profileFriend/${selectedUser.id_user}`
+                    }
+                  >
                     <img
                       className="avatar-chat"
                       src={`data:image/png;base64,${selectedUser.image}`}
@@ -380,72 +379,83 @@ const Chat = () => {
                 <p>Empieza a hablar con para cordinar una cita</p>
               </div>
             ) : (
-                  <div className="chat-body">
-                    <div className="chat-messages">
-
-                      {Object.keys(groupedMessages).map((dateLabel, index) => (
-                        <div className="chat-messages" key={index}>
-                          <span className="date-chat">{dateLabel}</span>
-                          {groupedMessages[dateLabel].map((message, index) => (
-                            <div
-                              key={index}
-                              className={`message ${message.sender === dataUser.user_id
-                                ? "outgoing"
-                                : "incoming"
-                                }`}
-                            >
-                              <div className="message-content">
-                                <div className="message-text">{message.message}</div>
-
-                                {/* <span className="message-time">{formatMessageTime(message.date)}</span> */}
-                                <span className="message-time">{formatMessageTime(message.date)}</span>
-
-                              </div>
+              <div className="chat-body">
+                <div className="chat-messages">
+                  {Object.keys(groupedMessages).map((dateLabel, index) => (
+                    <div className="chat-messages" key={index}>
+                      <span className="date-chat">{dateLabel}</span>
+                      {groupedMessages[dateLabel].map((message, index) => (
+                        <div
+                          key={index}
+                          className={`message ${
+                            message.sender === dataUser.user_id
+                              ? "outgoing"
+                              : "incoming"
+                          }`}
+                        >
+                          <div className="message-content">
+                            <div className="message-text">
+                              {message.message}
                             </div>
-                          ))}
-                          <div ref={chatEndRef} />
+
+                            {/* <span className="message-time">{formatMessageTime(message.date)}</span> */}
+                            <span className="message-time">
+                              {formatMessageTime(message.date)}
+                            </span>
+                          </div>
                         </div>
                       ))}
+                      <div ref={chatEndRef} />
                     </div>
-                  </div>
-                  )}
-                  <div className="chat-input">
-                    <form className="new-message" onSubmit={handleSubmit}>
-                      <input
-                        type="text"
-                        value={currentMessage}
-                        onChange={handleChangeMessage}
-                        placeholder="Escribe tu mensaje aquí..."
-                        rows={4}
-                      />
-                      <div className="char-counter-container">
-                        <span className="char-counter">{messageLength}/{MAX_MESSAGE_LENGTH}</span>
-                      </div>
-                      <button className={isMessageEmpty ? "submit-button disabled" : "submit-button"} type="submit" disabled={isMessageEmpty}>
-                        <i className="fa fa-paper-plane"></i>
-                      </button>
-                    </form>
-                  </div>
+                  ))}
                 </div>
-                ) : (
-                <div className="chat-placeholder">
-                  <img
-                    src="https://i.ibb.co/hZwZSSN/Logo-frent.png"
-                    alt="Logo FREnt"
-                    className="login-logo-chat"
-                  />
-                  <h3>Inicia un chat con los amigos de FRent</h3>
-
-                  <p>Envía o recibe mensajes</p>
-                  <p>
-                    Selecciona un amigo de la lista y comienza la conversación para
-                    coordinar un encuentro
-                  </p>
-                </div>
-        )}
               </div>
+            )}
+            <div className="chat-input">
+              <form className="new-message" onSubmit={handleSubmit}>
+                <input
+                  type="text"
+                  value={currentMessage}
+                  onChange={handleChangeMessage}
+                  placeholder="Escribe tu mensaje aquí..."
+                  rows={4}
+                />
+                <div className="char-counter-container">
+                  <span className="char-counter">
+                    {messageLength}/{MAX_MESSAGE_LENGTH}
+                  </span>
+                </div>
+                <button
+                  className={
+                    isMessageEmpty ? "submit-button disabled" : "submit-button"
+                  }
+                  type="submit"
+                  disabled={isMessageEmpty}
+                >
+                  <i className="fa fa-paper-plane"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        ) : (
+          <div className="chat-placeholder">
+            <img
+              src="https://i.ibb.co/hZwZSSN/Logo-frent.png"
+              alt="Logo FREnt"
+              className="login-logo-chat"
+            />
+            <h3>Inicia un chat con los amigos de FRent</h3>
+
+            <p>Envía o recibe mensajes</p>
+            <p>
+              Selecciona un amigo de la lista y comienza la conversación para
+              coordinar un encuentro
+            </p>
+          </div>
+        )}
+      </div>
     </div>
-        );
+  );
 };
 
-        export default Chat;
+export default Chat;
