@@ -30,28 +30,56 @@
   }
   
   .top-friend.rank-1 .profile-picture img{
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
-    border: 3px solid gold;
+    /* border: 3px solid gold; */
     order: 3;
   }
 
   .top-friend.rank-2 .profile-picture img{
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
-    border: 3px solid silver;
+    /* border: 3px solid silver; */
     order: 3;
   }
 
   .top-friend.rank-3 .profile-picture img{
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
-    border: 3px solid #CD7F32;
+    /* border: 3px solid #CD7F32; */
     order: 3;
   }
+
+  .top-friend.rank-1 .profile-picture,
+  .top-friend.rank-2 .profile-picture,
+  .top-friend.rank-3 .profile-picture{
+    position: relative;
+  }
+
+  .top-friend.rank-1 .profile-picture .cup-icon{
+    color: gold;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
+  .top-friend.rank-2 .profile-picture .cup-icon{
+    color: silver;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
+  .top-friend.rank-3 .profile-picture .cup-icon{
+    color: #CD7F32;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
   
   .rank {
     font-size: 24px;
