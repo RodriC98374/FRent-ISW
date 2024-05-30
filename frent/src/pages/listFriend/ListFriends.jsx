@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
 
 import { getFriends, getLikes, getFriendID2 } from "../../api/register.api";
-import InterestModal from "./InterestModal";
 
 export const calculateAge = (birthDate) => {
   const currentDate = new Date();
@@ -29,11 +28,8 @@ export default function ListFriend() {
   const [genderFilter, setGenderFilter] = useState("");
   const [ageFilter, setAgeFilter] = useState("");
   const [priceFilter, setPriceFilter] = useState("");
-  const [interestFilter, setInterestFilter] = useState("");
   const [likes, setLikes] = useState([]);
   const [interestFilters, setInterestFilters] = useState([]);
-  const [showInterestModal, setShowInterestModal] = useState(false);
-  const [selectedInterests, setSelectedInterests] = useState([]);
 
   const [friendsDetail, setFriendsDetail] = useState([]);
 
@@ -97,7 +93,12 @@ export default function ListFriend() {
     setCityFilter("");
   };
 
-
+  const getCountryCode = (countryName) => {
+    const country = Country.getAllCountries().find(
+      (country) => country.name === countryName
+    );
+    return country ? country.isoCode : "";
+  };
 
   const filteredFriends = friendsDetail.filter((friend) => {
     const fullName = `${friend.first_name} ${friend.last_name}`.toLowerCase();
@@ -121,18 +122,21 @@ export default function ListFriend() {
 
 
   const countryOptions = Country.getAllCountries().map((country) => ({
-    value: country.isoCode,
+    value: country.name,
     label: country.name,
   }));
 
-  const cityOptions = State.getStatesOfCountry(countryFilter).map((state) => ({
-    value: state.isoCode,
+  
+  const cityOptions = State.getStatesOfCountry(getCountryCode(countryFilter)).map((state) => ({
+    value: state.name && state.name.replace(" Department", ""),
     label: state.name && state.name.replace(" Department", ""),
   }));
+
 
   const handleCityChange = (e) => {
     setCityFilter(e.target.value);
   };
+
 
   const handleGenderChange = (e) => {
     setGenderFilter(e.target.value);
@@ -163,23 +167,7 @@ export default function ListFriend() {
 
   const handleInterestChange = (e) => {
     const selectedInterest = e.target.value;
-    if (interestFilters.includes(selectedInterest)) {
-      setInterestFilters(interestFilters.filter((interest) => interest !== selectedInterest));
-    } else {
-      setInterestFilters([...interestFilters, selectedInterest]);
-    }
-  };
-
-  const handleToggleInterestModal = () => {
-    setShowInterestModal(!showInterestModal);
-  };
-
-  const handleInterestSave = (interest, isSelected) => {
-    if (isSelected) {
-      setSelectedInterests([...selectedInterests, interest]);
-    } else {
-      setSelectedInterests(selectedInterests.filter((item) => item !== interest));
-    }
+    setInterestFilters(selectedInterest === "" ? [] : [selectedInterest]);
   };
 
   const clearSearch = () => {
@@ -316,7 +304,7 @@ export default function ListFriend() {
             <label className="filter-label">Intereses:</label>
             <select
               className="filter-select"
-              value={interestFilter}
+              value={interestFilters}
               onChange={handleInterestChange}
             >
               <option value="">Todos</option>
@@ -333,7 +321,8 @@ export default function ListFriend() {
       </div>
 
       <div className="lista">
-        {filteredFriends.map((friend) => (
+      {filteredFriends.length > 0 ? (
+        filteredFriends.map((friend) => (
           <div
             key={friend.id_user}
             className="card">
@@ -365,7 +354,14 @@ export default function ListFriend() {
               Ver perfil
             </Link>
           </div>
-        ))}
+        ))
+        
+      ): (
+        <div className="no-friends-message">
+            No se encontraron amigos con esas características😟.
+          </div>
+      )}
+        
       </div>
       {selectedImage && (
         <div className="modalF">
