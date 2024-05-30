@@ -8,7 +8,7 @@ import { NavLink, useParams } from "react-router-dom";
 export default function ProfileUser() {
   const userData = getUser();
   const { path_back } = useParams();
-  const { id }= useParams();
+  const { id } = useParams();
   const [availability, setAvailability] = useState([]);
 
   useEffect(() => {
@@ -39,17 +39,17 @@ export default function ProfileUser() {
 
   const definePathBack = () => {
     let newPath;
-    
-    if(!path_back){
-      return '/';
+
+    if (!path_back) {
+      return "/";
     }
-    
-    if(id){
-      newPath = `/${path_back}/${id}`
+
+    if (id) {
+      newPath = `/${path_back}/${id}`;
       return newPath;
     }
-    return "/"+path_back;
-  }
+    return "/" + path_back;
+  };
 
   return (
     <>
@@ -93,7 +93,7 @@ export default function ProfileUser() {
                       <p>{obtenerRangos("Martes")}</p>
                     </div>
                     <div className="input-3c-profile">
-                      <p className="label-information">Miercoles:</p>
+                      <p className="label-information">Miércoles:</p>
                       <p>{obtenerRangos("Miercoles")}</p>
                     </div>
                     <div className="input-1c-profile">
@@ -106,7 +106,7 @@ export default function ProfileUser() {
                     </div>
 
                     <div className="input-3c-profile">
-                      <p className="label-information">Sabado:</p>
+                      <p className="label-information">Sábado:</p>
                       <p>{obtenerRangos("Sabado")}</p>
                     </div>
 

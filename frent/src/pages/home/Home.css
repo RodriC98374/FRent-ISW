@@ -3,11 +3,10 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-image: url('../../assets/img/principalHome.png');
+  background-image: url('../../assets/img/principalHome.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed;
 }
 
 .home-containerClient {
@@ -15,11 +14,10 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(to bottom,rgba(0,0,0,0.1),rgba(0,0,0,0.4)),url('../../assets/img/homeClient.png');
+  background: linear-gradient(to bottom,rgba(0,0,0,0.1),rgba(0,0,0,0.4)),url('../../assets/img/homeClient.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed;
 }
 
 .home-containerFriend {
@@ -27,11 +25,10 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(to bottom,rgba(0,0,0,0.1),rgba(0,0,0,0.4)),url('../../assets/img/homeFriend.png');
+  background: linear-gradient(to bottom,rgba(0,0,0,0.1),rgba(0,0,0,0.4)),url('../../assets/img/homeFriend.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed;
   color: black;
 }
 
