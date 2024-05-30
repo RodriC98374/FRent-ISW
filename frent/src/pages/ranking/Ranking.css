@@ -87,7 +87,9 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    margin-left: 8px;
   }
+
   
   .friend-info {
     display: flex;
@@ -98,6 +100,11 @@
   
   .friend-name {
     font-size: 18px;
+  }
+
+  .friend-name > a{
+    text-decoration: none;
+    color: #000;
   }
   
   .friend-likes {
