@@ -70,10 +70,6 @@ const Chat = () => {
     }
   };
 
-  //CUANDO HAGAN PULL Y EXISTA CONFLICTOS, NO SIMPLEMENTE ACEPTEN SUS
-  //CAMBIOS Y DESCARTEN LAS DEL REPO, POR ALGO ESTAN AHI
-  //YA ES LA TERCERA VEZ QUE APARECE CODIGOS ANTIGUOS CON BUGS
-
   useEffect(() => {
     const connectWebSocket = () => {
       if (selectedUser) {

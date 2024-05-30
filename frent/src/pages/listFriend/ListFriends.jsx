@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
 
 import { getFriends, getLikes } from "../../api/register.api";
-import InterestModal from "./InterestModal";
 
 export const calculateAge = (birthDate) => {
   const currentDate = new Date();
@@ -46,6 +45,7 @@ export default function ListFriend() {
         const resLikes = await getLikes();
         setFriends(res.data);
         setLikes(resLikes.data);
+        console.log("Los amgigos son", res.data);
       } catch (error) {
         console.error("Error al cargar la lista de amigos:", error);
       }
