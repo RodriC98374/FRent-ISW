@@ -4,7 +4,7 @@ import { Country, State } from "country-state-city";
 import { Link } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
 
-import { getFriends, getLikes } from "../../api/register.api";
+import { getFriends, getLikes, getFriendID2 } from "../../api/register.api";
 import InterestModal from "./InterestModal";
 
 export const calculateAge = (birthDate) => {
@@ -35,6 +35,7 @@ export default function ListFriend() {
   const [showInterestModal, setShowInterestModal] = useState(false);
   const [selectedInterests, setSelectedInterests] = useState([]);
 
+  const [friendsDetail, setFriendsDetail] = useState([]);
 
   const staticImage =
     "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
@@ -96,12 +97,14 @@ export default function ListFriend() {
     setCityFilter("");
   };
 
-  
 
-  const filteredFriends = friends.filter((friend) => {
+
+  const filteredFriends = friendsDetail.filter((friend) => {
     const fullName = `${friend.first_name} ${friend.last_name}`.toLowerCase();
     const searchQuery = search.toLowerCase();
     const friendAge = calculateAge(friend.birth_date);
+
+    console.log("lista Amigos :", friendsDetail);
 
     return (
       (friend.first_name.toLowerCase().includes(searchQuery) ||
@@ -113,8 +116,8 @@ export default function ListFriend() {
       (!ageFilter || (friendAge >= ageFilter.min && friendAge <= ageFilter.max)) &&
       (priceFilter === "" ||
         parseFloat(friend.price) === parseFloat(priceFilter)) &&
-        (interestFilters.length === 0 || 
-        (friend.interests && interestFilters.every((interest) => friend.interests.includes(interest))))
+      (interestFilters.length === 0 ||
+        (friend.gustos && interestFilters.every((interest) => friend.gustos.includes(interest))))
     );
   });
 
@@ -168,7 +171,7 @@ export default function ListFriend() {
       setInterestFilters([...interestFilters, selectedInterest]);
     }
   };
-  
+
   const handleToggleInterestModal = () => {
     setShowInterestModal(!showInterestModal);
   };
@@ -183,6 +186,47 @@ export default function ListFriend() {
 
   const clearSearch = () => {
     setSearch('');
+  };
+
+
+  //datos completo de amigo 
+  useEffect(() => {
+    if (friends.length > 0) {
+      fetchAndUpdateFriendData();
+    }
+  }, [friends]); // cuando 'friends' se actualiza
+
+  const getUserIds = () => friends.map((data) => data.id_user);
+
+  const fetchAndUpdateFriendData = async () => {
+    try {
+      const data = await getFriendData();
+      const likesData = data.map((friend) => ({
+        id_user: friend.data.id_user,
+        gustos: friend.data.gustos,
+      }));
+      console.log("listaAmigos =", data);
+
+      console.log("ListadeGustos", likesData);
+      const friendsWithLikes = mergeDataWithFriends(friends, likesData);
+      setFriendsDetail(friendsWithLikes);
+      console.log(friendsDetail);
+    } catch (error) {
+      console.error("Error fetching friends data", error);
+    }
+  };
+
+  const getFriendData = async () => {
+    const userIds = getUserIds();
+    const friendDataPromises = userIds.map((userId) => getFriendID2(userId));
+    return Promise.all(friendDataPromises);
+  };
+
+  const mergeDataWithFriends = (friends, likesData) => {
+    return friends.map((friend) => {
+      const likesForFriend = likesData.find((likes) => likes.id_user === friend.id_user);
+      return likesForFriend ? { ...friend, gustos: likesForFriend.gustos } : friend;
+    });
   };
 
   return (
@@ -279,7 +323,7 @@ export default function ListFriend() {
               className="filter-select"
               value={interestFilter}
               onChange={handleInterestChange}
-              >
+            >
               <option value="">Todos</option>
               {likes.map((likes) => (
                 <option
