@@ -4,13 +4,25 @@ body, html {
   padding: 0;
   font-family: "Alata", sans-serif;
   background-color: #f4f4f4;
-  /* background-image: url("../../assets/img/blob\ \(1\).svg");
-  background-repeat: no-repeat; */
+}
+
+.login-background{
+  background-image: url('../../assets/img/sisi.webp');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 90vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 
 .login-title{
   text-align: center;
-  font-size: 40px;
+  font-size: 45px;
+  margin: 0px;
+  color: #f4f4f4;
 }
 
 .login-container {
@@ -19,7 +31,6 @@ body, html {
   align-items: flex-start;
   padding: 20px 50px 50px;
   gap: 10px;
-  min-height: 100vh;
   box-sizing: border-box;
   z-index: 1;
 }
@@ -28,7 +39,7 @@ body, html {
   flex-basis: 50%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
 }
 
@@ -44,7 +55,9 @@ body, html {
   flex-direction: column;
   justify-content: center;
   padding: 50px;
-  box-shadow: 0px 0px 8px 0px gray;
+  background-color: #00000051;
+  box-shadow: 0px 0px 5px 0px gray;
+  border-radius:20px;
 }
 
 .login-form {
@@ -68,6 +81,11 @@ body, html {
   max-width: 400px;
 }
 
+.login-form-container label{
+  color: aliceblue;
+}
+
+
 .forgot-password {
   margin-top: 5px;
   font-size: 0.9rem;
@@ -79,10 +97,9 @@ body, html {
   text-decoration: underline;
 }
 
-.register-link {
-  margin-top: 20px;
-  font-size: 0.9rem;
-  color: #007bff;
+.register-link, .login-link{
+  font-size: 1.0rem;
+  color: #4d007c;
   text-decoration: none;
 }
 
