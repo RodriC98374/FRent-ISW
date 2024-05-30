@@ -75,15 +75,9 @@
 }
 
 .chatListItemName {
-<<<<<<< HEAD
     font-weight: 700;
     color: var(--secondary-color);
     
-=======
-    color: var(--secondary-color);
-    font-weight: 800;
-    margin-bottom: -10px;
->>>>>>> e22cacf74c16b9705ea407d1b8dbaa31b4c19ae7
 }
 
 .chatListItemMessage {
@@ -105,15 +99,9 @@
 
 .user-chatList {
     overflow-y: scroll;
-<<<<<<< HEAD
     height: 470px;
     margin: 34px 1px -25px 0px;
 
-=======
-    height: 496px;
-    margin: 18px -15px 0px 0px;
-    overflow-y: auto;
->>>>>>> e22cacf74c16b9705ea407d1b8dbaa31b4c19ae7
 }
 
 .user-chatList::-webkit-scrollbar {

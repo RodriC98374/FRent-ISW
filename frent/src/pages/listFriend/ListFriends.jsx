@@ -120,12 +120,12 @@ export default function ListFriend() {
 
 
   const countryOptions = Country.getAllCountries().map((country) => ({
-    value: country.isoCode,
+    value: country.name,
     label: country.name,
   }));
 
   const cityOptions = State.getStatesOfCountry(countryFilter).map((state) => ({
-    value: state.isoCode,
+    value: state.name,
     label: state.name && state.name.replace(" Department", ""),
   }));
 

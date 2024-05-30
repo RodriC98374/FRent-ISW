@@ -8,7 +8,6 @@ import {
     getMessagesLast
 } from "../../../api/register.api";
 import { getUser } from "../../../pages/Login/LoginForm";
-import { calculateTimePassed } from "../../viewReserve/ViewReserve";
 import { Link } from "react-router-dom";
 
 const ChatList = ({ onSelectUser }) => {
