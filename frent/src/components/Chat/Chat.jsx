@@ -63,7 +63,6 @@ const Chat = () => {
     }
     try {
       const res = await getMessagesUser(informacion);
-      console.log("el mensaje es", res.data);
       setMessages2(res.data);
     } catch (error) {
       console.error("Error al obtener los mensajes del usuario:", error);

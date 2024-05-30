@@ -44,7 +44,7 @@ export default function DayItem({ dayName, onSelectTime }) {
       }
     }
     loadUserDataAvailable();
-  }, []);
+  }, [dayName]);
 
   useEffect(() => {
     function saveSelectTime() {
@@ -56,7 +56,7 @@ export default function DayItem({ dayName, onSelectTime }) {
       });
     }
     if(endTime) saveSelectTime();
-  }, [endTime]);
+  }, [icon, dayName, startTime, endTime, onSelectTime]);
 
   useEffect(() => {
     function updateSelectTime() {
@@ -75,7 +75,7 @@ export default function DayItem({ dayName, onSelectTime }) {
       }
     }
     if(endTime) updateSelectTime();
-  }, [icon]);
+  }, [icon, endTime, startTime, dayName, onSelectTime]);
 
   const endTimeOptions = hours.filter((option) => {
     if (startTime) {
@@ -92,6 +92,24 @@ export default function DayItem({ dayName, onSelectTime }) {
   const handleStartTimeChange = (selectedOption) => {
     setStartTime(selectedOption);
     localStorage.setItem(`${dayName}From`, JSON.stringify(selectedOption));
+    
+    // // Si la nueva hora de inicio es mayor que la hora de fin, restablecer la hora de fin
+    // if (endTime && selectedOption.value >= endTime.value) {
+    //   setEndTime(null);
+    //   localStorage.removeItem(`${dayName}To`);
+    // }
+
+    // Si la nueva hora de inicio es mayor o igual a la hora de fin, ajustar la hora de fin
+    if (!endTime || selectedOption.value >= endTime.value) {
+      const nextHourIndex = hours.findIndex((hour) => hour.value === selectedOption.value) + 1;
+      const nextHour = hours[nextHourIndex] || null;
+      setEndTime(nextHour);
+      if (nextHour) {
+        localStorage.setItem(`${dayName}To`, JSON.stringify(nextHour));
+      } else {
+        localStorage.removeItem(`${dayName}To`);
+      }
+    }
   };
 
   const handleEndTimeChange = (selectedOption) => {
@@ -123,7 +141,7 @@ export default function DayItem({ dayName, onSelectTime }) {
             <p>a</p>
             <Select
               className="hours-selector"
-              placeholder="09:00"
+              placeholder="00:00"
               options={endTimeOptions}
               isDisabled={!startTime}
               value={endTime}
