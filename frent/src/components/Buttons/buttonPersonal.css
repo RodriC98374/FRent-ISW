@@ -8,7 +8,7 @@
     font-weight: 600;
     line-height: 24px;
     border: 2px solid var(--secondary-color);
-    width: 145%;
+    width: 100%;
 }
 
 .personal-button>button:hover {
