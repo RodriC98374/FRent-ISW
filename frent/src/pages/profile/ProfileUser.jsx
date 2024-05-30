@@ -33,7 +33,7 @@ export default function ProfileUser() {
     if (rango) {
       return `${rango.start} a ${rango.end}`;
     } else {
-      return "No definido";
+      return "No disponible";
     }
   };
 

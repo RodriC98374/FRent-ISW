@@ -2,7 +2,8 @@
 .pie-pagina{
     position: absolute;
     width: 100%;
-    background-color: #0a141d;
+    /* background-color: #0a1a2a; */
+    background-color: var(--secondary-color);
 }
 .pie-pagina .grupo-1 {
     width: 100%;
@@ -33,23 +34,15 @@
     color: #efefef;
     margin-bottom: 10px;
 }
-.pie-pagina .grupo-1 .red-social a{
-    display: inline-block;
-    text-decoration: none;
-    width: 45px;
-    height: 45px;
-    line-height: 45px;
-    color: #fff;
-    margin-right: 10px;
-    background-color: #0d2033;
-    text-align: center;
-    transition: all 300ms ease;
-}
-.pie-pagina .grupo-1 .red-social a:hover{
-    color: aqua;
-}
+ .red-social{
+    width: 200px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+ }
+
 .pie-pagina .grupo-2 {
-    background-color: #0a1a2a;
+    background-color: var(--secondary-color);
     padding: 15px 10px;
     text-align: center;
     color: #fff;
@@ -62,6 +55,10 @@
     margin-top: 13px;
     font-size: 20px;
     margin-right: 9px;
+}
+
+.icon-footer{
+    color: #fff;
 }
 @media screen and (max-width:800px){
     .pie-pagina .grupo-1{

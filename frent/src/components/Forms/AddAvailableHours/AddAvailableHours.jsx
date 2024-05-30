@@ -99,20 +99,20 @@ export default function AddAvailableHours() {
 
   const submitDataFriend = async () => {
     const isAnyDaySelected =
-        mondayFrom ||
-        tuesdayFrom ||
-        wednesdayFrom ||
-        thursdayFrom ||
-        fridayFrom ||
-        saturdayFrom ||
-        sundayFrom;
+    (mondayFrom && mondayTo) ||
+    (tuesdayFrom && tuesdayTo) ||
+    (wednesdayFrom && wednesdayTo) ||
+    (thursdayFrom && thursdayTo) ||
+    (fridayFrom && fridayTo) ||
+    (saturdayFrom && saturdayTo) ||
+    (sundayFrom && sundayTo);
 
-    if (!isAnyDaySelected) {
-      swal(
-        "Advertencia",
-        "Debe seleccionar al menos un día de la semana",
-        "warning"
-      );
+  if (!isAnyDaySelected) {
+    swal(
+      "Advertencia",
+      "Debe seleccionar al menos un día de la semana con horas válidas",
+      "warning"
+    );
       return;
     }
     //PETICION PARA REGISTRAR DATOS PERSONALES
