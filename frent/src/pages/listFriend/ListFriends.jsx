@@ -4,8 +4,7 @@ import { Country, State } from "country-state-city";
 import { Link } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
 
-import { getFriends, getLikes } from "../../api/register.api";
-import InterestModal from "./InterestModal";
+import { getFriends, getLikes, getFriendID2 } from "../../api/register.api";
 
 export const calculateAge = (birthDate) => {
   const currentDate = new Date();
@@ -29,12 +28,10 @@ export default function ListFriend() {
   const [genderFilter, setGenderFilter] = useState("");
   const [ageFilter, setAgeFilter] = useState("");
   const [priceFilter, setPriceFilter] = useState("");
-  const [interestFilter, setInterestFilter] = useState("");
   const [likes, setLikes] = useState([]);
   const [interestFilters, setInterestFilters] = useState([]);
-  const [showInterestModal, setShowInterestModal] = useState(false);
-  const [selectedInterests, setSelectedInterests] = useState([]);
 
+  const [friendsDetail, setFriendsDetail] = useState([]);
 
   const staticImage =
     "https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg";
@@ -103,10 +100,12 @@ export default function ListFriend() {
     return country ? country.isoCode : "";
   };
 
-  const filteredFriends = friends.filter((friend) => {
+  const filteredFriends = friendsDetail.filter((friend) => {
     const fullName = `${friend.first_name} ${friend.last_name}`.toLowerCase();
     const searchQuery = search.toLowerCase();
     const friendAge = calculateAge(friend.birth_date);
+
+    console.log("lista Amigos :", friendsDetail);
 
     return (
       (friend.first_name.toLowerCase().includes(searchQuery) ||
@@ -118,8 +117,8 @@ export default function ListFriend() {
       (!ageFilter || (friendAge >= ageFilter.min && friendAge <= ageFilter.max)) &&
       (priceFilter === "" ||
         parseFloat(friend.price) === parseFloat(priceFilter)) &&
-        (interestFilters.length === 0 || 
-        (friend.interests && interestFilters.every((interest) => friend.interests.includes(interest))))
+      (interestFilters.length === 0 ||
+        (friend.gustos && interestFilters.every((interest) => friend.gustos.includes(interest))))
     );
   });
 
@@ -170,27 +169,52 @@ export default function ListFriend() {
 
   const handleInterestChange = (e) => {
     const selectedInterest = e.target.value;
-    if (interestFilters.includes(selectedInterest)) {
-      setInterestFilters(interestFilters.filter((interest) => interest !== selectedInterest));
-    } else {
-      setInterestFilters([...interestFilters, selectedInterest]);
-    }
-  };
-  
-  const handleToggleInterestModal = () => {
-    setShowInterestModal(!showInterestModal);
-  };
-
-  const handleInterestSave = (interest, isSelected) => {
-    if (isSelected) {
-      setSelectedInterests([...selectedInterests, interest]);
-    } else {
-      setSelectedInterests(selectedInterests.filter((item) => item !== interest));
-    }
+    setInterestFilters(selectedInterest === "" ? [] : [selectedInterest]);
   };
 
   const clearSearch = () => {
     setSearch('');
+  };
+
+
+  //datos completo de amigo 
+  useEffect(() => {
+    if (friends.length > 0) {
+      fetchAndUpdateFriendData();
+    }
+  }, [friends]); // cuando 'friends' se actualiza
+
+  const getUserIds = () => friends.map((data) => data.id_user);
+
+  const fetchAndUpdateFriendData = async () => {
+    try {
+      const data = await getFriendData();
+      const likesData = data.map((friend) => ({
+        id_user: friend.data.id_user,
+        gustos: friend.data.gustos,
+      }));
+      console.log("listaAmigos =", data);
+
+      console.log("ListadeGustos", likesData);
+      const friendsWithLikes = mergeDataWithFriends(friends, likesData);
+      setFriendsDetail(friendsWithLikes);
+      console.log(friendsDetail);
+    } catch (error) {
+      console.error("Error fetching friends data", error);
+    }
+  };
+
+  const getFriendData = async () => {
+    const userIds = getUserIds();
+    const friendDataPromises = userIds.map((userId) => getFriendID2(userId));
+    return Promise.all(friendDataPromises);
+  };
+
+  const mergeDataWithFriends = (friends, likesData) => {
+    return friends.map((friend) => {
+      const likesForFriend = likesData.find((likes) => likes.id_user === friend.id_user);
+      return likesForFriend ? { ...friend, gustos: likesForFriend.gustos } : friend;
+    });
   };
 
   return (
@@ -285,9 +309,9 @@ export default function ListFriend() {
             <label className="filter-label">Intereses:</label>
             <select
               className="filter-select"
-              value={interestFilter}
+              value={interestFilters}
               onChange={handleInterestChange}
-              >
+            >
               <option value="">Todos</option>
               {likes.map((likes) => (
                 <option
