@@ -6,6 +6,7 @@ import { IoMdClose } from "react-icons/io";
 
 import { getFriends, getLikes, getFriendID2 } from "../../api/register.api";
 
+
 export const calculateAge = (birthDate) => {
   const currentDate = new Date();
   const dob = new Date(birthDate);
@@ -229,7 +230,7 @@ export default function ListFriend() {
           type="text"
         />
         {search && (
-          <IoMdClose className="icon-list-close" onClick={clearSearch} />
+          <IoMdClose className="closeicon-list-" onClick={clearSearch} />
         )}
         <div className="filteres-select">
           <div className="filter-label">
