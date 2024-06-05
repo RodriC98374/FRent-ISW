@@ -11,6 +11,7 @@
   border-radius: 8px;
   padding: 24px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 60px;
 }
 
 .image-profile {
@@ -20,10 +21,9 @@
   justify-content: center;
 }
 
-.image-profile > img{
+.image-profile > img {
   border-radius: 50%;
 }
-
 
 .user-avatar {
   object-fit: cover;
@@ -103,7 +103,6 @@
   align-items: center;
   flex-wrap: wrap;
 }
-
 
 .verified-icon {
   margin-right: 0.5rem;

@@ -39,7 +39,6 @@ const ChatList = ({ onSelectUser }) => {
         }
         try {
             const res = await getMessagesLast(informacion);
-            console.log("el mensaje puede ser", res.data);
             setMessages2(res.data);
         } catch (error) {
             console.error("Error al obtener los mensajes del usuario:", error);

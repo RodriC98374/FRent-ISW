@@ -63,18 +63,16 @@ const Chat = () => {
     }
     try {
       const res = await getMessagesUser(informacion);
-      console.log("el mensaje es", res.data);
       setMessages2(res.data);
     } catch (error) {
       console.error("Error al obtener los mensajes del usuario:", error);
     }
   };
 
-  //CUANDO HAGAN PULL Y EXISTA CONFLICTOS, NO SIMPLEMENTE ACEPTEN SUS
-  //CAMBIOS Y DESCARTEN LAS DEL REPO, POR ALGO ESTAN AHI
-  //YA ES LA TERCERA VEZ QUE APARECE CODIGOS ANTIGUOS CON BUGS
-
   useEffect(() => {
+    if (socket) {
+      socket.close();
+    }
     const connectWebSocket = () => {
       if (selectedUser) {
         const idOther =
