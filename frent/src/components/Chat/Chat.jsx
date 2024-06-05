@@ -70,6 +70,9 @@ const Chat = () => {
   };
 
   useEffect(() => {
+    if (socket) {
+      socket.close();
+    }
     const connectWebSocket = () => {
       if (selectedUser) {
         const idOther =

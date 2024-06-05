@@ -6,18 +6,19 @@ import { IoMdClose } from "react-icons/io";
 
 import { getFriends, getLikes, getFriendID2 } from "../../api/register.api";
 
-
 export const calculateAge = (birthDate) => {
   const currentDate = new Date();
   const dob = new Date(birthDate);
   let age = currentDate.getFullYear() - dob.getFullYear();
   const monthDiff = currentDate.getMonth() - dob.getMonth();
-  if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < dob.getDate())) {
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && currentDate.getDate() < dob.getDate())
+  ) {
     age--;
   }
   return age;
 };
-
 
 export default function ListFriend() {
   const [friends, setFriends] = useState([]);
@@ -50,7 +51,6 @@ export default function ListFriend() {
     };
     loadFriends();
   }, []);
-
 
   const formatDescription = (description) => {
     let newDescription = "";
@@ -113,54 +113,55 @@ export default function ListFriend() {
       (countryFilter === "" || friend.country === countryFilter) &&
       (cityFilter === "" || friend.city === cityFilter) &&
       (genderFilter === "" || friend.gender === genderFilter) &&
-      (!ageFilter || (friendAge >= ageFilter.min && friendAge <= ageFilter.max)) &&
+      (!ageFilter ||
+        (friendAge >= ageFilter.min && friendAge <= ageFilter.max)) &&
       (priceFilter === "" ||
         parseFloat(friend.price) === parseFloat(priceFilter)) &&
       (interestFilters.length === 0 ||
-        (friend.gustos && interestFilters.every((interest) => friend.gustos.includes(interest))))
+        (friend.gustos &&
+          interestFilters.every((interest) =>
+            friend.gustos.includes(interest)
+          )))
     );
   });
-
 
   const countryOptions = Country.getAllCountries().map((country) => ({
     value: country.name,
     label: country.name,
   }));
 
-  
-  const cityOptions = State.getStatesOfCountry(getCountryCode(countryFilter)).map((state) => ({
+  const cityOptions = State.getStatesOfCountry(
+    getCountryCode(countryFilter)
+  ).map((state) => ({
     value: state.name && state.name.replace(" Department", ""),
     label: state.name && state.name.replace(" Department", ""),
   }));
 
-
   const handleCityChange = (e) => {
     setCityFilter(e.target.value);
   };
-
 
   const handleGenderChange = (e) => {
     setGenderFilter(e.target.value);
   };
 
   const ageRanges = [
-    { label: '18 - 25 años', min: 18, max: 25 },
-    { label: '26 - 35 años', min: 26, max: 35 },
-    { label: '36 - 45 años', min: 36, max: 45 },
-    { label: '46 - 55 años', min: 46, max: 55 },
-    { label: '56 - 100 años', min: 56, max: 100 },
+    { label: "18 - 25 años", min: 18, max: 25 },
+    { label: "26 - 35 años", min: 26, max: 35 },
+    { label: "36 - 45 años", min: 36, max: 45 },
+    { label: "46 - 55 años", min: 46, max: 55 },
+    { label: "56 - 100 años", min: 56, max: 100 },
   ];
 
   const handleAgeChange = (e) => {
     const inputAge = e.target.value;
-    const selectedRange = ageRanges.find(range => range.label === inputAge);
+    const selectedRange = ageRanges.find((range) => range.label === inputAge);
     if (selectedRange) {
       setAgeFilter(selectedRange);
     } else {
-      setAgeFilter('');
+      setAgeFilter("");
     }
   };
-
 
   const handlePriceChange = (e) => {
     setPriceFilter(e.target.value);
@@ -172,11 +173,10 @@ export default function ListFriend() {
   };
 
   const clearSearch = () => {
-    setSearch('');
+    setSearch("");
   };
 
-
-  //datos completo de amigo 
+  //datos completo de amigo
   useEffect(() => {
     if (friends.length > 0) {
       fetchAndUpdateFriendData();
@@ -208,8 +208,12 @@ export default function ListFriend() {
 
   const mergeDataWithFriends = (friends, likesData) => {
     return friends.map((friend) => {
-      const likesForFriend = likesData.find((likes) => likes.id_user === friend.id_user);
-      return likesForFriend ? { ...friend, gustos: likesForFriend.gustos } : friend;
+      const likesForFriend = likesData.find(
+        (likes) => likes.id_user === friend.id_user
+      );
+      return likesForFriend
+        ? { ...friend, gustos: likesForFriend.gustos }
+        : friend;
     });
   };
 
@@ -233,12 +237,11 @@ export default function ListFriend() {
             <select
               className="filter-select"
               value={countryFilter}
-              onChange={handleCountryChange}>
+              onChange={handleCountryChange}
+            >
               <option value="">Todos</option>
               {countryOptions.map((country) => (
-                <option
-                  key={country.value}
-                  value={country.value}>
+                <option key={country.value} value={country.value}>
                   {country.label}
                 </option>
               ))}
@@ -250,12 +253,11 @@ export default function ListFriend() {
             <select
               className="filter-select"
               value={cityFilter}
-              onChange={handleCityChange}>
+              onChange={handleCityChange}
+            >
               <option value="">Todas</option>
               {cityOptions.map((city) => (
-                <option
-                  key={city.value}
-                  value={city.value}>
+                <option key={city.value} value={city.value}>
                   {city.label}
                 </option>
               ))}
@@ -266,7 +268,8 @@ export default function ListFriend() {
             <select
               className="filter-select"
               value={genderFilter}
-              onChange={handleGenderChange}>
+              onChange={handleGenderChange}
+            >
               <option value="">Todos</option>
               <option value="femenino">Femenino</option>
               <option value="masculino">Masculino</option>
@@ -288,11 +291,12 @@ export default function ListFriend() {
             </select>
           </div>
           <div className="filter-label">
-            <label >Precio:</label>
+            <label>Precio:</label>
             <select
               className="filter-select"
               value={priceFilter}
-              onChange={handlePriceChange}>
+              onChange={handlePriceChange}
+            >
               <option value="">Todos</option>
               <option value="20.00">20 bs</option>
               <option value="30.00">30 bs</option>
@@ -310,9 +314,7 @@ export default function ListFriend() {
             >
               <option value="">Todos</option>
               {likes.map((likes) => (
-                <option
-                  key={likes.id}
-                  value={likes.name}>
+                <option key={likes.id} value={likes.name}>
                   {likes.name}
                 </option>
               ))}
@@ -322,54 +324,49 @@ export default function ListFriend() {
       </div>
 
       <div className="lista">
-      {filteredFriends.length > 0 ? (
-        filteredFriends.map((friend) => (
-          <div
-            key={friend.id_user}
-            className="card">
-            <div className="top-card"></div>
-            <img
-              src={`data:image/png;base64,${friend.image}`}
-              alt="foto de perfil"
-              onClick={() => openModal(getImage(friend.image))}
-            />
-            <div className="card-texts">
-              <p className="name-card">
-                {friend.first_name} {friend.last_name}
-              </p>
-              <p className="age-card">
-                Edad: {calculateAge(friend.birth_date)} años
-              </p>
-              <p className="subtitle-card">Descripción</p>
-              <p className="text-card">
-                {formatDescription(friend.personal_description)}
-              </p>
-              <p>{friend.price} bs.</p>
-            </div>
-            {/* <NavLink
+        {filteredFriends.length > 0 ? (
+          filteredFriends.map((friend) => (
+            <div key={friend.id_user} className="card">
+              <div className="top-card"></div>
+              <img
+                src={`data:image/png;base64,${friend.image}`}
+                alt="foto de perfil"
+                onClick={() => openModal(getImage(friend.image))}
+              />
+              <div className="card-texts">
+                <p className="name-card">
+                  {friend.first_name} {friend.last_name}
+                </p>
+                <p className="age-card">
+                  Edad: {calculateAge(friend.birth_date)} años
+                </p>
+                <p className="subtitle-card">Descripción</p>
+                <p className="text-card">
+                  {formatDescription(friend.personal_description)}
+                </p>
+                <p>{friend.price} bs.</p>
+              </div>
+              {/* <NavLink
               className="button-card"
               to={`/rentaForm/${friend.id_user}`}>
               Alquilar
             </NavLink> */}
-            <Link className="button-card" to={`/profileFriend/${friend.id_user}`}>
-              Ver perfil
-            </Link>
-          </div>
-        ))
-        
-      ): (
-        <div className="no-friends-message">
-            No se encontraron amigos con esas características😟.
-          </div>
-      )}
-        
+              <Link
+                className="button-card"
+                to={`/profileFriend/${friend.id_user}`}
+              >
+                Ver perfil
+              </Link>
+            </div>
+          ))
+        ) : (
+          <div className="no-friends-message">Cargando amigos... 😀</div>
+        )}
       </div>
       {selectedImage && (
         <div className="modalF">
           <div className="modal-content">
-            <button
-              className="close"
-              onClick={closeModal}>
+            <button className="close" onClick={closeModal}>
               Cerrar
             </button>
             <img
